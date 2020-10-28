@@ -1,0 +1,11 @@
+{
+  "name": "kanka-foundry",
+  "title": "Kanka Foundry",
+  "description": "Some description...",
+  "version": "0.1.0",
+  "author": "eXaminator",
+  "esmodules": ["kanka-foundry.js"],
+  "styles": ["kanka-foundry.css"],
+  "minimumCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "0.7.5"
+}

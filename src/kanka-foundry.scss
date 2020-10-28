@@ -1,0 +1,9 @@
+button#kanka {
+    flex: 0 0 32px;
+
+    > img {
+        position: relative;
+        top: 4px;
+        border: none;
+    }
+}
