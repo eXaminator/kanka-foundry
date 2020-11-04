@@ -46,13 +46,16 @@ module.exports = {
         publicPath: `/modules/${moduleConfig.name}/`,
     },
     plugins: [
-        new CopyPlugin({ patterns: ['./src/module.json'] }),
+        new CopyPlugin({
+            patterns: [
+                './src/module.json',
+                { from: './src/lang', to: './lang' },
+            ],
+        }),
         new MiniCssExtractPlugin(),
     ],
     devtool: 'cheap-module-source-map',
     devServer: {
-        // contentBase: join(__dirname, 'dist'),
-        // compress: true,
         inline: true,
         port: 3000,
         publicPath: `/modules/${moduleConfig.name}/`,

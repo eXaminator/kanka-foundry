@@ -1,11 +1,10 @@
-import { info } from '../logger';
+import { logInfo } from '../logger';
 import preloadTemplates from '../module/preloadTemplates';
-import { clearSettings, registerSettings } from '../module/settings';
+import { clearSettings, registerSettings } from '../module/configureSettings';
 
-export default async function init(...args: unknown[]): Promise<void> {
-    info('Initializing', args);
-    registerSettings();
-    game.settings.sheet.render(); // update sheet if it already visible
+export default async function init(): Promise<void> {
+    logInfo('Initializing');
+    await registerSettings();
 
     await preloadTemplates();
 }

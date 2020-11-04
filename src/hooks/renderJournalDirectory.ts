@@ -1,12 +1,14 @@
 import logo from '../assets/kanka.png';
-import { info } from '../logger';
+import { logInfo } from '../logger';
+import getSetting from '../module/getSettings';
+import KankaSettings from '../types/KankaSettings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
 
 export default async function renderJournalDirectory(app: JournalSheet, html: JQuery<HTMLDivElement>): Promise<void> {
     if (!game.user.isGM) return;
 
-    info('renderJournalDirectory');
+    logInfo('renderJournalDirectory');
 
     button = $(`
         <button type="button" id="kanka">
@@ -15,8 +17,8 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
     `);
 
     button.on('click', () => {
-        if (!game.settings.get('kanka-foundry', 'access_token')) {
-            ui.notifications.error(game.i18n.localize('KANKA.ProvideAccessToken'));
+        if (!getSetting(KankaSettings.accessToken)) {
+            ui.notifications.error(game.i18n.localize('KANKA.ErrorProvideAccessToken'));
         }
 
         // Do actual stuff

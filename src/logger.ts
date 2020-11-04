@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import moduleConfig from './module.json';
 
-export function info(...args: unknown[]): void {
+export function logInfo(...args: unknown[]): void {
     console.log(moduleConfig.name, ' | ', ...args);
 }
 
-export function error(...args: unknown[]): void {
+export function logError(...args: unknown[]): void {
     console.error(moduleConfig.name, ' | ', ...args);
 }
