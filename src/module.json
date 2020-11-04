@@ -6,6 +6,13 @@
   "author": "eXaminator",
   "esmodules": ["kanka-foundry.js"],
   "styles": ["kanka-foundry.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.5"
 }

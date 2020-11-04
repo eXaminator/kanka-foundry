@@ -1,0 +1,11 @@
+{
+    "KANKA.SidebarButton": "Import from Kanka",
+    "KANKA.ErrorProvideAccessToken": "You did not provide a valid Kanka access token or it has expired.",
+    "KANKA.SettingsTokenLabel": "Kanka Personal Access Token",
+    "KANKA.SettingsTokenHint": "You can retrieve an access token from https://kanka.io/en/settings/api",
+    "KANKA.SettingsCampaignLabel": "Campaign",
+    "KANKA.SettingsCampaignHint": "Select the campaign from which to import articles",
+    "KANKA.SettingsCampaignNoToken": "Please enter a valid access token",
+    "KANKA.SettingsCampaignInvalidToken": "There was an error. Please check if the token is valid.",
+    "KANKA.SettingsCampaignPleaseChoose": "-- Please choose a campaign --"
+}
