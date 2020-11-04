@@ -4,7 +4,7 @@ module.exports = function (api) {
     return {
         presets: [
             ['@babel/env', { targets: '> 0.25%', useBuiltIns: 'usage', corejs: 3 }],
-            ['@babel/preset-typescript', { 'allExtensions': true }],
+            ['@babel/preset-typescript', { allExtensions: true }],
 
         ],
         plugins: [
