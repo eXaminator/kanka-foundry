@@ -1,8 +1,9 @@
-import { logError } from '../logger';
+import { logError, logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import KankaSettings from '../types/KankaSettings';
 import getSettings from './getSettings';
 import { getCampaigns } from './kanka';
+import KankaBrowser from './KankaBrowser';
 
 const accessTokenInputName = `${moduleConfig.name}.${KankaSettings.accessToken}`;
 const campaignInputName = `${moduleConfig.name}.${KankaSettings.campaign}`;
@@ -18,9 +19,9 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
         const campaignChoices: Record<string, string> = {
             '': game.i18n.localize('KANKA.SettingsCampaignPleaseChoose'),
         };
-        const campaignsResult = await getCampaigns(token);
+        const campaigns = await getCampaigns(token);
 
-        campaignsResult.data.forEach((campaign) => {
+        campaigns.forEach((campaign) => {
             campaignChoices[campaign.id] = campaign.name;
         });
 
@@ -84,6 +85,12 @@ export async function registerSettings(): Promise<void> {
             type: String,
             default: '',
             choices: await getCampaignChoices(getSettings(KankaSettings.accessToken)),
+            onChange() {
+                Object
+                    .values(ui.windows)
+                    .find(a => a.constructor === KankaBrowser)
+                    ?.render(false);
+            },
         },
     );
 

@@ -1,68 +1,56 @@
 <section class="kanka-container">
-    <header class="section">
+    <header>
         <h2>
-            <a class="kanka-link" href="{{ world.url }}" title="{{ world.name }} {{ localize 'WA.OnWA' }}" target="_blank">{{ world.name }}</a>
+            <a href="{{ kankaLink }}" target="_blank">{{ campaign.name }}</a>
         </h2>
     </header>
-    <section class="world-description">
-        {{{ world.description_parsed }}}
+
+    {{#if campaign.entry }}
+    <section class="campaign-description">
+        {{#if campaign.image_full }}
+        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+        {{/if}}
+        {{{ campaign.entry }}}
     </section>
     <hr/>
+    {{/if}}
 
-    <ul class="article-filters">
-        <li>
-            <button type="button" class="kanka-control {{#unless displayDraft}}inactive{{/unless}}" data-action="toggle-drafts">
-                <i class="fas fa-feather-alt"></i> Display Drafts
-            </button>
-        <li>
-            <button type="button" class="kanka-control {{#unless displayWIP}}inactive{{/unless}}" data-action="toggle-wip">
-                <i class="fas fa-hammer"></i> Display Work in Progress
-            </button>
-        </li>
-    </ul>
-
-    {{#each categories as |c|}}
-    <section class="world-articles">
-        <header class="section">
-            <h2>
-                <a class="kanka-link" href="{{ c.url }}" title="{{ c.title }} {{ localize 'WA.OnWA' }}" target="_blank">{{ c.title }}</a>
-            </h2>
-            <div class="controls">
-                {{#if c.link }}
-                <button type="button" class="kanka-control" data-action="sync-folder" data-category-id="{{ c.id }}" data-folder-id="{{ c.link.id }}" title="{{ localize 'WA.SyncFolder' }}">
+    <details class="locations entity-list" open>
+        <summary class="action-row">
+            <div>
+                <i class="fas fa-compass"></i> <a href="{{ kankaLink '/locations/tree' }}" target="_blank">Locations</a>
+            </div>
+            <div class="actions">
+                {{#if (getKankaJournalFolderName 'location') }}
+                <button type="button" data-action="open-folder" data-type="location">
+                    <i class="fas fa-folder"></i> {{ getKankaJournalFolderName 'location' }}
+                </button>
+                {{/if}}
+                <button type="button" data-action="sync-folder" data-type="location">
+                    <i class="fas fa-sync"></i> {{ localize 'KANKA.BrowserSyncFolder' }}
+                </button>
+            </div>
+        </summary>
+        {{#each locations as |location|}}
+        <div class="action-row">
+            <a href="{{ kankaLink '/locations/' location.id }}" target="_blank" data-article-id="{{ location.id }}">{{ location.name }}</a>
+            <div class="actions">
+                {{#if (hasKankaJournalEntry location.id) }}
+                <button type="button" data-action="open-entry" data-type="location" data-id="{{ location.id }}">
+                    <i class="fas fa-link"></i> {{ location.name }}
+                </button>
+                <button type="button" data-action="sync-entry" data-type="location" data-id="{{ location.id }}">
                     <i class="fas fa-sync"></i>
                 </button>
-                <button type="button" class="kanka-control" data-action="browse-folder" data-folder-id="{{ c.link.id }}">
-                    <i class="fas fa-folder"></i> {{ c.link.name }}
-                </button>
                 {{else}}
-                <button type="button" class="kanka-control" data-action="link-folder" data-category-id="{{ c.id }}">
-                    <i class="fas fa-folder-plus"></i>
+                <button type="button" data-action="link-entry" data-type="location" data-id="{{ location.id }}">
+                    <i class="fas fa-link"></i>
                 </button>
                 {{/if}}
             </div>
-        </header>
-        {{#each c.articles as |a|}}
-        <article>
-            <header>
-                <h3>
-                    <a class="article-link" href="{{ a.url }}" title="{{ a.title }} {{ localize 'WA.OnWA' }}" target="_blank" data-article-id="{{ a.id }}">{{ a.title }}</a>
-                </h3>
-                <div class="controls">
-                    {{#if a.link }}
-                    <button type="button" class="kanka-control" data-action="browse-entry" data-entry-id="{{ a.link.id }}">
-                        <i class="fas fa-link"></i> {{ a.link.name }}
-                    </button>
-                    {{else}}
-                    <button type="button" class="kanka-control" data-action="link-entry" data-article-id="{{ a.id }}">
-                        <i class="fas fa-link"></i>
-                    </button>
-                    {{/if}}
-                </div>
-            </header>
-        </article>
+        </div>
         {{/each }}
-    </section>
+    </details>
+
     <hr/>
-    {{/each}}
 </section>

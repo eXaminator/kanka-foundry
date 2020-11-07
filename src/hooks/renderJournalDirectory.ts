@@ -1,6 +1,7 @@
 import logo from '../assets/kanka.png';
 import { logInfo } from '../logger';
 import getSetting from '../module/getSettings';
+import KankaBrowser from '../module/KankaBrowser';
 import KankaSettings from '../types/KankaSettings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
@@ -17,18 +18,27 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
     `);
 
     button.on('click', () => {
-        if (!getSetting(KankaSettings.accessToken)) {
-            ui.notifications.error(game.i18n.localize('KANKA.ErrorProvideAccessToken'));
+        if (!game.user.isGM) return;
+
+        if (module.hot) {
+            delete _templateCache['modules/kanka-foundry/templates/journal.html'];
         }
 
-        // Do actual stuff
+        if (!getSetting(KankaSettings.accessToken)) {
+            ui.notifications.error(game.i18n.localize('KANKA.ErrorProvideAccessToken'));
+            return;
+        }
+
+        const journal = new KankaBrowser();
+        journal.render(true);
     });
 
     html.find('.header-actions').append(button);
 
-    // Re-render the browser, if it's active
-    /* const browser = Object.values(ui.windows).find(a => a.constructor === WorldAnvilBrowser);
-     if (browser) browser.render(false); */
+    Object
+        .values(ui.windows)
+        .find(a => a.constructor === KankaBrowser)
+        ?.render(false);
 }
 
 if (module.hot) {
