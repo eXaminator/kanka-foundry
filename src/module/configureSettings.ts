@@ -12,13 +12,13 @@ const campaignInputName = `${moduleConfig.name}.${KankaSettings.campaign}`;
 async function getCampaignChoices(token?: string): Promise<Record<string, string>> {
     if (!token) {
         return {
-            '': game.i18n.localize('KANKA.SettingsCampaignNoToken'),
+            '': game.i18n.localize('KANKA.SettingsCampaign.noToken'),
         };
     }
 
     try {
         const campaignChoices: Record<string, string> = {
-            '': game.i18n.localize('KANKA.SettingsCampaignPleaseChoose'),
+            '': game.i18n.localize('KANKA.SettingsCampaign.pleaseChoose'),
         };
 
         const api = KankaApi.createRoot(token);
@@ -33,7 +33,7 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
     } catch (error) {
         logError(error);
         return {
-            '': game.i18n.localize('KANKA.SettingsCampaignInvalidToken'),
+            '': game.i18n.localize('KANKA.SettingsCampaign.invalidToken'),
         };
     }
 }
@@ -69,8 +69,8 @@ export async function registerSettings(): Promise<void> {
         moduleConfig.name,
         KankaSettings.accessToken,
         {
-            name: game.i18n.localize('KANKA.SettingsTokenLabel'),
-            hint: game.i18n.localize('KANKA.SettingsTokenHint'),
+            name: game.i18n.localize('KANKA.SettingsToken.label'),
+            hint: game.i18n.localize('KANKA.SettingsToken.hint'),
             scope: 'world',
             config: true,
             type: String,
@@ -85,8 +85,8 @@ export async function registerSettings(): Promise<void> {
         moduleConfig.name,
         KankaSettings.campaign,
         {
-            name: game.i18n.localize('KANKA.SettingsCampaignLabel'),
-            hint: game.i18n.localize('KANKA.SettingsCampaignHint'),
+            name: game.i18n.localize('KANKA.SettingsCampaign.label'),
+            hint: game.i18n.localize('KANKA.SettingsCampaign.hint'),
             scope: 'world',
             config: true,
             type: String,
@@ -116,6 +116,37 @@ export async function registerSettings(): Promise<void> {
                 [IncludeAttributeSelection.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.public'),
                 [IncludeAttributeSelection.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.none'),
             },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataAttributes,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataAttributes.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataAttributes.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: IncludeAttributeSelection.public,
+            choices: {
+                [IncludeAttributeSelection.all]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.all'),
+                [IncludeAttributeSelection.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.public'),
+                [IncludeAttributeSelection.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.imageInText,
+        {
+            name: game.i18n.localize('KANKA.SettingsImageInText.label'),
+            hint: game.i18n.localize('KANKA.SettingsImageInText.hint'),
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: false,
         },
     );
 

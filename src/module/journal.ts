@@ -1,16 +1,8 @@
 import EntityAttribute from '../kanka/EntityAttribute';
 import KankaEntity from '../kanka/KankaEntity';
-import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import { IncludeAttributeSelection, KankaSettings } from '../types/KankaSettings';
 import getSetting from './getSettings';
-
-interface JournalData {
-    name: string;
-    content: string;
-    img?: string;
-    metaData: Record<string, string>;
-}
 
 export function findEntriesByType(type: string): JournalEntry[] {
     return game.journal.filter(e => e.getFlag(moduleConfig.name, 'type') === type);
@@ -57,8 +49,7 @@ async function renderTemplate(path: string, params: Record<string, unknown>): Pr
         delete _templateCache[path];
     }
 
-    const tableTemplate = await getTemplate(path) as unknown as (params: Record<string, unknown>) => string;
-    return tableTemplate(params);
+    return window.renderTemplate(path, params) as unknown as string;
 }
 
 function getMetaDataLabel(key: string): string {
@@ -66,17 +57,6 @@ function getMetaDataLabel(key: string): string {
     const label = game.i18n.localize(labelKey);
 
     return label === labelKey ? key : label;
-}
-
-function transformMetaData(data: Record<string, string>): Record<string, string> {
-    const result = {};
-    Object
-        .entries(data)
-        .filter(([, value]) => !!value)
-        .forEach(([key, value]) => {
-            result[getMetaDataLabel(key)] = value;
-        });
-    return result;
 }
 
 function getAttributeValue(attribute: EntityAttribute): string {
@@ -92,46 +72,59 @@ function getAttributeValue(attribute: EntityAttribute): string {
     return String(attribute.value);
 }
 
+function buildMetaData(entity: KankaEntity): { label: string, value: string }[] {
+    const metaData = Object
+        .entries(entity.metaData)
+        .filter(([, value]) => !!value)
+        .map(([key, value]) => ({
+            label: getMetaDataLabel(key),
+            value,
+        }));
+
+    const includeAttributes = getSetting(KankaSettings.metaDataAttributes) as IncludeAttributeSelection;
+
+    if (includeAttributes === IncludeAttributeSelection.none) {
+        return metaData;
+    }
+
+    const attributes = entity.attributes
+        .filter(attr => !attr.isSection())
+        .filter(attr => includeAttributes !== IncludeAttributeSelection.public || attr.isPublic())
+        .map(attr => ({
+            label: attr.name,
+            value: getAttributeValue(attr),
+        }));
+
+    return [...metaData, ...attributes];
+}
+
 export async function writeJournalEntry(
     entity: KankaEntity,
-    data: JournalData,
     options: { renderSheet?: boolean, notification?: boolean } = {},
 ): Promise<JournalEntry> {
     const { renderSheet = false, notification = true } = options;
     let entry = findEntryByEntity(entity);
-    let { content } = data;
 
-    const metaData = transformMetaData(data.metaData);
-    const includeAttributes = getSetting(KankaSettings.metaDataAttributes) as IncludeAttributeSelection;
+    const content = await renderTemplate(
+        `modules/${moduleConfig.name}/templates/journalEntry.html`,
+        {
+            entity,
+            metaData: buildMetaData(entity),
+            includeImage: entity.image && getSetting(KankaSettings.imageInText),
+        },
+    );
 
-    if (includeAttributes !== IncludeAttributeSelection.none) {
-        entity.attributes
-            .forEach((attr) => {
-                if (attr.isSection()) return;
-                if (includeAttributes === IncludeAttributeSelection.public && attr.isPrivate()) return;
-                metaData[attr.name] = getAttributeValue(attr);
-            });
-    }
-
-    if (Object.values(metaData).length > 0) {
-        try {
-            const table = await renderTemplate(
-                `modules/${moduleConfig.name}/templates/metaDataTable.html`,
-                { data: metaData },
-            );
-            content = `${table}${content}`;
-        } catch (e) {
-            logError(e);
-        }
-    }
-
-    const journalData = { ...data, content };
+    const journalData = {
+        name: entity.name,
+        img: entity.image,
+        content,
+    };
 
     if (entry) {
         await entry.update(journalData);
 
         if (notification) {
-            ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationRefreshed', { type: entity.entityType, name: data.name }));
+            ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationRefreshed', { type: entity.entityType, name: entity.name }));
         }
     } else {
         const folder = await ensureJournalFolder(entity.entityType);
@@ -144,7 +137,7 @@ export async function writeJournalEntry(
         }) as JournalEntry;
 
         if (notification) {
-            ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationSynced', { type: entity.entityType, name: data.name }));
+            ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationSynced', { type: entity.entityType, name: entity.name }));
         }
     }
 

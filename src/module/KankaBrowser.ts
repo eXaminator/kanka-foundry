@@ -169,13 +169,7 @@ export default class KankaBrowser extends Application {
     }
 
     private async syncEntity(entity: KankaEntity, renderSheet = false, notification = true): Promise<void> {
-        const data = {
-            name: entity.name,
-            content: entity.entry,
-            img: entity.image,
-            metaData: entity.metaData,
-        };
-        await writeJournalEntry(entity, data, { renderSheet, notification });
+        await writeJournalEntry(entity, { renderSheet, notification });
         this.render();
     }
 

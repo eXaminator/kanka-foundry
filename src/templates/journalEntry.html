@@ -1,0 +1,14 @@
+{{#if includeImage}}
+<img src="{{entity.image}}" class="kanka-main-image">
+{{/if}}
+{{#if metaData.length}}
+<table class="kanka-metadata">
+    {{#each metaData}}
+        <tr>
+            <th>{{{ this.label }}}</th>
+            <td>{{{ this.value }}}</td>
+        </tr>
+    {{/each}}
+</table>
+{{/if}}
+{{{ entity.entry }}}
