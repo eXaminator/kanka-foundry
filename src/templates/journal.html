@@ -15,35 +15,55 @@
     <hr/>
     {{/if}}
 
-    <details class="locations entity-list" open>
+    {{#each data}}
+    <details class="entity-list">
         <summary class="action-row">
             <div>
-                <i class="fas fa-compass"></i> <a href="{{ kankaLink '/locations/tree' }}" target="_blank">Locations</a>
+                <i class="fas {{ icon }}"></i>
+                <a href="{{ kankaLink '/' @key 's/tree' }}" target="_blank">{{ localize (i18nKey 'KANKA.EntityType' @key) }}</a>
             </div>
             <div class="actions">
-                <button type="button" data-action="link-folder" data-type="location">
+                <button type="button" data-action="link-folder" data-type="{{ @key }}">
                     <i class="fas fa-link"></i> {{ localize 'KANKA.BrowserLinkFolder' }}
                 </button>
-                {{#if (hasLinkedJournalEntryOfType 'location')}}
-                <button type="button" data-action="sync-folder" data-type="location">
+                {{#if (hasLinkedJournalEntryOfType @key)}}
+                <button type="button" data-action="sync-folder" data-type="{{ @key }}">
                     <i class="fas fa-sync"></i> {{ localize 'KANKA.BrowserRefreshFolder' }}
                 </button>
                 {{/if}}
             </div>
         </summary>
-        {{#each locations as |location|}}
+        {{#each items}}
         <div class="action-row">
-            <a href="{{ kankaLink '/locations/' location.id }}" target="_blank">{{ location.name }}</a>
+            <a href="{{ kankaLink '/' @key 's/' this.id }}" target="_blank">{{ this.name }}</a>
             <div class="actions">
-                {{#if (hasKankaJournalEntry location) }}
-                <button type="button" data-action="open-entry" data-type="location" data-id="{{ location.id }}">
-                    <i class="fas fa-link"></i> {{ location.name }}
+                {{#if (hasKankaJournalEntry this) }}
+                <button
+                    type="button"
+                    data-action="open-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
+                    <i class="fas fa-link"></i> {{ this.name }}
                 </button>
-                <button type="button" data-action="sync-entry" data-type="location" data-id="{{ location.id }}">
+                <button
+                    type="button"
+                    data-action="sync-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
                     <i class="fas fa-sync"></i>
                 </button>
                 {{else}}
-                <button type="button" data-action="link-entry" data-type="location" data-id="{{ location.id }}">
+                <button
+                    type="button"
+                    data-action="link-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
                     <i class="fas fa-link"></i>
                 </button>
                 {{/if}}
@@ -51,6 +71,7 @@
         </div>
         {{/each }}
     </details>
+    {{/each}}
 
     <hr/>
 </section>

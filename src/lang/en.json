@@ -10,8 +10,9 @@
     "KANKA.SettingsCampaignPleaseChoose": "-- Please choose a campaign --",
     "KANKA.BrowserLinkFolder": "Link all",
     "KANKA.BrowserRefreshFolder": "Refresh linked",
-    "KANKA.BrowserErrorLocationNotFound": "Could not find location with id {id}",
-    "KANKA.BrowserNotificationSyncedAllLocations": "Synced all kanka locations.",
-    "KANKA.BrowserNotificationSynced": "Synchronized Kanka {type} {name}",
-    "KANKA.BrowserNotificationRefreshed": "Refreshed Kanka {type} {name}"
+    "KANKA.BrowserNotificationSyncedFolder": "Refreshed all Kanka entities of type {type}.",
+    "KANKA.BrowserNotificationLinkedFolder": "Linked all Kanka entities of type {type}.",
+    "KANKA.BrowserSyncError": "Unexpected error while syncing.",
+    "KANKA.EntityType.location": "Locations",
+    "KANKA.EntityType.organisation": "Organisations"
 }
