@@ -6,3 +6,5 @@ extends:
     - brainbits-typescript
 parserOptions:
     project: ./tsconfig.json
+rules:
+    class-methods-use-this: [off]
