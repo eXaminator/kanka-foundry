@@ -24,7 +24,7 @@ export default async function renderJournalSheet(
     });
 
     const { entity } = options ?? {};
-    const campaign = game.modules.get(moduleConfig.name).campaign as Campaign;
+    const campaign = await game.modules.get(moduleConfig.name).loadCurrentCampaign() as Campaign;
 
     if (entity?.flags[moduleConfig.name]) {
         const contentElement = html.find('.editor-content');
