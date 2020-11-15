@@ -5,7 +5,7 @@ export interface KankaResult<T> {
 }
 
 export interface KankaListResult<T> {
-    data: T[];
+    data: T;
     links: {
         first: string;
         last: string;

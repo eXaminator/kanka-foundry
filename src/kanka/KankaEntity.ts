@@ -2,7 +2,12 @@ import { KankaEntityData } from '../types/kanka';
 import KankaApi from './KankaApi';
 
 export default abstract class KankaEntity<T extends KankaEntityData = KankaEntityData> {
-    constructor(protected api: KankaApi, protected data: T) {}
+    constructor(protected api: KankaApi<T>, protected data: T) {}
+
+    public async refresh(): Promise<void> {
+        const { data } = await this.api.load();
+        this.data = data as T;
+    }
 
     public get id(): number {
         return this.data.id;

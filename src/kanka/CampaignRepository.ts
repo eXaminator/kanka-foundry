@@ -1,14 +1,14 @@
-import { CampaignData } from '../types/kanka';
+import { CampaignData, KankaEntityData } from '../types/kanka';
 import Campaign from './Campaign';
 import KankaApi from './KankaApi';
 import KankaEntityCollection from './KankaEntityCollection';
 
 export default class CampaignRepository {
-    protected api: KankaApi<CampaignData>;
-    protected collection: KankaEntityCollection<Campaign>;
+    protected api: KankaApi<CampaignData[]>;
+    protected collection: KankaEntityCollection<Campaign, CampaignData>;
 
-    constructor(api: KankaApi) {
-        this.api = api.withPath<CampaignData>('campaigns');
+    constructor(api: KankaApi<KankaEntityData>) {
+        this.api = api.withPath<CampaignData[]>('campaigns');
         this.collection = new KankaEntityCollection(this.api, Campaign);
     }
 
@@ -18,9 +18,5 @@ export default class CampaignRepository {
 
     async loadById(id: number): Promise<Campaign> {
         return this.collection.byId(id);
-    }
-
-    setToken(token: string): void {
-        this.api.setToken(token);
     }
 }

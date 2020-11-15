@@ -33,37 +33,42 @@ function throttleRequests(): Promise<void> {
     });
 }
 
-export default class KankaApi<T extends KankaEntityData = KankaEntityData> {
+export default class KankaApi<T extends KankaEntityData | KankaEntityData[]> {
+    #token?: string;
+
     constructor(
         protected baseUrl: string,
-        protected token?: string,
-    ) {}
-
-    static createRoot<C extends KankaEntityData>(token?: string): KankaApi<C> {
-        return new KankaApi<C>('https://kanka.io/api/1.0', token);
+        protected parentApi?: KankaApi<KankaEntityData | KankaEntityData[]>,
+        token?: string,
+    ) {
+        this.#token = token;
     }
 
-    public withUrl<C extends KankaEntityData>(url: string): KankaApi<C> {
-        return new KankaApi<C>(url, this.token);
+    static createRoot<C extends KankaEntityData = KankaEntityData>(token?: string): KankaApi<C> {
+        return new KankaApi<C>('https://kanka.io/api/1.0', undefined, token);
     }
 
-    public withPath<C extends KankaEntityData>(path: string): KankaApi<C> {
-        return new KankaApi<C>(`${this.baseUrl}/${path}`, this.token);
+    public get token(): string | undefined {
+        return this.#token ?? this.parentApi?.token;
     }
 
-    public loadById(id: number): Promise<KankaResult<T>> {
-        return this.fetch<KankaResult<T>>(`${this.baseUrl}/${id}`);
+    public withUrl<C extends KankaEntityData | KankaEntityData[]>(url: string): KankaApi<C> {
+        return new KankaApi<C>(url, this);
     }
 
-    public loadList(): Promise<KankaListResult<T>> {
-        return this.fetch<KankaListResult<T>>(`${this.baseUrl}`);
+    public withPath<C extends KankaEntityData | KankaEntityData[]>(path: string|number): KankaApi<C> {
+        return new KankaApi<C>(`${this.baseUrl}/${String(path)}`, this);
+    }
+
+    public async load(): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
+        return this.fetch(this.baseUrl);
     }
 
     public setToken(token: string): void {
-        this.token = token;
+        this.#token = token;
     }
 
-    private async fetch<T>(url: string): Promise<T> {
+    private async fetch(url: string): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
         await throttleRequests();
         const response = await fetch(
             url,

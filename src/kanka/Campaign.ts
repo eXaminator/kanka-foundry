@@ -1,4 +1,4 @@
-import { CampaignData } from '../types/kanka';
+import { CampaignData, LocationData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 import KankaEntityCollection from './KankaEntityCollection';
 import Location from './Location';
@@ -10,7 +10,7 @@ export default class Campaign extends KankaEntity<CampaignData> {
         return 'campaign';
     }
 
-    public get locations(): KankaEntityCollection<Location> {
+    public get locations(): KankaEntityCollection<Location, LocationData> {
         return this.#locations;
     }
 

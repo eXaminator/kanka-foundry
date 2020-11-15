@@ -1,25 +1,23 @@
+import { KankaEntityData } from '../types/kanka';
 import KankaApi from './KankaApi';
 import KankaEntity from './KankaEntity';
 
-type AbstractConstructorHelper<T> = (new (...args: unknown[]) => unknown) & T;
-type AbstractConstructorParameters<T> = ConstructorParameters<AbstractConstructorHelper<T>>;
-
-interface EntityConstructor<T extends KankaEntity> {
-    new(api: KankaApi, data: AbstractConstructorParameters<T>[1]): T
+interface EntityConstructor<T extends KankaEntity<D>, D extends KankaEntityData> {
+    new(api: KankaApi<D>, data: D): T
 }
 
-export default class KankaEntityCollection<T extends KankaEntity> {
+export default class KankaEntityCollection<T extends KankaEntity<D>, D extends KankaEntityData = KankaEntityData> {
     #entries?: Map<number, T>;
 
     constructor(
-        protected api: KankaApi,
-        protected Model: EntityConstructor<T>,
+        protected api: KankaApi<D[]>,
+        protected Model: EntityConstructor<T, D>,
     ) {}
 
     public async all(force = false): Promise<T[]> {
         if (!this.#entries || force) {
             this.#entries = new Map();
-            let nextApi: KankaApi | null = this.api;
+            let nextApi: KankaApi<D[]> | null = this.api;
 
             while (nextApi) {
                 // eslint-disable-next-line no-await-in-loop
@@ -37,16 +35,20 @@ export default class KankaEntityCollection<T extends KankaEntity> {
             return entry;
         }
 
-        const { data } = await this.api.loadById(id);
-        const model = new this.Model(this.api.withPath(String(data.id)), data);
+        const childApi = this.api.withPath<D>(id);
+        const { data } = await childApi.load();
+        const model = new this.Model(childApi, data as D);
         this.addEntries(model);
         return model;
     }
 
-    private async loadPage(pageApi: KankaApi): Promise<KankaApi | null> {
-        const { data, links } = await pageApi.loadList();
+    private async loadPage(pageApi: KankaApi<D[]>): Promise<KankaApi<D[]> | null> {
+        const { data, links } = await pageApi.load();
 
-        const items = data.map(entry => new this.Model(this.api.withPath(String(entry.id)), entry));
+        const items = data.map((entry) => {
+            const childApi = this.api.withPath<D>(entry.id);
+            return new this.Model(childApi, entry);
+        });
         this.addEntries(...items);
 
         if (!links.next) {

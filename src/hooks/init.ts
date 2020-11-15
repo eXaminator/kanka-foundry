@@ -14,7 +14,12 @@ export default async function init(): Promise<void> {
     await preloadTemplates();
 
     const api = KankaApi.createRoot(getSettings(KankaSettings.accessToken));
-    game.modules.get(moduleConfig.name).campaigns = new CampaignRepository(api);
+    const campaignRepo = new CampaignRepository(api);
+    game.modules.get(moduleConfig.name).api = api;
+    game.modules.get(moduleConfig.name).campaigns = campaignRepo;
+    game.modules.get(moduleConfig.name).loadCurrentCampaign = () => (
+        campaignRepo.loadById(getSettings(KankaSettings.campaign))
+    );
 }
 
 if (module.hot) {

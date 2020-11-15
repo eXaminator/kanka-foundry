@@ -36,13 +36,8 @@ export default class KankaBrowser extends Application {
         });
     }
 
-    get campaigns(): CampaignRepository {
-        return game.modules.get(moduleConfig.name).campaigns;
-    }
-
-    get campaign(): Promise<Campaign> {
-        const campaignId = getSettings<string>(KankaSettings.campaign);
-        return this.campaigns.loadById(Number(campaignId));
+    getCampaign(): Promise<Campaign> {
+        return game.modules.get(moduleConfig.name).loadCurrentCampaign();
     }
 
     get title(): string {
@@ -50,7 +45,7 @@ export default class KankaBrowser extends Application {
     }
 
     async getData(): Promise<TemplateData> {
-        const campaign = await this.campaign;
+        const campaign = await this.getCampaign();
 
         const [locations] = await Promise.all([
             campaign.locations.all(),
@@ -81,7 +76,7 @@ export default class KankaBrowser extends Application {
 
     async activateListeners(html: JQuery): Promise<void> {
         super.activateListeners(html);
-        const campaign = await this.campaign;
+        const campaign = await this.getCampaign();
 
         html.on('click', '[data-action]', async (event) => {
             const action: string = event?.currentTarget?.dataset?.action;
@@ -124,7 +119,7 @@ export default class KankaBrowser extends Application {
     }
 
     private async syncAllLocations(): Promise<void> {
-        const campaign = await this.campaign;
+        const campaign = await this.getCampaign();
         const locations = await campaign.locations.all(true);
         await ensureJournalFolder('location');
 
@@ -135,7 +130,7 @@ export default class KankaBrowser extends Application {
     }
 
     private async linkAllLocations(): Promise<void> {
-        const campaign = await this.campaign;
+        const campaign = await this.getCampaign();
         const locations = await campaign.locations.all(true);
         await ensureJournalFolder('location');
 
