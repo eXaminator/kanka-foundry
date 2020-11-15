@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
 import { KankaEntityData, KankaListResult, KankaResult } from '../types/kanka';
-import KankaSettings from '../types/KankaSettings';
+import { KankaSettings } from '../types/KankaSettings';
 import getSetting from '../module/getSettings';
 
 const THROTTLE_TIMEFRAME = 60;

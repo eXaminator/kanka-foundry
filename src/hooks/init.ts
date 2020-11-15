@@ -5,7 +5,7 @@ import moduleConfig from '../module.json';
 import { clearSettings, registerSettings } from '../module/configureSettings';
 import getSettings from '../module/getSettings';
 import preloadTemplates from '../module/preloadTemplates';
-import KankaSettings from '../types/KankaSettings';
+import { KankaSettings } from '../types/KankaSettings';
 
 export default async function init(): Promise<void> {
     logInfo('Initializing');

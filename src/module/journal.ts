@@ -2,6 +2,8 @@ import EntityAttribute from '../kanka/EntityAttribute';
 import KankaEntity from '../kanka/KankaEntity';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
+import { IncludeAttributeSelection, KankaSettings } from '../types/KankaSettings';
+import getSetting from './getSettings';
 
 interface JournalData {
     name: string;
@@ -100,12 +102,16 @@ export async function writeJournalEntry(
     let { content } = data;
 
     const metaData = transformMetaData(data.metaData);
+    const includeAttributes = getSetting(KankaSettings.metaDataAttributes) as IncludeAttributeSelection;
 
-    entity.attributes
-        .filter(attr => !attr.isSection())
-        .forEach((attr) => {
-            metaData[attr.name] = getAttributeValue(attr);
-        });
+    if (includeAttributes !== IncludeAttributeSelection.none) {
+        entity.attributes
+            .forEach((attr) => {
+                if (attr.isSection()) return;
+                if (includeAttributes === IncludeAttributeSelection.public && attr.isPrivate()) return;
+                metaData[attr.name] = getAttributeValue(attr);
+            });
+    }
 
     if (Object.values(metaData).length > 0) {
         try {

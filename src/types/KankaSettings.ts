@@ -1,6 +1,11 @@
-enum KankaSettings {
+export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
+    metaDataAttributes = 'metaDataAttributes',
 }
 
-export default KankaSettings;
+export enum IncludeAttributeSelection {
+    all = 'all',
+    public = 'public',
+    none = 'none',
+}

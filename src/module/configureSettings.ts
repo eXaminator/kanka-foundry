@@ -2,7 +2,7 @@ import CampaignRepository from '../kanka/CampaignRepository';
 import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
-import KankaSettings from '../types/KankaSettings';
+import { IncludeAttributeSelection, KankaSettings } from '../types/KankaSettings';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
 
@@ -97,6 +97,24 @@ export async function registerSettings(): Promise<void> {
                     .values(ui.windows)
                     .find(a => a.constructor === KankaBrowser)
                     ?.render(false);
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataAttributes,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataAttributes.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataAttributes.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: IncludeAttributeSelection.public,
+            choices: {
+                [IncludeAttributeSelection.all]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.all'),
+                [IncludeAttributeSelection.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.public'),
+                [IncludeAttributeSelection.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.none'),
             },
         },
     );

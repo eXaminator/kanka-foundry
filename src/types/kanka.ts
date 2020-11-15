@@ -29,6 +29,7 @@ export interface KankaAttribute {
     type: null | 'checkbox' | 'section' | 'text';
     name: string;
     value: string;
+    is_private: boolean;
 }
 
 export interface KankaEntityData {

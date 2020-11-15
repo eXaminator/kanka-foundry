@@ -1,5 +1,5 @@
 import moduleConfig from '../module.json';
-import KankaSettings from '../types/KankaSettings';
+import { KankaSettings } from '../types/KankaSettings';
 
 export default function getSetting<T = unknown>(setting: KankaSettings): T {
     return game.settings.get(moduleConfig.name, setting);

@@ -2,7 +2,7 @@ import logo from '../assets/kanka.png';
 import { logInfo } from '../logger';
 import getSetting from '../module/getSettings';
 import KankaBrowser from '../module/KankaBrowser';
-import KankaSettings from '../types/KankaSettings';
+import { KankaSettings } from '../types/KankaSettings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
 
