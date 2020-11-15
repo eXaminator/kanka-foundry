@@ -35,8 +35,13 @@ export default class KankaBrowser extends Application {
         });
     }
 
-    getCampaign(): Promise<Campaign> {
-        return game.modules.get(moduleConfig.name).loadCurrentCampaign();
+    async getCampaign(): Promise<Campaign> {
+        try {
+            return await game.modules.get(moduleConfig.name).loadCurrentCampaign();
+        } catch (e) {
+            this.showError('Error.fetchError');
+            throw e;
+        }
     }
 
     get title(): string {
@@ -174,12 +179,14 @@ export default class KankaBrowser extends Application {
     }
 
     private showInfo(msg: string, params?: Record<string, unknown>): void {
-        const text = params ? game.i18n.format(`KANKA.${msg}`, params) : game.i18n.localize(msg);
+        const key = `KANKA.${msg}`;
+        const text = params ? game.i18n.format(key, params) : game.i18n.localize(key);
         ui.notifications.info(text);
     }
 
     private showError(msg: string, params?: Record<string, unknown>): void {
-        const text = params ? game.i18n.format(`KANKA.${msg}`, params) : game.i18n.localize(msg);
+        const key = `KANKA.${msg}`;
+        const text = params ? game.i18n.format(key, params) : game.i18n.localize(key);
         ui.notifications.error(text);
     }
 }

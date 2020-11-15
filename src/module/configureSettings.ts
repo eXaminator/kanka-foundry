@@ -33,7 +33,7 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
     } catch (error) {
         logError(error);
         return {
-            '': game.i18n.localize('KANKA.SettingsCampaign.invalidToken'),
+            '': game.i18n.localize('KANKA.Error.fetchError'),
         };
     }
 }
@@ -76,7 +76,7 @@ export async function registerSettings(): Promise<void> {
             type: String,
             default: '',
             onChange(value) {
-                game.modules.get(moduleConfig.name).campaigns.setToken(value);
+                game.modules.get(moduleConfig.name).api.setToken(value);
             },
         },
     );

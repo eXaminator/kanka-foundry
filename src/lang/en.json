@@ -6,7 +6,7 @@
     "KANKA.SettingsCampaign.label": "Campaign",
     "KANKA.SettingsCampaign.hint": "Select the campaign from which to import articles",
     "KANKA.SettingsCampaign.noToken": "Please enter a valid access token",
-    "KANKA.SettingsCampaign.invalidToken": "There was an error. Please check if the token is valid.",
+    "KANKA.Error.fetchError": "There was an error fetching data from Kanka. Please check if your token is valid.",
     "KANKA.SettingsCampaign.pleaseChoose": "-- Please choose a campaign --",
     "KANKA.SettingsMetaDataAttributes.label": "Import attributes",
     "KANKA.SettingsMetaDataAttributes.hint": "Configure the way attributes are included in the mata data table at the beginning of a journal entry.",
