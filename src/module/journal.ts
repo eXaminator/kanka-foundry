@@ -65,7 +65,12 @@ export async function writeJournalEntry(
             [`flags.${moduleConfig.name}.id`]: entity.id,
             [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
             [`flags.${moduleConfig.name}.type`]: entity.entityType,
-        }, { renderSheet }) as JournalEntry;
+        }) as JournalEntry;
+
+        if (renderSheet) {
+            entry.sheet.render(true);
+        }
+
         if (notification) {
             ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationSynced', { type: entity.entityType, name: data.name }));
         }
