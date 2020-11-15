@@ -51,14 +51,6 @@ export default class KankaBrowser extends Application {
     async getData(): Promise<TemplateData> {
         const campaign = await this.getCampaign();
 
-        const [
-            locations,
-            organisations,
-        ] = await Promise.all([
-            campaign.locations.all(),
-            campaign.organisations.all(),
-        ]);
-
         // eslint-disable-next-line prefer-arrow-callback
         Handlebars.registerHelper('kankaLink', (...parts: unknown[]) => {
             const path = parts.filter(p => typeof p !== 'object').join('');
@@ -80,12 +72,26 @@ export default class KankaBrowser extends Application {
             (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
         );
 
+        const [
+            locations,
+            notes,
+            organisations,
+        ] = await Promise.all([
+            campaign.locations.all(),
+            campaign.notes.all(),
+            campaign.organisations.all(),
+        ]);
+
         return {
             campaign,
             data: {
                 location: {
                     items: locations.sort(sortBy('name')),
                     icon: 'fa-compass',
+                },
+                note: {
+                    items: notes.sort(sortBy('name')),
+                    icon: 'fa-clipboard',
                 },
                 organisation: {
                     items: organisations.sort(sortBy('name')),

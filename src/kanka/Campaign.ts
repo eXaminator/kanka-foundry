@@ -1,11 +1,13 @@
-import { CampaignData, LocationData, OrganisationData } from '../types/kanka';
+import { CampaignData, LocationData, NoteData, OrganisationData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 import KankaEntityCollection from './KankaEntityCollection';
 import Location from './Location';
+import Note from './Note';
 import Organisation from './Organisation';
 
 export default class Campaign extends KankaEntity<CampaignData> {
     #locations = new KankaEntityCollection(this.api.withPath('locations'), Location);
+    #notes = new KankaEntityCollection(this.api.withPath('notes'), Note);
     #organisations = new KankaEntityCollection(this.api.withPath('organisations'), Organisation);
 
     get entityType(): string {
@@ -14,6 +16,10 @@ export default class Campaign extends KankaEntity<CampaignData> {
 
     public get locations(): KankaEntityCollection<Location, LocationData> {
         return this.#locations;
+    }
+
+    public get notes(): KankaEntityCollection<Note, NoteData> {
+        return this.#notes;
     }
 
     public get organisations(): KankaEntityCollection<Organisation, OrganisationData> {
@@ -27,6 +33,8 @@ export default class Campaign extends KankaEntity<CampaignData> {
                 return this.#locations;
             case 'organisation':
                 return this.#organisations;
+            case 'note':
+                return this.#notes;
             default:
                 return undefined;
         }

@@ -58,3 +58,7 @@ export interface OrganisationData extends KankaEntityData {
     type: string;
     organisation_id?: number;
 }
+
+export interface NoteData extends KankaEntityData {
+    note_id?: number;
+}
