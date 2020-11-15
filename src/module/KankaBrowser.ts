@@ -1,12 +1,8 @@
-/* eslint-disable class-methods-use-this */
 import Campaign from '../kanka/Campaign';
-import CampaignRepository from '../kanka/CampaignRepository';
 import KankaEntity from '../kanka/KankaEntity';
 import Location from '../kanka/Location';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
-import KankaSettings from '../types/KankaSettings';
-import getSettings from './getSettings';
 import {
     ensureJournalFolder,
     findEntriesByType,
