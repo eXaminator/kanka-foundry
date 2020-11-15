@@ -14,5 +14,8 @@
     "KANKA.BrowserNotificationLinkedFolder": "Linked all Kanka entities of type {type}.",
     "KANKA.BrowserSyncError": "Unexpected error while syncing.",
     "KANKA.EntityType.location": "Locations",
-    "KANKA.EntityType.organisation": "Organisations"
+    "KANKA.EntityType.organisation": "Organisations",
+    "KANKA.MetaData.type": "Type",
+    "KANKA.MetaData.boolean.true": "Yes",
+    "KANKA.MetaData.boolean.false": "No"
 }

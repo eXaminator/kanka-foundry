@@ -173,6 +173,7 @@ export default class KankaBrowser extends Application {
             name: entity.name,
             content: entity.entry,
             img: entity.image,
+            metaData: entity.metaData,
         };
         await writeJournalEntry(entity, data, { renderSheet, notification });
         this.render();

@@ -23,6 +23,14 @@ export interface KankaListResult<T> {
     };
 }
 
+export interface KankaAttribute {
+    id: number;
+    entity_id: number;
+    type: null | 'checkbox' | 'section' | 'text';
+    name: string;
+    value: string;
+}
+
 export interface KankaEntityData {
     id: number;
     entity_id: number;
@@ -33,6 +41,7 @@ export interface KankaEntityData {
     image_thumb?: string;
     has_custom_image?: boolean;
     is_private: boolean;
+    attributes?: KankaAttribute[];
 }
 
 export interface CampaignData extends KankaEntityData {

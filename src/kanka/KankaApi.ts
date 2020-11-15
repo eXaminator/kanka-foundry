@@ -70,8 +70,12 @@ export default class KankaApi<T extends KankaEntityData | KankaEntityData[]> {
 
     private async fetch(url: string): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
         await throttleRequests();
+
+        const parsedUrl = new URL(url);
+        parsedUrl.searchParams.set('related', '1');
+
         const response = await fetch(
-            url,
+            parsedUrl.toString(),
             {
                 mode: 'cors',
                 headers: {

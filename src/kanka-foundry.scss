@@ -59,3 +59,16 @@ button#kanka {
         }
     }
 }
+
+.kanka-metadata {
+    th {
+        vertical-align: top;
+        text-align: left;
+        width: 20%;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 0 .5em;
+    }
+}
