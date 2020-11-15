@@ -7,8 +7,8 @@
 
     {{#if campaign.entry }}
     <section class="campaign-description">
-        {{#if campaign.image_full }}
-        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+        {{#if campaign.image }}
+        <img src="{{ campaign.image }}" alt="{{ campaign.name }}" class="campaign-image" />
         {{/if}}
         {{{ campaign.entry }}}
     </section>
@@ -21,21 +21,21 @@
                 <i class="fas fa-compass"></i> <a href="{{ kankaLink '/locations/tree' }}" target="_blank">Locations</a>
             </div>
             <div class="actions">
-                {{#if (getKankaJournalFolderName 'location') }}
-                <button type="button" data-action="open-folder" data-type="location">
-                    <i class="fas fa-folder"></i> {{ getKankaJournalFolderName 'location' }}
+                <button type="button" data-action="link-folder" data-type="location">
+                    <i class="fas fa-link"></i> {{ localize 'KANKA.BrowserLinkFolder' }}
+                </button>
+                {{#if (hasLinkedJournalEntryOfType 'location')}}
+                <button type="button" data-action="sync-folder" data-type="location">
+                    <i class="fas fa-sync"></i> {{ localize 'KANKA.BrowserRefreshFolder' }}
                 </button>
                 {{/if}}
-                <button type="button" data-action="sync-folder" data-type="location">
-                    <i class="fas fa-sync"></i> {{ localize 'KANKA.BrowserSyncFolder' }}
-                </button>
             </div>
         </summary>
         {{#each locations as |location|}}
         <div class="action-row">
-            <a href="{{ kankaLink '/locations/' location.id }}" target="_blank" data-article-id="{{ location.id }}">{{ location.name }}</a>
+            <a href="{{ kankaLink '/locations/' location.id }}" target="_blank">{{ location.name }}</a>
             <div class="actions">
-                {{#if (hasKankaJournalEntry location.id) }}
+                {{#if (hasKankaJournalEntry location) }}
                 <button type="button" data-action="open-entry" data-type="location" data-id="{{ location.id }}">
                     <i class="fas fa-link"></i> {{ location.name }}
                 </button>

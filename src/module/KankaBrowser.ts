@@ -1,20 +1,23 @@
 /* eslint-disable class-methods-use-this */
+import Campaign from '../kanka/Campaign';
+import CampaignRepository from '../kanka/CampaignRepository';
+import KankaEntity from '../kanka/KankaEntity';
+import Location from '../kanka/Location';
 import { logInfo } from '../logger';
+import moduleConfig from '../module.json';
 import KankaSettings from '../types/KankaSettings';
 import getSettings from './getSettings';
-import { CampaignData, getCampaign, getLocations, LocationData } from './kanka';
-import moduleConfig from '../module.json';
+import {
+    ensureJournalFolder,
+    findEntriesByType,
+    findEntryByEntity,
+    findEntryByTypeAndId,
+    writeJournalEntry,
+} from './journal';
 
 interface TemplateData {
-    createLink: (path?: string) => string;
-    campaign: CampaignData;
-    locations: LocationData[];
-}
-
-interface JournalData {
-    name: string;
-    content: string;
-    img?: string;
+    campaign: Campaign;
+    locations: Location[];
 }
 
 function sortBy<T>(name: keyof T): (a: T, b: T) => number {
@@ -33,56 +36,65 @@ export default class KankaBrowser extends Application {
         });
     }
 
+    get campaigns(): CampaignRepository {
+        return game.modules.get(moduleConfig.name).campaigns;
+    }
+
+    get campaign(): Promise<Campaign> {
+        const campaignId = getSettings<string>(KankaSettings.campaign);
+        return this.campaigns.loadById(Number(campaignId));
+    }
+
     get title(): string {
         return 'Kanka';
     }
 
     async getData(): Promise<TemplateData> {
-        const campaignId = getSettings<string>(KankaSettings.campaign);
+        const campaign = await this.campaign;
 
-        const [campaign, locations] = await Promise.all([
-            getCampaign(campaignId),
-            getLocations(campaignId),
+        const [locations] = await Promise.all([
+            campaign.locations.all(),
         ]);
 
-        logInfo({ campaign });
-
         // eslint-disable-next-line prefer-arrow-callback
-        Handlebars.registerHelper('kankaLink', (...parts: any[]) => {
+        Handlebars.registerHelper('kankaLink', (...parts: unknown[]) => {
             const path = parts.filter(p => typeof p !== 'object').join('');
-            return `https://kanka.io/${campaign.locale}/campaign/${campaignId}${path}`;
+            return `https://kanka.io/${campaign.locale}/campaign/${campaign.id}${path}`;
         });
 
-        Handlebars.registerHelper('hasKankaJournalEntry', (id: number) => {
-            const entry = this.findEntry(id);
+        Handlebars.registerHelper('hasKankaJournalEntry', (entity: KankaEntity) => {
+            const entry = findEntryByEntity(entity);
             return Boolean(entry);
         });
 
-        Handlebars.registerHelper('getKankaJournalFolderName', (type: string) => {
-            const folder = this.findFolder(type);
-            return folder?.name;
+        Handlebars.registerHelper('hasLinkedJournalEntryOfType', (type: string) => {
+            const entries = findEntriesByType(type);
+            logInfo({ type, entries });
+            return entries.length > 0;
         });
 
         return {
-            createLink: (path?: string) => `https://kanka.io/${campaign.locale}/campaign/${campaignId}${path}`,
             campaign,
             locations: locations.sort(sortBy('name')),
         };
     }
 
-    activateListeners(html: JQuery): void {
+    async activateListeners(html: JQuery): Promise<void> {
         super.activateListeners(html);
+        const campaign = await this.campaign;
+
         html.on('click', '[data-action]', async (event) => {
             const action: string = event?.currentTarget?.dataset?.action;
             const id: string = event?.currentTarget?.dataset?.id;
             const type: string = event?.currentTarget?.dataset?.type;
+
             if (!action || !type) return;
 
             switch (action) {
                 case 'sync-entry':
                 case 'link-entry': {
                     if (!id) return;
-                    const location = await this.findLocationById(Number(id));
+                    const location = await campaign.locations.byId(Number(id), true);
                     if (!location) return;
                     await this.syncLocation(location, action === 'link-entry');
                     break;
@@ -90,14 +102,17 @@ export default class KankaBrowser extends Application {
 
                 case 'open-entry': {
                     if (!id) return;
-                    const entry = this.findEntry(Number(id));
+                    const entry = findEntryByTypeAndId(type, Number(id));
                     entry?.sheet.render(true);
                     break;
                 }
 
                 case 'sync-folder':
-                case 'link-folder': {
                     await this.syncAllLocations();
+                    break;
+
+                case 'link-folder': {
+                    await this.linkAllLocations();
                     break;
                 }
 
@@ -108,83 +123,35 @@ export default class KankaBrowser extends Application {
         });
     }
 
-    private findEntry(id: number): JournalEntry | undefined {
-        return game.journal.find(e => e.getFlag(moduleConfig.name, 'id') === id);
-    }
-
-    private findFolder(type: string): Folder | undefined {
-        return game.folders
-            .find((f: Folder) => f.data.type === 'JournalEntry' && f.getFlag(moduleConfig.name, 'type') === type);
-    }
-
-    private async findLocationById(id: number): Promise<LocationData | undefined> {
-        const { locations } = await this.getData();
-        const location = locations.find(l => l.id === id);
-
-        if (!location) {
-            ui.notifications.error(game.i18n.format('KANKA.BrowserErrorLocationNotFound', { id }));
-        }
-
-        return location;
-    }
-
     private async syncAllLocations(): Promise<void> {
-        const { locations } = await this.getData();
+        const campaign = await this.campaign;
+        const locations = await campaign.locations.all(true);
+        await ensureJournalFolder('location');
 
-        await this.ensureJournalFolder('location');
-        await Promise.all(locations.map(location => this.syncLocation(location, false, false)));
+        const linkedLocations = locations.filter(location => !!findEntryByEntity(location));
+        await Promise.all(linkedLocations.map(location => this.syncLocation(location, false, false)));
         ui.notifications.info(game.i18n.localize('KANKA.BrowserNotificationSyncedAllLocations'));
         this.render();
     }
 
-    private async syncLocation(location: LocationData, renderSheet = false, notification = true): Promise<void> {
-        const data: JournalData = {
-            name: location.name,
-            content: location.entry,
-            img: location.has_custom_image ? location.image_full : undefined,
-        };
-        await this.writeJournalEntry(location.id, 'location', data, renderSheet, notification);
+    private async linkAllLocations(): Promise<void> {
+        const campaign = await this.campaign;
+        const locations = await campaign.locations.all(true);
+        await ensureJournalFolder('location');
+
+        const unlinkedLocations = locations.filter(location => !findEntryByEntity(location));
+        await Promise.all(unlinkedLocations.map(location => this.syncLocation(location, false, false)));
+        ui.notifications.info(game.i18n.localize('KANKA.BrowserNotificationSyncedAllLocations'));
         this.render();
     }
 
-    private async ensureJournalFolder(type: string): Promise<Folder | undefined> {
-        let folder = this.findFolder(type);
-
-        if (!folder) {
-            folder = await Folder.create({
-                name: `[Kanka] ${type}`, // use translation
-                type: 'JournalEntry',
-                parent: null,
-                [`flags.${moduleConfig.name}.type`]: type,
-            });
-        }
-
-        return folder;
-    }
-
-    private async writeJournalEntry(
-        id: number,
-        type: string,
-        data: JournalData,
-        renderSheet = false,
-        notification = true,
-    ): Promise<JournalEntry> {
-        let entry = this.findEntry(id);
-
-        if (entry) {
-            await entry.update(data);
-            if (notification) ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationRefreshed', { type, name: data.name }));
-        } else {
-            const folder = await this.ensureJournalFolder('location');
-            entry = await JournalEntry.create({
-                ...data,
-                folder: folder?.id,
-                [`flags.${moduleConfig.name}.id`]: id,
-                [`flags.${moduleConfig.name}.type`]: type,
-            }, { renderSheet }) as JournalEntry;
-            if (notification) ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationSynced', { type, name: data.name }));
-        }
-
-        return entry;
+    private async syncLocation(location: Location, renderSheet = false, notification = true): Promise<void> {
+        const data = {
+            name: location.name,
+            content: location.entry,
+            img: location.image,
+        };
+        await writeJournalEntry(location, data, { renderSheet, notification });
+        this.render();
     }
 }

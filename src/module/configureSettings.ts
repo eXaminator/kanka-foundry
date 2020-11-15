@@ -1,8 +1,9 @@
-import { logError, logInfo } from '../logger';
+import CampaignRepository from '../kanka/CampaignRepository';
+import KankaApi from '../kanka/KankaApi';
+import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import KankaSettings from '../types/KankaSettings';
 import getSettings from './getSettings';
-import { getCampaigns } from './kanka';
 import KankaBrowser from './KankaBrowser';
 
 const accessTokenInputName = `${moduleConfig.name}.${KankaSettings.accessToken}`;
@@ -19,7 +20,10 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
         const campaignChoices: Record<string, string> = {
             '': game.i18n.localize('KANKA.SettingsCampaignPleaseChoose'),
         };
-        const campaigns = await getCampaigns(token);
+
+        const api = KankaApi.createRoot(token);
+        const repo = new CampaignRepository(api);
+        const campaigns = await repo.loadAll();
 
         campaigns.forEach((campaign) => {
             campaignChoices[campaign.id] = campaign.name;
@@ -34,7 +38,7 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
     }
 }
 
-async function updateWorldList(event: any): Promise<void> {
+async function updateWorldList(event: JQuery.TriggeredEvent): Promise<void> {
     const token = event.target.value;
     const choices = await getCampaignChoices(token);
 
@@ -71,6 +75,9 @@ export async function registerSettings(): Promise<void> {
             config: true,
             type: String,
             default: '',
+            onChange(value) {
+                game.modules.get(moduleConfig.name).campaigns.setToken(value);
+            },
         },
     );
 
