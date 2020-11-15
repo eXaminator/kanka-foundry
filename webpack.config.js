@@ -50,6 +50,7 @@ module.exports = {
             patterns: [
                 './src/module.json',
                 { from: './src/lang', to: './lang' },
+                { from: './src/templates', to: './templates' },
             ],
         }),
         new MiniCssExtractPlugin(),
@@ -74,6 +75,7 @@ module.exports = {
             },
         },
         liveReload: false,
+        writeToDisk: filePath => /\/(templates|lang)\//.test(filePath),
     },
     optimization: {
         minimize: !devMode,
