@@ -12,6 +12,7 @@ import {
 interface EntityList {
     items: KankaEntity[];
     icon: string;
+    isOpen: boolean;
 }
 
 interface TemplateData {
@@ -21,6 +22,18 @@ interface TemplateData {
 
 function sortBy<T>(name: keyof T): (a: T, b: T) => number {
     return (a: T, b: T) => String(a[name]).localeCompare(String(b[name]));
+}
+
+function getLocalStorageKey(type: string): string {
+    return `Kanka.KankaBrowser.detailsState.${type}`;
+}
+
+function getOpenStateFromLocalStorage(type: string): boolean {
+    return window.localStorage.getItem(getLocalStorageKey(type)) === 'true';
+}
+
+function setOpenStateToLocalStorage(type: string, open: boolean): void {
+    window.localStorage.setItem(getLocalStorageKey(type), open ? 'true' : 'false');
 }
 
 export default class KankaBrowser extends Application {
@@ -88,14 +101,17 @@ export default class KankaBrowser extends Application {
                 location: {
                     items: locations.sort(sortBy('name')),
                     icon: 'fa-compass',
+                    isOpen: getOpenStateFromLocalStorage('location'),
                 },
                 note: {
                     items: notes.sort(sortBy('name')),
                     icon: 'fa-clipboard',
+                    isOpen: getOpenStateFromLocalStorage('note'),
                 },
                 organisation: {
                     items: organisations.sort(sortBy('name')),
                     icon: 'fa-sitemap',
+                    isOpen: getOpenStateFromLocalStorage('organisation'),
                 },
             },
         };
@@ -104,6 +120,12 @@ export default class KankaBrowser extends Application {
     async activateListeners(html: JQuery): Promise<void> {
         super.activateListeners(html);
         const campaign = await this.getCampaign();
+
+        html.find<HTMLDetailsElement>('details[data-type]').on('toggle', (event) => {
+            const type = event.currentTarget.dataset?.type;
+            if (!type) return;
+            setOpenStateToLocalStorage(type, event.currentTarget.open);
+        });
 
         html.on('click', '[data-action]', async (event) => {
             const action: string = event?.currentTarget?.dataset?.action;

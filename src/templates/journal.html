@@ -16,7 +16,7 @@
     {{/if}}
 
     {{#each data}}
-    <details class="entity-list">
+    <details class="entity-list" data-type="{{ @key }}" {{#if this.isOpen}}open{{/if}}>
         <summary class="action-row">
             <div>
                 <i class="fas {{ icon }}"></i>
