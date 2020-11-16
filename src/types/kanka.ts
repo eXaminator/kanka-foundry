@@ -28,7 +28,7 @@ export interface KankaAttribute {
     entity_id: number;
     type: null | 'checkbox' | 'section' | 'text';
     name: string;
-    value: string;
+    value: string | null;
     is_private: boolean;
 }
 
@@ -45,17 +45,36 @@ export interface KankaEntityData {
     attributes?: KankaAttribute[];
 }
 
+export interface CharacterTrait {
+    name: string;
+    entry: string;
+    section: 'appearance' | 'personality';
+    is_private: boolean;
+    default_order: number;
+}
+
+export interface CharacterData extends KankaEntityData {
+    type?: string;
+    title?: string;
+    age?: string;
+    sex?: string;
+    race_id?: number;
+    family_id?: number;
+    is_dead: boolean;
+    traits: CharacterTrait[];
+}
+
 export interface CampaignData extends KankaEntityData {
     locale: string;
 }
 
 export interface LocationData extends KankaEntityData {
-    type: string;
+    type?: string;
     parent_location_id?: number;
 }
 
 export interface OrganisationData extends KankaEntityData {
-    type: string;
+    type?: string;
     organisation_id?: number;
 }
 

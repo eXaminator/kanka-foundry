@@ -36,7 +36,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         return this.data.entry_parsed;
     }
 
-    public get metaData(): Record<string, string> {
+    public get metaData(): Record<string, unknown> {
         return {};
     }
 }

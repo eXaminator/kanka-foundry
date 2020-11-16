@@ -59,17 +59,24 @@ function getMetaDataLabel(key: string): string {
     return label === labelKey ? key : label;
 }
 
+function translateMetaDataValue(value: unknown): string {
+    if (value === true) {
+        return game.i18n.localize('KANKA.MetaData.boolean.true');
+    }
+
+    if (value === false) {
+        return game.i18n.localize('KANKA.MetaData.boolean.false');
+    }
+
+    return String(value);
+}
+
 function getAttributeValue(attribute: EntityAttribute): string {
     if (attribute.isText()) {
         return attribute.value.replace('\n', '<br/>');
     }
 
-    if (attribute.isCheckbox()) {
-        return attribute.value
-            ? game.i18n.localize('KANKA.MetaData.boolean.true')
-            : game.i18n.localize('KANKA.MetaData.boolean.false');
-    }
-    return String(attribute.value);
+    return translateMetaDataValue(attribute.value);
 }
 
 function buildMetaData(entity: KankaEntity): { label: string, value: string }[] {
@@ -78,7 +85,7 @@ function buildMetaData(entity: KankaEntity): { label: string, value: string }[] 
         .filter(([, value]) => !!value)
         .map(([key, value]) => ({
             label: getMetaDataLabel(key),
-            value,
+            value: translateMetaDataValue(value),
         }));
 
     const includeAttributes = getSetting(KankaSettings.metaDataAttributes) as IncludeAttributeSelection;
@@ -88,8 +95,11 @@ function buildMetaData(entity: KankaEntity): { label: string, value: string }[] 
     }
 
     const attributes = entity.attributes
-        .filter(attr => !attr.isSection())
-        .filter(attr => includeAttributes !== IncludeAttributeSelection.public || attr.isPublic())
+        .filter(attr => (
+            !attr.isSection()
+            && (includeAttributes !== IncludeAttributeSelection.public || attr.isPublic())
+            && Boolean(attr.value)
+        ))
         .map(attr => ({
             label: attr.name,
             value: getAttributeValue(attr),

@@ -2,13 +2,13 @@ import { KankaAttribute } from '../types/kanka';
 
 export default class EntityAttribute {
     readonly #name: string;
-    readonly #value: string | boolean;
+    readonly #value: string | boolean | null;
     readonly #type: string;
     readonly #isPrivate: boolean;
 
     constructor(
         name: string,
-        value: string,
+        value: string | null,
         type: KankaAttribute['type'],
         isPrivate: boolean,
     ) {
@@ -30,7 +30,7 @@ export default class EntityAttribute {
         return this.#name;
     }
 
-    public get value(): string | boolean {
+    public get value(): string | boolean | null {
         return this.#value;
     }
 
@@ -47,7 +47,7 @@ export default class EntityAttribute {
     }
 
     public isText(): this is this & { value: string; } {
-        return !this.#type || this.#type === 'text';
+        return (!this.#type || this.#type === 'text') && this.#value !== null;
     }
 
     public isSection(): this is this & { value: string; } {

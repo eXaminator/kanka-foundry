@@ -86,10 +86,12 @@ export default class KankaBrowser extends Application {
         );
 
         const [
+            characters,
             locations,
             notes,
             organisations,
         ] = await Promise.all([
+            campaign.characters.all(),
             campaign.locations.all(),
             campaign.notes.all(),
             campaign.organisations.all(),
@@ -98,6 +100,11 @@ export default class KankaBrowser extends Application {
         return {
             campaign,
             data: {
+                character: {
+                    items: characters.sort(sortBy('name')),
+                    icon: 'fa-user',
+                    isOpen: getOpenStateFromLocalStorage('character'),
+                },
                 location: {
                     items: locations.sort(sortBy('name')),
                     icon: 'fa-compass',
