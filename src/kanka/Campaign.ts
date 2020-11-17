@@ -1,12 +1,15 @@
 import {
     CampaignData,
     CharacterData,
-    FamilyData, ItemData,
+    EventData,
+    FamilyData,
+    ItemData,
     LocationData,
     NoteData,
     OrganisationData,
 } from '../types/kanka';
 import Character from './Character';
+import Event from './Event';
 import Family from './Family';
 import Item from './Item';
 import KankaEntity from './KankaEntity';
@@ -19,6 +22,7 @@ export default class Campaign extends KankaEntity<CampaignData> {
     #characters = new KankaEntityCollection(this.api.withPath('characters'), Character);
     #families = new KankaEntityCollection(this.api.withPath('families'), Family);
     #items = new KankaEntityCollection(this.api.withPath('items'), Item);
+    #events = new KankaEntityCollection(this.api.withPath('events'), Event);
     #locations = new KankaEntityCollection(this.api.withPath('locations'), Location);
     #notes = new KankaEntityCollection(this.api.withPath('notes'), Note);
     #organisations = new KankaEntityCollection(this.api.withPath('organisations'), Organisation);
@@ -37,6 +41,10 @@ export default class Campaign extends KankaEntity<CampaignData> {
 
     public get items(): KankaEntityCollection<Item, ItemData> {
         return this.#items;
+    }
+
+    public get events(): KankaEntityCollection<Event, EventData> {
+        return this.#events;
     }
 
     public get locations(): KankaEntityCollection<Location, LocationData> {
@@ -60,6 +68,8 @@ export default class Campaign extends KankaEntity<CampaignData> {
                 return this.#families;
             case 'item':
                 return this.#items;
+            case 'event':
+                return this.#events;
             case 'location':
                 return this.#locations;
             case 'organisation':

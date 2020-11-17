@@ -98,6 +98,12 @@ export interface ItemData extends KankaEntityData {
     location_id?: number;
 }
 
+export interface EventData extends KankaEntityData {
+    type?: string;
+    date?: string;
+    location_id?: number;
+}
+
 export interface NoteData extends KankaEntityData {
     note_id?: number;
 }

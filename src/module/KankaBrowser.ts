@@ -89,6 +89,7 @@ export default class KankaBrowser extends Application {
             characters,
             families,
             items,
+            events,
             locations,
             notes,
             organisations,
@@ -96,6 +97,7 @@ export default class KankaBrowser extends Application {
             campaign.characters.all(),
             campaign.families.all(),
             campaign.items.all(),
+            campaign.events.all(),
             campaign.locations.all(),
             campaign.notes.all(),
             campaign.organisations.all(),
@@ -118,6 +120,11 @@ export default class KankaBrowser extends Application {
                     items: items.sort(sortBy('name')),
                     icon: 'fa-gavel',
                     isOpen: getOpenStateFromLocalStorage('item'),
+                },
+                event: {
+                    items: events.sort(sortBy('name')),
+                    icon: 'fa-calendar',
+                    isOpen: getOpenStateFromLocalStorage('event'),
                 },
                 location: {
                     items: locations.sort(sortBy('name')),
