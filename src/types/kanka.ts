@@ -90,6 +90,14 @@ export interface FamilyData extends KankaEntityData {
     members: number[];
 }
 
+export interface ItemData extends KankaEntityData {
+    type?: string;
+    price?: string;
+    size?: string;
+    character_id?: number;
+    location_id?: number;
+}
+
 export interface NoteData extends KankaEntityData {
     note_id?: number;
 }
