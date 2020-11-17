@@ -28,28 +28,28 @@ const entityTypes = {
         icon: 'fa-user',
     },
     event: {
-        icon: 'fa-calendar',
+        icon: 'fa-bolt',
     },
     family: {
         icon: 'fa-users',
     },
     item: {
-        icon: 'fa-gavel',
+        icon: 'fa-crown',
     },
     journal: {
         icon: 'fa-feather-alt',
     },
     location: {
-        icon: 'fa-compass',
+        icon: 'fa-chess-rook',
     },
     note: {
-        icon: 'fa-clipboard',
+        icon: 'fa-book-open',
     },
     organisation: {
-        icon: 'fa-sitemap',
+        icon: 'fa-theater-masks',
     },
     race: {
-        icon: 'fa-pastafarianism',
+        icon: 'fa-dragon',
     },
 };
 
