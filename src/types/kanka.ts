@@ -112,3 +112,9 @@ export interface EventData extends KankaEntityData {
 export interface NoteData extends KankaEntityData {
     note_id?: number;
 }
+
+export interface JournalData extends KankaEntityData {
+    type?: string;
+    date?: string;
+    character_id?: number;
+}

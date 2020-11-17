@@ -24,14 +24,17 @@ const entityTypes = {
     character: {
         icon: 'fa-user',
     },
+    event: {
+        icon: 'fa-calendar',
+    },
     family: {
         icon: 'fa-users',
     },
     item: {
         icon: 'fa-gavel',
     },
-    event: {
-        icon: 'fa-calendar',
+    journal: {
+        icon: 'fa-feather-alt',
     },
     location: {
         icon: 'fa-compass',

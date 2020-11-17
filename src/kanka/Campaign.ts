@@ -3,6 +3,7 @@ import Character from './Character';
 import Event from './Event';
 import Family from './Family';
 import Item from './Item';
+import Journal from './Journal';
 import KankaEntity from './KankaEntity';
 import KankaEntityCollection from './KankaEntityCollection';
 import Location from './Location';
@@ -19,6 +20,7 @@ export default class Campaign extends KankaEntity<CampaignData> {
     #notes = new KankaEntityCollection(this.api.withPath('notes'), Note);
     #organisations = new KankaEntityCollection(this.api.withPath('organisations'), Organisation);
     #races = new KankaEntityCollection(this.api.withPath('races'), Race);
+    #journals = new KankaEntityCollection(this.api.withPath('journals'), Journal);
 
     get entityType(): string {
         return 'campaign';
@@ -43,6 +45,8 @@ export default class Campaign extends KankaEntity<CampaignData> {
                 return this.#organisations;
             case 'race':
                 return this.#races;
+            case 'journal':
+                return this.#journals;
             default:
                 return undefined;
         }
