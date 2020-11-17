@@ -1,7 +1,7 @@
-import { LocationData } from '../types/kanka';
+import { OrganisationData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
-export default class Organisation extends KankaEntity<LocationData> {
+export default class Organisation extends KankaEntity<OrganisationData> {
     get entityType(): string {
         return 'organisation';
     }
