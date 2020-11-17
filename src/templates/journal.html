@@ -35,7 +35,7 @@
         </summary>
         {{#each items}}
         <div class="action-row">
-            <a href="{{ kankaLink '/' @key 's/' this.id }}" target="_blank">{{ this.name }}</a>
+            <a href="{{ kankaLink '/' @../key 's/' this.id }}" target="_blank">{{ this.name }}</a>
             <div class="actions">
                 {{#if (hasKankaJournalEntry this) }}
                 <button
