@@ -1,13 +1,4 @@
-import {
-    CampaignData,
-    CharacterData,
-    EventData,
-    FamilyData,
-    ItemData,
-    LocationData,
-    NoteData,
-    OrganisationData,
-} from '../types/kanka';
+import { CampaignData } from '../types/kanka';
 import Character from './Character';
 import Event from './Event';
 import Family from './Family';
@@ -17,6 +8,7 @@ import KankaEntityCollection from './KankaEntityCollection';
 import Location from './Location';
 import Note from './Note';
 import Organisation from './Organisation';
+import Race from './Race';
 
 export default class Campaign extends KankaEntity<CampaignData> {
     #characters = new KankaEntityCollection(this.api.withPath('characters'), Character);
@@ -26,37 +18,10 @@ export default class Campaign extends KankaEntity<CampaignData> {
     #locations = new KankaEntityCollection(this.api.withPath('locations'), Location);
     #notes = new KankaEntityCollection(this.api.withPath('notes'), Note);
     #organisations = new KankaEntityCollection(this.api.withPath('organisations'), Organisation);
+    #races = new KankaEntityCollection(this.api.withPath('races'), Race);
 
     get entityType(): string {
         return 'campaign';
-    }
-
-    public get characters(): KankaEntityCollection<Character, CharacterData> {
-        return this.#characters;
-    }
-
-    public get families(): KankaEntityCollection<Family, FamilyData> {
-        return this.#families;
-    }
-
-    public get items(): KankaEntityCollection<Item, ItemData> {
-        return this.#items;
-    }
-
-    public get events(): KankaEntityCollection<Event, EventData> {
-        return this.#events;
-    }
-
-    public get locations(): KankaEntityCollection<Location, LocationData> {
-        return this.#locations;
-    }
-
-    public get notes(): KankaEntityCollection<Note, NoteData> {
-        return this.#notes;
-    }
-
-    public get organisations(): KankaEntityCollection<Organisation, OrganisationData> {
-        return this.#organisations;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,10 +37,12 @@ export default class Campaign extends KankaEntity<CampaignData> {
                 return this.#events;
             case 'location':
                 return this.#locations;
-            case 'organisation':
-                return this.#organisations;
             case 'note':
                 return this.#notes;
+            case 'organisation':
+                return this.#organisations;
+            case 'race':
+                return this.#races;
             default:
                 return undefined;
         }

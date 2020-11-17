@@ -79,6 +79,11 @@ export interface LocationData extends KankaEntityData {
     parent_location_id?: number;
 }
 
+export interface RaceData extends KankaEntityData {
+    type?: string;
+    race_id?: number;
+}
+
 export interface OrganisationData extends KankaEntityData {
     type?: string;
     organisation_id?: number;

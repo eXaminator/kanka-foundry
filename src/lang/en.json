@@ -27,6 +27,7 @@
     "KANKA.EntityType.location": "Locations",
     "KANKA.EntityType.note": "Notes",
     "KANKA.EntityType.organisation": "Organisations",
+    "KANKA.EntityType.race": "Races",
     "KANKA.MetaData.age": "Age",
     "KANKA.MetaData.isDead": "Is dead",
     "KANKA.MetaData.date": "Date",

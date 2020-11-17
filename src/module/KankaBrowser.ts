@@ -20,6 +20,33 @@ interface TemplateData {
     data: Record<string, EntityList>;
 }
 
+const entityTypes = {
+    character: {
+        icon: 'fa-user',
+    },
+    family: {
+        icon: 'fa-users',
+    },
+    item: {
+        icon: 'fa-gavel',
+    },
+    event: {
+        icon: 'fa-calendar',
+    },
+    location: {
+        icon: 'fa-compass',
+    },
+    note: {
+        icon: 'fa-clipboard',
+    },
+    organisation: {
+        icon: 'fa-sitemap',
+    },
+    race: {
+        icon: 'fa-pastafarianism',
+    },
+};
+
 function sortBy<T>(name: keyof T): (a: T, b: T) => number {
     return (a: T, b: T) => String(a[name]).localeCompare(String(b[name]));
 }
@@ -85,63 +112,20 @@ export default class KankaBrowser extends Application {
             (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
         );
 
-        const [
-            characters,
-            families,
-            items,
-            events,
-            locations,
-            notes,
-            organisations,
-        ] = await Promise.all([
-            campaign.characters.all(),
-            campaign.families.all(),
-            campaign.items.all(),
-            campaign.events.all(),
-            campaign.locations.all(),
-            campaign.notes.all(),
-            campaign.organisations.all(),
-        ]);
+        const types = Object.keys(entityTypes);
+        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all()));
+        const data = {};
+        types.forEach((type, index) => {
+            data[type] = {
+                ...entityTypes[type],
+                items: lists[index]?.sort(sortBy('name')),
+                isOpen: getOpenStateFromLocalStorage(type),
+            };
+        });
 
         return {
             campaign,
-            data: {
-                character: {
-                    items: characters.sort(sortBy('name')),
-                    icon: 'fa-user',
-                    isOpen: getOpenStateFromLocalStorage('character'),
-                },
-                family: {
-                    items: families.sort(sortBy('name')),
-                    icon: 'fa-users',
-                    isOpen: getOpenStateFromLocalStorage('family'),
-                },
-                item: {
-                    items: items.sort(sortBy('name')),
-                    icon: 'fa-gavel',
-                    isOpen: getOpenStateFromLocalStorage('item'),
-                },
-                event: {
-                    items: events.sort(sortBy('name')),
-                    icon: 'fa-calendar',
-                    isOpen: getOpenStateFromLocalStorage('event'),
-                },
-                location: {
-                    items: locations.sort(sortBy('name')),
-                    icon: 'fa-compass',
-                    isOpen: getOpenStateFromLocalStorage('location'),
-                },
-                note: {
-                    items: notes.sort(sortBy('name')),
-                    icon: 'fa-clipboard',
-                    isOpen: getOpenStateFromLocalStorage('note'),
-                },
-                organisation: {
-                    items: organisations.sort(sortBy('name')),
-                    icon: 'fa-sitemap',
-                    isOpen: getOpenStateFromLocalStorage('organisation'),
-                },
-            },
+            data,
         };
     }
 
