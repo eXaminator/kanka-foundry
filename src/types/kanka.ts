@@ -124,3 +124,10 @@ export interface AbilityData extends KankaEntityData {
     charges?: string;
     ability_id?: number;
 }
+
+export interface QuestData extends KankaEntityData {
+    type?: string;
+    date?: string;
+    is_completed: boolean;
+    quest_id?: number;
+}

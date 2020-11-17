@@ -10,6 +10,7 @@ import KankaEntityCollection from './KankaEntityCollection';
 import Location from './Location';
 import Note from './Note';
 import Organisation from './Organisation';
+import Quest from './Quest';
 import Race from './Race';
 
 export default class Campaign extends KankaEntity<CampaignData> {
@@ -23,6 +24,7 @@ export default class Campaign extends KankaEntity<CampaignData> {
     #organisations = new KankaEntityCollection(this.api.withPath('organisations'), Organisation);
     #races = new KankaEntityCollection(this.api.withPath('races'), Race);
     #journals = new KankaEntityCollection(this.api.withPath('journals'), Journal);
+    #quests = new KankaEntityCollection(this.api.withPath('quests'), Quest);
 
     get entityType(): string {
         return 'campaign';
@@ -35,22 +37,24 @@ export default class Campaign extends KankaEntity<CampaignData> {
                 return this.#abilities;
             case 'character':
                 return this.#characters;
+            case 'event':
+                return this.#events;
             case 'family':
                 return this.#families;
             case 'item':
                 return this.#items;
-            case 'event':
-                return this.#events;
+            case 'journal':
+                return this.#journals;
             case 'location':
                 return this.#locations;
             case 'note':
                 return this.#notes;
             case 'organisation':
                 return this.#organisations;
+            case 'quest':
+                return this.#quests;
             case 'race':
                 return this.#races;
-            case 'journal':
-                return this.#journals;
             default:
                 return undefined;
         }

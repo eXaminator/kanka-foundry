@@ -48,6 +48,9 @@ const entityTypes = {
     organisation: {
         icon: 'fa-theater-masks',
     },
+    quest: {
+        icon: 'fa-map-signs',
+    },
     race: {
         icon: 'fa-dragon',
     },
