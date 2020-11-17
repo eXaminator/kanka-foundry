@@ -1,5 +1,4 @@
 import KankaEntity from '../kanka/KankaEntity';
-import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { KankaSettings, MetaDataVisibility } from '../types/KankaSettings';
 import getSetting from './getSettings';
@@ -53,6 +52,8 @@ async function renderTemplate(path: string, params: Record<string, unknown>): Pr
 }
 
 function translateMetaDataLabel(key: string): string {
+    if (!key) return key;
+
     const labelKey = `KANKA.MetaData.${key}`;
     const label = game.i18n.localize(labelKey);
 
@@ -88,20 +89,11 @@ function buildMetaData(entity: KankaEntity): { label: string, data: { label: str
         return [];
     }
 
-    logInfo(entity
-        .metaDataSections
-        .sort(a => (!a ? -1 : 0))
-        .map(section => ({
-            label: section,
-            data: buildMetaDataForSection(entity, section),
-        }))
-        .filter(section => section.data.length > 0));
-
     return entity
         .metaDataSections
         .sort(a => (!a ? -1 : 0))
         .map(section => ({
-            label: section,
+            label: translateMetaDataLabel(section),
             data: buildMetaDataForSection(entity, section),
         }))
         .filter(section => section.data.length > 0);

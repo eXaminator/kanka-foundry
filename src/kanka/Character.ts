@@ -1,4 +1,5 @@
 import { CharacterData } from '../types/kanka';
+import { MetaDataType } from '../types/KankaSettings';
 import KankaEntity from './KankaEntity';
 
 export default class Character extends KankaEntity<CharacterData> {
@@ -33,5 +34,12 @@ export default class Character extends KankaEntity<CharacterData> {
         this.addMetaData({ label: 'sex', value: this.sex });
         this.addMetaData({ label: 'age', value: this.age });
         this.addMetaData({ label: 'isDead', value: this.isDead });
+
+        this.data.traits.forEach(trait => this.addMetaData({
+            section: trait.section,
+            type: MetaDataType.characterTrait,
+            label: trait.name,
+            value: trait.entry,
+        }));
     }
 }

@@ -29,6 +29,8 @@
     "KANKA.MetaData.sex": "Sex",
     "KANKA.MetaData.title": "Title",
     "KANKA.MetaData.type": "Type",
+    "KANKA.MetaData.personality": "Personality",
+    "KANKA.MetaData.appearance": "Appearance",
     "KANKA.MetaData.boolean.true": "Yes",
     "KANKA.MetaData.boolean.false": "No"
 }
