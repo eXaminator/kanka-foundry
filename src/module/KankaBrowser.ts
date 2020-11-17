@@ -100,10 +100,18 @@ export default class KankaBrowser extends Application {
     async getData(): Promise<TemplateData> {
         const campaign = await this.getCampaign();
 
-        // eslint-disable-next-line prefer-arrow-callback
-        Handlebars.registerHelper('kankaLink', (...parts: unknown[]) => {
-            const path = parts.filter(p => typeof p !== 'object').join('');
-            return `https://kanka.io/${campaign.locale}/campaign/${campaign.id}${path}`;
+        Handlebars.registerHelper('kankaLink', (type?: string, id?: number) => {
+            const parts = [`https://kanka.io/${campaign.locale ?? 'en'}/campaign/${campaign.id}`];
+
+            if (type && typeof type !== 'object') {
+                parts.push(`${type.replace(/y$/, 'ie')}s`);
+            }
+
+            if (id && typeof id !== 'object') {
+                parts.push(String(id));
+            }
+
+            return parts.join('/');
         });
 
         Handlebars.registerHelper('hasKankaJournalEntry', (entity: KankaEntity) => {

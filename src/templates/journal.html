@@ -20,7 +20,7 @@
         <summary class="action-row">
             <div>
                 <i class="fas {{ icon }}"></i>
-                <a href="{{ kankaLink '/' @key 's/tree' }}" target="_blank">{{ localize (i18nKey 'KANKA.EntityType' @key) }}</a>
+                <a href="{{ kankaLink @key }}" target="_blank">{{ localize (i18nKey 'KANKA.EntityType' @key) }}</a>
             </div>
             <div class="actions">
                 <button type="button" data-action="link-folder" data-type="{{ @key }}">
@@ -35,7 +35,7 @@
         </summary>
         {{#each items}}
         <div class="action-row">
-            <a href="{{ kankaLink '/' @../key 's/' this.id }}" target="_blank">{{ this.name }}</a>
+            <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>
             <div class="actions">
                 {{#if (hasKankaJournalEntry this) }}
                 <button
