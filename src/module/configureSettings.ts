@@ -2,7 +2,7 @@ import CampaignRepository from '../kanka/CampaignRepository';
 import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
-import { IncludeAttributeSelection, KankaSettings } from '../types/KankaSettings';
+import { MetaDataVisibility, KankaSettings } from '../types/KankaSettings';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
 
@@ -103,36 +103,18 @@ export async function registerSettings(): Promise<void> {
 
     game.settings.register(
         moduleConfig.name,
-        KankaSettings.metaDataAttributes,
+        KankaSettings.metaDataVisibility,
         {
-            name: game.i18n.localize('KANKA.SettingsMetaDataAttributes.label'),
-            hint: game.i18n.localize('KANKA.SettingsMetaDataAttributes.hint'),
+            name: game.i18n.localize('KANKA.SettingsMetaDataVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataVisibility.hint'),
             scope: 'world',
             config: true,
             type: String,
-            default: IncludeAttributeSelection.public,
+            default: MetaDataVisibility.public,
             choices: {
-                [IncludeAttributeSelection.all]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.all'),
-                [IncludeAttributeSelection.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.public'),
-                [IncludeAttributeSelection.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.none'),
-            },
-        },
-    );
-
-    game.settings.register(
-        moduleConfig.name,
-        KankaSettings.metaDataAttributes,
-        {
-            name: game.i18n.localize('KANKA.SettingsMetaDataAttributes.label'),
-            hint: game.i18n.localize('KANKA.SettingsMetaDataAttributes.hint'),
-            scope: 'world',
-            config: true,
-            type: String,
-            default: IncludeAttributeSelection.public,
-            choices: {
-                [IncludeAttributeSelection.all]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.all'),
-                [IncludeAttributeSelection.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.public'),
-                [IncludeAttributeSelection.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributes.value.none'),
+                [MetaDataVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.all'),
+                [MetaDataVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.public'),
+                [MetaDataVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.none'),
             },
         },
     );

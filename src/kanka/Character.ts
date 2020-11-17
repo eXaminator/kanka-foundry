@@ -26,13 +26,12 @@ export default class Character extends KankaEntity<CharacterData> {
         return this.data.title;
     }
 
-    public get metaData(): Record<string, unknown> {
-        return {
-            type: this.type,
-            title: this.title,
-            sex: this.sex,
-            age: this.age,
-            isDead: this.isDead ? true : undefined,
-        };
+    protected buildMetaData(): void {
+        super.buildMetaData();
+        this.addMetaData({ label: 'type', value: this.type });
+        this.addMetaData({ label: 'title', value: this.title });
+        this.addMetaData({ label: 'sex', value: this.sex });
+        this.addMetaData({ label: 'age', value: this.age });
+        this.addMetaData({ label: 'isDead', value: this.isDead });
     }
 }

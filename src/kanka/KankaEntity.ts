@@ -1,12 +1,16 @@
 import { KankaEntityData } from '../types/kanka';
+import { MetaDataType } from '../types/KankaSettings';
 import EntityAttribute from './EntityAttribute';
+import EntityMetaData from './EntityMetaData';
 import KankaApi from './KankaApi';
 
 export default abstract class KankaEntity<T extends KankaEntityData = KankaEntityData> {
     readonly #attributes: EntityAttribute[];
+    #metaData: EntityMetaData[] = [];
 
     constructor(protected api: KankaApi<T>, protected data: T) {
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
+        this.buildMetaData();
     }
 
     public get id(): number {
@@ -36,7 +40,51 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         return this.data.entry_parsed;
     }
 
-    public get metaData(): Record<string, unknown> {
-        return {};
+    public get metaData(): EntityMetaData[] {
+        return this.#metaData;
+    }
+
+    public get metaDataSections(): string[] {
+        return Array.from(this.metaData)
+            .map(data => data.section ?? '')
+            .filter((section, index, all) => all.indexOf(section) === index);
+    }
+
+    public getMetaDataBySection(section?: string): EntityMetaData[] {
+        return Array.from(this.metaData).filter(data => data.section === section);
+    }
+
+    protected buildMetaData(): void {
+        let currentSection: EntityAttribute | undefined;
+
+        this.attributes
+            .forEach((attribute) => {
+                if (attribute.isSection()) {
+                    currentSection = attribute;
+                    return;
+                }
+
+                this.addMetaData({
+                    type: MetaDataType.attribute,
+                    section: currentSection?.name,
+                    label: attribute.name,
+                    value: attribute.value,
+                    isPrivate: currentSection?.isPrivate() || attribute.isPrivate(),
+                });
+            });
+    }
+
+    protected addMetaData(data?: Partial<EntityMetaData>, keepFalsyValue = false): void {
+        if (!data) return;
+
+        if (keepFalsyValue || !!data.value) {
+            this.#metaData.push({
+                label: data.label ?? '',
+                value: data.value,
+                section: data.section ?? '',
+                isPrivate: data.isPrivate ?? false,
+                type: data.type ?? MetaDataType.basic,
+            });
+        }
     }
 }

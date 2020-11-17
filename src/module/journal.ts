@@ -1,7 +1,7 @@
-import EntityAttribute from '../kanka/EntityAttribute';
 import KankaEntity from '../kanka/KankaEntity';
+import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
-import { IncludeAttributeSelection, KankaSettings } from '../types/KankaSettings';
+import { KankaSettings, MetaDataVisibility } from '../types/KankaSettings';
 import getSetting from './getSettings';
 
 export function findEntriesByType(type: string): JournalEntry[] {
@@ -52,7 +52,7 @@ async function renderTemplate(path: string, params: Record<string, unknown>): Pr
     return window.renderTemplate(path, params) as unknown as string;
 }
 
-function getMetaDataLabel(key: string): string {
+function translateMetaDataLabel(key: string): string {
     const labelKey = `KANKA.MetaData.${key}`;
     const label = game.i18n.localize(labelKey);
 
@@ -68,44 +68,43 @@ function translateMetaDataValue(value: unknown): string {
         return game.i18n.localize('KANKA.MetaData.boolean.false');
     }
 
-    return String(value);
+    return String(value).replace('\n', '<br/>');
 }
 
-function getAttributeValue(attribute: EntityAttribute): string {
-    if (attribute.isText()) {
-        return attribute.value.replace('\n', '<br/>');
-    }
+function buildMetaDataForSection(entity: KankaEntity, section?: string): { label: string, value: string }[] {
+    const includeAttributes = getSetting(KankaSettings.metaDataVisibility) as MetaDataVisibility;
 
-    return translateMetaDataValue(attribute.value);
+    return entity.getMetaDataBySection(section)
+        .filter(data => (includeAttributes === MetaDataVisibility.all || !data.isPrivate))
+        .map(data => ({
+            label: translateMetaDataLabel(data.label),
+            value: translateMetaDataValue(data.value),
+        }));
 }
 
-function buildMetaData(entity: KankaEntity): { label: string, value: string }[] {
-    const metaData = Object
-        .entries(entity.metaData)
-        .filter(([, value]) => !!value)
-        .map(([key, value]) => ({
-            label: getMetaDataLabel(key),
-            value: translateMetaDataValue(value),
-        }));
-
-    const includeAttributes = getSetting(KankaSettings.metaDataAttributes) as IncludeAttributeSelection;
-
-    if (includeAttributes === IncludeAttributeSelection.none) {
-        return metaData;
+function buildMetaData(entity: KankaEntity): { label: string, data: { label: string, value: string }[] }[] {
+    const includeAttributes = getSetting(KankaSettings.metaDataVisibility) as MetaDataVisibility;
+    if (includeAttributes === MetaDataVisibility.none) {
+        return [];
     }
 
-    const attributes = entity.attributes
-        .filter(attr => (
-            !attr.isSection()
-            && (includeAttributes !== IncludeAttributeSelection.public || attr.isPublic())
-            && Boolean(attr.value)
-        ))
-        .map(attr => ({
-            label: attr.name,
-            value: getAttributeValue(attr),
-        }));
+    logInfo(entity
+        .metaDataSections
+        .sort(a => (!a ? -1 : 0))
+        .map(section => ({
+            label: section,
+            data: buildMetaDataForSection(entity, section),
+        }))
+        .filter(section => section.data.length > 0));
 
-    return [...metaData, ...attributes];
+    return entity
+        .metaDataSections
+        .sort(a => (!a ? -1 : 0))
+        .map(section => ({
+            label: section,
+            data: buildMetaDataForSection(entity, section),
+        }))
+        .filter(section => section.data.length > 0);
 }
 
 export async function writeJournalEntry(

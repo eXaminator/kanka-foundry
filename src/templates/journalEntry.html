@@ -4,10 +4,15 @@
 {{#if metaData.length}}
 <table class="kanka-metadata">
     {{#each metaData}}
-        <tr>
-            <th>{{{ this.label }}}</th>
-            <td>{{{ this.value }}}</td>
-        </tr>
+        {{#if this.label}}
+            <tr class="section-header"><th colspan="2">{{{ this.label }}}</th></tr>
+        {{/if}}
+        {{#each this.data}}
+            <tr>
+                <th>{{{ this.label }}}</th>
+                <td>{{{ this.value }}}</td>
+            </tr>
+        {{/each}}
     {{/each}}
 </table>
 {{/if}}

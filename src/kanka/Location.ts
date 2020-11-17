@@ -10,9 +10,8 @@ export default class Location extends KankaEntity<LocationData> {
         return this.data.type;
     }
 
-    public get metaData(): Record<string, unknown> {
-        return {
-            type: this.type,
-        };
+    protected buildMetaData(): void {
+        super.buildMetaData();
+        this.addMetaData({ label: 'type', value: this.type });
     }
 }

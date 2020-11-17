@@ -1,12 +1,18 @@
 export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
-    metaDataAttributes = 'metaDataAttributes',
+    metaDataVisibility = 'metaDataVisibility',
     imageInText = 'imageInText',
 }
 
-export enum IncludeAttributeSelection {
+export enum MetaDataVisibility {
     all = 'all',
     public = 'public',
     none = 'none',
+}
+
+export enum MetaDataType {
+    basic = 'basic',
+    attribute = 'attribute',
+    characterTrait = 'characterTrait',
 }
