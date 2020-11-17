@@ -1,4 +1,5 @@
 import { CampaignData } from '../types/kanka';
+import Ability from './Ability';
 import Character from './Character';
 import Event from './Event';
 import Family from './Family';
@@ -12,6 +13,7 @@ import Organisation from './Organisation';
 import Race from './Race';
 
 export default class Campaign extends KankaEntity<CampaignData> {
+    #abilities = new KankaEntityCollection(this.api.withPath('abilities'), Ability);
     #characters = new KankaEntityCollection(this.api.withPath('characters'), Character);
     #families = new KankaEntityCollection(this.api.withPath('families'), Family);
     #items = new KankaEntityCollection(this.api.withPath('items'), Item);
@@ -29,6 +31,8 @@ export default class Campaign extends KankaEntity<CampaignData> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getByType(type: string): KankaEntityCollection<any, any> | undefined {
         switch (type) {
+            case 'ability':
+                return this.#abilities;
             case 'character':
                 return this.#characters;
             case 'family':

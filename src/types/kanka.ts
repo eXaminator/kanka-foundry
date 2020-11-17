@@ -118,3 +118,9 @@ export interface JournalData extends KankaEntityData {
     date?: string;
     character_id?: number;
 }
+
+export interface AbilityData extends KankaEntityData {
+    type?: string;
+    charges?: string;
+    ability_id?: number;
+}

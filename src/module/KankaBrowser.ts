@@ -21,6 +21,9 @@ interface TemplateData {
 }
 
 const entityTypes = {
+    ability: {
+        icon: 'fa-fire',
+    },
     character: {
         icon: 'fa-user',
     },
