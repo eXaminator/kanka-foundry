@@ -53,6 +53,11 @@ export interface CharacterTrait {
     default_order: number;
 }
 
+export interface CharacterOrganisationLink {
+    organisation_id: number;
+    role?: string;
+}
+
 export interface CharacterData extends KankaEntityData {
     type?: string;
     title?: string;
@@ -62,6 +67,7 @@ export interface CharacterData extends KankaEntityData {
     family_id?: number;
     is_dead: boolean;
     traits: CharacterTrait[];
+    organisations: { data: CharacterOrganisationLink[] };
 }
 
 export interface CampaignData extends KankaEntityData {
@@ -76,6 +82,12 @@ export interface LocationData extends KankaEntityData {
 export interface OrganisationData extends KankaEntityData {
     type?: string;
     organisation_id?: number;
+}
+
+export interface FamilyData extends KankaEntityData {
+    type?: string;
+    family_id?: number;
+    members: number[];
 }
 
 export interface NoteData extends KankaEntityData {
