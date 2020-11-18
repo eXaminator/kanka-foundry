@@ -131,12 +131,18 @@ export default class KankaBrowser extends Application {
         const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
 
         types.forEach((type, index) => {
+            const items = lists[index]
+                ?.filter((item: KankaEntity) => allowPrivate || !item.isPrivate)
+                .sort(sortBy('name'));
+
+            if (!items?.length) {
+                return;
+            }
+
             data[type] = {
                 ...entityTypes[type],
-                items: lists[index]
-                    ?.filter((item: KankaEntity) => allowPrivate || !item.isPrivate)
-                    .sort(sortBy('name')),
                 isOpen: getOpenStateFromLocalStorage(type),
+                items,
             };
         });
 
