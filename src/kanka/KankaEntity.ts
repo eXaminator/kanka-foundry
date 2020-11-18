@@ -69,7 +69,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
                     section: currentSection?.name,
                     label: attribute.name,
                     value: attribute.value,
-                    isPrivate: currentSection?.isPrivate() || attribute.isPrivate(),
+                    originalData: attribute,
                 });
             });
     }
@@ -79,10 +79,10 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
 
         if (keepFalsyValue || !!data.value) {
             this.#metaData.push({
+                originalData: data.originalData,
                 label: data.label ?? '',
                 value: data.value,
                 section: data.section ?? '',
-                isPrivate: data.isPrivate ?? false,
                 type: data.type ?? MetaDataType.basic,
             });
         }

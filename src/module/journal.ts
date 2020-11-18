@@ -1,6 +1,15 @@
+import EntityAttribute from '../kanka/EntityAttribute';
+import EntityMetaData from '../kanka/EntityMetaData';
 import KankaEntity from '../kanka/KankaEntity';
 import moduleConfig from '../module.json';
-import { KankaSettings, MetaDataVisibility } from '../types/KankaSettings';
+import { CharacterTrait } from '../types/kanka';
+import {
+    KankaSettings,
+    MetaDataAttributeVisibility,
+    MetaDataBasicVisibility,
+    MetaDataCharacterTraitVisibility,
+    MetaDataType,
+} from '../types/KankaSettings';
 import getSetting from './getSettings';
 
 export function findEntriesByType(type: string): JournalEntry[] {
@@ -72,11 +81,74 @@ function translateMetaDataValue(value: unknown): string {
     return String(value).replace('\n', '<br/>');
 }
 
-function buildMetaDataForSection(entity: KankaEntity, section?: string): { label: string, value: string }[] {
-    const includeAttributes = getSetting(KankaSettings.metaDataVisibility) as MetaDataVisibility;
+function checkSetting<T>(
+    data: EntityMetaData<T>,
+    setting: KankaSettings,
+    results: Record<string, boolean | ((data: T) => boolean)>,
+): boolean {
+    const settingValue = getSetting(setting) as string;
+    const result = results[settingValue];
 
+    if (result === undefined) {
+        return true;
+    }
+
+    if (result === true || result === false) {
+        return result;
+    }
+
+    if (data.originalData === undefined) {
+        return true;
+    }
+
+    return result(data.originalData);
+}
+
+function byMetaDataConfiguration(data: EntityMetaData): boolean {
+    if (data.type === MetaDataType.basic) {
+        return checkSetting(
+            data,
+            KankaSettings.metaDataBasicVisibility,
+            {
+                [MetaDataBasicVisibility.all]: true,
+                [MetaDataBasicVisibility.none]: false,
+            },
+        );
+    }
+
+    if (data.type === MetaDataType.attribute) {
+        return checkSetting(
+            data as EntityMetaData<EntityAttribute>,
+            KankaSettings.metaDataAttributeVisibility,
+            {
+                [MetaDataAttributeVisibility.all]: true,
+                [MetaDataAttributeVisibility.none]: false,
+                [MetaDataAttributeVisibility.public]: original => original.isPublic(),
+                [MetaDataAttributeVisibility.allStarred]: original => original.isStarred(),
+                [MetaDataAttributeVisibility.publicStarred]: original => original.isPublic() && original.isStarred(),
+            },
+        );
+    }
+
+    if (data.type === MetaDataType.characterTrait) {
+        return checkSetting(
+            data as EntityMetaData<CharacterTrait>,
+            KankaSettings.metaDataCharacterTraitVisibility,
+            {
+                [MetaDataCharacterTraitVisibility.all]: true,
+                [MetaDataCharacterTraitVisibility.personality]: original => original.section === 'personality',
+                [MetaDataCharacterTraitVisibility.appearance]: original => original.section === 'appearance',
+                [MetaDataCharacterTraitVisibility.none]: false,
+            },
+        );
+    }
+
+    return true;
+}
+
+function buildMetaDataForSection(entity: KankaEntity, section?: string): { label: string, value: string }[] {
     return entity.getMetaDataBySection(section)
-        .filter(data => (includeAttributes === MetaDataVisibility.all || !data.isPrivate))
+        .filter(byMetaDataConfiguration)
         .map(data => ({
             label: translateMetaDataLabel(data.label),
             value: translateMetaDataValue(data.value),
@@ -84,11 +156,6 @@ function buildMetaDataForSection(entity: KankaEntity, section?: string): { label
 }
 
 function buildMetaData(entity: KankaEntity): { label: string, data: { label: string, value: string }[] }[] {
-    const includeAttributes = getSetting(KankaSettings.metaDataVisibility) as MetaDataVisibility;
-    if (includeAttributes === MetaDataVisibility.none) {
-        return [];
-    }
-
     return entity
         .metaDataSections
         .sort(a => (!a ? -1 : 0))

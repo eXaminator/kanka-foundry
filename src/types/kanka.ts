@@ -30,6 +30,7 @@ export interface KankaAttribute {
     name: string;
     value: string | null;
     is_private: boolean;
+    is_star: boolean;
 }
 
 export interface KankaEntityData {

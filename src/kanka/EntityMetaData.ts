@@ -1,9 +1,9 @@
 import { MetaDataType } from '../types/KankaSettings';
 
-export default interface EntityMetaData {
+export default interface EntityMetaData<T extends unknown = unknown> {
     type: MetaDataType;
     section: string;
     label: string;
     value: unknown;
-    isPrivate?: boolean;
+    originalData?: T;
 }

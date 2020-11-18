@@ -36,6 +36,7 @@ export default class Character extends KankaEntity<CharacterData> {
         this.addMetaData({ label: 'isDead', value: this.isDead });
 
         this.data.traits.forEach(trait => this.addMetaData({
+            originalData: trait,
             section: trait.section,
             type: MetaDataType.characterTrait,
             label: trait.name,

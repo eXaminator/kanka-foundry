@@ -2,7 +2,12 @@ import CampaignRepository from '../kanka/CampaignRepository';
 import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
-import { MetaDataVisibility, KankaSettings } from '../types/KankaSettings';
+import {
+    MetaDataBasicVisibility,
+    KankaSettings,
+    MetaDataAttributeVisibility,
+    MetaDataCharacterTraitVisibility,
+} from '../types/KankaSettings';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
 
@@ -103,18 +108,56 @@ export async function registerSettings(): Promise<void> {
 
     game.settings.register(
         moduleConfig.name,
-        KankaSettings.metaDataVisibility,
+        KankaSettings.metaDataBasicVisibility,
         {
-            name: game.i18n.localize('KANKA.SettingsMetaDataVisibility.label'),
-            hint: game.i18n.localize('KANKA.SettingsMetaDataVisibility.hint'),
+            name: game.i18n.localize('KANKA.SettingsMetaDataBasicVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataBasicVisibility.hint'),
             scope: 'world',
             config: true,
             type: String,
-            default: MetaDataVisibility.public,
+            default: MetaDataBasicVisibility.all,
             choices: {
-                [MetaDataVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.all'),
-                [MetaDataVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.public'),
-                [MetaDataVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataVisibility.value.none'),
+                [MetaDataBasicVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataBasicVisibility.value.all'),
+                [MetaDataBasicVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataBasicVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataAttributeVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataAttributeVisibility.publicStarred,
+            choices: {
+                [MetaDataAttributeVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.all'),
+                [MetaDataAttributeVisibility.allStarred]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.allStarred'),
+                [MetaDataAttributeVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.public'),
+                [MetaDataAttributeVisibility.publicStarred]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.publicStarred'),
+                [MetaDataAttributeVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataCharacterTraitVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataCharacterTraitVisibility.all,
+            choices: {
+                [MetaDataCharacterTraitVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.all'),
+                [MetaDataCharacterTraitVisibility.appearance]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.appearance'),
+                [MetaDataCharacterTraitVisibility.personality]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.personality'),
+                [MetaDataCharacterTraitVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.none'),
             },
         },
     );
