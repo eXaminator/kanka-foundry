@@ -27,6 +27,10 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         return this.data.entity_id;
     }
 
+    public get isPrivate(): boolean {
+        return this.data.is_private;
+    }
+
     public get name(): string {
         return this.data.name;
     }

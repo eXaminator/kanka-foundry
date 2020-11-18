@@ -1,13 +1,9 @@
 import Campaign from '../kanka/Campaign';
 import KankaEntity from '../kanka/KankaEntity';
 import moduleConfig from '../module.json';
-import {
-    ensureJournalFolder,
-    findEntriesByType,
-    findEntryByEntity,
-    findEntryByEntityId,
-    writeJournalEntry,
-} from './journal';
+import { KankaSettings } from '../types/KankaSettings';
+import getSetting from './getSettings';
+import { ensureJournalFolder, findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
 
 interface EntityList {
     items: KankaEntity[];
@@ -130,12 +126,16 @@ export default class KankaBrowser extends Application {
         );
 
         const types = Object.keys(entityTypes);
-        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all()));
+        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all(true)));
         const data = {};
+        const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
+
         types.forEach((type, index) => {
             data[type] = {
                 ...entityTypes[type],
-                items: lists[index]?.sort(sortBy('name')),
+                items: lists[index]
+                    ?.filter((item: KankaEntity) => allowPrivate || !item.isPrivate)
+                    .sort(sortBy('name')),
                 isOpen: getOpenStateFromLocalStorage(type),
             };
         });

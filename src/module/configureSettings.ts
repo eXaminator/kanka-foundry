@@ -108,6 +108,19 @@ export async function registerSettings(): Promise<void> {
 
     game.settings.register(
         moduleConfig.name,
+        KankaSettings.importPrivateEntities,
+        {
+            name: game.i18n.localize('KANKA.SettingsImportPrivateEntities.label'),
+            hint: game.i18n.localize('KANKA.SettingsImportPrivateEntities.hint'),
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: true,
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
         KankaSettings.metaDataBasicVisibility,
         {
             name: game.i18n.localize('KANKA.SettingsMetaDataBasicVisibility.label'),

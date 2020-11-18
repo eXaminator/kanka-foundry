@@ -1,6 +1,7 @@
 export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
+    importPrivateEntities = 'importPrivateEntities',
     metaDataBasicVisibility = 'metaDataBasicVisibility',
     metaDataAttributeVisibility = 'metaDataAttributeVisibility',
     metaDataCharacterTraitVisibility = 'metaDataCharacterTraitVisibility',
