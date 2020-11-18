@@ -31,6 +31,7 @@
     "KANKA.BrowserRefreshFolder": "Refresh linked",
     "KANKA.BrowserNotificationSyncedFolder": "Refreshed all Kanka entities of type {type}.",
     "KANKA.BrowserNotificationLinkedFolder": "Linked all Kanka entities of type {type}.",
+    "KANKA.BrowserNotificationRefreshed": "Updated entity {name}.",
     "KANKA.BrowserSyncError": "Unexpected error while syncing.",
     "KANKA.EntityType.ability": "Abilities",
     "KANKA.EntityType.character": "Characters",
