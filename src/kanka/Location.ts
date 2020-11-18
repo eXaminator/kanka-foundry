@@ -1,9 +1,10 @@
+import EntityType from '../types/EntityType';
 import { LocationData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
 export default class Location extends KankaEntity<LocationData> {
-    get entityType(): string {
-        return 'location';
+    get entityType(): EntityType {
+        return EntityType.location;
     }
 
     public get type(): string | undefined {

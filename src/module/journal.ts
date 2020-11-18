@@ -38,7 +38,7 @@ export async function ensureJournalFolder(type: string): Promise<Folder | undefi
     let folder = findFolderByType(type);
 
     if (!folder) {
-        const nameKey = `KANKA.EntityType.${type}`;
+        const nameKey = `KANKA.string.${type}`;
         const name = game.i18n.localize(nameKey);
 
         folder = await Folder.create({

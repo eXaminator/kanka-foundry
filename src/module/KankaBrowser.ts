@@ -1,7 +1,8 @@
 import Campaign from '../kanka/Campaign';
 import KankaEntity from '../kanka/KankaEntity';
 import moduleConfig from '../module.json';
-import { KankaSettings } from '../types/KankaSettings';
+import EntityType from '../types/EntityType';
+import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
 import getSetting from './getSettings';
 import { ensureJournalFolder, findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
 
@@ -16,38 +17,38 @@ interface TemplateData {
     data: Record<string, EntityList>;
 }
 
-const entityTypes = {
-    ability: {
+const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
+    [EntityType.ability]: {
         icon: 'fa-fire',
     },
-    character: {
+    [EntityType.character]: {
         icon: 'fa-user',
     },
-    event: {
+    [EntityType.event]: {
         icon: 'fa-bolt',
     },
-    family: {
+    [EntityType.family]: {
         icon: 'fa-users',
     },
-    item: {
+    [EntityType.item]: {
         icon: 'fa-crown',
     },
-    journal: {
+    [EntityType.journal]: {
         icon: 'fa-feather-alt',
     },
-    location: {
+    [EntityType.location]: {
         icon: 'fa-chess-rook',
     },
-    note: {
+    [EntityType.note]: {
         icon: 'fa-book-open',
     },
-    organisation: {
+    [EntityType.organisation]: {
         icon: 'fa-theater-masks',
     },
-    quest: {
+    [EntityType.quest]: {
         icon: 'fa-map-signs',
     },
-    race: {
+    [EntityType.race]: {
         icon: 'fa-dragon',
     },
 };
@@ -125,7 +126,9 @@ export default class KankaBrowser extends Application {
             (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
         );
 
-        const types = Object.keys(entityTypes);
+        const types = Object
+            .keys(entityTypes)
+            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
         const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all(true)));
         const data = {};
         const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;

@@ -2,11 +2,12 @@ import CampaignRepository from '../kanka/CampaignRepository';
 import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
+import EntityType from '../types/EntityType';
 import {
     MetaDataBasicVisibility,
     KankaSettings,
     MetaDataAttributeVisibility,
-    MetaDataCharacterTraitVisibility,
+    MetaDataCharacterTraitVisibility, kankaImportTypeSetting,
 } from '../types/KankaSettings';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
@@ -108,6 +109,19 @@ export async function registerSettings(): Promise<void> {
 
     game.settings.register(
         moduleConfig.name,
+        KankaSettings.imageInText,
+        {
+            name: game.i18n.localize('KANKA.SettingsImageInText.label'),
+            hint: game.i18n.localize('KANKA.SettingsImageInText.hint'),
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: false,
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
         KankaSettings.importPrivateEntities,
         {
             name: game.i18n.localize('KANKA.SettingsImportPrivateEntities.label'),
@@ -175,18 +189,23 @@ export async function registerSettings(): Promise<void> {
         },
     );
 
-    game.settings.register(
-        moduleConfig.name,
-        KankaSettings.imageInText,
-        {
-            name: game.i18n.localize('KANKA.SettingsImageInText.label'),
-            hint: game.i18n.localize('KANKA.SettingsImageInText.hint'),
-            scope: 'world',
-            config: true,
-            type: Boolean,
-            default: false,
-        },
-    );
+    Object
+        .values(EntityType)
+        .filter(type => type !== EntityType.campaign)
+        .forEach((type: EntityType) => {
+            game.settings.register(
+                moduleConfig.name,
+                kankaImportTypeSetting(type),
+                {
+                    name: game.i18n.localize(`KANKA.EntityType.${type}`),
+                    hint: game.i18n.localize('KANKA.SettingsEntityTypeVisibility.hint'),
+                    scope: 'world',
+                    config: true,
+                    type: Boolean,
+                    default: true,
+                },
+            );
+        });
 
     game.settings.sheet.render(); // update sheet if it already visible
 }

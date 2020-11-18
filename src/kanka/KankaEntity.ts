@@ -1,3 +1,4 @@
+import EntityType from '../types/EntityType';
 import { KankaEntityData } from '../types/kanka';
 import { MetaDataType } from '../types/KankaSettings';
 import EntityAttribute from './EntityAttribute';
@@ -17,7 +18,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         return this.data.id;
     }
 
-    abstract get entityType(): string;
+    abstract get entityType(): EntityType;
 
     public get attributes(): EntityAttribute[] {
         return this.#attributes;

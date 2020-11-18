@@ -1,3 +1,5 @@
+import EntityType from './EntityType';
+
 export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
@@ -6,6 +8,12 @@ export enum KankaSettings {
     metaDataAttributeVisibility = 'metaDataAttributeVisibility',
     metaDataCharacterTraitVisibility = 'metaDataCharacterTraitVisibility',
     imageInText = 'imageInText',
+}
+
+export function kankaImportTypeSetting(type: EntityType): KankaSettings {
+    // This pretends to be a KankaSettings entry and should be usable everywhere regular KankaSettings
+    // are usable
+    return `importType_${type}` as KankaSettings;
 }
 
 export enum MetaDataType {

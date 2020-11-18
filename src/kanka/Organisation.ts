@@ -1,9 +1,10 @@
+import EntityType from '../types/EntityType';
 import { OrganisationData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
 export default class Organisation extends KankaEntity<OrganisationData> {
-    get entityType(): string {
-        return 'organisation';
+    get entityType(): EntityType {
+        return EntityType.organisation;
     }
 
     public get type(): string | undefined {

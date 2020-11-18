@@ -1,3 +1,4 @@
+import EntityType from '../types/EntityType';
 import { CampaignData } from '../types/kanka';
 import Ability from './Ability';
 import Character from './Character';
@@ -26,8 +27,8 @@ export default class Campaign extends KankaEntity<CampaignData> {
     #journals = new KankaEntityCollection(this.api.withPath('journals'), Journal);
     #quests = new KankaEntityCollection(this.api.withPath('quests'), Quest);
 
-    get entityType(): string {
-        return 'campaign';
+    get entityType(): EntityType {
+        return EntityType.campaign;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

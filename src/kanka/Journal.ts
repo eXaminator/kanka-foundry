@@ -1,9 +1,10 @@
+import EntityType from '../types/EntityType';
 import { JournalData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
 export default class Journal extends KankaEntity<JournalData> {
-    get entityType(): string {
-        return 'journal';
+    get entityType(): EntityType {
+        return EntityType.journal;
     }
 
     public get type(): string | undefined {

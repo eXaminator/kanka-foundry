@@ -1,9 +1,10 @@
+import EntityType from '../types/EntityType';
 import { EventData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
 export default class Event extends KankaEntity<EventData> {
-    get entityType(): string {
-        return 'event';
+    get entityType(): EntityType {
+        return EntityType.event;
     }
 
     public get type(): string | undefined {

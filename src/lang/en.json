@@ -29,6 +29,7 @@
     "KANKA.SettingsMetaDataCharacterTraitVisibility.value.none": "No character traits",
     "KANKA.SettingsImageInText.label": "Include image in text",
     "KANKA.SettingsImageInText.hint": "Should the image be include next to the text in addition to the regular journal entry image?",
+    "KANKA.SettingsEntityTypeVisibility.hint": "Should this type of entity be loaded? Reducing the types of entity also reduces the number of requests made to Kanka and thus improves the performance.",
     "KANKA.BrowserLinkFolder": "Link all",
     "KANKA.BrowserRefreshFolder": "Refresh linked",
     "KANKA.BrowserNotificationSyncedFolder": "Refreshed all Kanka entities of type {type}.",

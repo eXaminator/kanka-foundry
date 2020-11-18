@@ -1,10 +1,11 @@
+import EntityType from '../types/EntityType';
 import { CharacterData } from '../types/kanka';
 import { MetaDataType } from '../types/KankaSettings';
 import KankaEntity from './KankaEntity';
 
 export default class Character extends KankaEntity<CharacterData> {
-    get entityType(): string {
-        return 'character';
+    get entityType(): EntityType {
+        return EntityType.character;
     }
 
     public get type(): string | undefined {

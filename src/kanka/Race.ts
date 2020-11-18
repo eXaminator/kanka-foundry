@@ -1,9 +1,10 @@
+import EntityType from '../types/EntityType';
 import { RaceData } from '../types/kanka';
 import KankaEntity from './KankaEntity';
 
 export default class Race extends KankaEntity<RaceData> {
-    get entityType(): string {
-        return 'race';
+    get entityType(): EntityType {
+        return EntityType.race;
     }
 
     public get type(): string | undefined {
