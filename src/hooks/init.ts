@@ -18,7 +18,7 @@ export default async function init(): Promise<void> {
     game.modules.get(moduleConfig.name).api = api;
     game.modules.get(moduleConfig.name).campaigns = campaignRepo;
     game.modules.get(moduleConfig.name).loadCurrentCampaign = () => (
-        campaignRepo.loadById(getSettings(KankaSettings.campaign))
+        campaignRepo.loadById(Number(getSettings(KankaSettings.campaign)))
     );
 }
 
