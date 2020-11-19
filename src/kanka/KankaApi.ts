@@ -74,6 +74,7 @@ export default class KankaApi<T extends KankaEntityData | KankaEntityData[]> {
         const parsedUrl = new URL(url);
         parsedUrl.searchParams.set('related', '1');
 
+        logInfo('request kanka API', { url: parsedUrl.toString() });
         const response = await fetch(
             parsedUrl.toString(),
             {
