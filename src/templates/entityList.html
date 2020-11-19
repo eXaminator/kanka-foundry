@@ -16,43 +16,45 @@
             {{/if}}
         </div>
     </summary>
-    {{#each items}}
-    <div class="action-row">
-        <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>
-        <div class="actions">
-            {{#if (hasKankaJournalEntry this) }}
-            <button
-                type="button"
-                data-action="open-entry"
-                data-entity-id="{{ this.entityId }}"
-                data-id="{{ this.id }}"
-                data-type="{{ @../key }}"
-            >
-                <i class="fas fa-link"></i> {{ this.name }}
-            </button>
-            <button
-                type="button"
-                data-action="sync-entry"
-                data-entity-id="{{ this.entityId }}"
-                data-id="{{ this.id }}"
-                data-type="{{ @../key }}"
-            >
-                <i class="fas fa-sync"></i>
-            </button>
-            {{else}}
-            <button
-                type="button"
-                data-action="link-entry"
-                data-entity-id="{{ this.entityId }}"
-                data-id="{{ this.id }}"
-                data-type="{{ @../key }}"
-            >
-                <i class="fas fa-link"></i>
-            </button>
-            {{/if}}
-        </div>
-    </div>
-    {{/each }}
+    <ul>
+        {{#each items}}
+        <li class="action-row">
+            <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>
+            <div class="actions">
+                {{#if (hasKankaJournalEntry this) }}
+                <button
+                    type="button"
+                    data-action="open-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
+                    <i class="fas fa-link"></i> {{ this.name }}
+                </button>
+                <button
+                    type="button"
+                    data-action="sync-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
+                    <i class="fas fa-sync"></i>
+                </button>
+                {{else}}
+                <button
+                    type="button"
+                    data-action="link-entry"
+                    data-entity-id="{{ this.entityId }}"
+                    data-id="{{ this.id }}"
+                    data-type="{{ @../key }}"
+                >
+                    <i class="fas fa-link"></i>
+                </button>
+                {{/if}}
+            </div>
+        </li>
+        {{/each }}
+    </ul>
     <hr/>
 </details>
 {{/each}}
