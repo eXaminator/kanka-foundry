@@ -1,5 +1,6 @@
 import Campaign from '../kanka/Campaign';
 import KankaEntity from '../kanka/KankaEntity';
+import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
@@ -126,44 +127,81 @@ export default class KankaBrowser extends Application {
             (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
         );
 
-        const types = Object
-            .keys(entityTypes)
-            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
+        return { campaign } as TemplateData;
+    }
+
+    private async loadEntityListData(
+        campaign: Campaign,
+        types: EntityType[],
+    ): Promise<Partial<Record<EntityType, KankaEntity[]>>> {
         const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all(true)));
+
+        const result: Partial<Record<EntityType, KankaEntity[]>> = {};
+
+        types.forEach((type, index) => {
+            result[type] = lists[index];
+        });
+
+        return result;
+    }
+
+    private async renderEntityTemplate(lists: Partial<Record<EntityType, KankaEntity[]>>): Promise<string> {
         const data = {};
         const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
 
-        types.forEach((type, index) => {
-            const items = lists[index]
-                ?.filter((item: KankaEntity) => allowPrivate || !item.isPrivate)
-                .sort(sortBy('name'));
+        Object
+            .entries(lists)
+            .forEach(([type, list]) => {
+                if (!list) return;
 
-            if (!items?.length) {
-                return;
-            }
+                const items = list
+                    .filter(item => allowPrivate || !item.isPrivate)
+                    .sort(sortBy('name'));
 
-            data[type] = {
-                ...entityTypes[type],
-                isOpen: getOpenStateFromLocalStorage(type),
-                items,
-            };
-        });
+                if (!items?.length) {
+                    return;
+                }
 
-        return {
-            campaign,
-            data,
-        };
+                data[type] = {
+                    ...entityTypes[type],
+                    isOpen: getOpenStateFromLocalStorage(type),
+                    items,
+                };
+            });
+
+        return await renderTemplate(
+            `modules/${moduleConfig.name}/templates/entityList.html`,
+            { data },
+        ) as unknown as string;
     }
 
-    async activateListeners(html: JQuery): Promise<void> {
-        super.activateListeners(html);
+    private async loadAndRenderEntityLists(html: JQuery): Promise<void> {
         const campaign = await this.getCampaign();
+
+        const types = Object
+            .keys(entityTypes)
+            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
+
+        const lists = await this.loadEntityListData(campaign, types);
+        const htmlString = await this.renderEntityTemplate(lists);
+
+        html.find('.kanka-entity-list').replaceWith(htmlString);
 
         html.find<HTMLDetailsElement>('details[data-type]').on('toggle', (event) => {
             const type = event.currentTarget.dataset?.type;
             if (!type) return;
             setOpenStateToLocalStorage(type, event.currentTarget.open);
+            this.setPosition({ height: 'auto' });
         });
+
+        this.setPosition({ height: 'auto' });
+    }
+
+    async activateListeners(html: JQuery): Promise<void> {
+        super.activateListeners(html);
+        this.loadAndRenderEntityLists(html).catch(e => logError(e));
+
+        const campaign = await this.getCampaign();
 
         html.on('click', '[data-action]', async (event) => {
             const action: string = event?.currentTarget?.dataset?.action;

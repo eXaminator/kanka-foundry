@@ -9,6 +9,16 @@ button#kanka {
 }
 
 .kanka-container {
+    .loading-indicator {
+        text-align: center;
+        padding: 2em 0;
+
+        .fa-spinner {
+            animation: kanka-spin 1.5s linear infinite;
+            font-size: 2em;
+        }
+    }
+
     a {
         color: inherit;
         text-decoration: none;
@@ -84,5 +94,11 @@ button#kanka {
 
     td {
         padding: 0 .5em;
+    }
+}
+
+@keyframes kanka-spin {
+    100% {
+        transform: rotate(360deg);
     }
 }

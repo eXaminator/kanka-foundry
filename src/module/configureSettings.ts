@@ -1,3 +1,4 @@
+import Campaign from '../kanka/Campaign';
 import CampaignRepository from '../kanka/CampaignRepository';
 import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
@@ -15,7 +16,19 @@ import KankaBrowser from './KankaBrowser';
 const accessTokenInputName = `${moduleConfig.name}.${KankaSettings.accessToken}`;
 const campaignInputName = `${moduleConfig.name}.${KankaSettings.campaign}`;
 
-async function getCampaignChoices(token?: string): Promise<Record<string, string>> {
+function buildCampaignChoices(campaigns: Campaign[]): Record<string, string> {
+    const campaignChoices: Record<string, string> = {
+        '': game.i18n.localize('KANKA.SettingsCampaign.pleaseChoose'),
+    };
+
+    campaigns.forEach((campaign) => {
+        campaignChoices[campaign.id] = campaign.name;
+    });
+
+    return campaignChoices;
+}
+
+async function fetchCampaignChoices(token?: string): Promise<Record<string, string>> {
     if (!token) {
         return {
             '': game.i18n.localize('KANKA.SettingsCampaign.noToken'),
@@ -23,19 +36,11 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
     }
 
     try {
-        const campaignChoices: Record<string, string> = {
-            '': game.i18n.localize('KANKA.SettingsCampaign.pleaseChoose'),
-        };
-
         const api = KankaApi.createRoot(token);
         const repo = new CampaignRepository(api);
         const campaigns = await repo.loadAll();
 
-        campaigns.forEach((campaign) => {
-            campaignChoices[campaign.id] = campaign.name;
-        });
-
-        return campaignChoices;
+        return buildCampaignChoices(campaigns);
     } catch (error) {
         logError(error);
         return {
@@ -46,7 +51,7 @@ async function getCampaignChoices(token?: string): Promise<Record<string, string
 
 async function updateWorldList(event: JQuery.TriggeredEvent): Promise<void> {
     const token = event.target.value;
-    const choices = await getCampaignChoices(token);
+    const choices = await fetchCampaignChoices(token);
 
     const select = $(`[name="${campaignInputName}"]`);
     select.empty();
@@ -82,10 +87,13 @@ export async function registerSettings(): Promise<void> {
             type: String,
             default: '',
             onChange(value) {
-                game.modules.get(moduleConfig.name).api.setToken(value);
+                game.modules.get(moduleConfig.name).setApiToken(value);
             },
         },
     );
+
+    // Call this after registering the token because it needs access to that setting
+    const campaigns = await game.modules.get(moduleConfig.name).loadAllCampaigns();
 
     game.settings.register(
         moduleConfig.name,
@@ -97,7 +105,7 @@ export async function registerSettings(): Promise<void> {
             config: true,
             type: String,
             default: '',
-            choices: await getCampaignChoices(getSettings(KankaSettings.accessToken)),
+            choices: await buildCampaignChoices(campaigns),
             onChange() {
                 Object
                     .values(ui.windows)
