@@ -5,11 +5,13 @@ import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import {
-    MetaDataBasicVisibility,
+    kankaImportTypeSetting,
     KankaSettings,
     MetaDataAttributeVisibility,
-    MetaDataCharacterTraitVisibility, kankaImportTypeSetting,
+    MetaDataBasicVisibility,
+    MetaDataCharacterTraitVisibility,
 } from '../types/KankaSettings';
+import validateAccessToken from '../util/validateAccessToken';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
 
@@ -74,8 +76,6 @@ export function clearSettings(): void {
 }
 
 export async function registerSettings(): Promise<void> {
-    $(document).on('change', `[name="${accessTokenInputName}"]`, updateWorldList);
-
     game.settings.register(
         moduleConfig.name,
         KankaSettings.accessToken,
@@ -87,6 +87,7 @@ export async function registerSettings(): Promise<void> {
             type: String,
             default: '',
             onChange(value) {
+                validateAccessToken(value);
                 game.modules.get(moduleConfig.name).setApiToken(value);
             },
         },
@@ -216,4 +217,5 @@ export async function registerSettings(): Promise<void> {
         });
 
     game.settings.sheet.render(); // update sheet if it already visible
+    $(document).on('change', `[name="${accessTokenInputName}"]`, updateWorldList);
 }
