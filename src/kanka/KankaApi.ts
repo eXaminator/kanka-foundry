@@ -3,35 +3,9 @@ import { logInfo } from '../logger';
 import { KankaEntityBaseData, KankaListResult, KankaResult } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
 import getSetting from '../module/getSettings';
+import createThrottle from '../util/createThrottle';
 
-const THROTTLE_TIMEFRAME = 60;
-const THROTTLE_LIMIT = 30;
-const requestThrottleSlots: ReturnType<typeof setTimeout>[] = [];
-const requestThrottleQueue: (() => void)[] = [];
-
-function throttleRequests(): Promise<void> {
-    logInfo('throttleRequests', { slots: requestThrottleSlots.length, queue: requestThrottleQueue.length });
-
-    return new Promise((resolve) => {
-        const run = (): void => {
-            const timeout = setTimeout(() => {
-                logInfo('throttleRequests – free slot');
-                requestThrottleSlots.splice(requestThrottleSlots.indexOf(timeout), 1);
-                const runNext = requestThrottleQueue.shift();
-                if (runNext) runNext();
-            }, THROTTLE_TIMEFRAME * 1000);
-            requestThrottleSlots.push(timeout);
-            resolve();
-        };
-
-        if (requestThrottleSlots.length < THROTTLE_LIMIT) {
-            run();
-        } else {
-            logInfo('throttleRequests – add to queue');
-            requestThrottleQueue.push(run);
-        }
-    });
-}
+const throttle = createThrottle(61, 29);
 
 export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseData[]> {
     #token?: string;
@@ -69,7 +43,7 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
     }
 
     private async fetch(url: string): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
-        await throttleRequests();
+        await throttle();
 
         const parsedUrl = new URL(url);
         parsedUrl.searchParams.set('related', '1');
