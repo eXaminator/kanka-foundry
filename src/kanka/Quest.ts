@@ -30,7 +30,7 @@ export default class Quest extends KankaEntity<QuestData> {
     #organisations = new KankaEntityCollection(this.api.withPath('quest_organisations'), QuestOrganisation);
 
     get entityType(): EntityType {
-        return EntityType.journal;
+        return EntityType.quest;
     }
 
     public get type(): string | undefined {
