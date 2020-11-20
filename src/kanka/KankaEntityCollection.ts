@@ -1,12 +1,15 @@
-import { KankaEntityData } from '../types/kanka';
+import { KankaEntityBaseData } from '../types/kanka';
+import EntityBase from './EntityBase';
 import KankaApi from './KankaApi';
-import KankaEntity from './KankaEntity';
 
-interface EntityConstructor<T extends KankaEntity<D>, D extends KankaEntityData> {
+interface EntityConstructor<T extends EntityBase<D>, D extends KankaEntityBaseData> {
     new(api: KankaApi<D>, data: D): T
 }
 
-export default class KankaEntityCollection<T extends KankaEntity<D>, D extends KankaEntityData = KankaEntityData> {
+export default class KankaEntityCollection<
+    T extends EntityBase<D>,
+    D extends KankaEntityBaseData = KankaEntityBaseData
+> {
     #entries?: Map<number, T>;
 
     constructor(

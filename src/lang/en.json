@@ -30,6 +30,11 @@
     "KANKA.SettingsMetaDataCharacterTraitVisibility.value.appearance": "Appearance traits",
     "KANKA.SettingsMetaDataCharacterTraitVisibility.value.personality": "Personality traits",
     "KANKA.SettingsMetaDataCharacterTraitVisibility.value.none": "No character traits",
+    "KANKA.SettingsMetaDataQuestReferenceVisibility.label": "Quest reference import",
+    "KANKA.SettingsMetaDataQuestReferenceVisibility.hint": "Which referenced quest entities should be imported as meta data.",
+    "KANKA.SettingsMetaDataQuestReferenceVisibility.value.all": "All quest references",
+    "KANKA.SettingsMetaDataQuestReferenceVisibility.value.public": "All public quest references",
+    "KANKA.SettingsMetaDataQuestReferenceVisibility.value.none": "No quest references",
     "KANKA.SettingsImageInText.label": "Include image in text",
     "KANKA.SettingsImageInText.hint": "Should the image be include next to the text in addition to the regular journal entry image?",
     "KANKA.SettingsEntityTypeVisibility.hint": "Should this type of entity be loaded? Reducing the types of entity also reduces the number of requests made to Kanka and thus improves the performance.",
@@ -63,5 +68,9 @@
     "KANKA.MetaData.personality": "Personality",
     "KANKA.MetaData.appearance": "Appearance",
     "KANKA.MetaData.boolean.true": "Yes",
-    "KANKA.MetaData.boolean.false": "No"
+    "KANKA.MetaData.boolean.false": "No",
+    "KANKA.MetaData.characters": "Characters",
+    "KANKA.MetaData.locations": "Locations",
+    "KANKA.MetaData.items": "Items",
+    "KANKA.MetaData.organisations": "Organisations"
 }

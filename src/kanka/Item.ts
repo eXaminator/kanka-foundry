@@ -19,8 +19,8 @@ export default class Item extends KankaEntity<ItemData> {
         return this.data.size;
     }
 
-    protected buildMetaData(): void {
-        super.buildMetaData();
+    protected async buildMetaData(): Promise<void> {
+        await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });
         this.addMetaData({ label: 'price', value: this.price });
         this.addMetaData({ label: 'size', value: this.size });

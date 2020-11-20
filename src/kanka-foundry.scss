@@ -92,8 +92,13 @@ button#kanka {
         white-space: nowrap;
     }
 
-    td {
-        padding: 0 .5em;
+    th, td {
+        padding: .25em .5em;
+    }
+
+    .kanka-reference-link {
+        color: inherit;
+        text-decoration: none;
     }
 }
 

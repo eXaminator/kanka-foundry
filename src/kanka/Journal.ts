@@ -15,8 +15,8 @@ export default class Journal extends KankaEntity<JournalData> {
         return this.data.date;
     }
 
-    protected buildMetaData(): void {
-        super.buildMetaData();
+    protected async buildMetaData(): Promise<void> {
+        await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });
         this.addMetaData({ label: 'date', value: this.date });
     }

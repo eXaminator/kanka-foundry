@@ -33,8 +33,12 @@ export interface KankaAttribute {
     is_star: boolean;
 }
 
-export interface KankaEntityData {
+export interface KankaEntityBaseData {
     id: number;
+    is_private: boolean;
+}
+
+export interface KankaEntityData extends KankaEntityBaseData {
     entity_id: number;
     name: string;
     entry: string;
@@ -42,7 +46,6 @@ export interface KankaEntityData {
     image_full?: string;
     image_thumb?: string;
     has_custom_image?: boolean;
-    is_private: boolean;
     attributes?: KankaAttribute[];
 }
 
@@ -126,9 +129,32 @@ export interface AbilityData extends KankaEntityData {
     ability_id?: number;
 }
 
+export interface QuestReferenceData extends KankaEntityBaseData {
+    description?: string;
+    role?: string;
+}
+
+export interface QuestCharacterData extends QuestReferenceData {
+    character_id: number;
+}
+
+export interface QuestLocationData extends QuestReferenceData {
+    location_id: number;
+}
+
+export interface QuestItemData extends QuestReferenceData {
+    item_id: number;
+}
+
+export interface QuestOrganisationData extends QuestReferenceData {
+    organisation_id: number;
+}
+
 export interface QuestData extends KankaEntityData {
     type?: string;
     date?: string;
     is_completed: boolean;
     quest_id?: number;
+    characters: number;
+    locations: number;
 }

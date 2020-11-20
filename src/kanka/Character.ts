@@ -28,8 +28,8 @@ export default class Character extends KankaEntity<CharacterData> {
         return this.data.title;
     }
 
-    protected buildMetaData(): void {
-        super.buildMetaData();
+    protected async buildMetaData(): Promise<void> {
+        await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });
         this.addMetaData({ label: 'title', value: this.title });
         this.addMetaData({ label: 'sex', value: this.sex });

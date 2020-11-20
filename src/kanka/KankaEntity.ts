@@ -2,20 +2,17 @@ import EntityType from '../types/EntityType';
 import { KankaEntityData } from '../types/kanka';
 import { MetaDataType } from '../types/KankaSettings';
 import EntityAttribute from './EntityAttribute';
+import EntityBase from './EntityBase';
 import EntityMetaData from './EntityMetaData';
 import KankaApi from './KankaApi';
 
-export default abstract class KankaEntity<T extends KankaEntityData = KankaEntityData> {
+export default abstract class KankaEntity<T extends KankaEntityData = KankaEntityData> extends EntityBase<T> {
     readonly #attributes: EntityAttribute[];
-    #metaData: EntityMetaData[] = [];
+    #metaData?: EntityMetaData[];
 
-    constructor(protected api: KankaApi<T>, protected data: T) {
+    constructor(api: KankaApi<T>, data: T) {
+        super(api, data);
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
-        this.buildMetaData();
-    }
-
-    public get id(): number {
-        return this.data.id;
     }
 
     abstract get entityType(): EntityType;
@@ -26,10 +23,6 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
 
     public get entityId(): number {
         return this.data.entity_id;
-    }
-
-    public get isPrivate(): boolean {
-        return this.data.is_private;
     }
 
     public get name(): string {
@@ -45,21 +38,28 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         return this.data.entry_parsed;
     }
 
-    public get metaData(): EntityMetaData[] {
+    public async metaData(): Promise<EntityMetaData[]> {
+        if (!this.#metaData) {
+            this.#metaData = [];
+            await this.buildMetaData();
+        }
+
         return this.#metaData;
     }
 
-    public get metaDataSections(): string[] {
-        return Array.from(this.metaData)
+    public async metaDataSections(): Promise<string[]> {
+        const metaData = await this.metaData();
+        return metaData
             .map(data => data.section ?? '')
             .filter((section, index, all) => all.indexOf(section) === index);
     }
 
-    public getMetaDataBySection(section?: string): EntityMetaData[] {
-        return Array.from(this.metaData).filter(data => data.section === section);
+    public async getMetaDataBySection(section?: string): Promise<EntityMetaData[]> {
+        const metaData = await this.metaData();
+        return metaData.filter(data => data.section === section);
     }
 
-    protected buildMetaData(): void {
+    protected async buildMetaData(): Promise<void> {
         let currentSection: EntityAttribute | undefined;
 
         this.attributes
@@ -82,6 +82,10 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
     protected addMetaData(data?: Partial<EntityMetaData>, keepFalsyValue = false): void {
         if (!data) return;
 
+        if (!this.#metaData) {
+            this.#metaData = [];
+        }
+
         if (keepFalsyValue || !!data.value) {
             this.#metaData.push({
                 originalData: data.originalData,
@@ -89,6 +93,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
                 value: data.value,
                 section: data.section ?? '',
                 type: data.type ?? MetaDataType.basic,
+                linkTo: data.linkTo,
             });
         }
     }

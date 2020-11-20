@@ -15,8 +15,8 @@ export default class Ability extends KankaEntity<AbilityData> {
         return this.data.charges;
     }
 
-    protected buildMetaData(): void {
-        super.buildMetaData();
+    protected async buildMetaData(): Promise<void> {
+        await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });
         this.addMetaData({ label: 'charges', value: this.charges });
     }

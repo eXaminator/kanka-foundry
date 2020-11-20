@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
-import { KankaEntityData, KankaListResult, KankaResult } from '../types/kanka';
+import { KankaEntityBaseData, KankaListResult, KankaResult } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
 import getSetting from '../module/getSettings';
 
@@ -33,18 +33,18 @@ function throttleRequests(): Promise<void> {
     });
 }
 
-export default class KankaApi<T extends KankaEntityData | KankaEntityData[]> {
+export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseData[]> {
     #token?: string;
 
     constructor(
         protected baseUrl: string,
-        protected parentApi?: KankaApi<KankaEntityData | KankaEntityData[]>,
+        protected parentApi?: KankaApi<KankaEntityBaseData | KankaEntityBaseData[]>,
         token?: string,
     ) {
         this.#token = token;
     }
 
-    static createRoot<C extends KankaEntityData = KankaEntityData>(token?: string): KankaApi<C> {
+    static createRoot<C extends KankaEntityBaseData = KankaEntityBaseData>(token?: string): KankaApi<C> {
         return new KankaApi<C>('https://kanka.io/api/1.0', undefined, token);
     }
 
@@ -52,11 +52,11 @@ export default class KankaApi<T extends KankaEntityData | KankaEntityData[]> {
         return this.#token ?? this.parentApi?.token;
     }
 
-    public withUrl<C extends KankaEntityData | KankaEntityData[]>(url: string): KankaApi<C> {
+    public withUrl<C extends KankaEntityBaseData | KankaEntityBaseData[]>(url: string): KankaApi<C> {
         return new KankaApi<C>(url, this);
     }
 
-    public withPath<C extends KankaEntityData | KankaEntityData[]>(path: string|number): KankaApi<C> {
+    public withPath<C extends KankaEntityBaseData | KankaEntityBaseData[]>(path: string|number): KankaApi<C> {
         return new KankaApi<C>(`${this.baseUrl}/${String(path)}`, this);
     }
 

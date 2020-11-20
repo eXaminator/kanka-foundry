@@ -1,16 +1,28 @@
 import EntityAttribute from '../kanka/EntityAttribute';
 import EntityMetaData from '../kanka/EntityMetaData';
 import KankaEntity from '../kanka/KankaEntity';
+import QuestReference from '../kanka/QuestReference';
 import moduleConfig from '../module.json';
 import { CharacterTrait } from '../types/kanka';
 import {
     KankaSettings,
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
-    MetaDataCharacterTraitVisibility,
+    MetaDataCharacterTraitVisibility, MetaDataQuestReferenceVisibility,
     MetaDataType,
 } from '../types/KankaSettings';
 import getSetting from './getSettings';
+
+interface MetaData {
+    label: string;
+    value: string;
+    linkTo?: KankaEntity;
+}
+
+interface MetaDataSection {
+    label: string;
+    data: MetaData[];
+}
 
 export function findEntriesByType(type: string): JournalEntry[] {
     return game.journal.filter(e => e.getFlag(moduleConfig.name, 'type') === type);
@@ -143,27 +155,45 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
         );
     }
 
+    if (data.type === MetaDataType.questReference) {
+        return checkSetting(
+            data as EntityMetaData<QuestReference>,
+            KankaSettings.metaDataQuestReferenceVisibility,
+            {
+                [MetaDataQuestReferenceVisibility.all]: true,
+                [MetaDataQuestReferenceVisibility.public]: original => !original.isPrivate,
+                [MetaDataQuestReferenceVisibility.none]: false,
+            },
+        );
+    }
+
     return true;
 }
 
-function buildMetaDataForSection(entity: KankaEntity, section?: string): { label: string, value: string }[] {
-    return entity.getMetaDataBySection(section)
+async function buildMetaDataForSection(entity: KankaEntity, section?: string): Promise<MetaData[]> {
+    const metaData = await entity.getMetaDataBySection(section);
+
+    return metaData
         .filter(byMetaDataConfiguration)
         .map(data => ({
             label: translateMetaDataLabel(data.label),
             value: translateMetaDataValue(data.value),
+            linkTo: data.linkTo,
         }));
 }
 
-function buildMetaData(entity: KankaEntity): { label: string, data: { label: string, value: string }[] }[] {
-    return entity
-        .metaDataSections
-        .sort(a => (!a ? -1 : 0))
-        .map(section => ({
+async function buildMetaData(entity: KankaEntity): Promise<MetaDataSection[]> {
+    const sections = await entity.metaDataSections();
+
+    const metaData = await Promise.all(sections.map(section => buildMetaDataForSection(entity, section)));
+
+    return sections
+        .map((section, index) => ({
             label: translateMetaDataLabel(section),
-            data: buildMetaDataForSection(entity, section),
+            data: metaData[index],
         }))
-        .filter(section => section.data.length > 0);
+        .filter(section => section.data.length > 0)
+        .sort(a => (!a.label ? -1 : 0));
 }
 
 export async function writeJournalEntry(
@@ -177,7 +207,7 @@ export async function writeJournalEntry(
         `modules/${moduleConfig.name}/templates/journalEntry.html`,
         {
             entity,
-            metaData: buildMetaData(entity),
+            metaData: await buildMetaData(entity),
             includeImage: entity.image && getSetting(KankaSettings.imageInText),
         },
     );

@@ -11,8 +11,8 @@ export default class Family extends KankaEntity<FamilyData> {
         return this.data.type;
     }
 
-    protected buildMetaData(): void {
-        super.buildMetaData();
+    protected async buildMetaData(): Promise<void> {
+        await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });
     }
 }

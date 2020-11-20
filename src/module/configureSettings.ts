@@ -10,6 +10,7 @@ import {
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
     MetaDataCharacterTraitVisibility,
+    MetaDataQuestReferenceVisibility,
 } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
 import getSettings from './getSettings';
@@ -194,6 +195,24 @@ export async function registerSettings(): Promise<void> {
                 [MetaDataCharacterTraitVisibility.appearance]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.appearance'),
                 [MetaDataCharacterTraitVisibility.personality]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.personality'),
                 [MetaDataCharacterTraitVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataCharacterTraitVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataQuestReferenceVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataQuestReferenceVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataQuestReferenceVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataQuestReferenceVisibility.public,
+            choices: {
+                [MetaDataQuestReferenceVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataQuestReferenceVisibility.value.all'),
+                [MetaDataQuestReferenceVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataQuestReferenceVisibility.value.public'),
+                [MetaDataQuestReferenceVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataQuestReferenceVisibility.value.none'),
             },
         },
     );

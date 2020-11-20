@@ -9,7 +9,20 @@
         {{/if}}
         {{#each this.data}}
             <tr>
-                <th>{{{ this.label }}}</th>
+                <th>
+                    {{#if this.linkTo}}
+                    <a
+                        href="{{ kankaLink this.linkTo.entityType this.linkTo.id }}"
+                        data-id="{{ this.linkTo.entityId }}"
+                        class="kanka-reference-link"
+                    >
+                        {{{ this.label }}}
+                        <i class="fas fa-link"></i>
+                    </a>
+                    {{else}}
+                        {{{ this.label }}}
+                    {{/if}}
+                </th>
                 <td>{{{ this.value }}}</td>
             </tr>
         {{/each}}
