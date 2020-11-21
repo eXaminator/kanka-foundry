@@ -31,7 +31,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
 
     public get image(): string | undefined {
         if (this.data.has_custom_image === false) return undefined;
-        return this.data.image_full;
+        return `https://kanka-user-assets.s3.eu-central-1.amazonaws.com/${this.data.image}`;
     }
 
     public get entry(): string {

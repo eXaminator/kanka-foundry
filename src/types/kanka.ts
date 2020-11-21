@@ -43,6 +43,7 @@ export interface KankaEntityData extends KankaEntityBaseData {
     name: string;
     entry: string;
     entry_parsed: string;
+    image?: string;
     image_full?: string;
     image_thumb?: string;
     has_custom_image?: boolean;
