@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/eXaminator/kanka-foundry/compare/1.0.0...1.0.1) (2020-11-21)
+
+
+### Bug Fixes
+
+* **manifest:** update foundry manifest ([c1891fc](https://github.com/eXaminator/kanka-foundry/commit/c1891fcf7c3445e5aa6047cdc21fa11e945288c4)), closes [#5](https://github.com/eXaminator/kanka-foundry/issues/5) [#6](https://github.com/eXaminator/kanka-foundry/issues/6)
+
 # 1.0.0 (2020-11-21)
 
 
