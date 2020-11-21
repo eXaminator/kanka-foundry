@@ -1,3 +1,11 @@
+## [1.0.3](https://github.com/eXaminator/kanka-foundry/compare/1.0.2...1.0.3) (2020-11-21)
+
+
+### Bug Fixes
+
+* **api:** ensure that all requests are made with https instead of http ([efa9e8c](https://github.com/eXaminator/kanka-foundry/commit/efa9e8c2db3c131b4e700cd644591628133faca7))
+* **settings:** improve handling for missing or invalid access token ([0e9e36f](https://github.com/eXaminator/kanka-foundry/commit/0e9e36f5aa4335354a8939b2f99596aa49ba6164))
+
 ## [1.0.2](https://github.com/eXaminator/kanka-foundry/compare/1.0.1...1.0.2) (2020-11-21)
 
 
