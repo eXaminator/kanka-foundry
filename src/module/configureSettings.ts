@@ -31,7 +31,26 @@ function buildCampaignChoices(campaigns: Campaign[]): Record<string, string> {
     return campaignChoices;
 }
 
-async function fetchCampaignChoices(token?: string): Promise<Record<string, string>> {
+async function fetchInitialCampaignChoices(): Promise<Record<string, string>> {
+    if (!getSettings(KankaSettings.accessToken)) {
+        return {
+            '': game.i18n.localize('KANKA.SettingsCampaign.noToken'),
+        };
+    }
+
+    try {
+        const campaigns = await game.modules.get(moduleConfig.name).loadAllCampaigns();
+
+        return buildCampaignChoices(campaigns);
+    } catch (error) {
+        logError('Error while fetching initial campaign choices', error);
+        return {
+            '': game.i18n.localize('KANKA.Error.fetchError'),
+        };
+    }
+}
+
+async function fetchCampaignChoicesByToken(token?: string): Promise<Record<string, string>> {
     if (!token) {
         return {
             '': game.i18n.localize('KANKA.SettingsCampaign.noToken'),
@@ -45,7 +64,7 @@ async function fetchCampaignChoices(token?: string): Promise<Record<string, stri
 
         return buildCampaignChoices(campaigns);
     } catch (error) {
-        logError(error);
+        logError('Error while fetching campaign choices with new token', error);
         return {
             '': game.i18n.localize('KANKA.Error.fetchError'),
         };
@@ -54,7 +73,7 @@ async function fetchCampaignChoices(token?: string): Promise<Record<string, stri
 
 async function updateWorldList(event: JQuery.TriggeredEvent): Promise<void> {
     const token = event.target.value;
-    const choices = await fetchCampaignChoices(token);
+    const choices = await fetchCampaignChoicesByToken(token);
 
     const select = $(`[name="${campaignInputName}"]`);
     select.empty();
@@ -94,9 +113,6 @@ export async function registerSettings(): Promise<void> {
         },
     );
 
-    // Call this after registering the token because it needs access to that setting
-    const campaigns = await game.modules.get(moduleConfig.name).loadAllCampaigns();
-
     game.settings.register(
         moduleConfig.name,
         KankaSettings.campaign,
@@ -107,7 +123,7 @@ export async function registerSettings(): Promise<void> {
             config: true,
             type: String,
             default: '',
-            choices: await buildCampaignChoices(campaigns),
+            choices: await fetchInitialCampaignChoices(),
             onChange() {
                 Object
                     .values(ui.windows)
