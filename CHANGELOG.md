@@ -5,6 +5,13 @@
 
 * **ci:** add updated manifest file to module package ([cdde292](https://github.com/eXaminator/kanka-foundry/commit/cdde2923503d356aac99504d96529a0ef7f6ede1))
 
+## [1.0.2](https://github.com/eXaminator/kanka-foundry/compare/1.0.1...1.0.2) (2020-11-21)
+
+
+### Bug Fixes
+
+* **ci:** add updated manifest file to module package ([cdde292](https://github.com/eXaminator/kanka-foundry/commit/cdde2923503d356aac99504d96529a0ef7f6ede1))
+
 ## [1.0.1](https://github.com/eXaminator/kanka-foundry/compare/1.0.0...1.0.1) (2020-11-21)
 
 
