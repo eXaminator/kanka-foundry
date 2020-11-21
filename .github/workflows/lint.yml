@@ -1,0 +1,32 @@
+name: Lint
+on:
+    - pull_request
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [ 10.x ]
+
+        steps:
+            -   uses: actions/checkout@v1
+                with:
+                    fetch-depth: 1
+
+            -   name: Setup Node ${{ matrix.node-version }}
+                uses: actions/setup-node@v1
+                with:
+                    node-version: ${{ matrix.node-version }}
+
+            -   name: npm install
+                working-directory: ./application
+                run: npm ci --ignore-scripts
+
+            -   uses: sibiraj-s/action-eslint@v1
+                with:
+                    eslintArgs: '--ignore-path .gitignore --quiet'
+                    extensions: 'js, ts'
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
