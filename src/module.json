@@ -1,7 +1,7 @@
 {
   "name": "kanka-foundry",
-  "title": "Kanka Foundry",
-  "description": "Some description...",
+  "title": "Kanka-Foundry",
+  "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign\nmanagement tool, with <a href=\"http://foundryvtt.com\">Foundry Virtual Tabletop</a>, allowing you to import entries written\nin Kanka as journal entries into Foundry VTT. this module imports Kanka entries including their main entry text,\ntheir main image and some metadata, which will be included as a table above the main entry text.</p>",
   "url": "",
   "manifest": "",
   "download": "",
@@ -17,5 +17,5 @@
     }
   ],
   "minimumCoreVersion": "0.7.5",
-  "compatibleCoreVersion": "0.7.5"
+  "compatibleCoreVersion": "0.7.7"
 }
