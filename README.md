@@ -1,3 +1,5 @@
+<img src="./docs/assets/kanka-foundry-logo.png" alt="Logo of Kanka-Foundry" />
+
 # Kanka-Foundry
 This is a module which integrates [Kanka.io](https://kanka.io), a free worldbuilding and tabletop RPG campaign
 management tool, with [Foundry Virtual Tabletop](http://foundryvtt.com), allowing you to import entries written
