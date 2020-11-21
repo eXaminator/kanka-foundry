@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/eXaminator/kanka-foundry/compare/1.0.3...1.1.0) (2020-11-21)
+
+
+### Bug Fixes
+
+* **translations:** change "meta data" to "metadata" ([ec7c142](https://github.com/eXaminator/kanka-foundry/commit/ec7c142952822bf5a8c69290a704bb41cfb39246))
+* use correct translation for folder names ([e9a95a1](https://github.com/eXaminator/kanka-foundry/commit/e9a95a1f10ce5327f2568007ec50b7768c556af5))
+
+
+### Features
+
+* **translations:** add German translations ([a214986](https://github.com/eXaminator/kanka-foundry/commit/a2149865441186bc32757a29164050832d8d680c))
+
 ## [1.0.3](https://github.com/eXaminator/kanka-foundry/compare/1.0.2...1.0.3) (2020-11-21)
 
 
