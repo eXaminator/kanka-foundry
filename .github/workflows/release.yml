@@ -22,9 +22,6 @@ jobs:
                 run: npm run check
             -   name: Build
                 run: npm run build
-            -   name: Zip Files
-                working-directory: ./dist
-                run: zip -r ../module.zip .
             -   name: Substitute Manifest and Download Links For Versioned Ones
                 id: sub_manifest_link_latest
                 uses: microsoft/variable-substitution@v1

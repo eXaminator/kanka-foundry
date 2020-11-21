@@ -7,12 +7,14 @@ plugins:
     - '@semantic-release/npm'
     - '@semantic-release/changelog'
     - '@semantic-release/git'
-    -   - "@google/semantic-release-replace-plugin"
+    -   - '@google/semantic-release-replace-plugin'
         -   replacements:
             -   files: [ dist/module.json ]
                 from: "\"version\": \"0.0.0\""
                 to: "\"version\": \"${nextRelease.version}\""
-    -   - "@semantic-release/github"
+    -   - '@semantic-release/exec'
+        - prepareCmd: cd ./dist && zip -r ../module.zip .
+    -   - '@semantic-release/github'
         - assets:
             -   path: dist/module.json
                 label: Module manifest
