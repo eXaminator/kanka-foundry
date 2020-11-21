@@ -1,9 +1,9 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { join, resolve, extname, basename } = require('path');
+const { resolve, extname, basename } = require('path');
 const moduleConfig = require('./src/module.json');
 
-const devMode = process.env.NODE_ENV !== 'production';
+const devMode = process.env.NODE_ENV === 'development';
 
 const esModuleEntryPoints = moduleConfig.esmodules
     .reduce((map, file) => {
