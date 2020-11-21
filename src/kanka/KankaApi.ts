@@ -45,7 +45,7 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
     private async fetch(url: string): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
         await throttle();
 
-        const parsedUrl = new URL(url);
+        const parsedUrl = new URL(url.replace('http://', 'https://'));
         parsedUrl.searchParams.set('related', '1');
 
         logInfo('request kanka API', { url: parsedUrl.toString() });

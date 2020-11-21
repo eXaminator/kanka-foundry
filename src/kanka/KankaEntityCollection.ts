@@ -58,7 +58,7 @@ export default class KankaEntityCollection<
             return null;
         }
 
-        return pageApi.withUrl(links.next.replace('http://', 'https://'));
+        return pageApi.withUrl(links.next);
     }
 
     private addEntries(...entries: T[]): void {
