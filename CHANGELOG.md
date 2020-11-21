@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/eXaminator/kanka-foundry/compare/1.1.0...1.1.1) (2020-11-21)
+
+
+### Bug Fixes
+
+* use original sized image from Kanka ([a60e7ad](https://github.com/eXaminator/kanka-foundry/commit/a60e7ad209d7ee9b001397cc6b7fa25c09ec74ca)), closes [#11](https://github.com/eXaminator/kanka-foundry/issues/11)
+
 # [1.1.0](https://github.com/eXaminator/kanka-foundry/compare/1.0.3...1.1.0) (2020-11-21)
 
 
