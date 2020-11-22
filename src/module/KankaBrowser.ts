@@ -1,5 +1,5 @@
-import Campaign from '../kanka/Campaign';
-import KankaEntity from '../kanka/KankaEntity';
+import Campaign from '../kanka/entities/Campaign';
+import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
@@ -8,7 +8,7 @@ import getSetting from './getSettings';
 import { ensureJournalFolder, findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
 
 interface EntityList {
-    items: KankaEntity[];
+    items: PrimaryEntity[];
     icon: string;
     isOpen: boolean;
 }
@@ -96,6 +96,7 @@ export default class KankaBrowser extends Application {
     }
 
     async getData(): Promise<TemplateData> {
+        // Clear cache on every reload to ensure that the lists always shows all current elements
         const campaign = await this.getCampaign();
 
         Handlebars.registerHelper('kankaLink', (type?: string, id?: number) => {
@@ -112,7 +113,7 @@ export default class KankaBrowser extends Application {
             return parts.join('/');
         });
 
-        Handlebars.registerHelper('hasKankaJournalEntry', (entity: KankaEntity) => {
+        Handlebars.registerHelper('hasKankaJournalEntry', (entity: PrimaryEntity) => {
             const entry = findEntryByEntity(entity);
             return Boolean(entry);
         });
@@ -133,10 +134,10 @@ export default class KankaBrowser extends Application {
     private async loadEntityListData(
         campaign: Campaign,
         types: EntityType[],
-    ): Promise<Partial<Record<EntityType, KankaEntity[]>>> {
-        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all(true)));
+    ): Promise<Partial<Record<EntityType, PrimaryEntity[]>>> {
+        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all()));
 
-        const result: Partial<Record<EntityType, KankaEntity[]>> = {};
+        const result: Partial<Record<EntityType, PrimaryEntity[]>> = {};
 
         types.forEach((type, index) => {
             result[type] = lists[index];
@@ -145,7 +146,7 @@ export default class KankaBrowser extends Application {
         return result;
     }
 
-    private async renderEntityTemplate(lists: Partial<Record<EntityType, KankaEntity[]>>): Promise<string> {
+    private async renderEntityTemplate(lists: Partial<Record<EntityType, PrimaryEntity[]>>): Promise<string> {
         const data = {};
         const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
 
@@ -215,7 +216,7 @@ export default class KankaBrowser extends Application {
                 case 'sync-entry':
                 case 'link-entry': {
                     if (!id || !type) return;
-                    const entity = await campaign.getByType(type)?.byId(Number(id), true);
+                    const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
                     await this.syncEntity(entity, action === 'link-entry');
                     break;
@@ -234,6 +235,7 @@ export default class KankaBrowser extends Application {
                     break;
 
                 case 'link-folder': {
+                    if (!type) return;
                     await this.linkFolder(type);
                     break;
                 }
@@ -247,7 +249,7 @@ export default class KankaBrowser extends Application {
 
     private async syncFolder(type: string): Promise<void> {
         const campaign = await this.getCampaign();
-        const entities = await campaign.getByType(type)?.all(true);
+        const entities = await campaign.getByType(type)?.all();
         if (!entities) {
             this.showError('BrowserSyncError');
             return;
@@ -263,7 +265,7 @@ export default class KankaBrowser extends Application {
 
     private async linkFolder(type: string): Promise<void> {
         const campaign = await this.getCampaign();
-        const entities = await campaign.getByType(type)?.all(true);
+        const entities = await campaign.getByType(type)?.all();
         if (!entities) {
             this.showError('BrowserSyncError');
             return;
@@ -277,7 +279,7 @@ export default class KankaBrowser extends Application {
         this.render();
     }
 
-    private async syncEntity(entity: KankaEntity, renderSheet = false, notification = true): Promise<void> {
+    private async syncEntity(entity: PrimaryEntity, renderSheet = false, notification = true): Promise<void> {
         await writeJournalEntry(entity, { renderSheet, notification });
         this.render();
     }

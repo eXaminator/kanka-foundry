@@ -1,4 +1,5 @@
 import CampaignRepository from '../kanka/CampaignRepository';
+import { cache } from '../kanka/EntityCache';
 import KankaApi from '../kanka/KankaApi';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
@@ -29,6 +30,10 @@ export default async function init(): Promise<void> {
     logInfo('Initializing');
 
     game.modules.get(moduleConfig.name).setApiToken = (token: string) => getApi().setToken(token);
+    game.modules.get(moduleConfig.name).clearApiCache = () => {
+        cache.clear();
+        getApi().cache.clear();
+    };
     game.modules.get(moduleConfig.name).loadAllCampaigns = () => getRepository().loadAll();
     game.modules.get(moduleConfig.name).loadCurrentCampaign = async () => {
         const id = getSettings(KankaSettings.campaign);

@@ -1,9 +1,10 @@
-import EntityType from '../types/EntityType';
-import { CharacterData } from '../types/kanka';
-import { MetaDataType } from '../types/KankaSettings';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { CharacterData } from '../../types/kanka';
+import { MetaDataType } from '../../types/KankaSettings';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Character extends KankaEntity<CharacterData> {
+export default class Character extends PrimaryEntity<CharacterData, Campaign> {
     get entityType(): EntityType {
         return EntityType.character;
     }

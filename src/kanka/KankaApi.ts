@@ -4,11 +4,13 @@ import { KankaEntityBaseData, KankaListResult, KankaResult } from '../types/kank
 import { KankaSettings } from '../types/KankaSettings';
 import getSetting from '../module/getSettings';
 import createThrottle from '../util/createThrottle';
+import KankaApiCacheEntry from './KankaApiCacheEntry';
 
 const throttle = createThrottle(61, 29);
 
 export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseData[]> {
     #token?: string;
+    #cache?: Map<string, KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>>;
 
     constructor(
         protected baseUrl: string,
@@ -23,7 +25,7 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
     }
 
     public get token(): string | undefined {
-        return this.#token ?? this.parentApi?.token;
+        return this.#token ?? this.parentApi?.token ?? getSetting<string>(KankaSettings.accessToken);
     }
 
     public withUrl<C extends KankaEntityBaseData | KankaEntityBaseData[]>(url: string): KankaApi<C> {
@@ -34,36 +36,70 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
         return new KankaApi<C>(`${this.baseUrl}/${String(path)}`, this);
     }
 
-    public async load(): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
-        return this.fetch(this.baseUrl);
-    }
-
     public setToken(token: string): void {
         this.#token = token;
     }
 
-    private async fetch(url: string): Promise<T extends unknown[] ? KankaListResult<T> : KankaResult<T>> {
-        await throttle();
-
-        const parsedUrl = new URL(url.replace('http://', 'https://'));
-        parsedUrl.searchParams.set('related', '1');
-
-        logInfo('request kanka API', { url: parsedUrl.toString() });
-        const response = await fetch(
-            parsedUrl.toString(),
-            {
-                mode: 'cors',
-                headers: {
-                    Authorization: `Bearer ${this.token ?? getSetting<string>(KankaSettings.accessToken)}`,
-                    'Content-type': 'application/json',
-                },
-            },
-        );
-
-        if (!response.ok) {
-            throw new Error(`Kanka request error: ${response.statusText} (${response.status})`);
+    public get cache(): Map<string, KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>> {
+        if (this.parentApi) {
+            return this.parentApi.cache;
         }
 
-        return response.json();
+        if (!this.#cache) {
+            this.#cache = new Map();
+        }
+
+        return this.#cache;
+    }
+
+    public get isCached(): boolean {
+        return this.cache.has(this.baseUrl);
+    }
+
+    public async load<
+        R extends T extends unknown[] ? KankaListResult<T> : KankaResult<T>
+    >(): Promise<R> {
+        const parsedUrl = new URL(this.baseUrl.replace('http://', 'https://'));
+        parsedUrl.searchParams.set('related', '1');
+        const url = parsedUrl.toString();
+
+        logInfo('request kanka API', { url: parsedUrl.toString(), inCache: this.isCached });
+
+        if (this.isCached) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            return this.cache.get(url)!.data as Promise<R>;
+        }
+
+        const cacheEntry = new KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>();
+        this.cache.set(url, cacheEntry);
+
+        try {
+            await throttle();
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const response = await fetch(
+                url,
+                {
+                    mode: 'cors',
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                        'Content-type': 'application/json',
+                    },
+                },
+            );
+
+            if (!response.ok) {
+                throw new Error(`Kanka request error: ${response.statusText} (${response.status})`);
+            }
+
+            const data = await response.json();
+            cacheEntry.resolve(data);
+            return data;
+        } catch (error) {
+            // Delete from cache if response was erroneous
+            cacheEntry.reject(error);
+            this.cache.delete(url);
+            throw error;
+        }
     }
 }

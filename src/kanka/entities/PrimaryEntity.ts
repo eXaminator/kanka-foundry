@@ -1,17 +1,21 @@
-import EntityType from '../types/EntityType';
-import { KankaEntityData } from '../types/kanka';
-import { MetaDataType } from '../types/KankaSettings';
+import EntityType from '../../types/EntityType';
+import { KankaEntityData } from '../../types/kanka';
+import { MetaDataType } from '../../types/KankaSettings';
+import Entity from '../Entity';
+import KankaApi from '../KankaApi';
 import EntityAttribute from './EntityAttribute';
 import EntityBase from './EntityBase';
 import EntityMetaData from './EntityMetaData';
-import KankaApi from './KankaApi';
 
-export default abstract class KankaEntity<T extends KankaEntityData = KankaEntityData> extends EntityBase<T> {
+export default abstract class PrimaryEntity<
+    T extends KankaEntityData = KankaEntityData,
+    P extends Entity = Entity
+> extends EntityBase<T, P> {
     readonly #attributes: EntityAttribute[];
     #metaData?: EntityMetaData[];
 
-    constructor(api: KankaApi<T>, data: T) {
-        super(api, data);
+    constructor(api: KankaApi<T>, data: T, parent: P) {
+        super(api, data, parent);
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
     }
 

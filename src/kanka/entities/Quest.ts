@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { QuestCharacterData, QuestData, QuestItemData, QuestLocationData, QuestOrganisationData } from '../types/kanka';
-import { MetaDataType } from '../types/KankaSettings';
-import KankaEntity from './KankaEntity';
-import KankaEntityCollection from './KankaEntityCollection';
+import EntityType from '../../types/EntityType';
+import { QuestData } from '../../types/kanka';
+import { MetaDataType } from '../../types/KankaSettings';
+import EntityCollection from '../EntityCollection';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 import QuestCharacter from './QuestCharacter';
 import QuestItem from './QuestItem';
 import QuestLocation from './QuestLocation';
@@ -23,11 +24,11 @@ function referenceValue(reference: QuestReference): string {
     return content.join('<br/>');
 }
 
-export default class Quest extends KankaEntity<QuestData> {
-    #characters = new KankaEntityCollection(this.api.withPath('quest_characters'), QuestCharacter);
-    #locations = new KankaEntityCollection(this.api.withPath('quest_locations'), QuestLocation);
-    #items = new KankaEntityCollection(this.api.withPath('quest_items'), QuestItem);
-    #organisations = new KankaEntityCollection(this.api.withPath('quest_organisations'), QuestOrganisation);
+export default class Quest extends PrimaryEntity<QuestData, Campaign> {
+    #characters = this.createCollection('quest_characters', QuestCharacter);
+    #locations = this.createCollection('quest_locations', QuestLocation);
+    #items = this.createCollection('quest_items', QuestItem);
+    #organisations = this.createCollection('quest_organisations', QuestOrganisation);
 
     get entityType(): EntityType {
         return EntityType.quest;
@@ -45,19 +46,19 @@ export default class Quest extends KankaEntity<QuestData> {
         return this.data.is_completed;
     }
 
-    public get characters(): KankaEntityCollection<QuestCharacter, QuestCharacterData> {
+    public get characters(): EntityCollection<QuestCharacter> {
         return this.#characters;
     }
 
-    public get locations(): KankaEntityCollection<QuestLocation, QuestLocationData> {
+    public get locations(): EntityCollection<QuestLocation> {
         return this.#locations;
     }
 
-    public get items(): KankaEntityCollection<QuestItem, QuestItemData> {
+    public get items(): EntityCollection<QuestItem> {
         return this.#items;
     }
 
-    public get organisations(): KankaEntityCollection<QuestOrganisation, QuestOrganisationData> {
+    public get organisations(): EntityCollection<QuestOrganisation> {
         return this.#organisations;
     }
 
