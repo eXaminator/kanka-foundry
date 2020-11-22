@@ -1,13 +1,12 @@
-import { QuestReferenceData } from '../types/kanka';
+import { QuestReferenceData } from '../../types/kanka';
 import EntityBase from './EntityBase';
-import KankaEntity from './KankaEntity';
+import PrimaryEntity from './PrimaryEntity';
+import type Quest from './Quest';
 
 export default abstract class QuestReference<
-    T extends KankaEntity = KankaEntity,
+    T extends PrimaryEntity = PrimaryEntity,
     D extends QuestReferenceData = QuestReferenceData
-> extends EntityBase<D> {
-    #entity?: T;
-
+> extends EntityBase<D, Quest> {
     get role(): string | undefined {
         return this.data.role;
     }
@@ -19,10 +18,6 @@ export default abstract class QuestReference<
     protected abstract loadReference(): Promise<T>;
 
     async entity(): Promise<T> {
-        if (!this.#entity) {
-            this.#entity = await this.loadReference();
-        }
-
-        return this.#entity;
+        return this.loadReference();
     }
 }

@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { ItemData } from '../types/kanka';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { ItemData } from '../../types/kanka';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Item extends KankaEntity<ItemData> {
+export default class Item extends PrimaryEntity<ItemData, Campaign> {
     get entityType(): EntityType {
         return EntityType.item;
     }

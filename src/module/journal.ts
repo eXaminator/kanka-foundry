@@ -1,14 +1,15 @@
-import EntityAttribute from '../kanka/EntityAttribute';
-import EntityMetaData from '../kanka/EntityMetaData';
-import KankaEntity from '../kanka/KankaEntity';
-import QuestReference from '../kanka/QuestReference';
+import EntityAttribute from '../kanka/entities/EntityAttribute';
+import EntityMetaData from '../kanka/entities/EntityMetaData';
+import PrimaryEntity from '../kanka/entities/PrimaryEntity';
+import QuestReference from '../kanka/entities/QuestReference';
 import moduleConfig from '../module.json';
 import { CharacterTrait } from '../types/kanka';
 import {
     KankaSettings,
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
-    MetaDataCharacterTraitVisibility, MetaDataQuestReferenceVisibility,
+    MetaDataCharacterTraitVisibility,
+    MetaDataQuestReferenceVisibility,
     MetaDataType,
 } from '../types/KankaSettings';
 import getSetting from './getSettings';
@@ -16,7 +17,7 @@ import getSetting from './getSettings';
 interface MetaData {
     label: string;
     value: string;
-    linkTo?: KankaEntity;
+    linkTo?: PrimaryEntity;
 }
 
 interface MetaDataSection {
@@ -32,7 +33,7 @@ export function findEntryByEntityId(id: number): JournalEntry | undefined {
     return game.journal.find(e => e.getFlag(moduleConfig.name, 'entityId') === id);
 }
 
-export function findEntryByEntity(entity: KankaEntity): JournalEntry | undefined {
+export function findEntryByEntity(entity: PrimaryEntity): JournalEntry | undefined {
     return findEntryByEntityId(entity.entityId);
 }
 
@@ -170,7 +171,7 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
     return true;
 }
 
-async function buildMetaDataForSection(entity: KankaEntity, section?: string): Promise<MetaData[]> {
+async function buildMetaDataForSection(entity: PrimaryEntity, section?: string): Promise<MetaData[]> {
     const metaData = await entity.getMetaDataBySection(section);
 
     return metaData
@@ -182,7 +183,7 @@ async function buildMetaDataForSection(entity: KankaEntity, section?: string): P
         }));
 }
 
-async function buildMetaData(entity: KankaEntity): Promise<MetaDataSection[]> {
+async function buildMetaData(entity: PrimaryEntity): Promise<MetaDataSection[]> {
     const sections = await entity.metaDataSections();
 
     const metaData = await Promise.all(sections.map(section => buildMetaDataForSection(entity, section)));
@@ -197,7 +198,7 @@ async function buildMetaData(entity: KankaEntity): Promise<MetaDataSection[]> {
 }
 
 export async function writeJournalEntry(
-    entity: KankaEntity,
+    entity: PrimaryEntity,
     options: { renderSheet?: boolean, notification?: boolean } = {},
 ): Promise<JournalEntry> {
     const { renderSheet = false, notification = true } = options;

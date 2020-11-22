@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { JournalData } from '../types/kanka';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { JournalData } from '../../types/kanka';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Journal extends KankaEntity<JournalData> {
+export default class Journal extends PrimaryEntity<JournalData, Campaign> {
     get entityType(): EntityType {
         return EntityType.journal;
     }

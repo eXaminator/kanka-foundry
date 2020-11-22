@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { EventData } from '../types/kanka';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { EventData } from '../../types/kanka';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Event extends KankaEntity<EventData> {
+export default class Event extends PrimaryEntity<EventData, Campaign> {
     get entityType(): EntityType {
         return EntityType.event;
     }

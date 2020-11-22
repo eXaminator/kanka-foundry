@@ -69,6 +69,7 @@ export interface CharacterData extends KankaEntityData {
     title?: string;
     age?: string;
     sex?: string;
+    location_id?: number;
     race_id?: number;
     family_id?: number;
     is_dead: boolean;

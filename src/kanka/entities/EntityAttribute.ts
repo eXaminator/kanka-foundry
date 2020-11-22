@@ -1,4 +1,4 @@
-import { KankaAttribute } from '../types/kanka';
+import { KankaAttribute } from '../../types/kanka';
 
 export default class EntityAttribute {
     readonly #name: string;

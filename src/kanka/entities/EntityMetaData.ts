@@ -1,9 +1,9 @@
-import { MetaDataType } from '../types/KankaSettings';
-import type KankaEntity from './KankaEntity';
+import { MetaDataType } from '../../types/KankaSettings';
+import type PrimaryEntity from './PrimaryEntity';
 
 export default interface EntityMetaData<
     T extends unknown = unknown,
-    E extends KankaEntity = KankaEntity
+    E extends PrimaryEntity = PrimaryEntity
 > {
     type: MetaDataType;
     section: string;

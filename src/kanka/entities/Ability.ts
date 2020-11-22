@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { AbilityData } from '../types/kanka';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { AbilityData } from '../../types/kanka';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Ability extends KankaEntity<AbilityData> {
+export default class Ability extends PrimaryEntity<AbilityData, Campaign> {
     get entityType(): EntityType {
         return EntityType.ability;
     }

@@ -1,8 +1,9 @@
-import EntityType from '../types/EntityType';
-import { LocationData } from '../types/kanka';
-import KankaEntity from './KankaEntity';
+import EntityType from '../../types/EntityType';
+import { LocationData } from '../../types/kanka';
+import type Campaign from './Campaign';
+import PrimaryEntity from './PrimaryEntity';
 
-export default class Location extends KankaEntity<LocationData> {
+export default class Location extends PrimaryEntity<LocationData, Campaign> {
     get entityType(): EntityType {
         return EntityType.location;
     }

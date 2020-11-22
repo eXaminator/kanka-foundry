@@ -1,4 +1,4 @@
-import Campaign from '../kanka/Campaign';
+import Campaign from '../kanka/entities/Campaign';
 import moduleConfig from '../module.json';
 import { findEntryByEntityId } from '../module/journal';
 
