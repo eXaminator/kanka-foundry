@@ -6,6 +6,7 @@ export default class EntityAttribute {
     readonly #type: string;
     readonly #isPrivate: boolean;
     readonly #isStarred: boolean;
+    readonly #defaultOrder: number;
 
     constructor(
         name: string,
@@ -13,12 +14,14 @@ export default class EntityAttribute {
         type: KankaAttribute['type'],
         isPrivate: boolean,
         isStarred: boolean,
+        defaultOrder: number,
     ) {
         this.#name = name;
         this.#value = value;
         this.#type = type ?? 'text';
         this.#isPrivate = isPrivate;
         this.#isStarred = isStarred;
+        this.#defaultOrder = defaultOrder;
 
         if (this.isCheckbox()) {
             this.#value = value === '1';
@@ -32,6 +35,7 @@ export default class EntityAttribute {
             attribute.type,
             attribute.is_private,
             attribute.is_star,
+            attribute.default_order,
         );
     }
 
@@ -41,6 +45,10 @@ export default class EntityAttribute {
 
     public get value(): string | boolean | null {
         return this.#value;
+    }
+
+    public get defaultOrder(): number {
+        return this.#defaultOrder;
     }
 
     public isPrivate(): boolean {

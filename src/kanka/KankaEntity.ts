@@ -63,6 +63,7 @@ export default abstract class KankaEntity<T extends KankaEntityData = KankaEntit
         let currentSection: EntityAttribute | undefined;
 
         this.attributes
+            .sort((a, b) => a.defaultOrder - b.defaultOrder)
             .forEach((attribute) => {
                 if (attribute.isSection()) {
                     currentSection = attribute;

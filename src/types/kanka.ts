@@ -31,6 +31,7 @@ export interface KankaAttribute {
     value: string | null;
     is_private: boolean;
     is_star: boolean;
+    default_order: number;
 }
 
 export interface KankaEntityBaseData {
