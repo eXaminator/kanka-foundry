@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/eXaminator/kanka-foundry/compare/1.1.1...1.2.0) (2020-11-23)
+
+
+### Bug Fixes
+
+* **metadata:** fix order of attributes to match those in Kanka ([faa2a06](https://github.com/eXaminator/kanka-foundry/commit/faa2a06a9d2a3d941a8d88b697c9ec44c40dd2d0))
+* **ui:** improve element list readability ([62f88d0](https://github.com/eXaminator/kanka-foundry/commit/62f88d00fe727324d1c19e7056f1473ef4bdf5b8))
+
+
+### Features
+
+* **metadata:** add location, race, family and other references to metadata ([db85a51](https://github.com/eXaminator/kanka-foundry/commit/db85a51b33bb2eed675359794cd77fa1ecd2c735)), closes [#12](https://github.com/eXaminator/kanka-foundry/issues/12)
+* **metadata:** show inventory in metadata on all supported entities ([f10576b](https://github.com/eXaminator/kanka-foundry/commit/f10576b5b52a350123bd7d8fdc5927b922f5fbf6))
+
 ## [1.1.1](https://github.com/eXaminator/kanka-foundry/compare/1.1.0...1.1.1) (2020-11-21)
 
 
