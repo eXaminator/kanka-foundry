@@ -16,10 +16,12 @@
             {{/if}}
         </div>
     </summary>
-    <ul>
+    <ul class="element-list">
         {{#each items}}
-        <li class="action-row">
-            <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>
+        <li class="action-row element-entry">
+            <div>
+                <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>
+            </div>
             <div class="actions">
                 {{#if (hasKankaJournalEntry this) }}
                 <button
