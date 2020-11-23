@@ -19,6 +19,7 @@ export function kankaImportTypeSetting(type: EntityType): KankaSettings {
 
 export enum MetaDataType {
     basic = 'basic',
+    reference = 'reference',
     attribute = 'attribute',
     characterTrait = 'characterTrait',
     questReference = 'questReference',

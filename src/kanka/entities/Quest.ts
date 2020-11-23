@@ -69,14 +69,17 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
         this.addMetaData({ label: 'isCompleted', value: this.isCompleted });
 
         await Promise.all([
-            this.addReferenceMetaData(this.#characters.all(), 'characters'),
-            this.addReferenceMetaData(this.#locations.all(), 'locations'),
-            // this.addReferenceMetaData(this.#items.all(), 'items'),
-            // this.addReferenceMetaData(this.#organisations.all(), 'organisations'),
+            this.addQuestReferenceMetaData(this.#characters.all(), 'characters'),
+            this.addQuestReferenceMetaData(this.#locations.all(), 'locations'),
+            // this.addQuestReferenceMetaData(this.#items.all(), 'items'),
+            // this.addQuestReferenceMetaData(this.#organisations.all(), 'organisations'),
         ]);
     }
 
-    private async addReferenceMetaData(referencePromises: Promise<QuestReference[]>, section: string): Promise<void> {
+    private async addQuestReferenceMetaData(
+        referencePromises: Promise<QuestReference[]>,
+        section: string,
+    ): Promise<void> {
         const references = await referencePromises;
         const entities = await Promise.all(references.map(ref => ref.entity()));
 
