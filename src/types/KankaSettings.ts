@@ -6,6 +6,7 @@ export enum KankaSettings {
     importPrivateEntities = 'importPrivateEntities',
     metaDataBasicVisibility = 'metaDataBasicVisibility',
     metaDataAttributeVisibility = 'metaDataAttributeVisibility',
+    metaDataInventoryVisibility = 'metaDataInventoryVisibility',
     metaDataCharacterTraitVisibility = 'metaDataCharacterTraitVisibility',
     metaDataQuestReferenceVisibility = 'metaDataQuestReferenceVisibility',
     imageInText = 'imageInText',
@@ -21,6 +22,7 @@ export enum MetaDataType {
     basic = 'basic',
     reference = 'reference',
     attribute = 'attribute',
+    inventory = 'inventory',
     characterTrait = 'characterTrait',
     questReference = 'questReference',
 }
@@ -46,6 +48,12 @@ export enum MetaDataCharacterTraitVisibility {
 }
 
 export enum MetaDataQuestReferenceVisibility {
+    all = 'all',
+    public = 'public',
+    none = 'none',
+}
+
+export enum MetaDataInventoryVisibility {
     all = 'all',
     public = 'public',
     none = 'none',
