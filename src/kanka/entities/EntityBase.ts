@@ -18,6 +18,14 @@ export default abstract class EntityBase<
         return this.data.is_private;
     }
 
+    protected async findReference<T extends EntityBase>(
+        collection: EntityCollection<T>,
+        id?: number,
+    ): Promise<T | undefined> {
+        if (!id) return undefined;
+        return collection.byId(id);
+    }
+
     protected createCollection<T extends EntityBase>(path: string, model: EntityConstructor<T>): EntityCollection<T> {
         return new EntityCollection(this.api.withPath(path), model, this);
     }

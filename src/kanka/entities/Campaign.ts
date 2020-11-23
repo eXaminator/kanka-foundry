@@ -47,6 +47,14 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
         return this.#organisations;
     }
 
+    public races(): EntityCollection<Race> {
+        return this.#races;
+    }
+
+    public families(): EntityCollection<Family> {
+        return this.#families;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getByType(type: string): EntityCollection<any> | undefined {
         switch (type) {

@@ -102,4 +102,23 @@ export default abstract class PrimaryEntity<
             });
         }
     }
+
+    protected async addReferenceMetaData(
+        label: string,
+        entityPromise?: Promise<PrimaryEntity | undefined>,
+        section?: string,
+    ): Promise<void> {
+        const entity = await entityPromise;
+
+        if (entity) {
+            this.addMetaData({
+                label,
+                section,
+                originalData: entity,
+                type: MetaDataType.reference,
+                value: entity.name,
+                linkTo: entity,
+            });
+        }
+    }
 }

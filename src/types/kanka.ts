@@ -94,11 +94,13 @@ export interface RaceData extends KankaEntityData {
 export interface OrganisationData extends KankaEntityData {
     type?: string;
     organisation_id?: number;
+    location_id?: number;
 }
 
 export interface FamilyData extends KankaEntityData {
     type?: string;
     family_id?: number;
+    location_id?: number;
     members: number[];
 }
 
@@ -117,6 +119,7 @@ export interface EventData extends KankaEntityData {
 }
 
 export interface NoteData extends KankaEntityData {
+    type?: string;
     note_id?: number;
 }
 
@@ -124,6 +127,7 @@ export interface JournalData extends KankaEntityData {
     type?: string;
     date?: string;
     character_id?: number;
+    location_id?: number;
 }
 
 export interface AbilityData extends KankaEntityData {

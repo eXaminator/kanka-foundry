@@ -22,7 +22,8 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
         if (!game.user.isGM) return;
 
         if (module.hot) {
-            delete _templateCache['modules/kanka-foundry/templates/journal.html'];
+            delete _templateCache[`modules/${moduleConfig.name}/templates/journal.html`];
+            delete _templateCache[`modules/${moduleConfig.name}/templates/entityList.html`];
         }
 
         game.modules.get(moduleConfig.name).clearApiCache();

@@ -69,8 +69,17 @@
     "KANKA.MetaData.appearance": "Appearance",
     "KANKA.MetaData.boolean.true": "Yes",
     "KANKA.MetaData.boolean.false": "No",
+    "KANKA.MetaData.author": "Author",
+    "KANKA.MetaData.character": "Character",
     "KANKA.MetaData.characters": "Characters",
+    "KANKA.MetaData.location": "Location",
     "KANKA.MetaData.locations": "Locations",
+    "KANKA.MetaData.item": "Item",
     "KANKA.MetaData.items": "Items",
-    "KANKA.MetaData.organisations": "Organisations"
+    "KANKA.MetaData.organisation": "Organisation",
+    "KANKA.MetaData.organisations": "Organisations",
+    "KANKA.MetaData.family": "Family",
+    "KANKA.MetaData.families": "Families",
+    "KANKA.MetaData.race": "Race",
+    "KANKA.MetaData.races": "Races"
 }
