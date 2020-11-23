@@ -35,6 +35,11 @@
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.all": "Alle Questreferenzen",
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.public": "Alle nicht privaten Questreferenzen",
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.none": "Keine Questreferenzen",
+    "KANKA.SettingsMetaDataInventoryVisibility.label": "Inventar-Import",
+    "KANKA.SettingsMetaDataInventoryVisibility.hint": "Welche Inventareinträge sollen als Metadaten importiert werden.",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.all": "Alle Inventareinträge",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.public": "Alle nicht privaten Inventareinträge",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.none": "Keine Inventareinträge",
     "KANKA.SettingsImageInText.label": "Bild neben Text",
     "KANKA.SettingsImageInText.hint": "Soll das Bild eines Eintrags neben dem Text angezeigt werden?",
     "KANKA.SettingsEntityTypeVisibility.hint": "Soll diese Kategorie geladen werden? Eine reduzierte Anzahl von Kategorien reduziert auch die Anzahl der Anfragen an Kanka und kann somit die Ladezeiten verbessern.",
@@ -81,5 +86,6 @@
     "KANKA.MetaData.family": "Familie",
     "KANKA.MetaData.families": "Familien",
     "KANKA.MetaData.race": "Rasse",
-    "KANKA.MetaData.races": "Rassen"
+    "KANKA.MetaData.races": "Rassen",
+    "KANKA.MetaData.inventory": "Inventar"
 }

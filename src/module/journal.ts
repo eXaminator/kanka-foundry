@@ -1,14 +1,16 @@
 import EntityAttribute from '../kanka/entities/EntityAttribute';
 import EntityMetaData from '../kanka/entities/EntityMetaData';
+import InventoryItem from '../kanka/entities/InventoryItem';
 import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import QuestReference from '../kanka/entities/QuestReference';
 import moduleConfig from '../module.json';
-import { CharacterTrait } from '../types/kanka';
+import { CharacterTrait, Visibility } from '../types/kanka';
 import {
     KankaSettings,
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
     MetaDataCharacterTraitVisibility,
+    MetaDataInventoryVisibility,
     MetaDataQuestReferenceVisibility,
     MetaDataType,
 } from '../types/KankaSettings';
@@ -164,6 +166,18 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
                 [MetaDataQuestReferenceVisibility.all]: true,
                 [MetaDataQuestReferenceVisibility.public]: original => !original.isPrivate,
                 [MetaDataQuestReferenceVisibility.none]: false,
+            },
+        );
+    }
+
+    if (data.type === MetaDataType.inventory) {
+        return checkSetting(
+            data as EntityMetaData<InventoryItem>,
+            KankaSettings.metaDataInventoryVisibility,
+            {
+                [MetaDataInventoryVisibility.all]: true,
+                [MetaDataInventoryVisibility.public]: ({ visibility }) => visibility === Visibility.all,
+                [MetaDataInventoryVisibility.none]: false,
             },
         );
     }

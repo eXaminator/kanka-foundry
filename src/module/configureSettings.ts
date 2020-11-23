@@ -11,6 +11,7 @@ import {
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
     MetaDataCharacterTraitVisibility,
+    MetaDataInventoryVisibility,
     MetaDataQuestReferenceVisibility,
 } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
@@ -194,6 +195,24 @@ export async function registerSettings(): Promise<void> {
                 [MetaDataAttributeVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.public'),
                 [MetaDataAttributeVisibility.publicStarred]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.publicStarred'),
                 [MetaDataAttributeVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataInventoryVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataInventoryVisibility.public,
+            choices: {
+                [MetaDataInventoryVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.all'),
+                [MetaDataInventoryVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.public'),
+                [MetaDataInventoryVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.none'),
             },
         },
     );

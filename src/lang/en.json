@@ -35,6 +35,11 @@
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.all": "All quest references",
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.public": "All public quest references",
     "KANKA.SettingsMetaDataQuestReferenceVisibility.value.none": "No quest references",
+    "KANKA.SettingsMetaDataInventoryVisibility.label": "Inventory import",
+    "KANKA.SettingsMetaDataInventoryVisibility.hint": "Which inventory entries should be imported as metadata.",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.all": "All inventory entries",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.public": "All public inventory entries",
+    "KANKA.SettingsMetaDataInventoryVisibility.value.none": "No inventory entries",
     "KANKA.SettingsImageInText.label": "Include image in text",
     "KANKA.SettingsImageInText.hint": "Should the image be include next to the text in addition to the regular journal entry image?",
     "KANKA.SettingsEntityTypeVisibility.hint": "Should this type of entity be loaded? Reducing the types of entity also reduces the number of requests made to Kanka and thus improves the performance.",
@@ -81,5 +86,6 @@
     "KANKA.MetaData.family": "Family",
     "KANKA.MetaData.families": "Families",
     "KANKA.MetaData.race": "Race",
-    "KANKA.MetaData.races": "Races"
+    "KANKA.MetaData.races": "Races",
+    "KANKA.MetaData.inventory": "Inventory"
 }

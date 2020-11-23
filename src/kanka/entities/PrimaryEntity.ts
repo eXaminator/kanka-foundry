@@ -1,28 +1,35 @@
 import EntityType from '../../types/EntityType';
 import { KankaEntityData } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
-import Entity from '../Entity';
 import KankaApi from '../KankaApi';
+import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
 import EntityBase from './EntityBase';
 import EntityMetaData from './EntityMetaData';
+import InventoryItem from './InventoryItem';
 
 export default abstract class PrimaryEntity<
     T extends KankaEntityData = KankaEntityData,
-    P extends Entity = Entity
+    P extends Campaign = Campaign
 > extends EntityBase<T, P> {
     readonly #attributes: EntityAttribute[];
+    readonly #inventory: InventoryItem[];
     #metaData?: EntityMetaData[];
 
     constructor(api: KankaApi<T>, data: T, parent: P) {
         super(api, data, parent);
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
+        this.#inventory = data.inventory?.map(entry => new InventoryItem(this.api, entry, this)) ?? [];
     }
 
     abstract get entityType(): EntityType;
 
     public get attributes(): EntityAttribute[] {
         return this.#attributes;
+    }
+
+    public get inventory(): InventoryItem[] {
+        return this.#inventory;
     }
 
     public get entityId(): number {
@@ -80,6 +87,20 @@ export default abstract class PrimaryEntity<
                     label: attribute.name,
                     value: attribute.value,
                     originalData: attribute,
+                });
+            });
+
+        const items = await Promise.all(this.inventory.map(i => i.item()));
+
+        this.inventory
+            .forEach((inventory, index) => {
+                this.addMetaData({
+                    type: MetaDataType.inventory,
+                    section: inventory.position || 'inventory',
+                    label: items[index]?.name,
+                    value: `${inventory.amount ? `${inventory.amount} &times; ` : ''}${inventory.name}${inventory.isEquipped ? '*' : ''}`,
+                    originalData: inventory,
+                    linkTo: items[index],
                 });
             });
     }

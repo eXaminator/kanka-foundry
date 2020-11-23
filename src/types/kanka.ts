@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+export enum Visibility {
+    all = 'all',
+    admin = 'admin',
+    self = 'self',
+    adminSelf = 'admin-self',
+}
+
 export interface KankaResult<T> {
     data: T;
 }
@@ -34,6 +41,29 @@ export interface KankaAttribute {
     default_order: number;
 }
 
+export interface KankaRelation {
+    id: number;
+    owner_id: number;
+    target_id: number;
+    relation?: string;
+    attitude?: number;
+    colour?: string;
+    is_private: boolean;
+    is_star: boolean;
+}
+
+export interface KankaInventory {
+    id: number;
+    entity_id: number;
+    amount: number;
+    is_equipped: boolean;
+    is_private: boolean;
+    item_id: number;
+    name: string;
+    position?: string;
+    visibility: Visibility;
+}
+
 export interface KankaEntityBaseData {
     id: number;
     is_private: boolean;
@@ -48,7 +78,9 @@ export interface KankaEntityData extends KankaEntityBaseData {
     image_full?: string;
     image_thumb?: string;
     has_custom_image?: boolean;
-    attributes?: KankaAttribute[];
+    attributes: KankaAttribute[];
+    relations: KankaRelation[];
+    inventory: KankaInventory[];
 }
 
 export interface CharacterTrait {
