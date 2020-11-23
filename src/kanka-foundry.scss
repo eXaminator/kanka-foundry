@@ -45,10 +45,23 @@ button#kanka {
         }
     }
 
+    .element-list {
+        padding: 0;
+
+        .element-entry {
+            padding-left: 1em;
+        }
+    }
+
     .action-row {
         display: flex;
         flex-direction: row;
         align-items: center;
+        padding: .2em;
+
+        &:hover {
+            background: rgba(0, 0, 0, .1);
+        }
 
         & > :not(.actions) {
             flex: 1;
