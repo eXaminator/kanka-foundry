@@ -49,6 +49,7 @@
     "KANKA.BrowserRefreshFolder": "Verbundene aktualisieren",
     "KANKA.BrowserNotificationSyncedFolder": "Alle Kanka-Einträge vom Typ {type} wurden aktualisert.",
     "KANKA.BrowserNotificationLinkedFolder": "Alle Kanka-Einträge vom Typ {type} wurden verbunden.",
+    "KANKA.BrowserNotificationSynced": "Eintrag {name} wurde verbunden.",
     "KANKA.BrowserNotificationRefreshed": "Eintrag {name} wurde aktualisiert.",
     "KANKA.BrowserSyncError": "Unerwarteter Fehler beim aktualisieren.",
     "KANKA.JournalFolder.root": "Kanka",
