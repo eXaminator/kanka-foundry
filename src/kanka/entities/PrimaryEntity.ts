@@ -24,6 +24,21 @@ export default abstract class PrimaryEntity<
 
     abstract get entityType(): EntityType;
 
+    get treeParentId(): number | undefined {
+        return undefined;
+    }
+
+    async treeParent(): Promise<PrimaryEntity<T, P> | undefined> {
+        return undefined;
+    }
+
+    async treeAncestors(): Promise<PrimaryEntity<T, P>[]> {
+        const parent = await this.treeParent();
+        if (!parent) return [];
+        const path = await parent.treeAncestors();
+        return [...path, parent];
+    }
+
     public get attributes(): EntityAttribute[] {
         return this.#attributes;
     }

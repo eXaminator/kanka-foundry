@@ -10,6 +10,14 @@ export default class Journal extends PrimaryEntity<JournalData, Campaign> {
         return EntityType.journal;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.journal_id;
+    }
+
+    async treeParent(): Promise<Journal | undefined> {
+        return this.findReference(this.parent.journals(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

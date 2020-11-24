@@ -8,6 +8,14 @@ export default class Note extends PrimaryEntity<NoteData, Campaign> {
         return EntityType.note;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.note_id;
+    }
+
+    async treeParent(): Promise<Note | undefined> {
+        return this.findReference(this.parent.notes(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

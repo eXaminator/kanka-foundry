@@ -31,12 +31,20 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
         return EntityType.campaign;
     }
 
+    public abilities(): EntityCollection<Ability> {
+        return this.#abilities;
+    }
+
     public characters(): EntityCollection<Character> {
         return this.#characters;
     }
 
     public items(): EntityCollection<Item> {
         return this.#items;
+    }
+
+    public journals(): EntityCollection<Journal> {
+        return this.#journals;
     }
 
     public locations(): EntityCollection<Location> {
@@ -53,6 +61,14 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
 
     public families(): EntityCollection<Family> {
         return this.#families;
+    }
+
+    public quests(): EntityCollection<Quest> {
+        return this.#quests;
+    }
+
+    public notes(): EntityCollection<Note> {
+        return this.#notes;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -12,6 +12,14 @@ export default class Location extends PrimaryEntity<LocationData, Campaign> {
         return this.data.type;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.parent_location_id;
+    }
+
+    async treeParent(): Promise<Location | undefined> {
+        return this.findReference(this.parent.locations(), this.treeParentId);
+    }
+
     protected async buildMetaData(): Promise<void> {
         await super.buildMetaData();
         this.addMetaData({ label: 'type', value: this.type });

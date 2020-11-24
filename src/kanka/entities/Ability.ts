@@ -8,6 +8,14 @@ export default class Ability extends PrimaryEntity<AbilityData, Campaign> {
         return EntityType.ability;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.ability_id;
+    }
+
+    async treeParent(): Promise<Ability | undefined> {
+        return this.findReference(this.parent.abilities(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

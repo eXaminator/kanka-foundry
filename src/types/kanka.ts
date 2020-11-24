@@ -158,6 +158,7 @@ export interface NoteData extends KankaEntityData {
 export interface JournalData extends KankaEntityData {
     type?: string;
     date?: string;
+    journal_id?: number;
     character_id?: number;
     location_id?: number;
 }
