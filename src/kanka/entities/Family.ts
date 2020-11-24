@@ -9,6 +9,14 @@ export default class Family extends PrimaryEntity<FamilyData, Campaign> {
         return EntityType.family;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.family_id;
+    }
+
+    async treeParent(): Promise<Family | undefined> {
+        return this.findReference(this.parent.families(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

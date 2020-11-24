@@ -8,6 +8,14 @@ export default class Race extends PrimaryEntity<RaceData, Campaign> {
         return EntityType.race;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.race_id;
+    }
+
+    async treeParent(): Promise<Race | undefined> {
+        return this.findReference(this.parent.races(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

@@ -10,6 +10,7 @@ export enum KankaSettings {
     metaDataCharacterTraitVisibility = 'metaDataCharacterTraitVisibility',
     metaDataQuestReferenceVisibility = 'metaDataQuestReferenceVisibility',
     imageInText = 'imageInText',
+    keepTreeStructure = 'keepTreeStructure',
 }
 
 export function kankaImportTypeSetting(type: EntityType): KankaSettings {

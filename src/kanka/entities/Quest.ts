@@ -34,6 +34,14 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
         return EntityType.quest;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.quest_id;
+    }
+
+    async treeParent(): Promise<Quest | undefined> {
+        return this.findReference(this.parent.quests(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }

@@ -5,7 +5,7 @@ import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
 import getSetting from './getSettings';
-import { ensureJournalFolder, findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
+import { findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
 
 interface EntityList {
     items: PrimaryEntity[];
@@ -219,6 +219,7 @@ export default class KankaBrowser extends Application {
                     const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
                     await this.syncEntity(entity, action === 'link-entry');
+                    this.render();
                     break;
                 }
 
@@ -232,11 +233,13 @@ export default class KankaBrowser extends Application {
                 case 'sync-folder':
                     if (!type) return;
                     await this.syncFolder(type);
+                    this.render();
                     break;
 
                 case 'link-folder': {
                     if (!type) return;
                     await this.linkFolder(type);
+                    this.render();
                     break;
                 }
 
@@ -255,10 +258,8 @@ export default class KankaBrowser extends Application {
             return;
         }
 
-        await ensureJournalFolder(type);
-
         const linkedEntities = entities.filter(entity => !!findEntryByEntity(entity));
-        await Promise.all(linkedEntities.map(entity => this.syncEntity(entity, false, false)));
+        await this.syncEntities(linkedEntities);
         this.showInfo('BrowserNotificationSyncedFolder', { type });
         this.render();
     }
@@ -271,17 +272,21 @@ export default class KankaBrowser extends Application {
             return;
         }
 
-        await ensureJournalFolder(type);
-
         const unlinkedEntities = entities.filter(entity => !findEntryByEntity(entity));
-        await Promise.all(unlinkedEntities.map(entity => this.syncEntity(entity, false, false)));
+        await this.syncEntities(unlinkedEntities);
         this.showInfo('BrowserNotificationLinkedFolder', { type });
         this.render();
     }
 
+    private async syncEntities(entities: PrimaryEntity[]): Promise<void> {
+        for (let i = 0; i < entities.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.syncEntity(entities[i], false, false);
+        }
+    }
+
     private async syncEntity(entity: PrimaryEntity, renderSheet = false, notification = true): Promise<void> {
         await writeJournalEntry(entity, { renderSheet, notification });
-        this.render();
     }
 
     private showInfo(msg: string, params?: Record<string, unknown>): void {

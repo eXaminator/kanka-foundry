@@ -9,6 +9,14 @@ export default class Organisation extends PrimaryEntity<OrganisationData, Campai
         return EntityType.organisation;
     }
 
+    get treeParentId(): number | undefined {
+        return this.data.organisation_id;
+    }
+
+    async treeParent(): Promise<Organisation | undefined> {
+        return this.findReference(this.parent.organisations(), this.treeParentId);
+    }
+
     public get type(): string | undefined {
         return this.data.type;
     }
