@@ -109,14 +109,20 @@ export default abstract class PrimaryEntity<
 
         this.inventory
             .forEach((inventory, index) => {
+                const label = `${inventory.amount} &times; ${items[index]?.name ?? inventory.name}`;
+                const value: string[] = [];
+
+                if (inventory.isEquipped) value.push('<i class="fas fa-check-circle"></i>');
+                if (inventory.description) value.push(`<em>${inventory.description}</em>`);
+
                 this.addMetaData({
+                    label,
                     type: MetaDataType.inventory,
                     section: inventory.position || 'inventory',
-                    label: items[index]?.name,
-                    value: `${inventory.amount ? `${inventory.amount} &times; ` : ''}${inventory.name}${inventory.isEquipped ? '*' : ''}`,
+                    value: value.join(' '),
                     originalData: inventory,
                     linkTo: items[index],
-                });
+                }, true);
             });
     }
 
