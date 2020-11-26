@@ -32,7 +32,7 @@ export default async function renderJournalSheet(
         // Workaround for missing locale in links
         const parsedContent = contentElement.html().replace(
             'https://kanka.io/campaign',
-            `https://kanka.io/${campaign.locale}/campaign`,
+            `https://kanka.io/${campaign.locale ?? 'en'}/campaign`,
         );
 
         contentElement.html(parsedContent);
