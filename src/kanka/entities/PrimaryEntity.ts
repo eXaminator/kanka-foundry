@@ -57,7 +57,7 @@ export default abstract class PrimaryEntity<
 
     public get image(): string | undefined {
         if (this.data.has_custom_image === false) return undefined;
-        return `https://kanka-user-assets.s3.eu-central-1.amazonaws.com/${this.data.image}`;
+        return this.data.image_full;
     }
 
     public get entry(): string {
