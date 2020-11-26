@@ -1,3 +1,19 @@
+# [1.3.0](https://github.com/eXaminator/kanka-foundry/compare/1.2.0...1.3.0) (2020-11-26)
+
+
+### Bug Fixes
+
+* remove image URL workaround ([a695ddd](https://github.com/eXaminator/kanka-foundry/commit/a695dddb051f82a127020291b9aacc2c0504674a))
+* use english das default locale for mention links ([1ac786b](https://github.com/eXaminator/kanka-foundry/commit/1ac786b0ecc71c334fa4bc8c008d29f630d4a5f0))
+* **journal:** fix inventory representation in metadata ([59ad107](https://github.com/eXaminator/kanka-foundry/commit/59ad1079e120e5cb5914ebd322f43012618534cd))
+* **translation:** add missing translation for successful entity link notfication ([dccdaca](https://github.com/eXaminator/kanka-foundry/commit/dccdaca6b90c881be08e5fb1435c9c14b29d6837))
+
+
+### Features
+
+* **journal:** add quest organisations and items to metadata ([0a37e1d](https://github.com/eXaminator/kanka-foundry/commit/0a37e1dc3cec48ad9428e51d3298a99e777d1cb3))
+* **journal:** add setting to create folders based on kanka tree structure ([56ab02c](https://github.com/eXaminator/kanka-foundry/commit/56ab02c3a24340997b53c4130d66fa1dee327839)), closes [#22](https://github.com/eXaminator/kanka-foundry/issues/22)
+
 # [1.2.0](https://github.com/eXaminator/kanka-foundry/compare/1.1.1...1.2.0) (2020-11-23)
 
 
