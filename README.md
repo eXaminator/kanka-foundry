@@ -27,6 +27,9 @@ This module should warn you starting a week before it expires.
 - **Campaign**: After entering a valid Access Token you should receive a list of all Kanka campaigns you have access
 to. You must select the campaign you would like to import data from. You can always change the campaign later to import
 entries from another campaign without loosing what you have already imported.
+- **Create folder tree**: Most entries in Kanka can be organized hierarchically. If this option is selected the module
+will create folders to replicate this hierarchy. Foundry has a limit of 3 folders levels, thus everything on a lower
+level will be flattened to this 3rd level instead.
 - **Include image in text**: When importing an entry from Kanka it will use the entries main image as the journal
 entries image. With this setting the image will additionally be displayed in the journal entry next to its text
 (see screenshot bellow).
@@ -36,8 +39,10 @@ be refreshed from Kanka until this setting has been enabled again.
 - **Basic metadata import**: This setting allows you to define which *basic* metadata should be imported. *Basic*
 metadata includes properties like the *type* given to most entries in Kanka, *age* for characters and other basic
 properties.
-- **Attributes import**: The module will import attributes on any Kanka entry as metadata. This settings allows you to
+- **Attributes import**: The module will import attributes on any Kanka entry as metadata. This setting allows you to
 broadly define which attributes to import this way.
+- **Inventory import**: The module will import inventory for all entries as metadata. This setting allows you to control
+which inventory entries will be imported.
 - **Character trait import**: Characters in Kanka have appearance and personality traits. This setting allows you to
 select which of those traits you would like to import.
 - **Quest reference import**: Quests can contain references to Characters, Locations and other entries. This setting
