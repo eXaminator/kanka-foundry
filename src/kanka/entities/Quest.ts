@@ -79,8 +79,8 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
         await Promise.all([
             this.addQuestReferenceMetaData(this.#characters.all(), 'characters'),
             this.addQuestReferenceMetaData(this.#locations.all(), 'locations'),
-            // this.addQuestReferenceMetaData(this.#items.all(), 'items'),
-            // this.addQuestReferenceMetaData(this.#organisations.all(), 'organisations'),
+            this.addQuestReferenceMetaData(this.#items.all(), 'items'),
+            this.addQuestReferenceMetaData(this.#organisations.all(), 'organisations'),
         ]);
     }
 
@@ -98,6 +98,6 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
             type: MetaDataType.questReference,
             originalData: reference,
             linkTo: entities[index],
-        }));
+        }, true));
     }
 }
