@@ -60,6 +60,7 @@ export interface KankaInventory {
     is_private: boolean;
     item_id: number;
     name: string;
+    description?: string;
     position?: string;
     visibility: Visibility;
 }

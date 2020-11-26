@@ -12,6 +12,10 @@ export default class InventoryItem extends EntityBase<KankaInventory, PrimaryEnt
         return this.data.position;
     }
 
+    get description(): string | undefined {
+        return this.data.description;
+    }
+
     get amount(): number | undefined {
         return this.data.amount;
     }
@@ -25,6 +29,7 @@ export default class InventoryItem extends EntityBase<KankaInventory, PrimaryEnt
     }
 
     async item(): Promise<Item | undefined> {
+        if (!this.data.item_id) return undefined;
         return this.findReference(this.parent.parent.items(), this.data.item_id);
     }
 }
