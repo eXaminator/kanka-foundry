@@ -82,6 +82,10 @@ export interface KankaEntityData extends KankaEntityBaseData {
     attributes: KankaAttribute[];
     relations: KankaRelation[];
     inventory: KankaInventory[];
+    created_at: string;
+    created_by: number;
+    updated_at: string;
+    updated_by: number;
 }
 
 export interface CharacterTrait {
