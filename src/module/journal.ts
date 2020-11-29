@@ -58,6 +58,16 @@ export function findFolderByFlags(flags: Record<string, unknown>): Folder | unde
             && entries.every(([flag, value]) => f.getFlag(moduleConfig.name, flag) === value));
 }
 
+export function hasOutdatedEntry(entity: PrimaryEntity): boolean {
+    const entry = findEntryByEntity(entity);
+    if (!entry) return false;
+
+    const updatedAt = entry.getFlag(moduleConfig.name, 'updatedAt');
+    if (!updatedAt) return true;
+
+    return updatedAt < entity.updatedAt;
+}
+
 function createJournalFolder(name: string, parent?: Folder, flags: Record<string, unknown> = {}): Promise<Folder> {
     const data = {
         name,
@@ -287,7 +297,10 @@ export async function writeJournalEntry(
     };
 
     if (entry) {
-        await entry.update(journalData);
+        await entry.update({
+            ...journalData,
+            [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
+        });
 
         if (notification) {
             ui.notifications.info(game.i18n.format('KANKA.BrowserNotificationRefreshed', { type: entity.entityType, name: entity.name }));
@@ -300,6 +313,7 @@ export async function writeJournalEntry(
             [`flags.${moduleConfig.name}.id`]: entity.id,
             [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
             [`flags.${moduleConfig.name}.type`]: entity.entityType,
+            [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
         }) as JournalEntry;
 
         if (notification) {

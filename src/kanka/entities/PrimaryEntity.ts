@@ -24,6 +24,14 @@ export default abstract class PrimaryEntity<
 
     abstract get entityType(): EntityType;
 
+    get createdAt(): string {
+        return this.data.created_at;
+    }
+
+    get updatedAt(): string {
+        return this.data.updated_at;
+    }
+
     get treeParentId(): number | undefined {
         return undefined;
     }

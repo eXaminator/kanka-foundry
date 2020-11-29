@@ -5,7 +5,7 @@ import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
 import getSetting from './getSettings';
-import { findEntriesByType, findEntryByEntity, findEntryByEntityId, writeJournalEntry } from './journal';
+import { findEntriesByType, findEntryByEntity, findEntryByEntityId, hasOutdatedEntry, writeJournalEntry } from './journal';
 
 interface EntityList {
     items: PrimaryEntity[];
@@ -117,6 +117,8 @@ export default class KankaBrowser extends Application {
             const entry = findEntryByEntity(entity);
             return Boolean(entry);
         });
+
+        Handlebars.registerHelper('hasUpdatedKankaJournalEntry', (entity: PrimaryEntity) => hasOutdatedEntry(entity));
 
         Handlebars.registerHelper('hasLinkedJournalEntryOfType', (type: string) => {
             const entries = findEntriesByType(type);

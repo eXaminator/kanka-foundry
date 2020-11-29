@@ -31,7 +31,9 @@
                     data-id="{{ this.id }}"
                     data-type="{{ @../key }}"
                 >
-                    <i class="fas fa-link"></i> {{ this.name }}
+                    {{#if (hasUpdatedKankaJournalEntry this) }}<i class="fas fa-asterisk"></i>{{/if}}
+                    <i class="fas fa-link"></i>
+                    {{ this.name }}
                 </button>
                 <button
                     type="button"
