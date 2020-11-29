@@ -68,6 +68,10 @@ export default abstract class PrimaryEntity<
         return this.data.image_full;
     }
 
+    public get thumbnail(): string | undefined {
+        return this.data.image_thumb;
+    }
+
     public get entry(): string {
         return this.data.entry_parsed;
     }
