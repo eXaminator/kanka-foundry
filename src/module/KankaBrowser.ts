@@ -118,6 +118,11 @@ export default class KankaBrowser extends Application {
             return Boolean(entry);
         });
 
+        Handlebars.registerHelper('kankaJournalName', (entity: PrimaryEntity) => {
+            const entry = findEntryByEntity(entity);
+            return entry?.name;
+        });
+
         Handlebars.registerHelper('hasUpdatedKankaJournalEntry', (entity: PrimaryEntity) => hasOutdatedEntry(entity));
 
         Handlebars.registerHelper('hasLinkedJournalEntryOfType', (type: string) => {
