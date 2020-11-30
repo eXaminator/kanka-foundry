@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
 import { KankaListResult, KankaResult } from '../types/kanka';
-import createThrottle from '../util/createThrottle';
+import RateLimiter from '../util/RateLimiter';
 import KankaApiCacheEntry from './KankaApiCacheEntry';
 import KankaEndpoint from './KankaEndpoint';
-
-const throttle = createThrottle(61, 29);
 
 export default class KankaApi {
     #token?: string;
     #cache?: Map<string, KankaApiCacheEntry>;
+    #limiter = new RateLimiter(61, 29);
 
     constructor(token?: string) {
         this.#token = token;
@@ -48,7 +47,7 @@ export default class KankaApi {
         this.cache.set(url, cacheEntry);
 
         try {
-            await throttle();
+            await this.#limiter.slot();
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const response = await fetch(
