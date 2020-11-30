@@ -2,13 +2,13 @@ import { KankaEntityBaseData } from '../../types/kanka';
 import Entity from '../Entity';
 import EntityCollection from '../EntityCollection';
 import EntityConstructor from '../EntityConstructor';
-import KankaApi from '../KankaApi';
+import KankaEndpoint from '../KankaEndpoint';
 
 export default abstract class EntityBase<
     T extends KankaEntityBaseData = KankaEntityBaseData,
     P extends Entity | undefined = Entity | undefined
 > implements Entity {
-    constructor(public api: KankaApi<T>, public data: T, public parent: P) {}
+    constructor(public endpoint: KankaEndpoint, public data: T, public parent: P) {}
 
     public get id(): number {
         return this.data.id;
@@ -27,6 +27,6 @@ export default abstract class EntityBase<
     }
 
     protected createCollection<T extends EntityBase>(path: string, model: EntityConstructor<T>): EntityCollection<T> {
-        return new EntityCollection(this.api.withPath(path), model, this);
+        return new EntityCollection(this.endpoint.withPath(path), model, this);
     }
 }

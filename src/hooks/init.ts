@@ -1,26 +1,21 @@
+import api from '../kanka/api';
 import CampaignRepository from '../kanka/CampaignRepository';
 import { cache } from '../kanka/EntityCache';
-import KankaApi from '../kanka/KankaApi';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { clearSettings, registerSettings } from '../module/configureSettings';
 import getSettings from '../module/getSettings';
 import preloadTemplates from '../module/preloadTemplates';
-import { KankaEntityData } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
 
-function getApi(): KankaApi<KankaEntityData> {
-    if (!game.modules.get(moduleConfig.name).api) {
-        game.modules.get(moduleConfig.name).api = KankaApi.createRoot(getSettings(KankaSettings.accessToken));
-    }
-
-    return game.modules.get(moduleConfig.name).api;
-}
-
 function getRepository(): CampaignRepository {
     if (!game.modules.get(moduleConfig.name).campaigns) {
-        game.modules.get(moduleConfig.name).campaigns = new CampaignRepository(getApi());
+        game.modules.get(moduleConfig.name).campaigns = new CampaignRepository();
+    }
+
+    if (!api.token) {
+        api.token = getSettings(KankaSettings.accessToken);
     }
 
     return game.modules.get(moduleConfig.name).campaigns;
@@ -29,10 +24,9 @@ function getRepository(): CampaignRepository {
 export default async function init(): Promise<void> {
     logInfo('Initializing');
 
-    game.modules.get(moduleConfig.name).setApiToken = (token: string) => getApi().setToken(token);
     game.modules.get(moduleConfig.name).clearApiCache = () => {
         cache.clear();
-        getApi().cache.clear();
+        api.cache.clear();
     };
     game.modules.get(moduleConfig.name).loadAllCampaigns = () => getRepository().loadAll();
     game.modules.get(moduleConfig.name).loadCurrentCampaign = async () => {

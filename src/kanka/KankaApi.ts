@@ -1,50 +1,29 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
-import { KankaEntityBaseData, KankaListResult, KankaResult } from '../types/kanka';
-import { KankaSettings } from '../types/KankaSettings';
-import getSetting from '../module/getSettings';
+import { KankaListResult, KankaResult } from '../types/kanka';
 import createThrottle from '../util/createThrottle';
 import KankaApiCacheEntry from './KankaApiCacheEntry';
+import KankaEndpoint from './KankaEndpoint';
 
 const throttle = createThrottle(61, 29);
 
-export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseData[]> {
+export default class KankaApi {
     #token?: string;
-    #cache?: Map<string, KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>>;
+    #cache?: Map<string, KankaApiCacheEntry>;
 
-    constructor(
-        protected baseUrl: string,
-        protected parentApi?: KankaApi<KankaEntityBaseData | KankaEntityBaseData[]>,
-        token?: string,
-    ) {
+    constructor(token?: string) {
         this.#token = token;
     }
 
-    static createRoot<C extends KankaEntityBaseData = KankaEntityBaseData>(token?: string): KankaApi<C> {
-        return new KankaApi<C>('https://kanka.io/api/1.0', undefined, token);
+    public get token(): string {
+        return this.#token ?? '';
     }
 
-    public get token(): string | undefined {
-        return this.#token ?? this.parentApi?.token ?? getSetting<string>(KankaSettings.accessToken);
-    }
-
-    public withUrl<C extends KankaEntityBaseData | KankaEntityBaseData[]>(url: string): KankaApi<C> {
-        return new KankaApi<C>(url, this);
-    }
-
-    public withPath<C extends KankaEntityBaseData | KankaEntityBaseData[]>(path: string|number): KankaApi<C> {
-        return new KankaApi<C>(`${this.baseUrl}/${String(path)}`, this);
-    }
-
-    public setToken(token: string): void {
+    public set token(token: string) {
         this.#token = token;
     }
 
-    public get cache(): Map<string, KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>> {
-        if (this.parentApi) {
-            return this.parentApi.cache;
-        }
-
+    public get cache(): Map<string, KankaApiCacheEntry> {
         if (!this.#cache) {
             this.#cache = new Map();
         }
@@ -52,25 +31,20 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
         return this.#cache;
     }
 
-    public get isCached(): boolean {
-        return this.cache.has(this.baseUrl);
-    }
-
     public async load<
-        R extends T extends unknown[] ? KankaListResult<T> : KankaResult<T>
-    >(): Promise<R> {
-        const parsedUrl = new URL(this.baseUrl.replace('http://', 'https://'));
-        parsedUrl.searchParams.set('related', '1');
-        const url = parsedUrl.toString();
+        T,
+        R = T extends unknown[] ? KankaListResult<T> : KankaResult<T>
+    >(endpoint: KankaEndpoint): Promise<R> {
+        const url = endpoint.getUrl({ related: '1' });
 
-        logInfo('request kanka API', { url: parsedUrl.toString(), inCache: this.isCached });
+        logInfo('request kanka API', { url, inCache: this.cache.has(url) });
 
-        if (this.isCached) {
+        if (this.cache.has(url)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            return this.cache.get(url)!.data as Promise<R>;
+            return this.cache.get(url)!.data as unknown as Promise<R>;
         }
 
-        const cacheEntry = new KankaApiCacheEntry<KankaEntityBaseData | KankaEntityBaseData[]>();
+        const cacheEntry = new KankaApiCacheEntry();
         this.cache.set(url, cacheEntry);
 
         try {
@@ -82,7 +56,7 @@ export default class KankaApi<T extends KankaEntityBaseData | KankaEntityBaseDat
                 {
                     mode: 'cors',
                     headers: {
-                        Authorization: `Bearer ${this.token}`,
+                        Authorization: `Bearer ${this.#token}`,
                         'Content-type': 'application/json',
                     },
                 },
