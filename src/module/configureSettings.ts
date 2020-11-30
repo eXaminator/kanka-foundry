@@ -1,7 +1,7 @@
+import api from '../kanka/api';
 import CampaignRepository from '../kanka/CampaignRepository';
 import Campaign from '../kanka/entities/Campaign';
 import { cache } from '../kanka/EntityCache';
-import KankaApi from '../kanka/KankaApi';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
@@ -61,9 +61,12 @@ async function fetchCampaignChoicesByToken(token?: string): Promise<Record<strin
 
     try {
         cache.clear(Campaign); // Clear campaign cache to ensure all campaigns are reloaded
-        const api = KankaApi.createRoot(token);
-        const repo = new CampaignRepository(api);
+        const currentToken = api.token;
+
+        api.token = token;
+        const repo = new CampaignRepository();
         const campaigns = await repo.loadAll();
+        api.token = currentToken;
 
         return buildCampaignChoices(campaigns);
     } catch (error) {
@@ -111,7 +114,7 @@ export async function registerSettings(): Promise<void> {
             default: '',
             onChange(value) {
                 validateAccessToken(value);
-                game.modules.get(moduleConfig.name).setApiToken(value);
+                api.token = value;
             },
         },
     );

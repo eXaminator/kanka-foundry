@@ -1,7 +1,7 @@
-import { KankaEntityBaseData, KankaListResult, KankaResult } from '../types/kanka';
+import { KankaListResult, KankaResult } from '../types/kanka';
 
 export default class KankaApiCacheEntry<
-    T extends KankaEntityBaseData | KankaEntityBaseData[],
+    T = unknown,
     D = T extends unknown[] ? KankaListResult<T> : KankaResult<T>
 > {
     readonly #promise;

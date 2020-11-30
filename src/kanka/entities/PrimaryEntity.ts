@@ -1,7 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { KankaEntityData } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
-import KankaApi from '../KankaApi';
+import KankaEndpoint from '../KankaEndpoint';
 import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
 import EntityBase from './EntityBase';
@@ -16,10 +16,10 @@ export default abstract class PrimaryEntity<
     readonly #inventory: InventoryItem[];
     #metaData?: EntityMetaData[];
 
-    constructor(api: KankaApi<T>, data: T, parent: P) {
-        super(api, data, parent);
+    constructor(endpoint: KankaEndpoint, data: T, parent: P) {
+        super(endpoint, data, parent);
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
-        this.#inventory = data.inventory?.map(entry => new InventoryItem(this.api, entry, this)) ?? [];
+        this.#inventory = data.inventory?.map(entry => new InventoryItem(this.endpoint, entry, this)) ?? [];
     }
 
     abstract get entityType(): EntityType;

@@ -1,18 +1,19 @@
 import type EntityBase from './entities/EntityBase';
 import { cache } from './EntityCache';
 import EntityConstructor from './EntityConstructor';
-import KankaApi from './KankaApi';
+import KankaEndpoint from './KankaEndpoint';
+import api from './api';
 
 interface Page<T extends EntityBase> {
     items: T[];
-    api?: KankaApi<T['data'][]>;
+    endpoint?: KankaEndpoint;
 }
 
 export default class EntityCollection<T extends EntityBase> {
     #isFullyLoaded = false;
 
     constructor(
-        protected api: KankaApi<T['data'][]>,
+        protected endpoint: KankaEndpoint,
         protected Model: EntityConstructor<T>,
         protected parent?: T['parent'],
     ) {}
@@ -22,12 +23,12 @@ export default class EntityCollection<T extends EntityBase> {
             return cache.getAll(this.Model);
         }
 
-        let nextApi: KankaApi<T['data'][]> | undefined = this.api;
+        let nextEndpoint: KankaEndpoint | undefined = this.endpoint;
 
-        while (nextApi) {
+        while (nextEndpoint) {
             // eslint-disable-next-line no-await-in-loop
-            const page = await this.loadPage(nextApi);
-            nextApi = page.api;
+            const page = await this.loadPage(nextEndpoint);
+            nextEndpoint = page.api;
             cache.save(...page.items);
         }
 
@@ -37,24 +38,24 @@ export default class EntityCollection<T extends EntityBase> {
 
     public async byId(id: number): Promise<T> {
         if (!cache.has(this.Model, id)) {
-            const childApi = this.api.withPath<T['data']>(id);
-            const { data } = await childApi.load();
-            cache.save(new this.Model(childApi, data, this.parent));
+            const childEndpoint = this.endpoint.withPath(id);
+            const { data } = await api.load(childEndpoint);
+            cache.save(new this.Model(childEndpoint, data, this.parent));
         }
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return cache.find(this.Model, id)!;
     }
 
-    private async loadPage(pageApi: KankaApi<T['data'][]>): Promise<Page<T>> {
-        const { data, links } = await pageApi.load();
+    private async loadPage(pageEndpoint: KankaEndpoint): Promise<Page<T>> {
+        const { data, links } = await api.load(pageEndpoint);
 
-        const items = data.map(entry => new this.Model(this.api.withPath<T['data']>(entry.id), entry, this.parent));
+        const items = data.map(entry => new this.Model(this.endpoint.withPath(entry.id), entry, this.parent));
 
         if (!links.next) {
             return { items };
         }
 
-        return { items, api: pageApi.withUrl(links.next) };
+        return { items, endpoint: pageEndpoint.withUrl(links.next) };
     }
 }
