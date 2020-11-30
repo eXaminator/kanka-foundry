@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
-import { KankaListResult, KankaResult } from '../types/kanka';
+import { KankaListResult, KankaProfile, KankaResult } from '../types/kanka';
 import RateLimiter from '../util/RateLimiter';
 import KankaApiCacheEntry from './KankaApiCacheEntry';
 import KankaEndpoint from './KankaEndpoint';
+
+const profileEndpoint = KankaEndpoint.createRoot().withPath('profile');
 
 export default class KankaApi {
     #token?: string;
     #cache?: Map<string, KankaApiCacheEntry>;
     #limiter = new RateLimiter(61, 29);
+    #isRateLimiterSet = false;
 
     constructor(token?: string) {
         this.#token = token;
@@ -20,6 +23,7 @@ export default class KankaApi {
 
     public set token(token: string) {
         this.#token = token;
+        this.#isRateLimiterSet = false;
     }
 
     public get cache(): Map<string, KankaApiCacheEntry> {
@@ -47,6 +51,20 @@ export default class KankaApi {
         this.cache.set(url, cacheEntry);
 
         try {
+            if (!this.#isRateLimiterSet) {
+                this.#isRateLimiterSet = true;
+                this.#limiter.limit = 29;
+                const profileResult = await this.load<KankaProfile>(profileEndpoint);
+                logInfo(
+                    'Profile loaded, rate limit will be set based on subscription status.',
+                    { subscribed: profileResult.data.is_patreon },
+                );
+
+                if (profileResult.data.is_patreon) {
+                    this.#limiter.limit = 89;
+                }
+            }
+
             await this.#limiter.slot();
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
