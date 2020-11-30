@@ -1,3 +1,18 @@
+# [1.4.0](https://github.com/eXaminator/kanka-foundry/compare/1.3.0...1.4.0) (2020-11-30)
+
+
+### Bug Fixes
+
+* show the correct name in link button ([fd2d4ad](https://github.com/eXaminator/kanka-foundry/commit/fd2d4ad1a817339fc1b5614667cb9a5c0f3eea73))
+
+
+### Features
+
+* **api:** increase number of requests for Kanka subscribers ([d1fab2f](https://github.com/eXaminator/kanka-foundry/commit/d1fab2f7a5b392bad0c3661804d7a0b60985412c)), closes [#20](https://github.com/eXaminator/kanka-foundry/issues/20)
+* add more spacing to buttons in kanka browser ([d4d5b2c](https://github.com/eXaminator/kanka-foundry/commit/d4d5b2cd1e47b75701a37ed19ba2a1945ced168f))
+* display thumbnail for every entry in kanka browser ([b2d329d](https://github.com/eXaminator/kanka-foundry/commit/b2d329d6cf5a4fcfe0596c05480a3c9f54464fb2))
+* show in kanka browser if an entry is outdated ([9640ccb](https://github.com/eXaminator/kanka-foundry/commit/9640ccbc6986771e57045f1498256720c976255c))
+
 # [1.3.0](https://github.com/eXaminator/kanka-foundry/compare/1.2.0...1.3.0) (2020-11-26)
 
 
