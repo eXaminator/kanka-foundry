@@ -70,6 +70,13 @@ export interface KankaEntityBaseData {
     is_private: boolean;
 }
 
+export interface KankaProfile extends KankaEntityBaseData {
+    id: number;
+    name: string;
+    locale: string;
+    is_patreon: boolean;
+}
+
 export interface KankaEntityData extends KankaEntityBaseData {
     entity_id: number;
     name: string;
