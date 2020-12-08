@@ -299,7 +299,11 @@ export async function writeJournalEntry(
     if (entry) {
         await entry.update({
             ...journalData,
+            [`flags.${moduleConfig.name}.id`]: entity.id,
+            [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
+            [`flags.${moduleConfig.name}.type`]: entity.entityType,
             [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
+            [`flags.${moduleConfig.name}.campaignId`]: entity.parent.id,
         });
 
         if (notification) {
@@ -314,6 +318,7 @@ export async function writeJournalEntry(
             [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
             [`flags.${moduleConfig.name}.type`]: entity.entityType,
             [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
+            [`flags.${moduleConfig.name}.campaignId`]: entity.parent.id,
         }) as JournalEntry;
 
         if (notification) {
