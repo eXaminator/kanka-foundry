@@ -4,6 +4,7 @@ import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
+import createKankaLink from '../util/createKankaLink';
 import getSetting from './getSettings';
 import { findEntriesByType, findEntryByEntity, findEntryByEntityId, hasOutdatedEntry, writeJournalEntry } from './journal';
 
@@ -100,17 +101,18 @@ export default class KankaBrowser extends Application {
         const campaign = await this.getCampaign();
 
         Handlebars.registerHelper('kankaLink', (type?: string, id?: number) => {
-            const parts = [`https://kanka.io/${campaign.locale ?? 'en'}/campaign/${campaign.id}`];
+            let saneType;
+            let saneId;
 
             if (type && typeof type !== 'object') {
-                parts.push(`${type.replace(/y$/, 'ie')}s`);
+                saneType = type;
             }
 
             if (id && typeof id !== 'object') {
-                parts.push(String(id));
+                saneId = id;
             }
 
-            return parts.join('/');
+            return createKankaLink(campaign.id, saneType, saneId, campaign.locale);
         });
 
         Handlebars.registerHelper('hasKankaJournalEntry', (entity: PrimaryEntity) => {
