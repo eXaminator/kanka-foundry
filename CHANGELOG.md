@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/eXaminator/kanka-foundry/compare/1.4.1...1.5.0) (2020-12-12)
+
+
+### Bug Fixes
+
+* ensure that missing tags are updated when refreshing an entity ([d8a7a48](https://github.com/eXaminator/kanka-foundry/commit/d8a7a48e2a7c68083145f4f9e9485683f7e4831f))
+
+
+### Features
+
+* add link to the correspending kanka page of an entity in every journal entries window header ([0441e1e](https://github.com/eXaminator/kanka-foundry/commit/0441e1ee3e974bd8ae53e785d0b8b6373cf82b95))
+
 ## [1.4.1](https://github.com/eXaminator/kanka-foundry/compare/1.4.0...1.4.1) (2020-12-05)
 
 
