@@ -10,6 +10,7 @@ const profileEndpoint = KankaEndpoint.createRoot().withPath('profile');
 export default class KankaApi {
     #token?: string;
     #cache?: Map<string, KankaApiCacheEntry>;
+    #profile?: KankaProfile;
     #limiter = new RateLimiter(61, 29);
     #isRateLimiterSet = false;
 
@@ -34,6 +35,15 @@ export default class KankaApi {
         return this.#cache;
     }
 
+    public async getProfile(): Promise<KankaProfile> {
+        if (!this.#profile) {
+            const result = await this.load<KankaProfile>(profileEndpoint);
+            this.#profile = result.data;
+        }
+
+        return this.#profile;
+    }
+
     public async load<
         T,
         R = T extends unknown[] ? KankaListResult<T> : KankaResult<T>
@@ -54,13 +64,13 @@ export default class KankaApi {
             if (!this.#isRateLimiterSet) {
                 this.#isRateLimiterSet = true;
                 this.#limiter.limit = 29;
-                const profileResult = await this.load<KankaProfile>(profileEndpoint);
+                const profile = await this.getProfile();
                 logInfo(
                     'Profile loaded, rate limit will be set based on subscription status.',
-                    { subscribed: profileResult.data.is_patreon },
+                    { subscribed: profile.is_patreon },
                 );
 
-                if (profileResult.data.is_patreon) {
+                if (profile.is_patreon) {
                     this.#limiter.limit = 89;
                 }
             }

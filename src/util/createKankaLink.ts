@@ -1,5 +1,5 @@
-export default function createKankaLink(campaignId: number, type?: string, id?: number, locale = 'en'): string {
-    const parts = [`https://kanka.io/${locale}/campaign/${campaignId}`];
+export default function createKankaLink(campaignId: number, type?: string, id?: number, locale?: string): string {
+    const parts = [`https://kanka.io/${locale || 'en'}/campaign/${campaignId}`];
 
     if (type) {
         const pluralType = `${type.replace(/y$/, 'ie')}s`;
