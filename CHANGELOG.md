@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/eXaminator/kanka-foundry/compare/1.5.0...1.5.1) (2020-12-19)
+
+
+### Bug Fixes
+
+* improve best guess for the correct locale when generating links to kanka ([956a2ec](https://github.com/eXaminator/kanka-foundry/commit/956a2ec21f097db5e5ba06c349e0724dbac85f5a)), closes [#27](https://github.com/eXaminator/kanka-foundry/issues/27)
+
 # [1.5.0](https://github.com/eXaminator/kanka-foundry/compare/1.4.1...1.5.0) (2020-12-12)
 
 
