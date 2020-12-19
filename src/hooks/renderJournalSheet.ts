@@ -1,6 +1,8 @@
+import api from '../kanka/api';
 import Campaign from '../kanka/entities/Campaign';
 import moduleConfig from '../module.json';
 import { findEntryByEntityId } from '../module/journal';
+import { KankaProfile } from '../types/kanka';
 import createKankaLink from '../util/createKankaLink';
 
 interface Options {
@@ -10,23 +12,23 @@ interface Options {
 /**
  * Workaround: Fix all kanka links by adding a locale if it is missing
  */
-function fixKankaLinks(html: JQuery, campaign: Campaign): void {
+function fixKankaLinks(html: JQuery, profile: KankaProfile, campaign: Campaign): void {
     const contentElement = html.find('.editor-content');
 
     // Workaround for missing locale in links
     const parsedContent = contentElement.html().replace(
         'https://kanka.io/campaign',
-        `https://kanka.io/${campaign.locale ?? 'en'}/campaign`,
+        `https://kanka.io/${profile.locale || campaign.locale}/campaign`,
     );
 
     contentElement.html(parsedContent);
 }
 
-function addKankaEntityLink(html: JQuery, entity: EntityData): void {
+function addKankaEntityLink(html: JQuery, profile: KankaProfile, campaign: Campaign, entity: EntityData): void {
     const { id, type, campaignId } = entity.flags[moduleConfig.name] ?? {};
     if (!type || !id || !campaignId) return;
 
-    const link = createKankaLink(campaignId, type, id);
+    const link = createKankaLink(campaignId, type, id, profile.locale || campaign.locale);
 
     html
         .find('.window-header .window-title')
@@ -56,9 +58,10 @@ export default async function renderJournalSheet(
 
     const { entity } = options ?? {};
     const campaign = await game.modules.get(moduleConfig.name).loadCurrentCampaign() as Campaign;
+    const profile = await api.getProfile();
 
     if (entity?.flags[moduleConfig.name]) {
-        fixKankaLinks(html, campaign);
-        addKankaEntityLink(html, entity);
+        fixKankaLinks(html, profile, campaign);
+        addKankaEntityLink(html, profile, campaign, entity);
     }
 }

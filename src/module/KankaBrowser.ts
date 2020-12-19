@@ -1,3 +1,4 @@
+import api from '../kanka/api';
 import Campaign from '../kanka/entities/Campaign';
 import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import { logError } from '../logger';
@@ -99,6 +100,7 @@ export default class KankaBrowser extends Application {
     async getData(): Promise<TemplateData> {
         // Clear cache on every reload to ensure that the lists always shows all current elements
         const campaign = await this.getCampaign();
+        const profile = await api.getProfile();
 
         Handlebars.registerHelper('kankaLink', (type?: string, id?: number) => {
             let saneType;
@@ -112,7 +114,7 @@ export default class KankaBrowser extends Application {
                 saneId = id;
             }
 
-            return createKankaLink(campaign.id, saneType, saneId, campaign.locale);
+            return createKankaLink(campaign.id, saneType, saneId, profile.locale || campaign.locale);
         });
 
         Handlebars.registerHelper('hasKankaJournalEntry', (entity: PrimaryEntity) => {
