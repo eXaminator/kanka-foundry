@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/eXaminator/kanka-foundry/compare/1.5.1...1.5.2) (2020-12-27)
+
+
+### Bug Fixes
+
+* update supported foundry version to 0.7.9 ([adccf0e](https://github.com/eXaminator/kanka-foundry/commit/adccf0eeb72994a7f96a5907b386d979778b8621))
+
 ## [1.5.1](https://github.com/eXaminator/kanka-foundry/compare/1.5.0...1.5.1) (2020-12-19)
 
 
