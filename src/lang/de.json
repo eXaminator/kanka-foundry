@@ -4,6 +4,7 @@
     "KANKA.ErrorInvalidAccessToken": "Dein Kanka Access Token ist ungültig.",
     "KANKA.ErrorTokenExpired": "Dein Kanka Access Token ist abgelaufen. Bitte hinterlege ein neues.",
     "KANKA.WarningTokenExpiration": "Dein Kanka Access Token läuft innerhalb der nächsten Woche ab. Bitte hinterlege ein neues.",
+    "KANKA.Browser.filter": "Filter",
     "KANKA.SettingsToken.label": "Kanka Personal Access Token",
     "KANKA.SettingsToken.hint": "Du kannst ein Token auf https://kanka.io/en/settings/api erhalten.",
     "KANKA.SettingsCampaign.label": "Kampagne",
