@@ -77,6 +77,15 @@ export interface KankaProfile extends KankaEntityBaseData {
     is_patreon: boolean;
 }
 
+export interface KankaEntityNote {
+    id: number;
+    entity_id: number;
+    entry: string;
+    is_private: boolean;
+    name: string;
+    visibility: Visibility;
+}
+
 export interface KankaEntityData extends KankaEntityBaseData {
     entity_id: number;
     name: string;
@@ -89,6 +98,7 @@ export interface KankaEntityData extends KankaEntityBaseData {
     attributes: KankaAttribute[];
     relations: KankaRelation[];
     inventory: KankaInventory[];
+    entity_notes: KankaEntityNote[];
     created_at: string;
     created_by: number;
     updated_at: string;

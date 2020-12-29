@@ -6,6 +6,7 @@ import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
 import EntityBase from './EntityBase';
 import EntityMetaData from './EntityMetaData';
+import EntityNote from './EntityNote';
 import InventoryItem from './InventoryItem';
 
 export default abstract class PrimaryEntity<
@@ -14,12 +15,16 @@ export default abstract class PrimaryEntity<
 > extends EntityBase<T, P> {
     readonly #attributes: EntityAttribute[];
     readonly #inventory: InventoryItem[];
+    readonly #entityNotes: EntityNote[];
     #metaData?: EntityMetaData[];
 
     constructor(endpoint: KankaEndpoint, data: T, parent: P) {
         super(endpoint, data, parent);
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
         this.#inventory = data.inventory?.map(entry => new InventoryItem(this.endpoint, entry, this)) ?? [];
+        this.#entityNotes = data.entity_notes
+            ?.map(entry => new EntityNote(this.endpoint, entry, this))
+            .sort((a, b) => a.name.localeCompare(b.name)) ?? [];
     }
 
     abstract get entityType(): EntityType;
@@ -53,6 +58,10 @@ export default abstract class PrimaryEntity<
 
     public get inventory(): InventoryItem[] {
         return this.#inventory;
+    }
+
+    public get entityNotes(): EntityNote[] {
+        return this.#entityNotes;
     }
 
     public get entityId(): number {
