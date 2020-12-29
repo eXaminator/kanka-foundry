@@ -30,3 +30,21 @@
 </table>
 {{/if}}
 {{{ entity.entry }}}
+
+{{#each publicNotes}}
+    {{#unless this.isSecret}}
+        <h2>{{ this.name }}</h2>
+        {{{ this.entry }}}
+    {{/unless}}
+{{/each}}
+
+{{#if secretNotes.length}}
+    <section class="secret">
+        {{#each secretNotes}}
+            {{#if this.isSecret}}
+                <h2>{{ this.name }}</h2>
+                {{{ this.entry }}}
+            {{/if}}
+        {{/each}}
+    </section>
+{{/if}}

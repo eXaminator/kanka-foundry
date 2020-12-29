@@ -4,6 +4,7 @@ export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
     importPrivateEntities = 'importPrivateEntities',
+    entityNotesVisibility = 'entityNotesVisibility',
     metaDataBasicVisibility = 'metaDataBasicVisibility',
     metaDataAttributeVisibility = 'metaDataAttributeVisibility',
     metaDataInventoryVisibility = 'metaDataInventoryVisibility',
@@ -55,6 +56,12 @@ export enum MetaDataQuestReferenceVisibility {
 }
 
 export enum MetaDataInventoryVisibility {
+    all = 'all',
+    public = 'public',
+    none = 'none',
+}
+
+export enum EntityNotesVisibility {
     all = 'all',
     public = 'public',
     none = 'none',

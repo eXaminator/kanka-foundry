@@ -7,6 +7,7 @@ import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { CharacterTrait, Visibility } from '../types/kanka';
 import {
+    EntityNotesVisibility,
     KankaSettings,
     MetaDataAttributeVisibility,
     MetaDataBasicVisibility,
@@ -281,12 +282,18 @@ export async function writeJournalEntry(
     const { renderSheet = false, notification = true } = options;
     let entry = findEntryByEntity(entity);
 
+    const noteVisibility = getSettings(KankaSettings.entityNotesVisibility) as EntityNotesVisibility;
+    const publicNotes = entity.entityNotes.filter(note => !note.isSecret);
+    const secretNotes = entity.entityNotes.filter(note => note.isSecret);
+
     const content = await renderTemplate(
         `modules/${moduleConfig.name}/templates/journalEntry.html`,
         {
             entity,
             metaData: await buildMetaData(entity),
             includeImage: entity.image && getSettings(KankaSettings.imageInText),
+            publicNotes: noteVisibility !== EntityNotesVisibility.none ? publicNotes : [],
+            secretNotes: noteVisibility === EntityNotesVisibility.all ? secretNotes : [],
         },
     );
 

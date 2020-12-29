@@ -6,6 +6,7 @@ import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import {
+    EntityNotesVisibility,
     kankaImportTypeSetting,
     KankaSettings,
     MetaDataAttributeVisibility,
@@ -175,6 +176,24 @@ export async function registerSettings(): Promise<void> {
             config: true,
             type: Boolean,
             default: true,
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.entityNotesVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: EntityNotesVisibility.all,
+            choices: {
+                [EntityNotesVisibility.all]: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.value.all'),
+                [EntityNotesVisibility.public]: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.value.public'),
+                [EntityNotesVisibility.none]: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.value.none'),
+            },
         },
     );
 
