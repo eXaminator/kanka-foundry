@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/eXaminator/kanka-foundry/compare/1.5.2...1.5.3) (2020-12-29)
+
+
+### Bug Fixes
+
+* correctly load all pages on paginated Kanka API lists ([8f3e923](https://github.com/eXaminator/kanka-foundry/commit/8f3e923122a13eadf202240c54ca7bfb31b5cd4f))
+
 ## [1.5.2](https://github.com/eXaminator/kanka-foundry/compare/1.5.1...1.5.2) (2020-12-27)
 
 
