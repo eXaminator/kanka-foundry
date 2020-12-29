@@ -97,7 +97,7 @@ button#kanka {
 .kanka-main-image {
     float: left;
     margin: 0 .5em .5em 0;
-    max-width: 30%;
+    max-width: 30% !important;
 
     & + .kanka-metadata {
         max-width: calc(70% - 0.5em);
