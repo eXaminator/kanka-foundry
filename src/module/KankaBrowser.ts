@@ -139,6 +139,11 @@ export default class KankaBrowser extends Application {
             (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
         );
 
+        Handlebars.registerHelper(
+            'toLowerCase',
+            (text?: string) => text?.toLowerCase(),
+        );
+
         return { campaign } as TemplateData;
     }
 
@@ -202,8 +207,9 @@ export default class KankaBrowser extends Application {
         html.find<HTMLDetailsElement>('details[data-type]').on('toggle', (event) => {
             const type = event.currentTarget.dataset?.type;
             if (!type) return;
-            setOpenStateToLocalStorage(type, event.currentTarget.open);
             this.setPosition({ height: 'auto' });
+            if (html.find('[name="filter"]').val()) return; // Don't save toggle if filter is active
+            setOpenStateToLocalStorage(type, event.currentTarget.open);
         });
 
         this.setPosition({ height: 'auto' });
@@ -214,6 +220,30 @@ export default class KankaBrowser extends Application {
         this.loadAndRenderEntityLists(html).catch(e => logError(e));
 
         const campaign = await this.getCampaign();
+
+        html.on('input', '[name="filter"]', (event) => {
+            const filter = event?.target?.value ?? '';
+
+            if (!filter.trim().length) {
+                html.find('[data-filter-text]').show();
+                html.find<HTMLDetailsElement>('details[data-type]')
+                    // eslint-disable-next-line no-param-reassign
+                    .each((_, el) => { el.open = getOpenStateFromLocalStorage(el.dataset?.type ?? ''); });
+                return;
+            }
+
+            const saneFilter: string = filter
+                .toLowerCase()
+                .replace(/\[/g, '\\[')
+                .replace(/\]/g, '||]')
+                .replace(/"/g, '\\"');
+
+            html.find<HTMLDetailsElement>('details[data-type]')
+                // eslint-disable-next-line no-param-reassign
+                .each((_, el) => { el.open = true; });
+            html.find('[data-filter-text]').hide();
+            html.find(`[data-filter-text*="${saneFilter}"]`).show();
+        });
 
         html.on('click', '[data-action]', async (event) => {
             const action: string = event?.currentTarget?.dataset?.action;

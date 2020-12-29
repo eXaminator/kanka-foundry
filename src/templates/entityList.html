@@ -1,3 +1,12 @@
+<form id="kanka-filter">
+    <div class="form-group">
+        <label>{{ localize 'KANKA.Browser.filter' }}</label>
+        <div class="form-fields">
+            <input type="text" name="filter" />
+        </div>
+    </div>
+</form>
+
 {{#each data}}
 <details class="entity-list" data-type="{{ @key }}" {{#if this.isOpen}}open{{/if}}>
     <summary class="action-row">
@@ -18,7 +27,7 @@
     </summary>
     <ul class="element-list">
         {{#each items}}
-        <li class="action-row element-entry">
+        <li class="action-row element-entry" data-filter-text="{{ toLowerCase this.name }}">
             <div class="thumbnail">{{#if this.thumbnail}}<img src="{{ this.thumbnail }}" />{{/if}}</div>
             <div>
                 <a href="{{ kankaLink @../key this.id }}" target="_blank">{{ this.name }}</a>

@@ -4,6 +4,7 @@
     "KANKA.ErrorInvalidAccessToken": "The given Kanka access token is invalid.",
     "KANKA.ErrorTokenExpired": "Your Kanka access token is expired. Please provide a new one.",
     "KANKA.WarningTokenExpiration": "Your Kanka access token is going to expire withing the next week. Please provide a new one.",
+    "KANKA.Browser.filter": "Filter",
     "KANKA.SettingsToken.label": "Kanka Personal Access Token",
     "KANKA.SettingsToken.hint": "You can retrieve an access token from https://kanka.io/en/settings/api",
     "KANKA.SettingsCampaign.label": "Campaign",
