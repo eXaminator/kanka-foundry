@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/eXaminator/kanka-foundry/compare/1.5.3...1.6.0) (2020-12-29)
+
+
+### Bug Fixes
+
+* ensure that main kanka images always get their max-width ([4c2c8cb](https://github.com/eXaminator/kanka-foundry/commit/4c2c8cbc7b5b6c60232423f801c5b99f6980f44b))
+
+
+### Features
+
+* add filter to browse window to make it easier to find entities ([ed615d7](https://github.com/eXaminator/kanka-foundry/commit/ed615d7bc4b7ba132ea8049e82320513c5a2576b))
+* optionally add entity notes as paragraphs or secrets to journal entries ([33e80a8](https://github.com/eXaminator/kanka-foundry/commit/33e80a819611c927e8b849d38ef41c3f50630c9d))
+
 ## [1.5.3](https://github.com/eXaminator/kanka-foundry/compare/1.5.2...1.5.3) (2020-12-29)
 
 
