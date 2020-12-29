@@ -28,7 +28,7 @@ export default class EntityCollection<T extends EntityBase> {
         while (nextEndpoint) {
             // eslint-disable-next-line no-await-in-loop
             const page = await this.loadPage(nextEndpoint);
-            nextEndpoint = page.api;
+            nextEndpoint = page.endpoint;
             cache.save(...page.items);
         }
 
