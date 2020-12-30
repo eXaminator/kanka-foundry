@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/eXaminator/kanka-foundry/compare/1.6.0...1.6.1) (2020-12-30)
+
+
+### Bug Fixes
+
+* leverage foundrys own linking mechanism between journal entries to ensure permissions are handled ([f30cbc0](https://github.com/eXaminator/kanka-foundry/commit/f30cbc0126fad5dacf799730eedbd63b76c68bfd))
+
 # [1.6.0](https://github.com/eXaminator/kanka-foundry/compare/1.5.3...1.6.0) (2020-12-29)
 
 
