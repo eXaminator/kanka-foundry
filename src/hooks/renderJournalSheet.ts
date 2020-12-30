@@ -39,23 +39,30 @@ function addKankaEntityLink(html: JQuery, profile: KankaProfile, campaign: Campa
 `);
 }
 
+function replaceMentionLinks(html: JQuery): void {
+    html.find<HTMLAnchorElement>('a[data-id][href*="kanka.io"]').each((_, link) => {
+        const entityId = Number(link.dataset.id);
+        const entry = findEntryByEntityId(entityId);
+
+        if (!entry) return;
+
+        $(link)
+            .attr({
+                draggable: 'true',
+                'data-entity': 'JournalEntry',
+                // eslint-disable-next-line no-underscore-dangle
+                'data-id': entry._id,
+                href: null,
+            })
+            .addClass('entity-link');
+    });
+}
+
 export default async function renderJournalSheet(
     sheet: JournalSheet,
     html: JQuery,
     options?: Options,
 ): Promise<void> {
-    html.on('click', '[data-id]', (event: JQuery.ClickEvent) => {
-        const entityId = Number(event.currentTarget.dataset.id);
-        const entry = findEntryByEntityId(entityId);
-
-        if (entry) {
-            event.stopImmediatePropagation();
-            event.preventDefault();
-
-            entry.sheet.render(true);
-        }
-    });
-
     const { entity } = options ?? {};
     const campaign = await game.modules.get(moduleConfig.name).loadCurrentCampaign() as Campaign;
     const profile = await api.getProfile();
@@ -63,5 +70,6 @@ export default async function renderJournalSheet(
     if (entity?.flags[moduleConfig.name]) {
         fixKankaLinks(html, profile, campaign);
         addKankaEntityLink(html, profile, campaign, entity);
+        replaceMentionLinks(html);
     }
 }
