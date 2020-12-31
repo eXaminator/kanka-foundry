@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/eXaminator/kanka-foundry/compare/1.6.1...1.6.2) (2020-12-31)
+
+
+### Bug Fixes
+
+* use parsed content of entity notes to keep mentions intact ([fb26446](https://github.com/eXaminator/kanka-foundry/commit/fb2644609c2cc8b116afdcb63ce7152b727bda81))
+
 ## [1.6.1](https://github.com/eXaminator/kanka-foundry/compare/1.6.0...1.6.1) (2020-12-30)
 
 
