@@ -8,7 +8,7 @@ export default class EntityNote extends EntityBase<KankaEntityNote, PrimaryEntit
     }
 
     get entry(): string {
-        return this.data.entry;
+        return this.data.entry_parsed;
     }
 
     get visibility(): Visibility {
