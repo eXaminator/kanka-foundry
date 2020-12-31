@@ -81,6 +81,7 @@ export interface KankaEntityNote {
     id: number;
     entity_id: number;
     entry: string;
+    entry_parsed: string;
     is_private: boolean;
     name: string;
     visibility: Visibility;
