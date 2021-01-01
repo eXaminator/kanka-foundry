@@ -36,6 +36,9 @@ entries image. With this setting the image will additionally be displayed in the
 - **Show private entities**: If you disable this option, the module won't allow you sync entries that were marked as
 private in Kanka. Private entries that were imported before changing this setting will remain in your journal but can't
 be refreshed from Kanka until this setting has been enabled again.
+- **Remove external links**: If this option is selected all links to other kanka entries will be removed unless those
+entities have been imported to Foundry themselves. This option can be changed at any time without the need to import
+an entry again.
 - **Notes import**: This setting allows you to define which *notes* should be imported for each entry. All non-public
 notes will be rendered in a secret section and not visible for anyone but the GM or owner of the journal entry. Just
 like in Kanka itself notes will be sorted alphabetically, but secret notes will always be grouped at the end of the

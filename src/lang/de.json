@@ -14,6 +14,8 @@
     "KANKA.SettingsCampaign.pleaseChoose": "-- Bitte wähle eine Kampagne --",
     "KANKA.SettingsImportPrivateEntities.label": "Private Einträge anzeigen",
     "KANKA.SettingsImportPrivateEntities.hint": "Erlaubt das importieren von Einträgen die als Privat markiert wurden.",
+    "KANKA.SettingsDisableExternalMentionLinks.label": "Entferne externe Links",
+    "KANKA.SettingsDisableExternalMentionLinks.hint": "Wenn diese Option ausgewählt ist, werden alle Links zu Einträgen entfernt die noch nicht nach Foundry importiert wurden.",
     "KANKA.SettingsEntityNotesVisibility.label": "Notizen importieren",
     "KANKA.SettingsEntityNotesVisibility.hint": "Importiert Notizen aller Einträge und markiert diese als Geheimnis falls die Sichtbarkeit eingeschränkt wurde.",
     "KANKA.SettingsEntityNotesVisibility.value.all": "Alle Notizen",
