@@ -14,6 +14,8 @@
     "KANKA.SettingsCampaign.pleaseChoose": "-- Please choose a campaign --",
     "KANKA.SettingsImportPrivateEntities.label": "Show private entities",
     "KANKA.SettingsImportPrivateEntities.hint": "Allow importing of entities that were marked as private.",
+    "KANKA.SettingsDisableExternalMentionLinks.label": "Remove external links",
+    "KANKA.SettingsDisableExternalMentionLinks.hint": "If this is checked all mention links to entries that were not synced to Foundry will be removed.",
     "KANKA.SettingsEntityNotesVisibility.label": "Notes import",
     "KANKA.SettingsEntityNotesVisibility.hint": "Imports notes of all entities and marks them as secret if access is restricted.",
     "KANKA.SettingsEntityNotesVisibility.value.all": "All notes",

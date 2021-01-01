@@ -181,6 +181,19 @@ export async function registerSettings(): Promise<void> {
 
     game.settings.register(
         moduleConfig.name,
+        KankaSettings.disableExternalMentionLinks,
+        {
+            name: game.i18n.localize('KANKA.SettingsDisableExternalMentionLinks.label'),
+            hint: game.i18n.localize('KANKA.SettingsDisableExternalMentionLinks.hint'),
+            scope: 'world',
+            config: true,
+            type: Boolean,
+            default: false,
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
         KankaSettings.entityNotesVisibility,
         {
             name: game.i18n.localize('KANKA.SettingsEntityNotesVisibility.label'),
