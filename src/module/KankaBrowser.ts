@@ -72,6 +72,17 @@ function setOpenStateToLocalStorage(type: string, open: boolean): void {
     window.localStorage.setItem(getLocalStorageKey(type), open ? 'true' : 'false');
 }
 
+function getImportableEntityTypes(): EntityType[] {
+    return Object.values(EntityType)
+        .filter((t) => {
+            try {
+                return getSettings(kankaImportTypeSetting(t));
+            } catch (e) {
+                return false; // Setting does not exist
+            }
+        });
+}
+
 export default class KankaBrowser extends Application {
     static get defaultOptions(): ApplicationOptions {
         return mergeObject(super.defaultOptions, {
@@ -272,8 +283,12 @@ export default class KankaBrowser extends Application {
                 }
 
                 case 'sync-folder':
-                    if (!type) return;
-                    await this.syncFolder(type);
+                    if (!type) {
+                        const promises = getImportableEntityTypes().map(t => this.syncFolder(t));
+                        await Promise.all(promises);
+                    } else {
+                        await this.syncFolder(type);
+                    }
                     this.render();
                     break;
 

@@ -74,27 +74,27 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getByType(type: string): EntityCollection<any> | undefined {
         switch (type) {
-            case 'ability':
+            case EntityType.ability:
                 return this.#abilities;
-            case 'character':
+            case EntityType.character:
                 return this.#characters;
-            case 'event':
+            case EntityType.event:
                 return this.#events;
-            case 'family':
+            case EntityType.family:
                 return this.#families;
-            case 'item':
+            case EntityType.item:
                 return this.#items;
-            case 'journal':
+            case EntityType.journal:
                 return this.#journals;
-            case 'location':
+            case EntityType.location:
                 return this.#locations;
-            case 'note':
+            case EntityType.note:
                 return this.#notes;
-            case 'organisation':
+            case EntityType.organisation:
                 return this.#organisations;
-            case 'quest':
+            case EntityType.quest:
                 return this.#quests;
-            case 'race':
+            case EntityType.race:
                 return this.#races;
             default:
                 return undefined;
