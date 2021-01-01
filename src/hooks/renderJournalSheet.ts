@@ -54,7 +54,8 @@ function replaceMentionLinks(html: JQuery): void {
                 'data-id': entry._id,
                 href: null,
             })
-            .addClass('entity-link');
+            .addClass('entity-link')
+            .prepend('<i class="fas fa-book-open"></i> ');
     });
 }
 
