@@ -1,3 +1,17 @@
+# [1.7.0](https://github.com/eXaminator/kanka-foundry/compare/1.6.2...1.7.0) (2021-01-01)
+
+
+### Bug Fixes
+
+* add journal icon to mention links to match the look of regular journal links ([2d09b67](https://github.com/eXaminator/kanka-foundry/commit/2d09b67ed903ec7aac28f31119c8fa21fb0c40f0))
+
+
+### Features
+
+* add button to refresh all linked entries ([c86b15c](https://github.com/eXaminator/kanka-foundry/commit/c86b15c14350c3432cf3472e6a9b1f33b2896961))
+* add setting to remove mention links to kanka for non-imported entities ([43ce785](https://github.com/eXaminator/kanka-foundry/commit/43ce785117cf8c797be7ac61ad31db6e2b3962c1))
+* improve metadata table layout and linking to referenced entities ([de0a4da](https://github.com/eXaminator/kanka-foundry/commit/de0a4da262ee9056fd6537e2fa78683e672e8392))
+
 ## [1.6.2](https://github.com/eXaminator/kanka-foundry/compare/1.6.1...1.6.2) (2020-12-31)
 
 
