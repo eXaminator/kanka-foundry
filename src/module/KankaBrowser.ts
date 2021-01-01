@@ -6,7 +6,7 @@ import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
 import createKankaLink from '../util/createKankaLink';
-import getSetting from './getSettings';
+import getSettings from './getSettings';
 import { findEntriesByType, findEntryByEntity, findEntryByEntityId, hasOutdatedEntry, writeJournalEntry } from './journal';
 
 interface EntityList {
@@ -164,7 +164,7 @@ export default class KankaBrowser extends Application {
 
     private async renderEntityTemplate(lists: Partial<Record<EntityType, PrimaryEntity[]>>): Promise<string> {
         const data = {};
-        const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
+        const allowPrivate = getSettings(KankaSettings.importPrivateEntities) as boolean;
 
         Object
             .entries(lists)
@@ -197,7 +197,7 @@ export default class KankaBrowser extends Application {
 
         const types = Object
             .keys(entityTypes)
-            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
+            .filter(type => getSettings(kankaImportTypeSetting(type as EntityType))) as EntityType[];
 
         const lists = await this.loadEntityListData(campaign, types);
         const htmlString = await this.renderEntityTemplate(lists);
