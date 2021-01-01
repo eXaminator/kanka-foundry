@@ -85,6 +85,8 @@
     "KANKA.MetaData.boolean.true": "Ja",
     "KANKA.MetaData.boolean.false": "Nein",
     "KANKA.MetaData.author": "Autor",
+    "KANKA.MetaData.attributes": "Attribute",
+    "KANKA.MetaData.unsorted": "Unsortiert",
     "KANKA.MetaData.character": "Charakter",
     "KANKA.MetaData.characters": "Charaktere",
     "KANKA.MetaData.location": "Ort",

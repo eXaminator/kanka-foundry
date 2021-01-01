@@ -10,20 +10,16 @@
         {{#each this.data}}
             <tr>
                 <th>
-                    {{#if this.linkTo}}
-                    <a
-                        href="{{ kankaLink this.linkTo.entityType this.linkTo.id }}"
-                        data-id="{{ this.linkTo.entityId }}"
-                        class="kanka-reference-link"
-                    >
-                        {{{ this.label }}}
-                        <i class="fas fa-link"></i>
-                    </a>
-                    {{else}}
-                        {{{ this.label }}}
-                    {{/if}}
+                    {{{ this.label }}}
                 </th>
-                <td>{{{ this.value }}}</td>
+                <td>
+                    {{#each this.values}}
+                        {{#if this.value}}
+                            <div>{{{ this.value }}}</div>
+                            <hr/>
+                        {{/if}}
+                    {{/each}}
+                </td>
             </tr>
         {{/each}}
     {{/each}}

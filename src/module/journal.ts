@@ -18,10 +18,14 @@ import {
 } from '../types/KankaSettings';
 import getSettings from './getSettings';
 
-interface MetaData {
-    label: string;
+interface MetaDataValue {
     value: string;
     linkTo?: PrimaryEntity;
+}
+
+interface MetaData {
+    label: string;
+    values: MetaDataValue[];
 }
 
 interface MetaDataSection {
@@ -251,13 +255,24 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
 
 async function buildMetaDataForSection(entity: PrimaryEntity, section?: string): Promise<MetaData[]> {
     const metaData = await entity.getMetaDataBySection(section);
+    const groupedByLabel = new Map<string, typeof metaData>();
 
-    return metaData
+    metaData
         .filter(byMetaDataConfiguration)
-        .map(data => ({
-            label: translateMetaDataLabel(data.label),
-            value: translateMetaDataValue(data.value),
-            linkTo: data.linkTo,
+        .forEach((data) => {
+            if (!groupedByLabel.has(data.label)) {
+                groupedByLabel.set(data.label, []);
+            }
+            groupedByLabel.get(data.label)?.push(data);
+        });
+
+    return Array
+        .from(groupedByLabel.entries())
+        .map(([label, data]) => ({
+            label: translateMetaDataLabel(label),
+            values: data.map(valueEntry => ({
+                value: translateMetaDataValue(valueEntry.value),
+            })),
         }));
 }
 

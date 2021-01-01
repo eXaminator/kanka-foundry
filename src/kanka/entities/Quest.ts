@@ -1,6 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { QuestData } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
+import mentionLink from '../../util/mentionLink';
 import EntityCollection from '../EntityCollection';
 import type Campaign from './Campaign';
 import PrimaryEntity from './PrimaryEntity';
@@ -17,8 +18,8 @@ function referenceValue(reference: QuestReference): string {
         content.push(`<strong class="kanka-quest-role">${reference.role}</strong>`);
     }
 
-    if (reference.description) {
-        content.push(reference.description);
+    if (reference.description?.trim()) {
+        content.push(reference.description.trim());
     }
 
     return content.join('<br/>');
@@ -92,12 +93,11 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
         const entities = await Promise.all(references.map(ref => ref.entity()));
 
         references.forEach((reference, index) => this.addMetaData({
-            label: entities[index].name,
+            label: mentionLink(entities[index].name, entities[index]),
             value: referenceValue(reference),
             section,
             type: MetaDataType.questReference,
             originalData: reference,
-            linkTo: entities[index],
         }, true));
     }
 }
