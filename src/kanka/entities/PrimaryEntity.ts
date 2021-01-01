@@ -1,6 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { KankaEntityData } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
+import mentionLink from '../../util/mentionLink';
 import KankaEndpoint from '../KankaEndpoint';
 import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
@@ -119,7 +120,7 @@ export default abstract class PrimaryEntity<
 
                 this.addMetaData({
                     type: MetaDataType.attribute,
-                    section: currentSection?.name,
+                    section: currentSection?.name || 'attributes',
                     label: attribute.name,
                     value: attribute.value,
                     originalData: attribute,
@@ -130,19 +131,21 @@ export default abstract class PrimaryEntity<
 
         this.inventory
             .forEach((inventory, index) => {
-                const label = `${inventory.amount} &times; ${items[index]?.name ?? inventory.name}`;
-                const value: string[] = [];
+                let { name } = inventory;
+                const item = items[index];
+                if (item) name = mentionLink(item.name, item);
+
+                const value: string[] = [`${inventory.amount} &times; ${name}`];
 
                 if (inventory.isEquipped) value.push('<i class="fas fa-check-circle"></i>');
-                if (inventory.description) value.push(`<em>${inventory.description}</em>`);
+                if (inventory.description) value.push(`<em>(${inventory.description})</em>`);
 
                 this.addMetaData({
-                    label,
+                    label: inventory.position || 'unsorted',
                     type: MetaDataType.inventory,
-                    section: inventory.position || 'inventory',
+                    section: 'inventory',
                     value: value.join(' '),
                     originalData: inventory,
-                    linkTo: items[index],
                 }, true);
             });
     }
@@ -161,7 +164,6 @@ export default abstract class PrimaryEntity<
                 value: data.value,
                 section: data.section ?? '',
                 type: data.type ?? MetaDataType.basic,
-                linkTo: data.linkTo,
             });
         }
     }
@@ -179,8 +181,7 @@ export default abstract class PrimaryEntity<
                 section,
                 originalData: entity,
                 type: MetaDataType.reference,
-                value: entity.name,
-                linkTo: entity,
+                value: mentionLink(entity.name, entity),
             });
         }
     }

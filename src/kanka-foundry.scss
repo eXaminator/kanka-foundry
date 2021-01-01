@@ -122,11 +122,18 @@ button#kanka {
 
     th, td {
         padding: .25em .5em;
+
+        > hr:last-of-type {
+            display: none;
+        }
     }
 
-    .kanka-reference-link {
-        color: inherit;
-        text-decoration: none;
+    p:first-of-type {
+        margin-top: 0;
+    }
+
+    p:last-of-type {
+        margin-bottom: 0;
     }
 }
 
