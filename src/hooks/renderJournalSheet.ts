@@ -48,6 +48,8 @@ function replaceMentionLinks(html: JQuery): void {
         const removeLink = getSetting(KankaSettings.disableExternalMentionLinks);
         const $link = $(link);
 
+        console.log('FOO', link, entry, removeLink);
+
         if (!entry && !removeLink) return;
 
         if (!entry) {
@@ -77,7 +79,9 @@ export default async function renderJournalSheet(
     const campaign = await game.modules.get(moduleConfig.name).loadCurrentCampaign() as Campaign;
     const profile = await api.getProfile();
 
+    console.log('FOO', 1);
     if (entity?.flags[moduleConfig.name]) {
+        console.log('FOO', 2);
         fixKankaLinks(html, profile, campaign);
         addKankaEntityLink(html, profile, campaign, entity);
         replaceMentionLinks(html);
