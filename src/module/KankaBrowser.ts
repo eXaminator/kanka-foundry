@@ -270,7 +270,7 @@ export default class KankaBrowser extends Application {
                     if (!id || !type) return;
                     const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
-                    await this.syncEntity(entity, action === 'link-entry');
+                    await this.syncEntities([entity]);
                     this.render();
                     break;
                 }
@@ -335,14 +335,21 @@ export default class KankaBrowser extends Application {
     }
 
     private async syncEntities(entities: PrimaryEntity[]): Promise<void> {
+        const targetLanguage = getSettings(KankaSettings.importLanguage) as string;
+        const currentLanguage = game.i18n.lang;
+
+        if (targetLanguage && targetLanguage !== currentLanguage) {
+            await game.i18n.setLanguage(targetLanguage);
+        }
+
         for (let i = 0; i < entities.length; i += 1) {
             // eslint-disable-next-line no-await-in-loop
-            await this.syncEntity(entities[i], false, false);
+            await writeJournalEntry(entities[i], { notification: entities.length === 1 });
         }
-    }
 
-    private async syncEntity(entity: PrimaryEntity, renderSheet = false, notification = true): Promise<void> {
-        await writeJournalEntry(entity, { renderSheet, notification });
+        if (targetLanguage && targetLanguage !== currentLanguage) {
+            await game.i18n.setLanguage(currentLanguage);
+        }
     }
 
     private showInfo(msg: string, params?: Record<string, unknown>): void {

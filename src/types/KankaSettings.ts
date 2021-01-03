@@ -3,6 +3,7 @@ import EntityType from './EntityType';
 export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
+    importLanguage = 'importLanguage',
     disableExternalMentionLinks = 'disableExternalMentionLinks',
     importPrivateEntities = 'importPrivateEntities',
     entityNotesVisibility = 'entityNotesVisibility',
