@@ -19,6 +19,9 @@ import validateAccessToken from '../util/validateAccessToken';
 import getSettings from './getSettings';
 import KankaBrowser from './KankaBrowser';
 
+const supportedLanguages = moduleConfig.languages
+    .reduce((map, { lang, name }) => ({ ...map, [lang]: name }), {});
+
 const accessTokenInputName = `${moduleConfig.name}.${KankaSettings.accessToken}`;
 const campaignInputName = `${moduleConfig.name}.${KankaSettings.campaign}`;
 
@@ -136,6 +139,23 @@ export async function registerSettings(): Promise<void> {
                     .values(ui.windows)
                     .find(a => a.constructor === KankaBrowser)
                     ?.render(false);
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.importLanguage,
+        {
+            name: game.i18n.localize('KANKA.SettingsImportLanguage.label'),
+            hint: game.i18n.localize('KANKA.SettingsImportLanguage.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: '',
+            choices: {
+                '': game.i18n.localize('KANKA.SettingsImportLanguage.default'),
+                ...supportedLanguages,
             },
         },
     );
