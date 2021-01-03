@@ -1,5 +1,3 @@
-import EntityType from './EntityType';
-
 export enum KankaSettings {
     accessToken = 'access_token',
     campaign = 'campaign',
@@ -16,7 +14,13 @@ export enum KankaSettings {
     keepTreeStructure = 'keepTreeStructure',
 }
 
-export function kankaImportTypeSetting(type: EntityType): KankaSettings {
+export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {
+    // This pretends to be a KankaSettings entry and should be usable everywhere regular KankaSettings
+    // are usable
+    return `collapseType_${type}` as KankaSettings;
+}
+
+export function kankaImportTypeSetting(type: string): KankaSettings {
     // This pretends to be a KankaSettings entry and should be usable everywhere regular KankaSettings
     // are usable
     return `importType_${type}` as KankaSettings;

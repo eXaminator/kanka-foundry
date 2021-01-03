@@ -1,7 +1,7 @@
 import api from '../kanka/api';
 import Campaign from '../kanka/entities/Campaign';
 import moduleConfig from '../module.json';
-import getSettings from '../module/getSettings';
+import { getSetting } from '../module/accessSettings';
 import { findEntryByEntityId } from '../module/journal';
 import { KankaProfile } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
@@ -45,7 +45,7 @@ function replaceMentionLinks(html: JQuery): void {
     html.find<HTMLAnchorElement>('a[data-id][href*="kanka.io"]').each((_, link) => {
         const entityId = Number(link.dataset.id);
         const entry = findEntryByEntityId(entityId);
-        const removeLink = getSettings(KankaSettings.disableExternalMentionLinks);
+        const removeLink = getSetting(KankaSettings.disableExternalMentionLinks);
         const $link = $(link);
 
         if (!entry && !removeLink) return;
