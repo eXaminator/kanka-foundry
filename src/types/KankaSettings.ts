@@ -12,6 +12,7 @@ export enum KankaSettings {
     metaDataQuestReferenceVisibility = 'metaDataQuestReferenceVisibility',
     imageInText = 'imageInText',
     keepTreeStructure = 'keepTreeStructure',
+    currentBrowserFilter = 'currentBrowserFilter',
 }
 
 export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {
