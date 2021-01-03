@@ -6,7 +6,7 @@ import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
 import {
-    EntityNotesVisibility,
+    EntityNotesVisibility, kankaBrowserTypeCollapseSetting,
     kankaImportTypeSetting,
     KankaSettings,
     MetaDataAttributeVisibility,
@@ -16,7 +16,7 @@ import {
     MetaDataQuestReferenceVisibility,
 } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
-import getSettings from './getSettings';
+import { getSetting } from './accessSettings';
 import KankaBrowser from './KankaBrowser';
 
 const supportedLanguages = moduleConfig.languages
@@ -38,7 +38,7 @@ function buildCampaignChoices(campaigns: Campaign[]): Record<string, string> {
 }
 
 async function fetchInitialCampaignChoices(): Promise<Record<string, string>> {
-    if (!getSettings(KankaSettings.accessToken)) {
+    if (!getSetting(KankaSettings.accessToken)) {
         return {
             '': game.i18n.localize('KANKA.SettingsCampaign.noToken'),
         };
@@ -93,7 +93,7 @@ async function updateWorldList(event: JQuery.TriggeredEvent): Promise<void> {
         select.append(option);
     });
 
-    select.val(getSettings(KankaSettings.campaign));
+    select.val(getSetting(KankaSettings.campaign));
 }
 
 export function clearSettings(): void {
@@ -336,6 +336,17 @@ export async function registerSettings(): Promise<void> {
                     config: true,
                     type: Boolean,
                     default: true,
+                },
+            );
+
+            game.settings.register(
+                moduleConfig.name,
+                kankaBrowserTypeCollapseSetting(type),
+                {
+                    scope: 'client',
+                    config: true,
+                    type: Boolean,
+                    default: false,
                 },
             );
         });

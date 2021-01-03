@@ -16,7 +16,7 @@ import {
     MetaDataQuestReferenceVisibility,
     MetaDataType,
 } from '../types/KankaSettings';
-import getSettings from './getSettings';
+import { getSetting } from './accessSettings';
 
 interface MetaDataValue {
     value: string;
@@ -116,7 +116,7 @@ async function ensureEntityJournalFolder(entity: PrimaryEntity, parent?: Folder)
 }
 
 async function ensureEntityJournalFolderPath(entity: PrimaryEntity): Promise<Folder> {
-    if (!getSettings(KankaSettings.keepTreeStructure)) {
+    if (!getSetting(KankaSettings.keepTreeStructure)) {
         return ensureTypeJournalFolder(entity.entityType);
     }
 
@@ -169,7 +169,7 @@ function checkSetting<T>(
     setting: KankaSettings,
     results: Record<string, boolean | ((data: T) => boolean)>,
 ): boolean {
-    const settingValue = getSettings(setting) as string;
+    const settingValue = getSetting(setting) as string;
     const result = results[settingValue];
 
     if (result === undefined) {
@@ -297,7 +297,7 @@ export async function writeJournalEntry(
     const { renderSheet = false, notification = true } = options;
     let entry = findEntryByEntity(entity);
 
-    const noteVisibility = getSettings(KankaSettings.entityNotesVisibility) as EntityNotesVisibility;
+    const noteVisibility = getSetting(KankaSettings.entityNotesVisibility) as EntityNotesVisibility;
     const publicNotes = entity.entityNotes.filter(note => !note.isSecret);
     const secretNotes = entity.entityNotes.filter(note => note.isSecret);
 
@@ -306,7 +306,7 @@ export async function writeJournalEntry(
         {
             entity,
             metaData: await buildMetaData(entity),
-            includeImage: entity.image && getSettings(KankaSettings.imageInText),
+            includeImage: entity.image && getSetting(KankaSettings.imageInText),
             publicNotes: noteVisibility !== EntityNotesVisibility.none ? publicNotes : [],
             secretNotes: noteVisibility === EntityNotesVisibility.all ? secretNotes : [],
         },

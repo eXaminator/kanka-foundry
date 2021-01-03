@@ -1,7 +1,7 @@
 import logo from '../assets/kanka.png';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
-import getSettings from '../module/getSettings';
+import { getSetting } from '../module/accessSettings';
 import KankaBrowser from '../module/KankaBrowser';
 import { KankaSettings } from '../types/KankaSettings';
 
@@ -28,7 +28,7 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
 
         game.modules.get(moduleConfig.name).clearApiCache();
 
-        if (!getSettings(KankaSettings.accessToken)) {
+        if (!getSetting(KankaSettings.accessToken)) {
             ui.notifications.error(game.i18n.localize('KANKA.ErrorProvideAccessToken'));
             return;
         }

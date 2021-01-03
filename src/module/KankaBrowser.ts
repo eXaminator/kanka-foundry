@@ -4,9 +4,9 @@ import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
-import { kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
+import { kankaBrowserTypeCollapseSetting, kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
 import createKankaLink from '../util/createKankaLink';
-import getSettings from './getSettings';
+import { getSetting, setSetting } from './accessSettings';
 import { findEntriesByType, findEntryByEntity, findEntryByEntityId, hasOutdatedEntry, writeJournalEntry } from './journal';
 
 interface EntityList {
@@ -60,23 +60,11 @@ function sortBy<T>(name: keyof T): (a: T, b: T) => number {
     return (a: T, b: T) => String(a[name]).localeCompare(String(b[name]));
 }
 
-function getLocalStorageKey(type: string): string {
-    return `Kanka.KankaBrowser.detailsState.${type}`;
-}
-
-function getOpenStateFromLocalStorage(type: string): boolean {
-    return window.localStorage.getItem(getLocalStorageKey(type)) === 'true';
-}
-
-function setOpenStateToLocalStorage(type: string, open: boolean): void {
-    window.localStorage.setItem(getLocalStorageKey(type), open ? 'true' : 'false');
-}
-
 function getImportableEntityTypes(): EntityType[] {
     return Object.values(EntityType)
         .filter((t) => {
             try {
-                return getSettings(kankaImportTypeSetting(t));
+                return getSetting(kankaImportTypeSetting(t));
             } catch (e) {
                 return false; // Setting does not exist
             }
@@ -175,7 +163,7 @@ export default class KankaBrowser extends Application {
 
     private async renderEntityTemplate(lists: Partial<Record<EntityType, PrimaryEntity[]>>): Promise<string> {
         const data = {};
-        const allowPrivate = getSettings(KankaSettings.importPrivateEntities) as boolean;
+        const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
 
         Object
             .entries(lists)
@@ -192,7 +180,7 @@ export default class KankaBrowser extends Application {
 
                 data[type] = {
                     ...entityTypes[type],
-                    isOpen: getOpenStateFromLocalStorage(type),
+                    isOpen: getSetting(kankaBrowserTypeCollapseSetting(type)),
                     items,
                 };
             });
@@ -208,7 +196,7 @@ export default class KankaBrowser extends Application {
 
         const types = Object
             .keys(entityTypes)
-            .filter(type => getSettings(kankaImportTypeSetting(type as EntityType))) as EntityType[];
+            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
 
         const lists = await this.loadEntityListData(campaign, types);
         const htmlString = await this.renderEntityTemplate(lists);
@@ -216,11 +204,11 @@ export default class KankaBrowser extends Application {
         html.find('.kanka-entity-list').replaceWith(htmlString);
 
         html.find<HTMLDetailsElement>('details[data-type]').on('toggle', (event) => {
-            const type = event.currentTarget.dataset?.type;
+            const type = event.currentTarget.dataset?.type as EntityType;
             if (!type) return;
             this.setPosition({ height: 'auto' });
             if (html.find('[name="filter"]').val()) return; // Don't save toggle if filter is active
-            setOpenStateToLocalStorage(type, event.currentTarget.open);
+            setSetting(kankaBrowserTypeCollapseSetting(type), event.currentTarget.open);
         });
 
         this.setPosition({ height: 'auto' });
@@ -238,8 +226,10 @@ export default class KankaBrowser extends Application {
             if (!filter.trim().length) {
                 html.find('[data-filter-text]').show();
                 html.find<HTMLDetailsElement>('details[data-type]')
-                    // eslint-disable-next-line no-param-reassign
-                    .each((_, el) => { el.open = getOpenStateFromLocalStorage(el.dataset?.type ?? ''); });
+                    .each((_, el) => {
+                        // eslint-disable-next-line no-param-reassign
+                        el.open = getSetting(kankaBrowserTypeCollapseSetting(el.dataset?.type ?? ''));
+                    });
                 return;
             }
 
@@ -335,7 +325,7 @@ export default class KankaBrowser extends Application {
     }
 
     private async syncEntities(entities: PrimaryEntity[]): Promise<void> {
-        const targetLanguage = getSettings(KankaSettings.importLanguage) as string;
+        const targetLanguage = getSetting(KankaSettings.importLanguage) as string;
         const currentLanguage = game.i18n.lang;
 
         if (targetLanguage && targetLanguage !== currentLanguage) {

@@ -4,7 +4,7 @@ import { cache } from '../kanka/EntityCache';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { clearSettings, registerSettings } from '../module/configureSettings';
-import getSettings from '../module/getSettings';
+import { getSetting } from '../module/accessSettings';
 import preloadTemplates from '../module/preloadTemplates';
 import { KankaSettings } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
@@ -15,7 +15,7 @@ function getRepository(): CampaignRepository {
     }
 
     if (!api.token) {
-        api.token = getSettings(KankaSettings.accessToken);
+        api.token = getSetting(KankaSettings.accessToken);
     }
 
     return game.modules.get(moduleConfig.name).campaigns;
@@ -30,15 +30,15 @@ export default async function init(): Promise<void> {
     };
     game.modules.get(moduleConfig.name).loadAllCampaigns = () => getRepository().loadAll();
     game.modules.get(moduleConfig.name).loadCurrentCampaign = async () => {
-        const id = getSettings(KankaSettings.campaign);
+        const id = getSetting(KankaSettings.campaign);
         if (!id) throw new Error('No campaign selected');
-        return getRepository().loadById(Number(getSettings(KankaSettings.campaign)));
+        return getRepository().loadById(Number(getSetting(KankaSettings.campaign)));
     };
 
     await registerSettings();
     await preloadTemplates();
 
-    validateAccessToken(getSettings(KankaSettings.accessToken));
+    validateAccessToken(getSetting(KankaSettings.accessToken));
 }
 
 if (module.hot) {
