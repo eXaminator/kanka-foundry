@@ -1,3 +1,16 @@
+# [1.8.0](https://github.com/eXaminator/kanka-foundry/compare/1.7.0...1.8.0) (2021-01-03)
+
+
+### Bug Fixes
+
+* remember current filter when refreshing application sheet ([7de4d84](https://github.com/eXaminator/kanka-foundry/commit/7de4d84eb71105f10923fa53ad107c62ae898f52))
+* remove refresh on every journal directory change ([cca312e](https://github.com/eXaminator/kanka-foundry/commit/cca312e5806d30af5209373f4af9989f66ddcb1c))
+
+
+### Features
+
+* add option to set the import language ([73252fa](https://github.com/eXaminator/kanka-foundry/commit/73252fa0566ddfca5c8dd22d5de1ea0092dd0fac))
+
 # [1.7.0](https://github.com/eXaminator/kanka-foundry/compare/1.6.2...1.7.0) (2021-01-01)
 
 
