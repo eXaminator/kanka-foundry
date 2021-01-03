@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/eXaminator/kanka-foundry/compare/1.8.0...1.8.1) (2021-01-03)
+
+
+### Bug Fixes
+
+* fix kanka hook registration which was broken in last release ([275d4a2](https://github.com/eXaminator/kanka-foundry/commit/275d4a25259a4dcbf0cfe7aa785d039a79778db6))
+
 # [1.8.0](https://github.com/eXaminator/kanka-foundry/compare/1.7.0...1.8.0) (2021-01-03)
 
 
