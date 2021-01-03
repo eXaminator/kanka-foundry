@@ -17,7 +17,11 @@ interface EntityList {
 
 interface TemplateData {
     campaign: Campaign;
+}
+
+interface EntityListData {
     data: Record<string, EntityList>;
+    currentFilter: string;
 }
 
 const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
@@ -72,6 +76,8 @@ function getImportableEntityTypes(): EntityType[] {
 }
 
 export default class KankaBrowser extends Application {
+    private currentFilter = '';
+
     static get defaultOptions(): ApplicationOptions {
         return mergeObject(super.defaultOptions, {
             id: 'kanka-browser',
@@ -143,7 +149,7 @@ export default class KankaBrowser extends Application {
             (text?: string) => text?.toLowerCase(),
         );
 
-        return { campaign } as TemplateData;
+        return { campaign, currentFilter: this.currentFilter } as TemplateData;
     }
 
     private async loadEntityListData(
@@ -185,9 +191,11 @@ export default class KankaBrowser extends Application {
                 };
             });
 
+        const templateData: EntityListData = { data, currentFilter: this.currentFilter };
+
         return await renderTemplate(
             `modules/${moduleConfig.name}/templates/entityList.html`,
-            { data },
+            templateData,
         ) as unknown as string;
     }
 
@@ -207,11 +215,11 @@ export default class KankaBrowser extends Application {
             const type = event.currentTarget.dataset?.type as EntityType;
             if (!type) return;
             this.setPosition({ height: 'auto' });
-            if (html.find('[name="filter"]').val()) return; // Don't save toggle if filter is active
+            if (this.currentFilter) return; // Don't save toggle if filter is active
             setSetting(kankaBrowserTypeCollapseSetting(type), event.currentTarget.open);
         });
 
-        this.setPosition({ height: 'auto' });
+        this.filterList(this.currentFilter);
     }
 
     async activateListeners(html: JQuery): Promise<void> {
@@ -224,26 +232,11 @@ export default class KankaBrowser extends Application {
             const filter = event?.target?.value ?? '';
 
             if (!filter.trim().length) {
-                html.find('[data-filter-text]').show();
-                html.find<HTMLDetailsElement>('details[data-type]')
-                    .each((_, el) => {
-                        // eslint-disable-next-line no-param-reassign
-                        el.open = getSetting(kankaBrowserTypeCollapseSetting(el.dataset?.type ?? ''));
-                    });
+                this.resetFilter();
                 return;
             }
 
-            const saneFilter: string = filter
-                .toLowerCase()
-                .replace(/\[/g, '\\[')
-                .replace(/\]/g, '||]')
-                .replace(/"/g, '\\"');
-
-            html.find<HTMLDetailsElement>('details[data-type]')
-                // eslint-disable-next-line no-param-reassign
-                .each((_, el) => { el.open = true; });
-            html.find('[data-filter-text]').hide();
-            html.find(`[data-filter-text*="${saneFilter}"]`).show();
+            this.filterList(filter);
         });
 
         html.on('click', '[data-action]', async (event) => {
@@ -352,5 +345,41 @@ export default class KankaBrowser extends Application {
         const key = `KANKA.${msg}`;
         const text = params ? game.i18n.format(key, params) : game.i18n.localize(key);
         ui.notifications.error(text);
+    }
+
+    private resetFilter(): void {
+        const element = $(this.element);
+        this.currentFilter = '';
+        element.find('[data-filter-text]').show();
+        element.find<HTMLDetailsElement>('details[data-type]')
+            .each((_, el) => {
+                // eslint-disable-next-line no-param-reassign
+                el.open = getSetting(kankaBrowserTypeCollapseSetting(el.dataset?.type ?? ''));
+            });
+
+        this.setPosition({ height: 'auto' });
+    }
+
+    private filterList(filter: string): void {
+        if (!filter) {
+            this.resetFilter();
+            return;
+        }
+
+        const element = $(this.element);
+
+        this.currentFilter = filter
+            .toLowerCase()
+            .replace(/\[/g, '\\[')
+            .replace(/\]/g, '||]')
+            .replace(/"/g, '\\"');
+
+        element.find<HTMLDetailsElement>('details[data-type]')
+            // eslint-disable-next-line no-param-reassign
+            .each((_, el) => { el.open = true; });
+
+        element.find('[data-filter-text]').hide();
+        element.find(`[data-filter-text*="${this.currentFilter}"]`).show();
+        this.setPosition({ height: 'auto' });
     }
 }
