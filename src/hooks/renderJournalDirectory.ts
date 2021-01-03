@@ -38,11 +38,6 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
     });
 
     html.find('.header-actions').append(button);
-
-    Object
-        .values(ui.windows)
-        .find(a => a.constructor === KankaBrowser)
-        ?.render(false);
 }
 
 if (module.hot) {
