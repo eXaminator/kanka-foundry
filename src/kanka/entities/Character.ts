@@ -1,13 +1,12 @@
 import EntityType from '../../types/EntityType';
-import { CharacterData } from '../../types/kanka';
+import { KankaApiCharacter } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
-import type Campaign from './Campaign';
 import Family from './Family';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 import Race from './Race';
 
-export default class Character extends PrimaryEntity<CharacterData, Campaign> {
+export default class Character extends PrimaryEntity<KankaApiCharacter> {
     get entityType(): EntityType {
         return EntityType.character;
     }
@@ -33,15 +32,18 @@ export default class Character extends PrimaryEntity<CharacterData, Campaign> {
     }
 
     public async location(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.data.location_id);
+        if (!this.data.location_id) return undefined;
+        return this.campaign.locations().byId(this.data.location_id);
     }
 
     public async race(): Promise<Race | undefined> {
-        return this.findReference(this.parent.races(), this.data.race_id);
+        if (!this.data.race_id) return undefined;
+        return this.campaign.races().byId(this.data.race_id);
     }
 
     public async family(): Promise<Family | undefined> {
-        return this.findReference(this.parent.families(), this.data.family_id);
+        if (!this.data.family_id) return undefined;
+        return this.campaign.families().byId(this.data.family_id);
     }
 
     protected async buildMetaData(): Promise<void> {

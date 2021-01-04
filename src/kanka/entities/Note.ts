@@ -1,19 +1,19 @@
 import EntityType from '../../types/EntityType';
-import { NoteData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiId, KankaApiNote } from '../../types/kanka';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Note extends PrimaryEntity<NoteData, Campaign> {
+export default class Note extends PrimaryEntity<KankaApiNote> {
     get entityType(): EntityType {
         return EntityType.note;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.note_id;
     }
 
     async treeParent(): Promise<Note | undefined> {
-        return this.findReference(this.parent.notes(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.notes().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {

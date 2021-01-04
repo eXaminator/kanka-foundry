@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { logInfo } from '../logger';
-import { KankaListResult, KankaProfile, KankaResult } from '../types/kanka';
+import { KankaApiListResult, KankaProfile, KankaApiResult } from '../types/kanka';
 import RateLimiter from '../util/RateLimiter';
 import KankaApiCacheEntry from './KankaApiCacheEntry';
 import KankaEndpoint from './KankaEndpoint';
@@ -46,7 +46,7 @@ export default class KankaApi {
 
     public async load<
         T,
-        R = T extends unknown[] ? KankaListResult<T> : KankaResult<T>
+        R = T extends unknown[] ? KankaApiListResult<T> : KankaApiResult<T>
     >(endpoint: KankaEndpoint): Promise<R> {
         const url = endpoint.getUrl({ related: '1' });
 

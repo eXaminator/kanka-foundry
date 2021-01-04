@@ -1,34 +1,44 @@
 import EntityType from '../../types/EntityType';
-import { KankaEntityData } from '../../types/kanka';
+import { KankaApiEntityId, KankaApiId, KankaApiPrimaryEntity } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
 import mentionLink from '../../util/mentionLink';
 import KankaEndpoint from '../KankaEndpoint';
+import KankaNode from '../KankaNode';
 import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
-import EntityBase from './EntityBase';
 import EntityMetaData from './EntityMetaData';
 import EntityNote from './EntityNote';
 import InventoryItem from './InventoryItem';
 
-export default abstract class PrimaryEntity<
-    T extends KankaEntityData = KankaEntityData,
-    P extends Campaign = Campaign
-> extends EntityBase<T, P> {
+export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = KankaApiPrimaryEntity> extends KankaNode {
     readonly #attributes: EntityAttribute[];
     readonly #inventory: InventoryItem[];
     readonly #entityNotes: EntityNote[];
     #metaData?: EntityMetaData[];
 
-    constructor(endpoint: KankaEndpoint, data: T, parent: P) {
-        super(endpoint, data, parent);
-        this.#attributes = data.attributes?.map(attr => EntityAttribute.fromAttribute(attr)) ?? [];
-        this.#inventory = data.inventory?.map(entry => new InventoryItem(this.endpoint, entry, this)) ?? [];
+    constructor(endpoint: KankaEndpoint, protected data: T, public campaign: Campaign) {
+        super(endpoint);
+
+        this.#attributes = data.attributes?.map(attr => EntityAttribute.fromApiData(attr)) ?? [];
+        this.#inventory = data.inventory?.map(entry => InventoryItem.fromApiData(entry, campaign.items())) ?? [];
         this.#entityNotes = data.entity_notes
-            ?.map(entry => new EntityNote(this.endpoint, entry, this))
+            ?.map(entry => EntityNote.fromApiData(entry))
             .sort((a, b) => a.name.localeCompare(b.name)) ?? [];
     }
 
     abstract get entityType(): EntityType;
+
+    public get entityId(): KankaApiEntityId {
+        return this.data.entity_id;
+    }
+
+    public get id(): KankaApiId {
+        return this.data.id;
+    }
+
+    public get isPrivate(): boolean {
+        return this.data.is_private;
+    }
 
     get createdAt(): string {
         return this.data.created_at;
@@ -38,15 +48,15 @@ export default abstract class PrimaryEntity<
         return this.data.updated_at;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return undefined;
     }
 
-    async treeParent(): Promise<PrimaryEntity<T, P> | undefined> {
+    async treeParent(): Promise<PrimaryEntity<T> | undefined> {
         return undefined;
     }
 
-    async treeAncestors(): Promise<PrimaryEntity<T, P>[]> {
+    async treeAncestors(): Promise<PrimaryEntity<T>[]> {
         const parent = await this.treeParent();
         if (!parent) return [];
         const path = await parent.treeAncestors();
@@ -63,10 +73,6 @@ export default abstract class PrimaryEntity<
 
     public get entityNotes(): EntityNote[] {
         return this.#entityNotes;
-    }
-
-    public get entityId(): number {
-        return this.data.entity_id;
     }
 
     public get name(): string {
@@ -170,7 +176,7 @@ export default abstract class PrimaryEntity<
 
     protected async addReferenceMetaData(
         label: string,
-        entityPromise?: Promise<PrimaryEntity | undefined>,
+        entityPromise?: Promise<PrimaryEntity<KankaApiPrimaryEntity> | undefined>,
         section?: string,
     ): Promise<void> {
         const entity = await entityPromise;

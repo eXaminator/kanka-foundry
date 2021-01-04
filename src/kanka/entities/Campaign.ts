@@ -1,6 +1,10 @@
 import EntityType from '../../types/EntityType';
-import { CampaignData } from '../../types/kanka';
-import EntityCollection from '../EntityCollection';
+import { KankaApiCampaign, KankaApiId, KankaApiPrimaryEntity } from '../../types/kanka';
+import KankaEndpoint from '../KankaEndpoint';
+import KankaNode from '../KankaNode';
+import KankaNodeClass from '../KankaNodeClass';
+import KankaNodeCollection from '../KankaNodeCollection';
+import KankaPrimaryNodeCollection from '../KankaPrimaryNodeCollection';
 import Ability from './Ability';
 import Character from './Character';
 import Event from './Event';
@@ -14,7 +18,7 @@ import PrimaryEntity from './PrimaryEntity';
 import Quest from './Quest';
 import Race from './Race';
 
-export default class Campaign extends PrimaryEntity<CampaignData> {
+export default class Campaign extends KankaNode {
     #abilities = this.createCollection('abilities', Ability);
     #characters = this.createCollection('characters', Character);
     #families = this.createCollection('families', Family);
@@ -27,52 +31,68 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
     #journals = this.createCollection('journals', Journal);
     #quests = this.createCollection('quests', Quest);
 
+    constructor(endpoint: KankaEndpoint, protected data: KankaApiCampaign) {
+        super(endpoint);
+    }
+
+    get id(): KankaApiId {
+        return this.data.id;
+    }
+
+    get isPrivate(): boolean {
+        return this.data.is_private;
+    }
+
     get entityType(): EntityType {
         return EntityType.campaign;
     }
 
-    public abilities(): EntityCollection<Ability> {
+    get name(): string {
+        return this.data.name;
+    }
+
+    public abilities(): KankaNodeCollection<Ability> {
         return this.#abilities;
     }
 
-    public characters(): EntityCollection<Character> {
+    public characters(): KankaNodeCollection<Character> {
         return this.#characters;
     }
 
-    public items(): EntityCollection<Item> {
+    public items(): KankaNodeCollection<Item> {
         return this.#items;
     }
 
-    public journals(): EntityCollection<Journal> {
+    public journals(): KankaNodeCollection<Journal> {
         return this.#journals;
     }
 
-    public locations(): EntityCollection<Location> {
+    public locations(): KankaNodeCollection<Location> {
         return this.#locations;
     }
 
-    public organisations(): EntityCollection<Organisation> {
+    public organisations(): KankaNodeCollection<Organisation> {
         return this.#organisations;
     }
 
-    public races(): EntityCollection<Race> {
+    public races(): KankaNodeCollection<Race> {
         return this.#races;
     }
 
-    public families(): EntityCollection<Family> {
+    public families(): KankaNodeCollection<Family> {
         return this.#families;
     }
 
-    public quests(): EntityCollection<Quest> {
+    public quests(): KankaNodeCollection<Quest> {
         return this.#quests;
     }
 
-    public notes(): EntityCollection<Note> {
+    public notes(): KankaNodeCollection<Note> {
         return this.#notes;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public getByType(type: string): EntityCollection<any> | undefined {
+    public getByType(type: string): KankaNodeCollection<any> | undefined {
         switch (type) {
             case EntityType.ability:
                 return this.#abilities;
@@ -111,5 +131,11 @@ export default class Campaign extends PrimaryEntity<CampaignData> {
 
     public get entry(): string {
         return this.data.entry;
+    }
+
+    protected createCollection<
+        T extends PrimaryEntity<KankaApiPrimaryEntity> = PrimaryEntity<KankaApiPrimaryEntity>,
+    >(path: string, model: KankaNodeClass<T>): KankaNodeCollection<T> {
+        return new KankaPrimaryNodeCollection<T>(this.endpoint.withPath(path), model, this);
     }
 }

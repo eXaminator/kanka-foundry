@@ -1,9 +1,8 @@
 import EntityType from '../../types/EntityType';
-import { LocationData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiId, KankaApiLocation } from '../../types/kanka';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Location extends PrimaryEntity<LocationData, Campaign> {
+export default class Location extends PrimaryEntity<KankaApiLocation> {
     get entityType(): EntityType {
         return EntityType.location;
     }
@@ -12,12 +11,13 @@ export default class Location extends PrimaryEntity<LocationData, Campaign> {
         return this.data.type;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.parent_location_id;
     }
 
     async treeParent(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.locations().byId(this.treeParentId);
     }
 
     protected async buildMetaData(): Promise<void> {

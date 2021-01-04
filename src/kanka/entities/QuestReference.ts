@@ -1,12 +1,25 @@
-import { QuestReferenceData } from '../../types/kanka';
-import EntityBase from './EntityBase';
+import { KankaApiId, KankaApiQuestReference } from '../../types/kanka';
+import KankaEndpoint from '../KankaEndpoint';
+import KankaNode from '../KankaNode';
+import type Campaign from './Campaign';
 import PrimaryEntity from './PrimaryEntity';
-import type Quest from './Quest';
 
 export default abstract class QuestReference<
     T extends PrimaryEntity = PrimaryEntity,
-    D extends QuestReferenceData = QuestReferenceData
-> extends EntityBase<D, Quest> {
+    D extends KankaApiQuestReference = KankaApiQuestReference
+> extends KankaNode {
+    constructor(endpoint: KankaEndpoint, protected data: D, protected campaign: Campaign) {
+        super(endpoint);
+    }
+
+    get id(): KankaApiId {
+        return this.data.id;
+    }
+
+    get isPrivate(): boolean {
+        return this.data.is_private;
+    }
+
     get role(): string | undefined {
         return this.data.role;
     }

@@ -5,7 +5,7 @@ import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import QuestReference from '../kanka/entities/QuestReference';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
-import { CharacterTrait, Visibility } from '../types/kanka';
+import { KankaApiCharacterTrait, KankaApiEntityId, KankaApiId, KankaVisibility } from '../types/kanka';
 import {
     EntityNotesVisibility,
     KankaSettings,
@@ -37,7 +37,7 @@ export function findEntriesByType(type: string): JournalEntry[] {
     return game.journal.filter(e => e.getFlag(moduleConfig.name, 'type') === type);
 }
 
-export function findEntryByEntityId(id: number): JournalEntry | undefined {
+export function findEntryByEntityId(id: KankaApiEntityId): JournalEntry | undefined {
     return game.journal.find(e => e.getFlag(moduleConfig.name, 'entityId') === id);
 }
 
@@ -45,7 +45,7 @@ export function findEntryByEntity(entity: PrimaryEntity): JournalEntry | undefin
     return findEntryByEntityId(entity.entityId);
 }
 
-export function findEntryByTypeAndId(type: string, id: number): JournalEntry | undefined {
+export function findEntryByTypeAndId(type: string, id: KankaApiId): JournalEntry | undefined {
     return game.journal
         .find(e => e.getFlag(moduleConfig.name, 'type') === type && e.getFlag(moduleConfig.name, 'id') === id);
 }
@@ -215,7 +215,7 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
 
     if (data.type === MetaDataType.characterTrait) {
         return checkSetting(
-            data as EntityMetaData<CharacterTrait>,
+            data as EntityMetaData<KankaApiCharacterTrait>,
             KankaSettings.metaDataCharacterTraitVisibility,
             {
                 [MetaDataCharacterTraitVisibility.all]: true,
@@ -244,7 +244,7 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
             KankaSettings.metaDataInventoryVisibility,
             {
                 [MetaDataInventoryVisibility.all]: true,
-                [MetaDataInventoryVisibility.public]: ({ visibility }) => visibility === Visibility.all,
+                [MetaDataInventoryVisibility.public]: ({ visibility }) => visibility === KankaVisibility.all,
                 [MetaDataInventoryVisibility.none]: false,
             },
         );
@@ -325,7 +325,7 @@ export async function writeJournalEntry(
             [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
             [`flags.${moduleConfig.name}.type`]: entity.entityType,
             [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
-            [`flags.${moduleConfig.name}.campaignId`]: entity.parent.id,
+            [`flags.${moduleConfig.name}.campaignId`]: entity.campaign.id,
         });
 
         if (notification) {
@@ -340,7 +340,7 @@ export async function writeJournalEntry(
             [`flags.${moduleConfig.name}.entityId`]: entity.entityId,
             [`flags.${moduleConfig.name}.type`]: entity.entityType,
             [`flags.${moduleConfig.name}.updatedAt`]: entity.updatedAt,
-            [`flags.${moduleConfig.name}.campaignId`]: entity.parent.id,
+            [`flags.${moduleConfig.name}.campaignId`]: entity.campaign.id,
         }) as JournalEntry;
 
         if (notification) {

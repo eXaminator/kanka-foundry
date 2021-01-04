@@ -1,4 +1,4 @@
-import { KankaAttribute } from '../../types/kanka';
+import { KankaApiAttribute } from '../../types/kanka';
 
 export default class EntityAttribute {
     readonly #name: string;
@@ -11,7 +11,7 @@ export default class EntityAttribute {
     constructor(
         name: string,
         value: string | null,
-        type: KankaAttribute['type'],
+        type: KankaApiAttribute['type'],
         isPrivate: boolean,
         isStarred: boolean,
         defaultOrder: number,
@@ -28,7 +28,7 @@ export default class EntityAttribute {
         }
     }
 
-    static fromAttribute(attribute: KankaAttribute): EntityAttribute {
+    static fromApiData(attribute: KankaApiAttribute): EntityAttribute {
         return new EntityAttribute(
             attribute.name,
             attribute.value,

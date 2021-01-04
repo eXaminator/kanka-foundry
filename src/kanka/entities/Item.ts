@@ -1,11 +1,10 @@
 import EntityType from '../../types/EntityType';
-import { ItemData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiItem } from '../../types/kanka';
 import Character from './Character';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Item extends PrimaryEntity<ItemData, Campaign> {
+export default class Item extends PrimaryEntity<KankaApiItem> {
     get entityType(): EntityType {
         return EntityType.item;
     }
@@ -23,11 +22,13 @@ export default class Item extends PrimaryEntity<ItemData, Campaign> {
     }
 
     public async location(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.data.location_id);
+        if (!this.data.location_id) return undefined;
+        return this.campaign.locations().byId(this.data.location_id);
     }
 
     public async character(): Promise<Character | undefined> {
-        return this.findReference(this.parent.characters(), this.data.character_id);
+        if (!this.data.character_id) return undefined;
+        return this.campaign.characters().byId(this.data.character_id);
     }
 
     protected async buildMetaData(): Promise<void> {

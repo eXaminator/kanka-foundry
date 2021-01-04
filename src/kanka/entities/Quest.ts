@@ -1,9 +1,10 @@
 import EntityType from '../../types/EntityType';
-import { QuestData } from '../../types/kanka';
+import { KankaApiId, KankaApiQuest } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
 import mentionLink from '../../util/mentionLink';
-import EntityCollection from '../EntityCollection';
-import type Campaign from './Campaign';
+import KankaNodeClass from '../KankaNodeClass';
+import KankaNodeCollection from '../KankaNodeCollection';
+import KankaQuestReferenceCollection from '../KankaQuestReferenceCollection';
 import PrimaryEntity from './PrimaryEntity';
 import QuestCharacter from './QuestCharacter';
 import QuestItem from './QuestItem';
@@ -25,22 +26,23 @@ function referenceValue(reference: QuestReference): string {
     return content.join('<br/>');
 }
 
-export default class Quest extends PrimaryEntity<QuestData, Campaign> {
-    #characters = this.createCollection('quest_characters', QuestCharacter);
-    #locations = this.createCollection('quest_locations', QuestLocation);
-    #items = this.createCollection('quest_items', QuestItem);
-    #organisations = this.createCollection('quest_organisations', QuestOrganisation);
+export default class Quest extends PrimaryEntity<KankaApiQuest> {
+    #characters = this.createReferenceCollection('quest_characters', QuestCharacter);
+    #locations = this.createReferenceCollection('quest_locations', QuestLocation);
+    #items = this.createReferenceCollection('quest_items', QuestItem);
+    #organisations = this.createReferenceCollection('quest_organisations', QuestOrganisation);
 
     get entityType(): EntityType {
         return EntityType.quest;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.quest_id;
     }
 
     async treeParent(): Promise<Quest | undefined> {
-        return this.findReference(this.parent.quests(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.quests().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {
@@ -55,19 +57,19 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
         return this.data.is_completed;
     }
 
-    public get characters(): EntityCollection<QuestCharacter> {
+    public get characters(): KankaNodeCollection<QuestCharacter> {
         return this.#characters;
     }
 
-    public get locations(): EntityCollection<QuestLocation> {
+    public get locations(): KankaNodeCollection<QuestLocation> {
         return this.#locations;
     }
 
-    public get items(): EntityCollection<QuestItem> {
+    public get items(): KankaNodeCollection<QuestItem> {
         return this.#items;
     }
 
-    public get organisations(): EntityCollection<QuestOrganisation> {
+    public get organisations(): KankaNodeCollection<QuestOrganisation> {
         return this.#organisations;
     }
 
@@ -99,5 +101,11 @@ export default class Quest extends PrimaryEntity<QuestData, Campaign> {
             type: MetaDataType.questReference,
             originalData: reference,
         }, true));
+    }
+
+    protected createReferenceCollection<
+        T extends QuestReference<PrimaryEntity> = QuestReference<PrimaryEntity>,
+    >(path: string, model: KankaNodeClass<T>): KankaQuestReferenceCollection<T> {
+        return new KankaQuestReferenceCollection<T>(this.endpoint.withPath(path), model, this.campaign);
     }
 }

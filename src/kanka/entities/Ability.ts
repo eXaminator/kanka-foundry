@@ -1,19 +1,19 @@
 import EntityType from '../../types/EntityType';
-import { AbilityData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiAbility, KankaApiId } from '../../types/kanka';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Ability extends PrimaryEntity<AbilityData, Campaign> {
+export default class Ability extends PrimaryEntity<KankaApiAbility> {
     get entityType(): EntityType {
         return EntityType.ability;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.ability_id;
     }
 
     async treeParent(): Promise<Ability | undefined> {
-        return this.findReference(this.parent.abilities(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.abilities().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {

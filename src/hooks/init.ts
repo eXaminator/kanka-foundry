@@ -1,6 +1,6 @@
 import api from '../kanka/api';
 import CampaignRepository from '../kanka/CampaignRepository';
-import { cache } from '../kanka/EntityCache';
+import { cache } from '../kanka/KankaNodeCache';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { clearSettings, registerSettings } from '../module/configureSettings';
