@@ -1,7 +1,7 @@
 import api from '../kanka/api';
 import CampaignRepository from '../kanka/CampaignRepository';
 import Campaign from '../kanka/entities/Campaign';
-import { cache } from '../kanka/EntityCache';
+import { cache } from '../kanka/KankaNodeCache';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
@@ -31,7 +31,7 @@ function buildCampaignChoices(campaigns: Campaign[]): Record<string, string> {
     };
 
     campaigns.forEach((campaign) => {
-        campaignChoices[campaign.id] = campaign.name;
+        campaignChoices[campaign.id as number] = campaign.name;
     });
 
     return campaignChoices;

@@ -1,20 +1,20 @@
 import EntityType from '../../types/EntityType';
-import { OrganisationData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiId, KankaApiOrganisation } from '../../types/kanka';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Organisation extends PrimaryEntity<OrganisationData, Campaign> {
+export default class Organisation extends PrimaryEntity<KankaApiOrganisation> {
     get entityType(): EntityType {
         return EntityType.organisation;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.organisation_id;
     }
 
     async treeParent(): Promise<Organisation | undefined> {
-        return this.findReference(this.parent.organisations(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.organisations().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {
@@ -22,7 +22,8 @@ export default class Organisation extends PrimaryEntity<OrganisationData, Campai
     }
 
     public async location(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.data.location_id);
+        if (!this.data.location_id) return undefined;
+        return this.campaign.locations().byId(this.data.location_id);
     }
 
     protected async buildMetaData(): Promise<void> {

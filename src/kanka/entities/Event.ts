@@ -1,10 +1,9 @@
 import EntityType from '../../types/EntityType';
-import { EventData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiEvent } from '../../types/kanka';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Event extends PrimaryEntity<EventData, Campaign> {
+export default class Event extends PrimaryEntity<KankaApiEvent> {
     get entityType(): EntityType {
         return EntityType.event;
     }
@@ -18,7 +17,8 @@ export default class Event extends PrimaryEntity<EventData, Campaign> {
     }
 
     public async location(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.data.location_id);
+        if (!this.data.location_id) return undefined;
+        return this.campaign.locations().byId(this.data.location_id);
     }
 
     protected async buildMetaData(): Promise<void> {

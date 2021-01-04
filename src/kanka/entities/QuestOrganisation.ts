@@ -1,9 +1,9 @@
-import { QuestOrganisationData } from '../../types/kanka';
+import { KankaApiQuestOrganisationReference } from '../../types/kanka';
 import Organisation from './Organisation';
 import QuestReference from './QuestReference';
 
-export default class QuestOrganisation extends QuestReference<Organisation, QuestOrganisationData> {
+export default class QuestOrganisation extends QuestReference<Organisation, KankaApiQuestOrganisationReference> {
     protected async loadReference(): Promise<Organisation> {
-        return this.parent.parent.organisations().byId(this.data.organisation_id);
+        return this.campaign.organisations().byId(this.data.organisation_id);
     }
 }

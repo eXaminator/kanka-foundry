@@ -1,21 +1,21 @@
 import EntityType from '../../types/EntityType';
-import { JournalData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiId, KankaApiJournal } from '../../types/kanka';
 import Character from './Character';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Journal extends PrimaryEntity<JournalData, Campaign> {
+export default class Journal extends PrimaryEntity<KankaApiJournal> {
     get entityType(): EntityType {
         return EntityType.journal;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.journal_id;
     }
 
     async treeParent(): Promise<Journal | undefined> {
-        return this.findReference(this.parent.journals(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.journals().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {
@@ -27,11 +27,13 @@ export default class Journal extends PrimaryEntity<JournalData, Campaign> {
     }
 
     public async location(): Promise<Location | undefined> {
-        return this.findReference(this.parent.locations(), this.data.location_id);
+        if (!this.data.location_id) return undefined;
+        return this.campaign.locations().byId(this.data.location_id);
     }
 
     public async character(): Promise<Character | undefined> {
-        return this.findReference(this.parent.characters(), this.data.character_id);
+        if (!this.data.character_id) return undefined;
+        return this.campaign.characters().byId(this.data.character_id);
     }
 
     protected async buildMetaData(): Promise<void> {

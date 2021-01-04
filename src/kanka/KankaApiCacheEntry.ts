@@ -1,8 +1,8 @@
-import { KankaListResult, KankaResult } from '../types/kanka';
+import { KankaApiListResult, KankaApiResult } from '../types/kanka';
 
 export default class KankaApiCacheEntry<
     T = unknown,
-    D = T extends unknown[] ? KankaListResult<T> : KankaResult<T>
+    D = T extends unknown[] ? KankaApiListResult<T> : KankaApiResult<T>
 > {
     readonly #promise;
     #resolve: (data: D) => void = () => {};

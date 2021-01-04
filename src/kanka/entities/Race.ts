@@ -1,19 +1,19 @@
 import EntityType from '../../types/EntityType';
-import { RaceData } from '../../types/kanka';
-import type Campaign from './Campaign';
+import { KankaApiId, KankaApiRace } from '../../types/kanka';
 import PrimaryEntity from './PrimaryEntity';
 
-export default class Race extends PrimaryEntity<RaceData, Campaign> {
+export default class Race extends PrimaryEntity<KankaApiRace> {
     get entityType(): EntityType {
         return EntityType.race;
     }
 
-    get treeParentId(): number | undefined {
+    get treeParentId(): KankaApiId | undefined {
         return this.data.race_id;
     }
 
     async treeParent(): Promise<Race | undefined> {
-        return this.findReference(this.parent.races(), this.treeParentId);
+        if (!this.treeParentId) return undefined;
+        return this.campaign.races().byId(this.treeParentId);
     }
 
     public get type(): string | undefined {

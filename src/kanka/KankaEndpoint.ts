@@ -17,7 +17,7 @@ export default class KankaEndpoint {
         return new KankaEndpoint(url, this);
     }
 
-    public withPath(path: string | number): KankaEndpoint {
+    public withPath(path: unknown): KankaEndpoint {
         return new KankaEndpoint(`${this.getUrl()}/${String(path)}`, this);
     }
 
