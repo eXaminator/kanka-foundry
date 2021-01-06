@@ -2,7 +2,7 @@ import logo from '../assets/kanka.png';
 import { logInfo } from '../logger';
 import moduleConfig from '../module.json';
 import { getSetting } from '../module/accessSettings';
-import KankaBrowser from '../module/KankaBrowser';
+import KankaBrowserJournal from '../module/KankaBrowserJournal';
 import { KankaSettings } from '../types/KankaSettings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
@@ -33,7 +33,7 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
             return;
         }
 
-        const journal = new KankaBrowser();
+        const journal = new KankaBrowserJournal();
         journal.render(true);
     });
 

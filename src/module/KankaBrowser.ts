@@ -4,10 +4,10 @@ import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import { logError } from '../logger';
 import moduleConfig from '../module.json';
 import EntityType from '../types/EntityType';
+import { KankaApiEntityId, KankaProfile } from '../types/kanka';
 import { kankaBrowserTypeCollapseSetting, kankaImportTypeSetting, KankaSettings } from '../types/KankaSettings';
-import createKankaLink from '../util/createKankaLink';
+import sortBy from '../util/sortBy';
 import { getSetting, setSetting } from './accessSettings';
-import { findEntriesByType, findEntryByEntity, findEntryByEntityId, hasOutdatedEntry, writeJournalEntry } from './journal';
 
 interface EntityList {
     items: PrimaryEntity[];
@@ -17,9 +17,10 @@ interface EntityList {
 
 interface TemplateData {
     campaign: Campaign;
+    profile: KankaProfile;
 }
 
-interface EntityListData {
+interface EntityListData extends TemplateData {
     data: Record<string, EntityList>;
     currentFilter: string;
 }
@@ -60,36 +61,47 @@ const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
     },
 };
 
-function sortBy<T>(name: keyof T): (a: T, b: T) => number {
-    return (a: T, b: T) => String(a[name]).localeCompare(String(b[name]));
-}
+export default abstract class KankaBrowser extends Application {
+    #currentFilter = '';
+    #profile: KankaProfile | undefined;
 
-function getImportableEntityTypes(): EntityType[] {
-    return Object.values(EntityType)
-        .filter((t) => {
-            try {
-                return getSetting(kankaImportTypeSetting(t));
-            } catch (e) {
-                return false; // Setting does not exist
-            }
-        });
-}
+    protected localization = game.i18n;
 
-export default class KankaBrowser extends Application {
-    private currentFilter = '';
+    constructor(options?: ApplicationOptions) {
+        super(options);
+
+        this.initializeLocalization().catch(() => this.showError('BrowserSyncError')); // TODO: Different error Message
+    }
 
     static get defaultOptions(): ApplicationOptions {
         return mergeObject(super.defaultOptions, {
             id: 'kanka-browser',
             classes: ['kanka-foundry'],
-            template: `modules/${moduleConfig.name}/templates/journal.html`,
+            template: `modules/${moduleConfig.name}/templates/kankaBrowser.html`,
             width: 720,
             height: 'auto',
             scrollY: ['.kanka-container'],
         });
     }
 
-    async getCampaign(): Promise<Campaign> {
+    private async initializeLocalization(): Promise<void> {
+        const targetLanguage = getSetting(KankaSettings.importLanguage) as string;
+
+        if (targetLanguage !== this.localization.lang) {
+            this.localization = new Localization();
+            await this.localization.initialize();
+            await this.localization.setLanguage(targetLanguage);
+        }
+    }
+
+    protected abstract syncEntity(entity: PrimaryEntity): Promise<void>;
+    protected abstract linkEntity(entity: PrimaryEntity): Promise<void>;
+    protected abstract syncType(type: EntityType): Promise<void>;
+    protected abstract linkType(type: EntityType): Promise<void>;
+    protected abstract syncAll(): Promise<void>;
+    protected abstract openEntry(entityId: KankaApiEntityId): Promise<void>;
+
+    protected async getCampaign(): Promise<Campaign> {
         try {
             return await game.modules.get(moduleConfig.name).loadCurrentCampaign();
         } catch (e) {
@@ -98,66 +110,41 @@ export default class KankaBrowser extends Application {
         }
     }
 
-    get title(): string {
-        return 'Kanka';
+    protected async getProfile(): Promise<KankaProfile> {
+        if (!this.#profile) {
+            this.#profile = await api.getProfile();
+        }
+
+        return this.#profile;
     }
 
-    async getData(): Promise<TemplateData> {
-        // Clear cache on every reload to ensure that the lists always shows all current elements
+    protected async getEntitiesByType<T extends PrimaryEntity>(type: EntityType): Promise<T[]> {
         const campaign = await this.getCampaign();
-        const profile = await api.getProfile();
+        const entities = await campaign.getByType(type)?.all();
 
-        Handlebars.registerHelper('kankaLink', (type?: string, id?: number) => {
-            let saneType;
-            let saneId;
+        if (!entities) {
+            this.showError('BrowserSyncError');
+            return [];
+        }
 
-            if (type && typeof type !== 'object') {
-                saneType = type;
-            }
-
-            if (id && typeof id !== 'object') {
-                saneId = id;
-            }
-
-            return createKankaLink(campaign.id, saneType, saneId, profile.locale || campaign.locale);
-        });
-
-        Handlebars.registerHelper('hasKankaJournalEntry', (entity: PrimaryEntity) => {
-            const entry = findEntryByEntity(entity);
-            return Boolean(entry);
-        });
-
-        Handlebars.registerHelper('kankaJournalName', (entity: PrimaryEntity) => {
-            const entry = findEntryByEntity(entity);
-            return entry?.name;
-        });
-
-        Handlebars.registerHelper('hasUpdatedKankaJournalEntry', (entity: PrimaryEntity) => hasOutdatedEntry(entity));
-
-        Handlebars.registerHelper('hasLinkedJournalEntryOfType', (type: string) => {
-            const entries = findEntriesByType(type);
-            return entries.length > 0;
-        });
-
-        Handlebars.registerHelper(
-            'i18nKey',
-            (...parts: unknown[]) => parts.filter(p => typeof p !== 'object').join('.'),
-        );
-
-        Handlebars.registerHelper(
-            'toLowerCase',
-            (text?: string) => text?.toLowerCase(),
-        );
-
-        return { campaign, currentFilter: this.currentFilter } as TemplateData;
+        return entities;
     }
 
-    private async loadEntityListData(
-        campaign: Campaign,
-        types: EntityType[],
-    ): Promise<Partial<Record<EntityType, PrimaryEntity[]>>> {
-        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all()));
+    public async getData(): Promise<TemplateData> {
+        return {
+            campaign: await this.getCampaign(),
+            profile: await this.getProfile(),
+        };
+    }
 
+    protected async loadEntityListData(
+        campaign: Campaign,
+    ): Promise<Partial<Record<EntityType, PrimaryEntity[]>>> {
+        const types = Object
+            .keys(entityTypes)
+            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
+
+        const lists = await Promise.all(types.map(type => campaign.getByType(type)?.all()));
         const result: Partial<Record<EntityType, PrimaryEntity[]>> = {};
 
         types.forEach((type, index) => {
@@ -167,7 +154,7 @@ export default class KankaBrowser extends Application {
         return result;
     }
 
-    private async renderEntityTemplate(lists: Partial<Record<EntityType, PrimaryEntity[]>>): Promise<string> {
+    protected async renderEntityTemplate(lists: Partial<Record<EntityType, PrimaryEntity[]>>): Promise<string> {
         const data = {};
         const allowPrivate = getSetting(KankaSettings.importPrivateEntities) as boolean;
 
@@ -191,7 +178,12 @@ export default class KankaBrowser extends Application {
                 };
             });
 
-        const templateData: EntityListData = { data, currentFilter: this.currentFilter };
+        const templateData: EntityListData = {
+            data,
+            currentFilter: this.#currentFilter,
+            campaign: await this.getCampaign(),
+            profile: await this.getProfile(),
+        };
 
         return await renderTemplate(
             `modules/${moduleConfig.name}/templates/entityList.html`,
@@ -199,14 +191,10 @@ export default class KankaBrowser extends Application {
         ) as unknown as string;
     }
 
-    private async loadAndRenderEntityLists(html: JQuery): Promise<void> {
+    protected async loadAndRenderEntityLists(html: JQuery): Promise<void> {
         const campaign = await this.getCampaign();
 
-        const types = Object
-            .keys(entityTypes)
-            .filter(type => getSetting(kankaImportTypeSetting(type as EntityType))) as EntityType[];
-
-        const lists = await this.loadEntityListData(campaign, types);
+        const lists = await this.loadEntityListData(campaign);
         const htmlString = await this.renderEntityTemplate(lists);
 
         html.find('.kanka-entity-list').replaceWith(htmlString);
@@ -215,11 +203,11 @@ export default class KankaBrowser extends Application {
             const type = event.currentTarget.dataset?.type as EntityType;
             if (!type) return;
             this.setPosition({ height: 'auto' });
-            if (this.currentFilter) return; // Don't save toggle if filter is active
+            if (this.#currentFilter) return; // Don't save toggle if filter is active
             setSetting(kankaBrowserTypeCollapseSetting(type), event.currentTarget.open);
         });
 
-        this.filterList(this.currentFilter);
+        this.filterList(this.#currentFilter);
     }
 
     async activateListeners(html: JQuery): Promise<void> {
@@ -240,47 +228,54 @@ export default class KankaBrowser extends Application {
         });
 
         html.on('click', '[data-action]', async (event) => {
-            const action: string = event?.currentTarget?.dataset?.action;
-            const id: string = event?.currentTarget?.dataset?.id;
-            const entityId: string = event?.currentTarget?.dataset?.entityId;
-            const type: string = event?.currentTarget?.dataset?.type;
-
+            const { action, id, entityId, type } = event?.currentTarget?.dataset ?? {};
             if (!action) return;
 
             switch (action) {
-                case 'sync-entry':
+                case 'sync-entry': {
+                    if (!id || !type) return;
+                    const entity = await campaign.getByType(type)?.byId(Number(id));
+                    if (!entity) return;
+                    await this.syncEntity(entity);
+                    this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
+                    this.render();
+                    break;
+                }
+
                 case 'link-entry': {
                     if (!id || !type) return;
                     const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
-                    await this.syncEntities([entity]);
+                    await this.linkEntity(entity);
+                    this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
                     this.render();
                     break;
                 }
 
-                case 'open-entry': {
-                    if (!entityId) return;
-                    const entry = findEntryByEntityId(Number(entityId));
-                    entry?.sheet.render(true);
+                case 'sync-all':
+                    await this.syncAll();
+                    this.showInfo('BrowserNotificationSyncedAll');
+                    this.render();
                     break;
-                }
 
                 case 'sync-folder':
-                    if (!type) {
-                        const promises = getImportableEntityTypes().map(t => this.syncFolder(t));
-                        await Promise.all(promises);
-                    } else {
-                        await this.syncFolder(type);
-                    }
+                    if (!type) return;
+                    await this.syncType(type);
+                    this.showInfo('BrowserNotificationSyncedFolder', { type });
                     this.render();
                     break;
 
-                case 'link-folder': {
+                case 'link-folder':
                     if (!type) return;
-                    await this.linkFolder(type);
+                    await this.linkType(type);
+                    this.showInfo('BrowserNotificationLinkedFolder', { type });
                     this.render();
                     break;
-                }
+
+                case 'open-entry':
+                    if (!entityId) return;
+                    await this.openEntry(entityId);
+                    break;
 
                 default:
                     // Fall through
@@ -289,67 +284,21 @@ export default class KankaBrowser extends Application {
         });
     }
 
-    private async syncFolder(type: string): Promise<void> {
-        const campaign = await this.getCampaign();
-        const entities = await campaign.getByType(type)?.all();
-        if (!entities) {
-            this.showError('BrowserSyncError');
-            return;
-        }
-
-        const linkedEntities = entities.filter(entity => !!findEntryByEntity(entity));
-        await this.syncEntities(linkedEntities);
-        this.showInfo('BrowserNotificationSyncedFolder', { type });
-        this.render();
-    }
-
-    private async linkFolder(type: string): Promise<void> {
-        const campaign = await this.getCampaign();
-        const entities = await campaign.getByType(type)?.all();
-        if (!entities) {
-            this.showError('BrowserSyncError');
-            return;
-        }
-
-        const unlinkedEntities = entities.filter(entity => !findEntryByEntity(entity));
-        await this.syncEntities(unlinkedEntities);
-        this.showInfo('BrowserNotificationLinkedFolder', { type });
-        this.render();
-    }
-
-    private async syncEntities(entities: PrimaryEntity[]): Promise<void> {
-        const targetLanguage = getSetting(KankaSettings.importLanguage) as string;
-        const currentLanguage = game.i18n.lang;
-
-        if (targetLanguage && targetLanguage !== currentLanguage) {
-            await game.i18n.setLanguage(targetLanguage);
-        }
-
-        for (let i = 0; i < entities.length; i += 1) {
-            // eslint-disable-next-line no-await-in-loop
-            await writeJournalEntry(entities[i], { notification: entities.length === 1 });
-        }
-
-        if (targetLanguage && targetLanguage !== currentLanguage) {
-            await game.i18n.setLanguage(currentLanguage);
-        }
-    }
-
-    private showInfo(msg: string, params?: Record<string, unknown>): void {
+    protected showInfo(msg: string, params?: Record<string, unknown>): void {
         const key = `KANKA.${msg}`;
         const text = params ? game.i18n.format(key, params) : game.i18n.localize(key);
         ui.notifications.info(text);
     }
 
-    private showError(msg: string, params?: Record<string, unknown>): void {
+    protected showError(msg: string, params?: Record<string, unknown>): void {
         const key = `KANKA.${msg}`;
         const text = params ? game.i18n.format(key, params) : game.i18n.localize(key);
         ui.notifications.error(text);
     }
 
-    private resetFilter(): void {
+    protected resetFilter(): void {
         const element = $(this.element);
-        this.currentFilter = '';
+        this.#currentFilter = '';
         element.find('[data-filter-text]').show();
         element.find<HTMLDetailsElement>('details[data-type]')
             .each((_, el) => {
@@ -360,7 +309,7 @@ export default class KankaBrowser extends Application {
         this.setPosition({ height: 'auto' });
     }
 
-    private filterList(filter: string): void {
+    protected filterList(filter: string): void {
         if (!filter) {
             this.resetFilter();
             return;
@@ -368,7 +317,7 @@ export default class KankaBrowser extends Application {
 
         const element = $(this.element);
 
-        this.currentFilter = filter
+        this.#currentFilter = filter
             .toLowerCase()
             .replace(/\[/g, '\\[')
             .replace(/\]/g, '||]')
@@ -379,7 +328,18 @@ export default class KankaBrowser extends Application {
             .each((_, el) => { el.open = true; });
 
         element.find('[data-filter-text]').hide();
-        element.find(`[data-filter-text*="${this.currentFilter}"]`).show();
+        element.find(`[data-filter-text*="${this.#currentFilter}"]`).show();
         this.setPosition({ height: 'auto' });
+    }
+
+    protected getImportableEntityTypes(): EntityType[] {
+        return Object.values(EntityType)
+            .filter((t) => {
+                try {
+                    return getSetting(kankaImportTypeSetting(t));
+                } catch (e) {
+                    return false; // Setting does not exist
+                }
+            });
     }
 }
