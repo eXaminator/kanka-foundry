@@ -1,12 +1,25 @@
 import EntityType from '../../types/EntityType';
 import { KankaApiCharacter } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
+import mentionLink from '../../util/mentionLink';
+import KankaEndpoint from '../KankaEndpoint';
+import type Campaign from './Campaign';
+import CharacterOrganisation from './CharacterOrganisation';
 import Family from './Family';
 import Location from './Location';
 import PrimaryEntity from './PrimaryEntity';
 import Race from './Race';
 
 export default class Character extends PrimaryEntity<KankaApiCharacter> {
+    #organisations: CharacterOrganisation[];
+
+    constructor(endpoint: KankaEndpoint, data: KankaApiCharacter, campaign: Campaign) {
+        super(endpoint, data, campaign);
+
+        this.#organisations = data.organisations.data
+            ?.map(entry => CharacterOrganisation.fromApiData(entry, campaign.organisations())) ?? [];
+    }
+
     get entityType(): EntityType {
         return EntityType.character;
     }
@@ -68,5 +81,26 @@ export default class Character extends PrimaryEntity<KankaApiCharacter> {
             label: trait.name,
             value: trait.entry,
         }));
+
+        await this.addOrganisationMetaData();
+    }
+
+    protected async addOrganisationMetaData(): Promise<void> {
+        const organisations = await Promise.all(this.#organisations.map(i => i.organisation()));
+
+        this.#organisations
+            .forEach((reference, index) => {
+                const { role } = reference;
+                const organisation = organisations[index];
+                if (!organisation) return;
+
+                this.addMetaData({
+                    label: role || '',
+                    type: MetaDataType.characterOrganisation,
+                    section: 'organisations',
+                    value: mentionLink(organisation.name, organisation),
+                    originalData: reference,
+                });
+            });
     }
 }

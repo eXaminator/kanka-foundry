@@ -1,5 +1,5 @@
 import { KankaApiQuestCharacterReference } from '../../types/kanka';
-import Character from './Character';
+import type Character from './Character';
 import QuestReference from './QuestReference';
 
 export default class QuestCharacter extends QuestReference<Character, KankaApiQuestCharacterReference> {

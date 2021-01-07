@@ -10,7 +10,7 @@ import {
     kankaImportTypeSetting,
     KankaSettings,
     MetaDataAttributeVisibility,
-    MetaDataBasicVisibility,
+    MetaDataBasicVisibility, MetaDataCharacterOrganisationsVisibility,
     MetaDataCharacterTraitVisibility,
     MetaDataInventoryVisibility,
     MetaDataQuestReferenceVisibility, MetaDataRelationVisibility,
@@ -301,6 +301,24 @@ export async function registerSettings(): Promise<void> {
                 [MetaDataInventoryVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.all'),
                 [MetaDataInventoryVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.public'),
                 [MetaDataInventoryVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataInventoryVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataCharacterOrganisationVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataCharacterOrganisationsVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataCharacterOrganisationsVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataCharacterOrganisationsVisibility.public,
+            choices: {
+                [MetaDataCharacterOrganisationsVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataCharacterOrganisationsVisibility.value.all'),
+                [MetaDataCharacterOrganisationsVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataCharacterOrganisationsVisibility.value.public'),
+                [MetaDataCharacterOrganisationsVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataCharacterOrganisationsVisibility.value.none'),
             },
         },
     );
