@@ -18,7 +18,18 @@ export default class KankaEndpoint {
     }
 
     public withPath(path: unknown): KankaEndpoint {
-        return new KankaEndpoint(`${this.getUrl()}/${String(path)}`, this);
+        const newUrl = new URL(this.#url.toString());
+        newUrl.search = '';
+        newUrl.pathname = `${newUrl.pathname}/${String(path)}`;
+
+        return new KankaEndpoint(newUrl.toString(), this);
+    }
+
+    public withQuery(query: Record<string, string>): KankaEndpoint {
+        const newUrl = new URL(this.#url.toString());
+        Object.entries(query).forEach(([name, value]) => newUrl.searchParams.set(name, value));
+
+        return new KankaEndpoint(newUrl.toString(), this.#parent);
     }
 
     public getUrl(query?: Record<string, string>): string {
@@ -30,5 +41,9 @@ export default class KankaEndpoint {
         Object.entries(query).forEach(([name, value]) => url.searchParams.set(name, value));
 
         return url.toString();
+    }
+
+    public getQuery(): Record<string, string> {
+        return Object.fromEntries(this.#url.searchParams.entries());
     }
 }

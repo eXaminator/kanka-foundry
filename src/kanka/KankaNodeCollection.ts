@@ -1,4 +1,4 @@
-import { KankaApiAnyId, KankaApiId } from '../types/kanka';
+import { KankaApiAnyId } from '../types/kanka';
 import api from './api';
 import KankaEndpoint from './KankaEndpoint';
 import KankaNode from './KankaNode';
@@ -14,7 +14,7 @@ export default class KankaNodeCollection<
     T extends KankaNode,
     ModelClass extends KankaNodeClass<T> = KankaNodeClass<T>
 > {
-    #isFullyLoaded = false;
+    protected fullyLoadedUrl: string | undefined;
 
     constructor(
         protected endpoint: KankaEndpoint,
@@ -22,24 +22,10 @@ export default class KankaNodeCollection<
     ) {}
 
     public async all(): Promise<T[]> {
-        if (this.#isFullyLoaded) {
-            return cache.getAll<T>(this.Model);
-        }
-
-        let nextEndpoint: KankaEndpoint | undefined = this.endpoint;
-
-        while (nextEndpoint) {
-            // eslint-disable-next-line no-await-in-loop
-            const page = await this.loadPage(nextEndpoint);
-            nextEndpoint = page.endpoint;
-            cache.save(...page.items);
-        }
-
-        this.#isFullyLoaded = true;
-        return cache.getAll<T>(this.Model);
+        return this.loadAllByEndpoint(this.endpoint);
     }
 
-    public async byId(id: KankaApiId): Promise<T> {
+    public async byId(id: KankaApiAnyId): Promise<T> {
         if (!cache.has(this.Model, id)) {
             const childEndpoint = this.endpoint.withPath(id);
             const { data } = await api.load(childEndpoint);
@@ -50,7 +36,30 @@ export default class KankaNodeCollection<
         return cache.find<T>(this.Model, id)!;
     }
 
-    private async loadPage(pageEndpoint: KankaEndpoint): Promise<Page<T>> {
+    protected async loadAllByEndpoint(endpoint: KankaEndpoint): Promise<T[]> {
+        const cached = cache.getAll<T>(this.Model);
+
+        if (cached.length > 0 && this.fullyLoadedUrl === endpoint.getUrl()) {
+            return cached;
+        }
+
+        cache.clear(this.Model); // Clear cache if it does not match current endpoint
+
+        const { page, ...baseQuery } = endpoint.getQuery();
+        let nextEndpoint: KankaEndpoint | undefined = endpoint;
+
+        while (nextEndpoint) {
+            // eslint-disable-next-line no-await-in-loop
+            const page = await this.loadPage(nextEndpoint.withQuery(baseQuery));
+            nextEndpoint = page.endpoint;
+            cache.save(...page.items);
+        }
+
+        this.fullyLoadedUrl = endpoint.getUrl();
+        return cache.getAll<T>(this.Model);
+    }
+
+    protected async loadPage(pageEndpoint: KankaEndpoint): Promise<Page<T>> {
         const { data, links } = await api.load(pageEndpoint);
 
         const items = data.map(entry => this.createModel(entry));

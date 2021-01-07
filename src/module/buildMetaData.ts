@@ -1,5 +1,6 @@
 import EntityAttribute from '../kanka/entities/EntityAttribute';
 import EntityMetaData from '../kanka/entities/EntityMetaData';
+import EntityRelation from '../kanka/entities/EntityRelation';
 import InventoryItem from '../kanka/entities/InventoryItem';
 import PrimaryEntity from '../kanka/entities/PrimaryEntity';
 import QuestReference from '../kanka/entities/QuestReference';
@@ -10,7 +11,7 @@ import {
     MetaDataBasicVisibility,
     MetaDataCharacterTraitVisibility,
     MetaDataInventoryVisibility,
-    MetaDataQuestReferenceVisibility,
+    MetaDataQuestReferenceVisibility, MetaDataRelationVisibility,
     MetaDataType,
 } from '../types/KankaSettings';
 import { getSetting } from './accessSettings';
@@ -96,6 +97,20 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
                 [MetaDataAttributeVisibility.public]: original => original.isPublic(),
                 [MetaDataAttributeVisibility.allStarred]: original => original.isStarred(),
                 [MetaDataAttributeVisibility.publicStarred]: original => original.isPublic() && original.isStarred(),
+            },
+        );
+    }
+
+    if (data.type === MetaDataType.relation) {
+        return checkSetting(
+            data as EntityMetaData<EntityRelation>,
+            KankaSettings.metaDataRelationVisibility,
+            {
+                [MetaDataRelationVisibility.all]: true,
+                [MetaDataRelationVisibility.none]: false,
+                [MetaDataRelationVisibility.public]: original => original.isPublic,
+                [MetaDataRelationVisibility.allStarred]: original => original.isStarred,
+                [MetaDataRelationVisibility.publicStarred]: original => original.isPublic && original.isStarred,
             },
         );
     }

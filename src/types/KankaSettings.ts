@@ -7,12 +7,12 @@ export enum KankaSettings {
     entityNotesVisibility = 'entityNotesVisibility',
     metaDataBasicVisibility = 'metaDataBasicVisibility',
     metaDataAttributeVisibility = 'metaDataAttributeVisibility',
+    metaDataRelationVisibility = 'metaDataRelationVisibility',
     metaDataInventoryVisibility = 'metaDataInventoryVisibility',
     metaDataCharacterTraitVisibility = 'metaDataCharacterTraitVisibility',
     metaDataQuestReferenceVisibility = 'metaDataQuestReferenceVisibility',
     imageInText = 'imageInText',
     keepTreeStructure = 'keepTreeStructure',
-    currentBrowserFilter = 'currentBrowserFilter',
 }
 
 export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {
@@ -32,6 +32,7 @@ export enum MetaDataType {
     reference = 'reference',
     attribute = 'attribute',
     inventory = 'inventory',
+    relation = 'relation',
     characterTrait = 'characterTrait',
     questReference = 'questReference',
 }
@@ -42,6 +43,14 @@ export enum MetaDataBasicVisibility {
 }
 
 export enum MetaDataAttributeVisibility {
+    all = 'all',
+    allStarred = 'allStarred',
+    public = 'public',
+    publicStarred = 'publicStarred',
+    none = 'none',
+}
+
+export enum MetaDataRelationVisibility {
     all = 'all',
     allStarred = 'allStarred',
     public = 'public',

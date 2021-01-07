@@ -1,6 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { KankaApiCampaign, KankaApiId, KankaApiPrimaryEntity } from '../../types/kanka';
 import KankaEndpoint from '../KankaEndpoint';
+import KankaEntityCollection from '../KankaEntityCollection';
 import KankaNode from '../KankaNode';
 import KankaNodeClass from '../KankaNodeClass';
 import KankaNodeCollection from '../KankaNodeCollection';
@@ -30,6 +31,7 @@ export default class Campaign extends KankaNode {
     #races = this.createCollection('races', Race);
     #journals = this.createCollection('journals', Journal);
     #quests = this.createCollection('quests', Quest);
+    #entities = new KankaEntityCollection(this.endpoint.withPath('entities'), this);
 
     constructor(endpoint: KankaEndpoint, protected data: KankaApiCampaign) {
         super(endpoint);
@@ -89,6 +91,10 @@ export default class Campaign extends KankaNode {
 
     public notes(): KankaNodeCollection<Note> {
         return this.#notes;
+    }
+
+    public entities(): KankaEntityCollection {
+        return this.#entities;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
