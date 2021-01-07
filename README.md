@@ -1,5 +1,7 @@
 <img src="./docs/assets/kanka-foundry-logo.png" alt="Logo of Kanka-Foundry" />
 
+<img src="https://img.shields.io/github/v/release/eXaminator/kanka-foundry?style=for-the-badge" /> <img src="https://img.shields.io/badge/dynamic/json?label=Foundry&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2FeXaminator%2Fkanka-foundry%2Fmain%2Fsrc%2Fmodule.json&style=for-the-badge&color=ff6400" /> <img src="https://img.shields.io/david/eXaminator/kanka-foundry?style=for-the-badge" /> <img src="https://img.shields.io/github/downloads/eXaminator/kanka-foundry/total?style=for-the-badge" />
+
 # Kanka-Foundry
 This is a module which integrates [Kanka.io](https://kanka.io), a free worldbuilding and tabletop RPG campaign
 management tool, with [Foundry Virtual Tabletop](http://foundryvtt.com), allowing you to import entries written
