@@ -1,3 +1,4 @@
+import CharacterOrganisation from '../kanka/entities/CharacterOrganisation';
 import EntityAttribute from '../kanka/entities/EntityAttribute';
 import EntityMetaData from '../kanka/entities/EntityMetaData';
 import EntityRelation from '../kanka/entities/EntityRelation';
@@ -8,7 +9,7 @@ import { KankaApiCharacterTrait, KankaVisibility } from '../types/kanka';
 import {
     KankaSettings,
     MetaDataAttributeVisibility,
-    MetaDataBasicVisibility,
+    MetaDataBasicVisibility, MetaDataCharacterOrganisationsVisibility,
     MetaDataCharacterTraitVisibility,
     MetaDataInventoryVisibility,
     MetaDataQuestReferenceVisibility, MetaDataRelationVisibility,
@@ -111,6 +112,18 @@ function byMetaDataConfiguration(data: EntityMetaData): boolean {
                 [MetaDataRelationVisibility.public]: original => original.isPublic,
                 [MetaDataRelationVisibility.allStarred]: original => original.isStarred,
                 [MetaDataRelationVisibility.publicStarred]: original => original.isPublic && original.isStarred,
+            },
+        );
+    }
+
+    if (data.type === MetaDataType.characterOrganisation) {
+        return checkSetting(
+            data as EntityMetaData<CharacterOrganisation>,
+            KankaSettings.metaDataCharacterOrganisationVisibility,
+            {
+                [MetaDataCharacterOrganisationsVisibility.all]: true,
+                [MetaDataCharacterOrganisationsVisibility.none]: false,
+                [MetaDataCharacterOrganisationsVisibility.public]: original => !original.isPrivate,
             },
         );
     }

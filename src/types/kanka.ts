@@ -131,7 +131,7 @@ export interface KankaApiCharacterTrait extends KankaApiConstrainable {
     default_order: number;
 }
 
-export interface KankaApiCharacterOrganisationLink {
+export interface KankaApiCharacterOrganisationLink extends KankaApiConstrainable{
     organisation_id: KankaApiId;
     role?: string;
 }

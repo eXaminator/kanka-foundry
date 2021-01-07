@@ -54,6 +54,8 @@ broadly define which attributes to import this way.
 which inventory entries will be imported.
 - **Character trait import**: Characters in Kanka have appearance and personality traits. This setting allows you to
 select which of those traits you would like to import.
+- **Character organisation import**: Characters in Kanka can be members of organisations. This setting allows you to
+  select which of those memberships you would like to import for all characters.
 - **Quest reference import**: Quests can contain references to Characters, Locations and other entries. This setting
 allows you to choose which references to import. The *public* setting is based on the *private* flag of each
 reference itself, not the private flag of the referenced entry.
