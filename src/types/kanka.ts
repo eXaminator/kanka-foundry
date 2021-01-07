@@ -70,7 +70,7 @@ export interface KankaApiAttribute extends KankaApiConstrainable {
     default_order: number;
 }
 
-export interface KankaApiRelation extends KankaApiConstrainable {
+export interface KankaApiRelation {
     id: KankaApiId;
     owner_id: KankaApiEntityId;
     target_id: KankaApiEntityId;
@@ -78,6 +78,7 @@ export interface KankaApiRelation extends KankaApiConstrainable {
     attitude?: number;
     colour?: string;
     is_star: boolean;
+    visibility: KankaVisibility;
 }
 
 export interface KankaApiInventory {
@@ -209,6 +210,7 @@ export interface KankaApiQuestReference extends KankaApiPrimaryEntity {
     entity_id: KankaApiEntityId;
     description?: string;
     role?: string;
+    colour?: string;
 }
 
 export interface KankaApiQuestCharacterReference extends KankaApiQuestReference {
@@ -236,9 +238,10 @@ export interface KankaApiQuest extends KankaApiPrimaryEntity {
     locations: number;
 }
 
-export interface KankaApiEntity extends KankaApiConstrainable, KankaApiEntityWithImage {
+export interface KankaApiEntity extends KankaApiConstrainable, KankaApiBlamable {
     id: KankaApiEntityId;
     child_id: KankaApiId;
     type: EntityType;
     name: string;
+    child?: KankaApiEntityWithImage;
 }

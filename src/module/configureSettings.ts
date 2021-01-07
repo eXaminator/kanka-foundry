@@ -13,7 +13,7 @@ import {
     MetaDataBasicVisibility,
     MetaDataCharacterTraitVisibility,
     MetaDataInventoryVisibility,
-    MetaDataQuestReferenceVisibility,
+    MetaDataQuestReferenceVisibility, MetaDataRelationVisibility,
 } from '../types/KankaSettings';
 import validateAccessToken from '../util/validateAccessToken';
 import { getSetting } from './accessSettings';
@@ -263,6 +263,26 @@ export async function registerSettings(): Promise<void> {
                 [MetaDataAttributeVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.public'),
                 [MetaDataAttributeVisibility.publicStarred]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.publicStarred'),
                 [MetaDataAttributeVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataAttributeVisibility.value.none'),
+            },
+        },
+    );
+
+    game.settings.register(
+        moduleConfig.name,
+        KankaSettings.metaDataRelationVisibility,
+        {
+            name: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.label'),
+            hint: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.hint'),
+            scope: 'world',
+            config: true,
+            type: String,
+            default: MetaDataRelationVisibility.publicStarred,
+            choices: {
+                [MetaDataRelationVisibility.all]: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.value.all'),
+                [MetaDataRelationVisibility.allStarred]: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.value.allStarred'),
+                [MetaDataRelationVisibility.public]: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.value.public'),
+                [MetaDataRelationVisibility.publicStarred]: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.value.publicStarred'),
+                [MetaDataRelationVisibility.none]: game.i18n.localize('KANKA.SettingsMetaDataRelationVisibility.value.none'),
             },
         },
     );

@@ -48,6 +48,8 @@ metadata includes properties like the *type* given to most entries in Kanka, *ag
 properties.
 - **Attributes import**: The module will import attributes on any Kanka entry as metadata. This setting allows you to
 broadly define which attributes to import this way.
+- **Relations import**: The module will import relations on any Kanka entry as metadata. This setting allows you to
+  broadly define which relations to import this way.
 - **Inventory import**: The module will import inventory for all entries as metadata. This setting allows you to control
 which inventory entries will be imported.
 - **Character trait import**: Characters in Kanka have appearance and personality traits. This setting allows you to

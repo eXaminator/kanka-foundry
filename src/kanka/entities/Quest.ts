@@ -1,6 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { KankaApiId, KankaApiQuest } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
+import getContrastColor from '../../util/getContrastColor';
 import mentionLink from '../../util/mentionLink';
 import KankaNodeClass from '../KankaNodeClass';
 import KankaNodeCollection from '../KankaNodeCollection';
@@ -95,7 +96,11 @@ export default class Quest extends PrimaryEntity<KankaApiQuest> {
         const entities = await Promise.all(references.map(ref => ref.entity()));
 
         references.forEach((reference, index) => this.addMetaData({
-            label: mentionLink(entities[index].name, entities[index]),
+            label: [
+                mentionLink(entities[index].name, entities[index]),
+                reference.color ? `<span class="kanka-colored-dot" style="background: ${reference.color}; color: ${getContrastColor(reference.color)};"></span>` : '',
+            ].join(' '),
+            // label: mentionLink(entities[index].name, entities[index]),
             value: referenceValue(reference),
             section,
             type: MetaDataType.questReference,

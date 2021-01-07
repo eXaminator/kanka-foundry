@@ -1,6 +1,7 @@
 import EntityType from '../../types/EntityType';
 import { KankaApiEntityId, KankaApiId, KankaApiPrimaryEntity } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
+import getContrastColor from '../../util/getContrastColor';
 import mentionLink from '../../util/mentionLink';
 import KankaEndpoint from '../KankaEndpoint';
 import KankaNode from '../KankaNode';
@@ -8,11 +9,13 @@ import type Campaign from './Campaign';
 import EntityAttribute from './EntityAttribute';
 import EntityMetaData from './EntityMetaData';
 import EntityNote from './EntityNote';
+import EntityRelation from './EntityRelation';
 import InventoryItem from './InventoryItem';
 
 export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = KankaApiPrimaryEntity> extends KankaNode {
     readonly #attributes: EntityAttribute[];
     readonly #inventory: InventoryItem[];
+    readonly #relations: EntityRelation[];
     readonly #entityNotes: EntityNote[];
     #metaData?: EntityMetaData[];
 
@@ -21,6 +24,7 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
 
         this.#attributes = data.attributes?.map(attr => EntityAttribute.fromApiData(attr)) ?? [];
         this.#inventory = data.inventory?.map(entry => InventoryItem.fromApiData(entry, campaign.items())) ?? [];
+        this.#relations = data.relations?.map(entry => EntityRelation.fromApiData(entry, campaign.entities())) ?? [];
         this.#entityNotes = data.entity_notes
             ?.map(entry => EntityNote.fromApiData(entry))
             .sort((a, b) => a.name.localeCompare(b.name)) ?? [];
@@ -71,6 +75,10 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
         return this.#inventory;
     }
 
+    public get relations(): EntityRelation[] {
+        return this.#relations;
+    }
+
     public get entityNotes(): EntityNote[] {
         return this.#entityNotes;
     }
@@ -114,6 +122,12 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
     }
 
     protected async buildMetaData(): Promise<void> {
+        await this.addAttributeMetaData();
+        await this.addInventoryMetaData();
+        await this.addRelationMetaData();
+    }
+
+    protected async addAttributeMetaData(): Promise<void> {
         let currentSection: EntityAttribute | undefined;
 
         this.attributes
@@ -132,7 +146,9 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
                     originalData: attribute,
                 });
             });
+    }
 
+    protected async addInventoryMetaData(): Promise<void> {
         const items = await Promise.all(this.inventory.map(i => i.item()));
 
         this.inventory
@@ -153,6 +169,31 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
                     value: value.join(' '),
                     originalData: inventory,
                 }, true);
+            });
+    }
+
+    protected async addRelationMetaData(): Promise<void> {
+        const entities = await Promise.all(this.relations.map(i => i.target()));
+        const targets = await Promise.all(entities.map(i => i?.child()));
+
+        this.#relations
+            .forEach((entityRelation, index) => {
+                const { relation, attitude, color } = entityRelation;
+                const target = targets[index];
+                if (!target) return;
+
+                const valueParts = [
+                    `<span class="kanka-colored-dot" style="background: ${color}; color: ${getContrastColor(color)};">${attitude || ''}</span>`,
+                    mentionLink(target.name, target),
+                ];
+
+                this.addMetaData({
+                    label: relation || '',
+                    type: MetaDataType.relation,
+                    section: 'relations',
+                    value: valueParts.join(' '),
+                    originalData: entityRelation,
+                });
             });
     }
 

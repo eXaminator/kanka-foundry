@@ -108,6 +108,17 @@ button#kanka {
     }
 }
 
+.kanka-colored-dot {
+    min-width: 1em;
+    height: 1em;
+    line-height: 1em;
+    padding: 0 2px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    display: inline-block;
+    border-radius: 1em;
+    vertical-align: middle;
+}
+
 .kanka-metadata {
     .section-header {
         background: rgba(0,0,0,0.1);
@@ -121,10 +132,20 @@ button#kanka {
     }
 
     th, td {
-        padding: .25em .5em;
+        padding: .3em .5em;
 
-        > hr:last-of-type {
-            display: none;
+        > div {
+            padding: .3em 0;
+            border-bottom: 1px solid rgba(0,0,0,.2);
+
+            &:first-of-type {
+                padding-top: 0;
+            }
+
+            &:last-of-type {
+                padding-bottom: 0;
+                border: 0;
+            }
         }
     }
 

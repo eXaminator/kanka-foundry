@@ -28,6 +28,10 @@ export default abstract class QuestReference<
         return this.data.description;
     }
 
+    get color(): string | undefined {
+        return this.data.colour;
+    }
+
     protected abstract loadReference(): Promise<T>;
 
     async entity(): Promise<T> {

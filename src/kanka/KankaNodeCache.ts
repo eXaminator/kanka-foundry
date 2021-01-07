@@ -1,4 +1,4 @@
-import { KankaApiId } from '../types/kanka';
+import { KankaApiAnyId } from '../types/kanka';
 import type KankaNode from './KankaNode';
 import KankaNodeClass from './KankaNodeClass';
 
@@ -29,11 +29,11 @@ export default class KankaNodeCache {
         return Array.from(map.values()) as T[];
     }
 
-    public has<T extends KankaNode>(model: KankaNodeClass<T>, id: KankaApiId): boolean {
+    public has<T extends KankaNode>(model: KankaNodeClass<T>, id: KankaApiAnyId): boolean {
         return Boolean(this.#cache.get(model)?.has(id));
     }
 
-    public find<T extends KankaNode>(model: KankaNodeClass<T>, id: KankaApiId): T | undefined {
+    public find<T extends KankaNode>(model: KankaNodeClass<T>, id: KankaApiAnyId): T | undefined {
         return this.#cache.get(model)?.get(id) as T;
     }
 
