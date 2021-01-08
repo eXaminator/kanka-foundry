@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/eXaminator/kanka-foundry/compare/1.8.1...1.9.0) (2021-01-08)
+
+
+### Bug Fixes
+
+* preload templates to slightly improve performance ([25c1f26](https://github.com/eXaminator/kanka-foundry/commit/25c1f26a9c38e0e4744238d9e2c5fead24e3fd85))
+
+
+### Features
+
+* add loading indicator while syncing entries ([5bf0ffb](https://github.com/eXaminator/kanka-foundry/commit/5bf0ffbc820868dc2cb38db871bf923f6b4fb8db))
+* import organisation membership for characters ([45fae70](https://github.com/eXaminator/kanka-foundry/commit/45fae706e685db86d87cf97b10cdafcc4287bd5a))
+* import relations as metadata and improve styling of metadata ([bc8ff9d](https://github.com/eXaminator/kanka-foundry/commit/bc8ff9df95a1715b26efb246f0b98f137380b414))
+
 ## [1.8.1](https://github.com/eXaminator/kanka-foundry/compare/1.8.0...1.8.1) (2021-01-03)
 
 
