@@ -228,7 +228,8 @@ export default abstract class KankaBrowser extends Application {
         });
 
         html.on('click', '[data-action]', async (event) => {
-            const { action, id, entityId, type } = event?.currentTarget?.dataset ?? {};
+            const button = $(event.currentTarget);
+            const { action, id, entityId, type } = event.currentTarget?.dataset ?? {};
             if (!action) return;
 
             switch (action) {
@@ -236,6 +237,7 @@ export default abstract class KankaBrowser extends Application {
                     if (!id || !type) return;
                     const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
+                    this.setLoadingState(button);
                     await this.syncEntity(entity);
                     this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
                     this.render();
@@ -246,6 +248,7 @@ export default abstract class KankaBrowser extends Application {
                     if (!id || !type) return;
                     const entity = await campaign.getByType(type)?.byId(Number(id));
                     if (!entity) return;
+                    this.setLoadingState(button);
                     await this.linkEntity(entity);
                     this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
                     this.render();
@@ -253,6 +256,7 @@ export default abstract class KankaBrowser extends Application {
                 }
 
                 case 'sync-all':
+                    this.setLoadingState(button);
                     await this.syncAll();
                     this.showInfo('BrowserNotificationSyncedAll');
                     this.render();
@@ -260,6 +264,7 @@ export default abstract class KankaBrowser extends Application {
 
                 case 'sync-folder':
                     if (!type) return;
+                    this.setLoadingState(button);
                     await this.syncType(type);
                     this.showInfo('BrowserNotificationSyncedFolder', { type });
                     this.render();
@@ -267,6 +272,7 @@ export default abstract class KankaBrowser extends Application {
 
                 case 'link-folder':
                     if (!type) return;
+                    this.setLoadingState(button);
                     await this.linkType(type);
                     this.showInfo('BrowserNotificationLinkedFolder', { type });
                     this.render();
@@ -341,5 +347,17 @@ export default abstract class KankaBrowser extends Application {
                     return false; // Setting does not exist
                 }
             });
+    }
+
+    protected setLoadingState(button: JQuery): void {
+        const icon = button.find('i');
+
+        if (icon.length === 0) {
+            button.prepend('<div class="loading-indicator inline"><i class="fas fa-spinner"></i></div>');
+        } else {
+            icon.replaceWith('<div class="loading-indicator inline"><i class="fas fa-spinner"></i></div>');
+        }
+
+        $(this.element).find('[data-action*="sync"], [data-action*="link"]').prop('disabled', true);
     }
 }

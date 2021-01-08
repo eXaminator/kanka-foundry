@@ -17,6 +17,15 @@ button#kanka {
             animation: kanka-spin 1.5s linear infinite;
             font-size: 2em;
         }
+
+        &.inline {
+            padding: 0;
+            display: inline;
+
+            .fa-spinner {
+                font-size: 1em;
+            }
+        }
     }
 
     a {
