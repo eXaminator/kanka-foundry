@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/eXaminator/kanka-foundry/compare/1.9.0...1.9.1) (2021-01-10)
+
+
+### Bug Fixes
+
+* fix settings to remove unnecessary checkboxes ([25498ac](https://github.com/eXaminator/kanka-foundry/commit/25498ac8386b0be84b15c77b96c90048da2e8210))
+
 # [1.9.0](https://github.com/eXaminator/kanka-foundry/compare/1.8.1...1.9.0) (2021-01-08)
 
 
