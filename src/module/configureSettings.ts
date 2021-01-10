@@ -382,7 +382,7 @@ export async function registerSettings(): Promise<void> {
                 kankaBrowserTypeCollapseSetting(type),
                 {
                     scope: 'client',
-                    config: true,
+                    config: false,
                     type: Boolean,
                     default: false,
                 },
