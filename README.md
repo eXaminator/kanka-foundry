@@ -1,6 +1,10 @@
-<img src="./docs/assets/kanka-foundry-logo.png" alt="Logo of Kanka-Foundry" />
+![Logo of Kanka-Foundry](./docs/assets/kanka-foundry-logo.png)
 
-<img src="https://img.shields.io/github/v/release/eXaminator/kanka-foundry?style=for-the-badge" /> <img src="https://img.shields.io/badge/dynamic/json?label=Foundry&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2FeXaminator%2Fkanka-foundry%2Fmain%2Fsrc%2Fmodule.json&style=for-the-badge&color=ff6400" /> <img src="https://img.shields.io/david/eXaminator/kanka-foundry?style=for-the-badge" /> <img src="https://img.shields.io/github/downloads/eXaminator/kanka-foundry/total?style=for-the-badge" />
+![Current release](https://img.shields.io/github/v/release/eXaminator/kanka-foundry?style=for-the-badge)
+![Supported Foundry Version](https://img.shields.io/badge/dynamic/json?label=Foundry&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2FeXaminator%2Fkanka-foundry%2Fmain%2Fsrc%2Fmodule.json&style=for-the-badge&color=ff6400)
+![Dependencies](https://img.shields.io/david/eXaminator/kanka-foundry?style=for-the-badge)
+![Downloads](https://img.shields.io/github/downloads/eXaminator/kanka-foundry/total?style=for-the-badge)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X539NNJ)
 
 # Kanka-Foundry
 This is a module which integrates [Kanka.io](https://kanka.io), a free worldbuilding and tabletop RPG campaign
@@ -8,7 +12,7 @@ management tool, with [Foundry Virtual Tabletop](http://foundryvtt.com), allowin
 in Kanka as journal entries into Foundry VTT. this module imports Kanka entries including their main entry text,
 their main image and some metadata, which will be included as a table above the main entry text.
 
-<img src="./docs/assets/location.png" alt="Screenshot of a journal entry after importing it from Kanka." />
+![Screenshot of a journal entry after importing it from Kanka.](./docs/assets/location.png)
 
 This module is based loosely on the
 [Forundry Virtual Tabletop - World Anvil Integration](https://gitlab.com/foundrynet/world-anvil) module.
@@ -20,7 +24,7 @@ manifest url: https://github.com/eXaminator/kanka-foundry/releases/latest/downlo
 ## Configuration
 This module provides many configuration options to handle authentication to Kanka as well as what to import.
 
-<img src="./docs/assets/settings.png" alt="Screenshot of the settings view." />
+![Screenshot of the settings view.](./docs/assets/settings.png)
 
 - **Kanka Personal Access Token**: This token is necessary for this module to access the Kanka API to retrieve your
 entries for you. You can create a new *Personal Access Token** by logging into Kanka and going to the following URL:
@@ -72,7 +76,7 @@ API limitations for the amount of requests.
 After installing and configuring the module, you will find a button with the Kanka icon next to the buttons to create
 new journal entries.
 
-<img src="./docs/assets/kanka-button.png" alt="Screenshot of the kanka button in the Foundry VTT user interface." />
+![Screenshot of the kanka button in the Foundry VTT user interface.](./docs/assets/kanka-button.png)
 
 Clicking this button will open an overview of all your Kanka entries based on their category. The exact entries that
 show up here depends on what you have selected in the settings of this module. Each entry has a button to link the
@@ -87,7 +91,7 @@ that refreshing an entry will overwrite any changes you have made to that journa
 Next to each category you will also find buttons to link all entries in a category that have not been linked before
 or to refresh all entries that have already been linked. Please beware API request limits, see below.
 
-<img src="./docs/assets/browser.png" alt="Screenshot of the kanka browser from which entries can be imported." />
+![Screenshot of the kanka browser from which entries can be imported.](./docs/assets/browser.png)
 
 ### API limitations
 The Kanka API enforces certain rate limits. For most users this means that you cannot make more than 30 requests per
