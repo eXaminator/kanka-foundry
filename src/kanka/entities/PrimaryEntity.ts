@@ -149,12 +149,15 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
     }
 
     protected async addInventoryMetaData(): Promise<void> {
-        const items = await Promise.all(this.inventory.map(i => i.item()));
+        const itemPromises = this.inventory.map(i => i.item().catch((error: Error) => error));
+        const items = await Promise.all(itemPromises);
 
         this.inventory
             .forEach((inventory, index) => {
                 let { name } = inventory;
                 const item = items[index];
+
+                if (item instanceof Error) return;
                 if (item) name = mentionLink(item.name, item);
 
                 const value: string[] = [`${inventory.amount} &times; ${name}`];
@@ -173,8 +176,8 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
     }
 
     protected async addRelationMetaData(): Promise<void> {
-        const entities = await Promise.all(this.relations.map(i => i.target()));
-        const targets = await Promise.all(entities.map(i => i?.child()));
+        const entities = await Promise.all(this.relations.map(i => i.target().catch(() => undefined)));
+        const targets = await Promise.all(entities.map(i => i?.child().catch(() => undefined)));
 
         this.#relations
             .forEach((entityRelation, index) => {
@@ -220,16 +223,20 @@ export default abstract class PrimaryEntity<T extends KankaApiPrimaryEntity = Ka
         entityPromise?: Promise<PrimaryEntity<KankaApiPrimaryEntity> | undefined>,
         section?: string,
     ): Promise<void> {
-        const entity = await entityPromise;
+        try {
+            const entity = await entityPromise;
 
-        if (entity) {
-            this.addMetaData({
-                label,
-                section,
-                originalData: entity,
-                type: MetaDataType.reference,
-                value: mentionLink(entity.name, entity),
-            });
+            if (entity) {
+                this.addMetaData({
+                    label,
+                    section,
+                    originalData: entity,
+                    type: MetaDataType.reference,
+                    value: mentionLink(entity.name, entity),
+                });
+            }
+        } catch {
+            // Ignore errors and just don't add meta data
         }
     }
 }
