@@ -232,60 +232,65 @@ export default abstract class KankaBrowser extends Application {
             const { action, id, entityId, type } = event.currentTarget?.dataset ?? {};
             if (!action) return;
 
-            switch (action) {
-                case 'sync-entry': {
-                    if (!id || !type) return;
-                    const entity = await campaign.getByType(type)?.byId(Number(id));
-                    if (!entity) return;
-                    this.setLoadingState(button);
-                    await this.syncEntity(entity);
-                    this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
-                    this.render();
-                    break;
+            try {
+                switch (action) {
+                    case 'sync-entry': {
+                        if (!id || !type) return;
+                        const entity = await campaign.getByType(type)?.byId(Number(id));
+                        if (!entity) return;
+                        this.setLoadingState(button);
+                        await this.syncEntity(entity);
+                        this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
+                        this.render();
+                        break;
+                    }
+
+                    case 'link-entry': {
+                        if (!id || !type) return;
+                        const entity = await campaign.getByType(type)?.byId(Number(id));
+                        if (!entity) return;
+                        this.setLoadingState(button);
+                        await this.linkEntity(entity);
+                        this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
+                        this.render();
+                        break;
+                    }
+
+                    case 'sync-all':
+                        this.setLoadingState(button);
+                        await this.syncAll();
+                        this.showInfo('BrowserNotificationSyncedAll');
+                        this.render();
+                        break;
+
+                    case 'sync-folder':
+                        if (!type) return;
+                        this.setLoadingState(button);
+                        await this.syncType(type);
+                        this.showInfo('BrowserNotificationSyncedFolder', { type });
+                        this.render();
+                        break;
+
+                    case 'link-folder':
+                        if (!type) return;
+                        this.setLoadingState(button);
+                        await this.linkType(type);
+                        this.showInfo('BrowserNotificationLinkedFolder', { type });
+                        this.render();
+                        break;
+
+                    case 'open-entry':
+                        if (!entityId) return;
+                        await this.openEntry(entityId);
+                        break;
+
+                    default:
+                        // Fall through
+                        break;
                 }
-
-                case 'link-entry': {
-                    if (!id || !type) return;
-                    const entity = await campaign.getByType(type)?.byId(Number(id));
-                    if (!entity) return;
-                    this.setLoadingState(button);
-                    await this.linkEntity(entity);
-                    this.showInfo('BrowserNotificationSynced', { type: entity.entityType, name: entity.name });
-                    this.render();
-                    break;
-                }
-
-                case 'sync-all':
-                    this.setLoadingState(button);
-                    await this.syncAll();
-                    this.showInfo('BrowserNotificationSyncedAll');
-                    this.render();
-                    break;
-
-                case 'sync-folder':
-                    if (!type) return;
-                    this.setLoadingState(button);
-                    await this.syncType(type);
-                    this.showInfo('BrowserNotificationSyncedFolder', { type });
-                    this.render();
-                    break;
-
-                case 'link-folder':
-                    if (!type) return;
-                    this.setLoadingState(button);
-                    await this.linkType(type);
-                    this.showInfo('BrowserNotificationLinkedFolder', { type });
-                    this.render();
-                    break;
-
-                case 'open-entry':
-                    if (!entityId) return;
-                    await this.openEntry(entityId);
-                    break;
-
-                default:
-                    // Fall through
-                    break;
+            } catch (error) {
+                this.showError('BrowserSyncError');
+                this.render();
             }
         });
     }
