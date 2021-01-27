@@ -25,7 +25,7 @@ export default class KankaNodeCollection<
         return this.loadAllByEndpoint(this.endpoint);
     }
 
-    public async byId(id: KankaApiAnyId): Promise<T> {
+    public async byId(id: KankaApiAnyId): Promise<T | undefined> {
         if (!cache.has(this.Model, id)) {
             const childEndpoint = this.endpoint.withPath(id);
             const { data } = await api.load(childEndpoint);

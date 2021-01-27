@@ -93,19 +93,24 @@ export default class Quest extends PrimaryEntity<KankaApiQuest> {
         section: string,
     ): Promise<void> {
         const references = await referencePromises;
-        const entities = await Promise.all(references.map(ref => ref.entity()));
+        const entities = await Promise.all(references.map(ref => ref.entity().catch(() => undefined)));
 
-        references.forEach((reference, index) => this.addMetaData({
-            label: [
-                mentionLink(entities[index].name, entities[index]),
-                reference.color ? `<span class="kanka-colored-dot" style="background: ${reference.color}; color: ${getContrastColor(reference.color)};"></span>` : '',
-            ].join(' '),
-            // label: mentionLink(entities[index].name, entities[index]),
-            value: referenceValue(reference),
-            section,
-            type: MetaDataType.questReference,
-            originalData: reference,
-        }, true));
+        references.forEach((reference, index) => {
+            const { color } = reference;
+            const entity = entities[index];
+            if (!entity) return;
+
+            this.addMetaData({
+                label: [
+                    mentionLink(entity.name, entity),
+                    color ? `<span class="kanka-colored-dot" style="background: ${color}; color: ${getContrastColor(color)};"></span>` : '',
+                ].join(' '),
+                value: referenceValue(reference),
+                section,
+                type: MetaDataType.questReference,
+                originalData: reference,
+            }, true);
+        });
     }
 
     protected createReferenceCollection<

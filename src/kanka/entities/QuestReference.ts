@@ -32,9 +32,9 @@ export default abstract class QuestReference<
         return this.data.colour;
     }
 
-    protected abstract loadReference(): Promise<T>;
+    protected abstract loadReference(): Promise<T | undefined>;
 
-    async entity(): Promise<T> {
+    async entity(): Promise<T | undefined> {
         return this.loadReference();
     }
 }

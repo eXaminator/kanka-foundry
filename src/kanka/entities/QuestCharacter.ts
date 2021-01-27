@@ -3,7 +3,7 @@ import type Character from './Character';
 import QuestReference from './QuestReference';
 
 export default class QuestCharacter extends QuestReference<Character, KankaApiQuestCharacterReference> {
-    protected async loadReference(): Promise<Character> {
+    protected async loadReference(): Promise<Character | undefined> {
         return this.campaign.characters().byId(this.data.character_id);
     }
 }

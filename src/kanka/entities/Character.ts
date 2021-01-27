@@ -86,7 +86,7 @@ export default class Character extends PrimaryEntity<KankaApiCharacter> {
     }
 
     protected async addOrganisationMetaData(): Promise<void> {
-        const organisations = await Promise.all(this.#organisations.map(i => i.organisation()));
+        const organisations = await Promise.all(this.#organisations.map(i => i.organisation().catch(() => undefined)));
 
         this.#organisations
             .forEach((reference, index) => {
