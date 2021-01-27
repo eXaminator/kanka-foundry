@@ -83,7 +83,8 @@ show up here depends on what you have selected in the settings of this module. E
 entry. This will create a journal folder and import that entry into that folder. After linking an entry you will now
 see a button with the entries name which will open the linked journal entry. If the entry was updated in Kanka since
 the last refresh this button will pe prefixed with an asterisk. You will also find a button to refresh the journal
-entry, which will start a new import of this entry.
+entry, which will start a new import of this entry. The folders can be renamed once they were created. The module will
+keep importing new entities into the same folder without problems.
 
 **Warning**: You can change journal entries after you have imported them as much as you like. But keep in mind
 that refreshing an entry will overwrite any changes you have made to that journal entries text field or image.
