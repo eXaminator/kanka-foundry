@@ -1,3 +1,11 @@
+## [1.9.2](https://github.com/eXaminator/kanka-foundry/compare/1.9.1...1.9.2) (2021-01-27)
+
+
+### Bug Fixes
+
+* ignore entity references in meta data if they can't be resolved ([98822ca](https://github.com/eXaminator/kanka-foundry/commit/98822cadbc2ac1b92dfcde1fc942d2d87178def2)), closes [#39](https://github.com/eXaminator/kanka-foundry/issues/39)
+* improve handling of unexpected errors while syncing entities ([ef7a4c4](https://github.com/eXaminator/kanka-foundry/commit/ef7a4c4efa02a8221a51b79e8bfdd050dc1ff232))
+
 ## [1.9.1](https://github.com/eXaminator/kanka-foundry/compare/1.9.0...1.9.1) (2021-01-10)
 
 
