@@ -56,5 +56,7 @@
       "type": "screenshot",
       "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/settings.png"
     }
-  ]
+  ],
+  "allowBugReporter": true,
+  "bugs": ""
 }
