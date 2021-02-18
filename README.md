@@ -102,11 +102,6 @@ room for improvement, and some entries simply require more requests than others.
 requests it is making against the Kanka API and will simply wait if the limit was reached. This can sometimes create
 wait times, especially when linking or refreshing many entries at once.
 
-**Advice**: Kanka has a profile setting which changes the default amount of elements that are displayed in a list. This
-same value is used when the module accesses the API to retrieve data. If you have a lot of elements in some categories
-it would help to increase this to the largest possible value (currently 45) to reduce the number of requests this
-module has to make to retrieve all elements.
-
 ## Software License and Contribution Policy
 This software is licensed under the MIT License. See the LICENSE file in this repository for details.
 
