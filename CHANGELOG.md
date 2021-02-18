@@ -1,3 +1,10 @@
+## [1.9.3](https://github.com/eXaminator/kanka-foundry/compare/1.9.2...1.9.3) (2021-02-18)
+
+
+### Bug Fixes
+
+* add additional manifest fields to improve module discovery on foundryvtt hub ([ed775c6](https://github.com/eXaminator/kanka-foundry/commit/ed775c65470d1f0344431ac104710f5585772b20))
+
 ## [1.9.2](https://github.com/eXaminator/kanka-foundry/compare/1.9.1...1.9.2) (2021-01-27)
 
 
