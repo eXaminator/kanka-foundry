@@ -7,6 +7,13 @@
   "download": "",
   "version": "0.0.0",
   "author": "eXaminator",
+  "authors": [
+    {
+      "name": "eXaminator",
+      "discord": "eXaminator#0079",
+      "twitter": "@eXXaminator"
+    }
+  ],
   "esmodules": ["kanka-foundry.js"],
   "styles": ["kanka-foundry.css"],
   "languages": [
@@ -22,5 +29,32 @@
     }
   ],
   "minimumCoreVersion": "0.7.5",
-  "compatibleCoreVersion": "0.7.9"
+  "compatibleCoreVersion": "0.7.9",
+  "manifestPlusVersion": "1.0.0",
+  "media": [
+    {
+      "type": "cover",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/cover.png"
+    },
+    {
+      "type": "icon",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/kanka-logo.png"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/kanka-button.png"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/browser.png"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/location.png"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/settings.png"
+    }
+  ]
 }
