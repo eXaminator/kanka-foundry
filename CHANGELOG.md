@@ -1,3 +1,10 @@
+## [1.9.4](https://github.com/eXaminator/kanka-foundry/compare/1.9.3...1.9.4) (2021-02-18)
+
+
+### Bug Fixes
+
+* **module.json:** add module fields for simplified bug tracking ([ad676b6](https://github.com/eXaminator/kanka-foundry/commit/ad676b6501e75143441369cabd3084c78dd14292))
+
 ## [1.9.3](https://github.com/eXaminator/kanka-foundry/compare/1.9.2...1.9.3) (2021-02-18)
 
 
