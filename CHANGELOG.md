@@ -1,3 +1,10 @@
+## [1.9.5](https://github.com/eXaminator/kanka-foundry/compare/1.9.4...1.9.5) (2021-03-21)
+
+
+### Bug Fixes
+
+* create each journal entry individually to prevent the creation of multiple folders ([650de0e](https://github.com/eXaminator/kanka-foundry/commit/650de0e99109a934a19c4eb33be069c82d789b9a))
+
 ## [1.9.4](https://github.com/eXaminator/kanka-foundry/compare/1.9.3...1.9.4) (2021-02-18)
 
 
