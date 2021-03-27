@@ -1,3 +1,10 @@
+## [1.9.7](https://github.com/eXaminator/kanka-foundry/compare/1.9.6...1.9.7) (2021-03-27)
+
+
+### Bug Fixes
+
+* remove links to journal entries they player has no permission to see ([6d19f3b](https://github.com/eXaminator/kanka-foundry/commit/6d19f3b30963ddf8256be8adc8a575f592533f18))
+
 ## [1.9.6](https://github.com/eXaminator/kanka-foundry/compare/1.9.5...1.9.6) (2021-03-27)
 
 
