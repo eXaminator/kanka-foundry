@@ -1,3 +1,11 @@
+## [1.9.6](https://github.com/eXaminator/kanka-foundry/compare/1.9.5...1.9.6) (2021-03-27)
+
+
+### Bug Fixes
+
+* prevent unnecessary requests for empty quest relations ([47b0b85](https://github.com/eXaminator/kanka-foundry/commit/47b0b85051687a609f7d5af4982f2900ccfc4248))
+* refresh entities sequential because parallel handling caused caching issues on quests ([072939a](https://github.com/eXaminator/kanka-foundry/commit/072939a47ca69f5079df5342a7813ea0387bbd69))
+
 ## [1.9.5](https://github.com/eXaminator/kanka-foundry/compare/1.9.4...1.9.5) (2021-03-21)
 
 
