@@ -21,7 +21,11 @@ export default class KankaBrowserJournal extends KankaBrowser {
         const entities = await this.getEntitiesByType(type);
         const linkedEntities = entities.filter(entity => !!findEntryByEntity(entity));
 
-        await Promise.all(linkedEntities.map(entity => this.syncEntity(entity)));
+        // eslint-disable-next-line no-restricted-syntax
+        for (const entity of linkedEntities) {
+            // eslint-disable-next-line no-await-in-loop
+            await this.syncEntity(entity);
+        }
     }
 
     protected async linkType(type: EntityType): Promise<void> {
