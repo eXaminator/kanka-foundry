@@ -48,9 +48,9 @@ function replaceMentionLinks(html: JQuery): void {
         const removeLink = getSetting(KankaSettings.disableExternalMentionLinks);
         const $link = $(link);
 
-        if (!entry && !removeLink) return;
+        if ((!entry || !entry.visible) && !removeLink) return;
 
-        if (!entry) {
+        if (!entry || !entry.visible) {
             $link.replaceWith($link.html());
             return;
         }
