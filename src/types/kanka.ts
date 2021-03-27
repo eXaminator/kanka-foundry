@@ -236,6 +236,8 @@ export interface KankaApiQuest extends KankaApiPrimaryEntity {
     quest_id?: KankaApiQuest['id'];
     characters: number;
     locations: number;
+    organisations: number;
+    items: number;
 }
 
 export interface KankaApiEntity extends KankaApiConstrainable, KankaApiBlamable {

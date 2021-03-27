@@ -3,6 +3,7 @@ import { KankaApiId, KankaApiQuest } from '../../types/kanka';
 import { MetaDataType } from '../../types/KankaSettings';
 import getContrastColor from '../../util/getContrastColor';
 import mentionLink from '../../util/mentionLink';
+import KankaEmptyNodeCollection from '../KankaEmptyNodeCollection';
 import KankaNodeClass from '../KankaNodeClass';
 import KankaNodeCollection from '../KankaNodeCollection';
 import KankaQuestReferenceCollection from '../KankaQuestReferenceCollection';
@@ -28,10 +29,10 @@ function referenceValue(reference: QuestReference): string {
 }
 
 export default class Quest extends PrimaryEntity<KankaApiQuest> {
-    #characters = this.createReferenceCollection('quest_characters', QuestCharacter);
-    #locations = this.createReferenceCollection('quest_locations', QuestLocation);
-    #items = this.createReferenceCollection('quest_items', QuestItem);
-    #organisations = this.createReferenceCollection('quest_organisations', QuestOrganisation);
+    #characters = this.createReferenceCollection('quest_characters', QuestCharacter, this.data.characters);
+    #locations = this.createReferenceCollection('quest_locations', QuestLocation, this.data.locations);
+    #items = this.createReferenceCollection('quest_items', QuestItem, this.data.items);
+    #organisations = this.createReferenceCollection('quest_organisations', QuestOrganisation, this.data.organisations);
 
     get entityType(): EntityType {
         return EntityType.quest;
@@ -115,7 +116,11 @@ export default class Quest extends PrimaryEntity<KankaApiQuest> {
 
     protected createReferenceCollection<
         T extends QuestReference<PrimaryEntity> = QuestReference<PrimaryEntity>,
-    >(path: string, model: KankaNodeClass<T>): KankaQuestReferenceCollection<T> {
+    >(path: string, model: KankaNodeClass<T>, count: number): KankaNodeCollection<T> {
+        if (count === 0) {
+            return new KankaEmptyNodeCollection<T>(this.endpoint.withPath(path), model);
+        }
+
         return new KankaQuestReferenceCollection<T>(this.endpoint.withPath(path), model, this.campaign);
     }
 }
