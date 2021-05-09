@@ -1,0 +1,31 @@
+<ul class="kanka-entity-list">
+    {{#each (kankaSortBy entities 'name')}}
+        <li
+            class="kanka-action-row {{#if (kankaHasJournalEntry this.id)}}-success{{/if}} {{#if (kankaIsEntityOutdated this)}}-warn{{/if}}"
+            data-filter-text="{{ kankaToLowerCase this.name }}"
+        >
+            <div>
+                <div class="kanka-avatar -small">
+                    {{#if (kankaIsEntityOutdated this)}}
+                        <span><i class="fas fa-cloud-download-alt"></i></span>
+                    {{/if}}
+                    <img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />
+                </div>
+                {{#kankaLinkEntity this.type this.child_id }}{{ this.name }}{{/kankaLinkEntity}}
+            </div>
+            {{#if (kankaHasJournalEntry this.id)}}
+                <button type="button" data-action="open" data-id="{{ this.id }}" class="kanka-button -small">
+                    <i class="fas fa-book-open"></i>
+                    {{ kankaLocalize 'browser' 'action' 'openJournal' }}
+                </button>
+            {{/if}}
+            <button type="button" data-action="sync" data-id="{{ this.id }}" class="kanka-button -small">
+                {{#if (kankaHasJournalEntry this.id)}}
+                    <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateSingle' }}
+                {{else}}
+                    <i class="fas fa-link"></i> {{ kankaLocalize 'browser' 'action' 'linkSingle' }}
+                {{/if}}
+            </button>
+        </li>
+    {{/each }}
+</ul>

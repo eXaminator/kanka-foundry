@@ -1,0 +1,27 @@
+{{~#if reference ~}}
+    {{~#with (kankaFindReference value type) as | ref |~}}
+        <dt>
+            {{~#if rawLabel~}}
+                {{~rawLabel~}}
+            {{~else~}}
+                {{~ kankaLocalize 'journal' ../label ~}}
+            {{~/if~}}
+        </dt>
+        <dd>{{{ kankaLinkReference ref }}}</dd>
+    {{~/with~}}
+{{~else~}}
+    {{~#if value ~}}
+        <dt>
+            {{~#if rawLabel~}}
+                {{~rawLabel~}}
+            {{~else~}}
+                {{~ kankaLocalize 'journal' label ~}}
+            {{~/if~}}
+        </dt>
+        {{~#if localizeValue ~}}
+            <dd>{{ kankaLocalize 'journal' localizeValue value }}</dd>
+        {{~else~}}
+            <dd>{{value}}</dd>
+        {{~/if~}}
+    {{~/if~}}
+{{~/if~}}

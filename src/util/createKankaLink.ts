@@ -1,21 +1,19 @@
-import { KankaApiId } from '../types/kanka';
+import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
+import createKankaUrl from './createKankaUrl';
 
 export default function createKankaLink(
+    label: string,
     campaignId: KankaApiId,
-    type?: string,
+    type?: KankaApiEntityType,
     id?: KankaApiId,
-    locale?: string,
+    entityId?: KankaApiEntityId,
+    classes?: string,
 ): string {
-    const parts = [`https://kanka.io/${locale || 'en'}/campaign/${String(campaignId)}`];
+    const link = createKankaUrl(campaignId, type, id);
 
-    if (type) {
-        const pluralType = `${type.replace(/y$/, 'ie')}s`;
-        parts.push(pluralType);
-    }
+    const attrs = [`href="${link}"`, 'target="_blank"'];
+    if (entityId) attrs.push(`data-id="${String(entityId)}"`);
+    if (classes) attrs.push(`class="${classes}"`);
 
-    if (id) {
-        parts.push(String(id));
-    }
-
-    return parts.join('/');
+    return `<a ${attrs.join(' ')}>${label}</a>`;
 }

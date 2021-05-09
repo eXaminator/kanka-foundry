@@ -1,0 +1,68 @@
+<header>
+    <h1 class="kanka-action-row">
+        <span>{{#kankaLinkEntity }}{{ campaign.name }}{{/kankaLinkEntity}}</span>
+        <button type="button" data-action="view-grid" title="{{ kankaLocalize 'browser' 'action' 'viewGrid' }}">
+            <i class="fas fa-th-large"></i>
+        </button>
+        <button type="button" data-action="view-list" title="{{ kankaLocalize 'browser' 'action' 'viewList' }}">
+            <i class="fas fa-list"></i>
+        </button>
+        <span class="divider"></span>
+        <button type="button" data-action="update-outdated">
+            <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
+        </button>
+    </h1>
+</header>
+
+{{#if campaign.entry }}
+<section class="campaign-description">
+    {{#if campaign.image }}
+        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+    {{/if}}
+    {{{ campaign.entry }}}
+</section>
+{{/if}}
+
+<form class="filter">
+    <div class="form-group">
+        <label>{{ kankaLocalize 'browser' 'filter' 'label' }}</label>
+        <div class="form-fields">
+            <input type="text" name="filter" value="{{ currentFilter }}" />
+        </div>
+    </div>
+</form>
+<div class="kanka-entity-list">
+    {{#if data}}
+        {{#each (kankaGroupBy (kankaSortBy data 'type' 'name') 'type') as |entities type|}}
+            {{#with (lookup ../typeConfig type) as |typeConfig|}}
+                {{#with (kankaFilterAccessible entities ignore=../../settings.showPrivate) as |entities| }}
+                    <details class="kanka-details" data-type="{{ type }}" {{#if typeConfig.isOpen}}open{{/if}}>
+                        <summary class="action-row">
+                            <i class="fas {{ typeConfig.icon }}"></i>
+                            <div>
+                                {{#kankaLinkEntity type }}{{ kankaLocalize 'entityType' type }}{{/kankaLinkEntity}}
+                            </div>
+                            <div class="actions">
+                                <button type="button" data-action="link-type" data-type="{{ type }}">
+                                    <i class="fas fa-link"></i>
+                                    {{ kankaLocalize 'browser' 'action' 'linkAll' }}
+                                </button>
+                                <button type="button" data-action="update-outdated" data-type="{{ type }}">
+                                    <i class="fas fa-sync"></i>
+                                    {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
+                                </button>
+                            </div>
+                        </summary>
+                        {{#if (kankaIsOneOf ../../../settings.view 'grid')}}
+                            {{>grid entities=entities}}
+                        {{else}}
+                            {{>list entities=entities}}
+                        {{/if}}
+                    </details>
+                {{/with}}
+            {{/with}}
+        {{/each}}
+    {{else}}
+        <div class="kanka-loading-indicator"><i class="fas fa-spinner"></i></div>
+    {{/if}}
+</div>

@@ -1,0 +1,6 @@
+{{#>../shared/baseLayout}}
+    {{#*inline 'details'~}}
+        {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
+        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+    {{~/inline}}
+{{/../shared/baseLayout}}

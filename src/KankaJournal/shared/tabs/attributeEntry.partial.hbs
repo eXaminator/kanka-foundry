@@ -1,0 +1,19 @@
+{{#if (kankaIsOneOf attribute.type 'section')}}
+    <dt class="section">{{ attribute.name }}</dt>
+{{/if}}
+
+{{#if (kankaIsOneOf attribute.type 'checkbox')}}
+    <dt>{{ attribute.name }}</dt>
+    <dd>
+        {{#if (kankaToInt attribute.value)}}
+            {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}
+        {{else}}
+            {{ kankaLocalize 'journal' 'shared' 'value' 'no' }}
+        {{/if}}
+    </dd>
+{{/if}}
+
+{{#if (kankaIsOneOf attribute.type 'text' null)}}
+    <dt>{{ attribute.name }}</dt>
+    <dd>{{{ kankaNl2br attribute.parsed }}}</dd>
+{{/if}}

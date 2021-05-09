@@ -1,0 +1,41 @@
+{{#>../shared/baseLayout}}
+    {{#*inline 'nav'}}
+        {{>../shared/tabNav
+            name='members'
+            label='organisation.tabs.members'
+            collection=kankaEntity.members
+            idProperty='character_id'
+            type='character'
+            showCount=true
+        }}
+    {{~/inline}}
+
+    {{#*inline 'details'~}}
+        {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
+        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRow value=kankaEntity.location_id type='location' label='shared.labels.location' reference=true }}
+    {{~/inline}}
+
+    {{#*inline 'content'}}
+        <div class="tab" data-tab="members" data-group="primary-tabs">
+            <ul class="kanka-cards">
+                {{#each kankaEntity.members }}
+                    {{#with this as | rel | }}
+                        {{#with (kankaFindReference rel.character_id 'character') as | character | }}
+                            <li class="kanka-card {{#if (kankaIsSecret rel) }}-secret{{/if}}">
+                                {{#if character.thumb}}
+                                    <div class="kanka-avatar">
+                                        <img src="{{character.thumb}}" alt="{{character.name}}">
+                                    </div>
+                                {{/if}}
+
+                                <h2 class="kanka-card-header">{{{ kankaLinkReference character }}}</h2>
+                                <div class="kanka-card-content">{{ rel.role }}</div>
+                            </li>
+                        {{/with}}
+                    {{/with}}
+                {{/each}}
+            </ul>
+        </div>
+    {{~/inline}}
+{{/../shared/baseLayout}}

@@ -1,4 +1,6 @@
 {
+    "KANKA.journal.character.labels.title": "Titel",
+
     "KANKA.SidebarButton": "Aus Kanka importieren",
     "KANKA.ErrorProvideAccessToken": "Dein Kanka Access Token ist ungültig oder abgelaufen.",
     "KANKA.ErrorInvalidAccessToken": "Dein Kanka Access Token ist ungültig.",

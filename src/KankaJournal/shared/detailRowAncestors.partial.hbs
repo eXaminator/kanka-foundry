@@ -1,0 +1,14 @@
+{{~#if ancestors.length ~}}
+    <dt>
+        {{~#if rawLabel~}}
+            {{~rawLabel~}}
+        {{~else~}}
+            {{~ kankaLocalize 'journal' label ~}}
+        {{~/if~}}
+    </dt>
+    <dd>
+    {{~#each ancestors as | ancestorId |~}}
+        {{~kankaLinkReference (kankaFindReference ancestorId) ~}}
+    {{~/each~}}
+    </dd>
+{{~/if~}}

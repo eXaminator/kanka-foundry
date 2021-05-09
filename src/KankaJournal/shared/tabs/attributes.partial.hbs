@@ -1,0 +1,11 @@
+{{#if image}}
+    {{#if settings.imageInText}}
+        <img class="kanka-main-image" src="{{image}}">
+    {{/if}}
+{{/if}}
+
+<dl class="grid">
+    {{~#each (kankaSortBy (kankaFilterAccessible kankaEntity.attributes) 'default_order') ~}}
+        {{~>attributeEntry attribute=this~}}
+    {{~/each~}}
+</dl>

@@ -1,0 +1,57 @@
+.kanka-browser .window-content {
+    > header, > .campaign-description, > .filter {
+        flex: none;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .campaign-description {
+        .campaign-image {
+            width: 33%;
+            margin: 0 1em 1em 0;
+            float: left;
+        }
+    }
+
+    form {
+        height: auto !important;
+    }
+
+    details {
+        margin-bottom: 1em;
+
+        summary {
+            padding-right: .3em;
+        }
+    }
+
+    .kanka-entity-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        > li {
+            padding: .3rem;
+
+            .kanka-avatar {
+                margin-right: 1rem;
+            }
+
+            &.-success {
+                background: #9efc7530;
+            }
+
+            &.-warn {
+                background: #fd693d30;
+            }
+
+            &:hover {
+                background: #0001;
+            }
+        }
+    }
+}
+
