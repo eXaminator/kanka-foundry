@@ -14,8 +14,8 @@
       "twitter": "@eXXaminator"
     }
   ],
-  "esmodules": ["kanka-foundry.js"],
-  "styles": ["kanka-foundry.css"],
+  "esmodules": ["index.js"],
+  "styles": ["index.css"],
   "languages": [
     {
       "lang": "en",

@@ -1,0 +1,11 @@
+{{#each (kankaFilterAccessible entity.entity_notes)}}
+    {{#if is_pinned }}
+        <details
+            class="kanka-details"
+            {{#unless (kankaToInt settings.collapsed) }}open{{/unless}}
+        >
+            <summary>{{{ name }}}</summary>
+            {{ kankaReplaceMentions entry_parsed }}
+        </details>
+    {{/if}}
+{{/each}}

@@ -1,0 +1,6 @@
+{{#>../shared/baseLayout}}
+    {{#*inline 'details'~}}
+        {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
+        {{~>../shared/detailRow value=kankaEntity.race_id type='race' label='shared.labels.parent' reference=true }}
+    {{~/inline}}
+{{/../shared/baseLayout}}

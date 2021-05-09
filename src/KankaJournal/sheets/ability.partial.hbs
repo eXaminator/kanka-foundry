@@ -1,0 +1,40 @@
+{{#>../shared/baseLayout}}
+    {{#*inline 'nav'}}
+        {{>../shared/tabNav
+            name='abilities'
+            label='shared.tabs.abilities'
+            collection=kankaEntity.abilities
+            idProperty='this'
+            type='ability'
+            showCount=true
+        }}
+    {{~/inline}}
+
+    {{#*inline 'details'~}}
+        {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
+        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRow value=kankaEntity.charges label='ability.labels.charges' }}
+    {{~/inline}}
+
+    {{#*inline 'content'}}
+        <div class="tab" data-tab="abilities" data-group="primary-tabs">
+            <ul class="kanka-cards">
+                {{#each kankaEntity.abilities }}
+                    {{#with this as | rel | }}
+                        {{#with (kankaFindReference rel 'ability') as | ability | }}
+                            <li class="kanka-card {{#if (kankaIsSecret ability) }}-secret{{/if}}">
+                                <div class="kanka-avatar">
+                                    {{#if ability.thumb}}
+                                        <img src="{{ability.thumb}}" alt="{{ability.name}}">
+                                    {{/if}}
+                                </div>
+
+                                <h2 class="kanka-card-header">{{{ kankaLinkReference ability }}}</h2>
+                            </li>
+                        {{/with}}
+                    {{/with}}
+                {{/each}}
+            </ul>
+        </div>
+    {{~/inline}}
+{{/../shared/baseLayout}}

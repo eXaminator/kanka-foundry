@@ -32,13 +32,43 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
-                    { loader: 'file-loader', options: { name: '[path][name].[ext]', context: 'src' } },
+                    { loader: 'file-loader', options: { name: '[path][name].[ext]', context: 'src', esModule: false } },
+                ],
+            },
+            {
+                test: /\.(hbs)$/,
+                use: [
+                    { loader: resolve(__dirname, './build/hbs-loader.js') },
+                    {
+                        loader: 'handlebars-loader',
+                        options: {
+                            runtime: 'handlebars/runtime',
+                            // eslint-disable-next-line no-useless-escape
+                            inlineRequires: '/assets/',
+                            helperDirs: [
+                                resolve(__dirname, './src/handlebars/helpers'),
+                            ],
+                            extensions: ['.partial.hbs'],
+                            knownHelpers: [
+                                'checked',
+                                'editor',
+                                'filePicker',
+                                'localize',
+                                'numberFormat',
+                                'radioBoxes',
+                                'select',
+                            ],
+                        },
+                    },
                 ],
             },
         ],
     },
     resolve: {
         extensions: ['.ts', '.js'],
+        alias: {
+            'handlebars/runtime': resolve(__dirname, './src/handlebars/runtime.ts'),
+        },
     },
     output: {
         filename: '[name].js',
@@ -50,7 +80,6 @@ module.exports = {
             patterns: [
                 './src/module.json',
                 { from: './src/lang', to: './lang' },
-                { from: './src/templates', to: './templates' },
             ],
         }),
         new MiniCssExtractPlugin(),
@@ -75,7 +104,7 @@ module.exports = {
             },
         },
         liveReload: false,
-        writeToDisk: filePath => /\/(templates|lang)\//.test(filePath),
+        writeToDisk: filePath => /\/(lang)\//.test(filePath),
     },
     optimization: {
         minimize: !devMode,

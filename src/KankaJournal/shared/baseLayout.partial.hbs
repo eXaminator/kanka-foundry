@@ -1,0 +1,82 @@
+<nav class="tabs" data-group="primary-tabs">
+    {{>tabNav name='details' label='shared.tabs.details'}}
+    {{>tabNav
+        name='attributes'
+        label='shared.tabs.attributes'
+        collection=kankaEntity.attributes
+    }}
+    {{>tabNav
+        name='notes'
+        label='shared.tabs.notes'
+        collection=kankaEntity.entity_notes
+        showCount=true
+    }}
+    {{#>nav}}{{/nav}}
+    {{>tabNav
+        name='relations'
+        label='shared.tabs.relations'
+        collection=kankaEntity.relations
+        idProperty='target_id'
+        showCount=true
+    }}
+    {{>tabNav
+        name='inventory'
+        label='shared.tabs.inventory'
+        collection=kankaEntity.inventory
+        idProperty='item_id'
+        type='item'
+        optionalReference=true
+        showCount=true
+    }}
+    {{>tabNav
+        name='entity-abilities'
+        label='shared.tabs.abilities'
+        collection=kankaEntity.entity_abilities
+        idProperty='ability_id'
+        type='ability'
+        showCount=true
+    }}
+</nav>
+
+<section class="flexcol content">
+    <div class="tab" data-tab="details" data-group="primary-tabs">
+        {{~#>tabs/details entity=kankaEntity~}}
+            {{~#>details~}}{{~/details~}}
+        {{~/tabs/details~}}
+    </div>
+    <div class="tab" data-tab="attributes" data-group="primary-tabs">
+        {{>tabs/attributes entity=kankaEntity}}
+    </div>
+    <div class="tab" data-tab="relations" data-group="primary-tabs">
+        {{>tabs/relations entity=kankaEntity}}
+    </div>
+    <div class="tab" data-tab="inventory" data-group="primary-tabs">
+        {{>tabs/inventory entity=kankaEntity}}
+    </div>
+    <div class="tab" data-tab="notes" data-group="primary-tabs">
+        {{>tabs/notes entity=kankaEntity}}
+    </div>
+    <div class="tab" data-tab="entity-abilities" data-group="primary-tabs">
+        {{>tabs/abilities entity=kankaEntity}}
+    </div>
+    {{#>content}}{{/content}}
+</section>
+
+<!--
+<input name="name" type="text" value="{{data.name}}" placeholder="Entry Title"/>
+
+<select name="folder">
+    {{#select data.folder}}
+        <option value=""></option>
+        {{#each folders}}
+            <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+{{/select}}
+</select>
+
+{{editor content=data.content target="content" button=true editable=editable owner=owner}}
+
+    {{#if editable}}
+    <button type="submit" name="submit"><i class="fas fa-feather-alt"></i> {{ localize "JOURNAL.Submit"}}</button>
+{{/if}}
+-->

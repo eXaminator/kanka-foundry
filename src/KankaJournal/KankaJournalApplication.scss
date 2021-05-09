@@ -1,0 +1,152 @@
+.kanka-journal {
+    height: 100%;
+    padding: 5px;
+
+    .tabs {
+        // These styles ensure, that the row collapses if it contains no tabs
+        flex: 0 !important;
+        border-bottom: 0 !important;
+
+        > .item {
+            padding: 0 .3em;
+
+            border-left: 1px solid #0003;
+            border-bottom: 1px solid #000;
+            white-space: nowrap;
+
+            // Hide tab if it's the only one
+            &:first-child:last-child {
+                display: none;
+            }
+
+            &:last-child {
+                border-right: 1px solid #0003;
+            }
+
+            &.active {
+                background: #0001;
+            }
+
+            > .counter {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                line-height: 1em;
+
+                border-radius: 1em;
+                background: #0002;
+                margin-left: .2em;
+                font-size: .8em;
+
+                vertical-align: super;
+            }
+        }
+    }
+
+    .entity-link {
+        background: #0002;
+        border: none;
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+
+    h1 {
+        flex: none;
+    }
+
+    p {
+        margin-bottom: 1em;
+    }
+
+    details {
+        margin-bottom: 1em;
+        clear: both;
+    }
+
+    nav.tabs {
+        flex: 0 0 32px;
+        line-height: 32px;
+        font-size: 16px;
+        border-bottom: 1px solid #000;
+        font-weight: bold;
+    }
+
+    .content {
+        overflow: hidden;
+    }
+
+    .tab {
+        overflow-y: auto;
+        padding: 1em 0;
+
+        *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .kanka-main-image {
+        margin: 0 .5em .5em 0;
+        max-width: 40% !important;
+        float: left;
+    }
+
+    dl.grid {
+        margin: 0 0 1em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+
+        border-top: 1px solid rgba(0, 0, 0, .2);
+        border-bottom: 1px solid rgba(0, 0, 0, .2);
+
+        &:empty {
+            display: none;
+        }
+
+        dt {
+            &:nth-of-type(odd) {
+
+                &, & + dd {
+                    background: rgba(255, 255, 255, .2);
+                }
+            }
+        }
+
+        dt, dd {
+            margin: 0;
+            padding: .3em;
+        }
+
+        dt {
+            grid-column: 1;
+
+            &.section {
+                grid-column: 1 / span 2;
+                font-weight: bold;
+                font-size: 1em;
+                background: rgba(0, 0, 0, .2);
+            }
+        }
+
+        dd {
+            grid-column: 2;
+            padding-left: 1.5em;
+
+            > a {
+                margin-right: 1em;
+                position: relative;
+
+                &:after {
+                    content: '»';
+                    position: absolute;
+                    right: -.8em;
+                    pointer-events: none;
+                    text-shadow: none;
+                }
+
+                &:last-child:after {
+                    content: none;
+                }
+            }
+        }
+    }
+}

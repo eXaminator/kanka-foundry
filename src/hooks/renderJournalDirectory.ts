@@ -1,9 +1,7 @@
+import KankaBrowserApplication from '../KankaBrowser/KankaBrowserApplication';
 import logo from '../assets/kanka.png';
+import kanka from '../kanka';
 import { logInfo } from '../logger';
-import moduleConfig from '../module.json';
-import { getSetting } from '../module/accessSettings';
-import KankaBrowserJournal from '../module/KankaBrowserJournal';
-import { KankaSettings } from '../types/KankaSettings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
 
@@ -12,29 +10,33 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
 
     logInfo('renderJournalDirectory');
 
+    const browserApplication = new KankaBrowserApplication();
+
     button = $(`
         <button type="button" id="kanka">
-            <img src="${logo}" title="${game.i18n.localize('KANKA.SidebarButton')}" />
+            <img
+                src="${logo}" 
+                title="${kanka.getMessage('sidebar.button')}"
+                alt="${kanka.getMessage('sidebar.button')}"
+            />
         </button>
     `);
 
     button.on('click', () => {
         if (!game.user.isGM) return;
 
-        if (module.hot) {
-            delete _templateCache[`modules/${moduleConfig.name}/templates/journal.html`];
-            delete _templateCache[`modules/${moduleConfig.name}/templates/entityList.html`];
-        }
-
-        game.modules.get(moduleConfig.name).clearApiCache();
-
-        if (!getSetting(KankaSettings.accessToken)) {
-            ui.notifications.error(game.i18n.localize('KANKA.ErrorProvideAccessToken'));
+        if (!kanka.api.isReady) {
+            kanka.showError('browser.error.provideAccessToken');
             return;
         }
 
-        const journal = new KankaBrowserJournal();
-        journal.render(true);
+        if (!kanka.currentCampaign) {
+            kanka.showError('browser.error.selectCampaign');
+            return;
+        }
+
+        browserApplication.render(true).bringToTop();
+        browserApplication.maximize();
     });
 
     html.find('.header-actions').append(button);
