@@ -1,6 +1,7 @@
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
 import { logError, logInfo } from './logger';
+import migrateV1 from './migrations/migrateV1';
 import moduleConfig from './module.json';
 import KankaFoundrySettings from './module/KankaFoundrySettings';
 import KankaJournalHelper from './module/KankaJournalHelper';
@@ -39,6 +40,7 @@ export default class KankaFoundry {
 
             await this.#renderLocalization.initialize();
             await this.#renderLocalization.setLanguage(this.settings.importLanguage || game.i18n.lang);
+            migrateV1(this);
         } catch (error) {
             logError(error);
             this.showError('settings.error.fetchError');
@@ -115,7 +117,11 @@ export default class KankaFoundry {
         return game.i18n.localize(`KANKA.${key.join('.')}`);
     }
 
-    public showNotification(...key: string[]): void {
+    public formatMessage(key: string, values: Record<string, unknown>): string {
+        return game.i18n.format(`KANKA.${key}`, values);
+    }
+
+    public showInfo(...key: string[]): void {
         ui.notifications?.info(this.getMessage(...key));
     }
 

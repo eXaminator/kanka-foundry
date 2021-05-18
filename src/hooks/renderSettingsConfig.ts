@@ -2,16 +2,15 @@ import kanka from '../kanka';
 import AccessToken from '../api/AccessToken';
 import KankaApi from '../api/KankaApi';
 import { logError, logInfo } from '../logger';
-import moduleConfig from '../module.json';
 import { KankaApiCampaign } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
 
-const accessTokenInputName = `${moduleConfig.name}.${KankaSettings.accessToken}`;
-const campaignInputName = `${moduleConfig.name}.${KankaSettings.campaign}`;
+const accessTokenInputName = `${kanka.name}.${KankaSettings.accessToken}`;
+const campaignInputName = `${kanka.name}.${KankaSettings.campaign}`;
 
 function buildCampaignChoices(campaigns: KankaApiCampaign[]): Record<string, string> {
     const campaignChoices: Record<string, string> = {
-        '': game.i18n.localize('KANKA.settings.campaign.pleaseChoose'),
+        '': kanka.getMessage('settings.campaign.pleaseChoose'),
     };
 
     campaigns.forEach((campaign) => {
