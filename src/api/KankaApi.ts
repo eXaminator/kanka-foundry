@@ -239,10 +239,12 @@ export default class KankaApi {
     private async fetchFullList<T>(path: string): Promise<T[]> {
         const data: T[] = [];
         let url: string | null = path;
+        const query = (new URL(`http://${path}`)).searchParams.toString();
 
         while (url) {
+            const fullUrl = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;
             // eslint-disable-next-line no-await-in-loop
-            const result = await this.#fetcher.fetch<KankaApiListResult<T>>(url);
+            const result = await this.#fetcher.fetch<KankaApiListResult<T>>(fullUrl);
             data.push(...result.data);
             url = result.links.next;
         }
