@@ -1,24 +1,30 @@
 <nav class="tabs" data-group="primary-tabs">
     {{>tabNav name='details' label='shared.tabs.details'}}
-    {{>tabNav
-        name='attributes'
-        label='shared.tabs.attributes'
-        collection=kankaEntity.attributes
-    }}
-    {{>tabNav
-        name='notes'
-        label='shared.tabs.notes'
-        collection=kankaEntity.entity_notes
-        showCount=true
-    }}
+    {{#unless (kankaHasOnlyPinned kankaEntity.attributes 'is_star')}}
+        {{>tabNav
+            name='attributes'
+            label='shared.tabs.attributes'
+            collection=kankaEntity.attributes
+        }}
+    {{/unless}}
+    {{#unless (kankaHasOnlyPinned kankaEntity.entity_notes 'is_pinned')}}
+        {{>tabNav
+            name='notes'
+            label='shared.tabs.notes'
+            collection=kankaEntity.entity_notes
+            showCount=true
+        }}
+    {{/unless}}
     {{#>nav}}{{/nav}}
-    {{>tabNav
-        name='relations'
-        label='shared.tabs.relations'
-        collection=kankaEntity.relations
-        idProperty='target_id'
-        showCount=true
-    }}
+    {{#unless (kankaHasOnlyPinned kankaEntity.relations 'is_star')}}
+        {{>tabNav
+            name='relations'
+            label='shared.tabs.relations'
+            collection=kankaEntity.relations
+            idProperty='target_id'
+            showCount=true
+        }}
+    {{/unless}}
     {{>tabNav
         name='inventory'
         label='shared.tabs.inventory'
@@ -40,9 +46,35 @@
 
 <section class="flexcol content">
     <div class="tab" data-tab="details" data-group="primary-tabs">
-        {{~#>tabs/details entity=kankaEntity~}}
+        <div class="image-column">
+            {{~#if image~}}
+                {{~#if settings.imageInText~}}
+                    <img class="kanka-main-image" src="{{image}}">
+                {{~/if~}}
+            {{~/if~}}
+
+            {{~#>additionalDetails~}}{{~/additionalDetails~}}
+        </div>
+
+        <dl class="grid">
             {{~#>details~}}{{~/details~}}
-        {{~/tabs/details~}}
+            {{~#with (kankaFilterBy (kankaFilterReferences kankaEntity.relations) 'is_star' true) as | starred |~}}
+                {{~#each starred ~}}
+                    {{~>detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
+                {{~/each~}}
+            {{~/with~}}
+            {{~#with (kankaSortBy (kankaFilterBy (kankaFilterAccessible kankaEntity.attributes) 'is_star' true) 'default_order') as | starred |~}}
+                {{~#each starred ~}}
+                    {{~>tabs/attributeEntry attribute=this~}}
+                {{~/each~}}
+            {{~/with~}}
+        </dl>
+
+        {{#if kankaEntity.entry_parsed }}
+            {{ kankaReplaceMentions kankaEntity.entry_parsed }}
+        {{/if}}
+
+        {{>tabs/pinnedNotes entity=kankaEntity}}
     </div>
     <div class="tab" data-tab="attributes" data-group="primary-tabs">
         {{>tabs/attributes entity=kankaEntity}}

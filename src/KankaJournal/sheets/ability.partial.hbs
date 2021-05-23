@@ -22,7 +22,7 @@
                 {{#each kankaEntity.abilities }}
                     {{#with this as | rel | }}
                         {{#with (kankaFindReference rel 'ability') as | ability | }}
-                            <li class="kanka-card {{#if (kankaIsSecret ability) }}-secret{{/if}}">
+                            <li class="kanka-card {{#if (kankaIsSecret ability rel) }}-secret{{/if}}">
                                 <div class="kanka-avatar">
                                     {{#if ability.thumb}}
                                         <img src="{{ability.thumb}}" alt="{{ability.name}}">

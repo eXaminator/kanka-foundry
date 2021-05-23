@@ -10,7 +10,10 @@ import {
     KankaApiJournal,
     KankaApiListResult,
     KankaApiLocation,
-    KankaApiNote, KankaApiOrganisation, KankaApiQuest, KankaApiQuestElement, KankaApiRace,
+    KankaApiNote,
+    KankaApiOrganisation,
+    KankaApiQuest,
+    KankaApiRace,
     KankaApiResult,
 } from '../types/kanka';
 import AccessToken from './AccessToken';
@@ -68,7 +71,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiAbility>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/abilities/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/abilities/${String(id)}?related=1`);
         return result.data;
          */
     }
@@ -87,7 +91,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiFamily>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/families/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/families/${String(id)}?related=1`);
         return result.data;
          */
     }
@@ -118,7 +123,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiJournal>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/journals/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/journals/${String(id)}?related=1`);
         return result.data;
          */
     }
@@ -137,7 +143,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiLocation>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/locations/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/locations/${String(id)}?related=1`);
         return result.data;
         */
     }
@@ -156,7 +163,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiNote>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/notes/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/notes/${String(id)}?related=1`);
         return result.data;
          */
     }
@@ -175,7 +183,8 @@ export default class KankaApi {
         return entity;
         /*
         type Result = KankaApiResult<KankaApiOrganisation>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/organisations/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/organisations/${String(id)}?related=1`);
         return result.data;
          */
     }
@@ -194,7 +203,8 @@ export default class KankaApi {
         return entity;
         /*
          type Result = KankaApiResult<KankaApiOrganisation>;
-         const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/quests/${String(id)}?related=1`);
+         const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/quests/${String(id)}?related=1`);
          return result.data;
          */
     }
@@ -203,12 +213,6 @@ export default class KankaApi {
         return this.fetchFullListWithAncestors<KankaApiQuest>(
             `campaigns/${Number(campaignId)}/quests?related=1`,
             'quest_id',
-        );
-    }
-
-    protected async getAllQuestElements(campaignId: KankaApiId, questId: KankaApiId): Promise<KankaApiQuestElement[]> {
-        return this.fetchFullList<KankaApiQuestElement>(
-            `campaigns/${Number(campaignId)}/quests/${Number(questId)}/quest_elements`,
         );
     }
 
@@ -239,7 +243,7 @@ export default class KankaApi {
     private async fetchFullList<T>(path: string): Promise<T[]> {
         const data: T[] = [];
         let url: string | null = path;
-        const query = (new URL(`http://${path}`)).searchParams.toString();
+        const query = (new URL(`https://${path}`)).searchParams.toString();
 
         while (url) {
             const fullUrl = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;

@@ -1,11 +1,11 @@
 {{#each (kankaFilterAccessible entity.entity_notes)}}
     {{#if is_pinned }}
         <details
-            class="kanka-details"
+            class="kanka-details kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}"
             {{#unless (kankaToInt settings.collapsed) }}open{{/unless}}
         >
-            <summary>{{{ name }}}</summary>
-            {{ kankaReplaceMentions entry_parsed }}
+            <summary class="kanka-card-header">{{{ name }}}</summary>
+            <div class="kanka-card-content">{{ kankaReplaceMentions entry_parsed }}</div>
         </details>
     {{/if}}
 {{/each}}

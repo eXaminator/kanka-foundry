@@ -13,18 +13,22 @@ function isReference(entity: unknown): entity is Reference {
     return (entity as Reference)?.isPrivate !== undefined;
 }
 
-export default function kankaIsSecret(entity: unknown): boolean {
-    if (hasVisibility(entity)) {
-        return !['all', 'members'].includes(entity.visibility);
-    }
+export default function kankaIsSecret(...args: [...unknown[], Handlebars.HelperOptions]): boolean {
+    args.pop(); // Remove options
 
-    if (hasIsPrivate(entity)) {
-        return entity.is_private;
-    }
+    return args.some((entity) => {
+        if (hasVisibility(entity)) {
+            return !['all', 'members'].includes(entity.visibility);
+        }
 
-    if (isReference(entity)) {
-        return entity.isPrivate;
-    }
+        if (hasIsPrivate(entity)) {
+            return entity.is_private;
+        }
 
-    return false;
+        if (isReference(entity)) {
+            return entity.isPrivate;
+        }
+
+        return false;
+    });
 }

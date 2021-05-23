@@ -8,5 +8,5 @@ export default function kankaIsAccessible(
         return true;
     }
 
-    return !kankaIsSecret(entity);
+    return !kankaIsSecret(entity, options);
 }

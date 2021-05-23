@@ -1,8 +1,8 @@
 {{~#if reference ~}}
     {{~#with (kankaFindReference value type) as | ref |~}}
-        <dt>
-            {{~#if rawLabel~}}
-                {{~rawLabel~}}
+        <dt {{#if ../isSecret}}class="-secret"{{/if}}>
+            {{~#if ../rawLabel~}}
+                {{~../rawLabel~}}
             {{~else~}}
                 {{~ kankaLocalize 'journal' ../label ~}}
             {{~/if~}}
@@ -11,7 +11,7 @@
     {{~/with~}}
 {{~else~}}
     {{~#if value ~}}
-        <dt>
+        <dt {{#if isSecret}}class="-secret"{{/if}}>
             {{~#if rawLabel~}}
                 {{~rawLabel~}}
             {{~else~}}
@@ -21,7 +21,7 @@
         {{~#if localizeValue ~}}
             <dd>{{ kankaLocalize 'journal' localizeValue value }}</dd>
         {{~else~}}
-            <dd>{{value}}</dd>
+            <dd>{{ kankaNl2br value }}</dd>
         {{~/if~}}
     {{~/if~}}
 {{~/if~}}

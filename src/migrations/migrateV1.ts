@@ -24,10 +24,26 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
         ],
     );
 
+    await Promise.all(game.folders
+        .filter(folder => folder.getFlag(module.name, 'folderType'))
+        .map(async (folder) => {
+            const folderType = folder.getFlag(module.name, 'folderType');
+            if (folderType !== 'type') {
+                await folder.unsetFlag(module.name, 'type');
+            }
+            await folder.unsetFlag(module.name, 'folderType');
+            await folder.unsetFlag(module.name, 'id');
+        }));
+
     const updateEntities = game.journal
         .filter(e => e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot'))
         .map(entry => entities.find(e => e.id === entry.getFlag(module.name, 'entityId')))
         .filter((entity): entity is KankaApiEntity => !!entity);
+
+    if (!updateEntities.length) {
+        module.showWarning('migration.nothingToDo');
+        return;
+    }
 
     await Promise.all(game.journal
         .filter(e => e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot'))
@@ -40,27 +56,14 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
             await entry.unsetFlag(module.name, 'campaignId');
         }));
 
-    await module.journals.write(campaignId, updateEntities, entities);
+    const successCount = await module.journals.write(campaignId, updateEntities, entities);
 
-    await Promise.all(game.folders
-        .filter(folder => folder.getFlag(module.name, 'folderType'))
-        .map(async (folder) => {
-            const folderType = folder.getFlag(module.name, 'folderType');
-            if (folderType !== 'type') {
-                await folder.unsetFlag(module.name, 'type');
-            }
-            await folder.unsetFlag(module.name, 'folderType');
-            await folder.unsetFlag(module.name, 'id');
-        }));
-
-    module.showInfo('migration.success');
+    module.showInfo('migration.success', { success: successCount, expected: updateEntities.length });
 }
 
 export default function migrateV1(module: KankaFoundry): void {
     const outdatedJournals = game.journal.filter(e => e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot'));
     const outdatedFolders = game.folders.filter(folder => folder.getFlag(module.name, 'folderType'));
-
-    console.log('FOO', outdatedFolders, outdatedJournals);
 
     if (outdatedFolders.length === 0 && outdatedJournals.length === 0) {
         return;
@@ -68,7 +71,7 @@ export default function migrateV1(module: KankaFoundry): void {
 
     const dialog = new Dialog({
         title: module.getMessage('migration.dialog.header'),
-        content: module.formatMessage('migration.dialog.text', {
+        content: module.getMessage('migration.dialog.text', {
             documentCount: outdatedJournals.length,
             folderCount: outdatedFolders.length,
             campaignName: module.currentCampaign?.name,

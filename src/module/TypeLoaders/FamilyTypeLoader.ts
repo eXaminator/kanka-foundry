@@ -1,5 +1,4 @@
-import { KankaApiFamily, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
-import KankaJournalHelper from '../KankaJournalHelper';
+import { KankaApiEntity, KankaApiEntityType, KankaApiFamily, KankaApiId } from '../../types/kanka';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 

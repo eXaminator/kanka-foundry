@@ -1,4 +1,3 @@
-import { logInfo } from '../logger';
 import { KankaApiResult } from '../types/kanka';
 import AccessToken from './AccessToken';
 import RateLimiter from './RateLimiter';
@@ -40,7 +39,6 @@ export default class KankaFetcher {
         const url = (path.startsWith('http') ? path : `${this.#base}/${path}`)
             .replace('http://', 'https://');
 
-        logInfo('Fetch kanka', { url });
         const response = await fetch(
             url,
             {
@@ -52,7 +50,6 @@ export default class KankaFetcher {
             },
         );
 
-        Array.from(response.headers.entries()).forEach(logInfo);
         const limit = response.headers.get('X-RateLimit-Limit');
         const limitRemaining = response.headers.get('X-RateLimit-Remaining');
 

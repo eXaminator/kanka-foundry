@@ -22,7 +22,7 @@
                 {{#each kankaEntity.members }}
                     {{#with this as | rel | }}
                         {{#with (kankaFindReference rel.character_id 'character') as | character | }}
-                            <li class="kanka-card {{#if (kankaIsSecret rel) }}-secret{{/if}}">
+                            <li class="kanka-card {{#if (kankaIsSecret rel character) }}-secret{{/if}}">
                                 {{#if character.thumb}}
                                     <div class="kanka-avatar">
                                         <img src="{{character.thumb}}" alt="{{character.name}}">
@@ -30,7 +30,7 @@
                                 {{/if}}
 
                                 <h2 class="kanka-card-header">{{{ kankaLinkReference character }}}</h2>
-                                <div class="kanka-card-content">{{ rel.role }}</div>
+                                <div class="kanka-card-content">{{ kankaReplaceMentions rel.role }}</div>
                             </li>
                         {{/with}}
                     {{/with}}

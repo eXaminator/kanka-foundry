@@ -56,7 +56,7 @@ export default class KankaJournalHelper {
         campaignId: KankaApiId,
         writableEntities: WritableEntity[],
         entityLookup: KankaApiEntity[] = [],
-    ): Promise<void> {
+    ): Promise<number> {
         const grouped = new Map<KankaApiEntityType, WritableEntity[]>();
         writableEntities.forEach((entity) => {
             if (!grouped.has(entity.type)) {
@@ -70,7 +70,10 @@ export default class KankaJournalHelper {
             .from(grouped.entries())
             .map(async ([type, entities]) => {
                 const loader = this.#loaders.get(type);
-                if (!loader) throw new Error(`Cannot find TypeLoader for "${String(type)}".`);
+                if (!loader) {
+                    logError(new Error(`Cannot find TypeLoader for "${String(type)}".`));
+                    return 0;
+                }
 
                 let children: KankaApiChildEntity[];
                 const ids = entities.map(e => e.child_id);
@@ -81,18 +84,22 @@ export default class KankaJournalHelper {
                     children = (await loader.loadAll(campaignId)).filter(child => ids.includes(child.id));
                 }
 
+                let successCount = 0;
                 for (const child of children) {
                     try {
                         const references = await loader.createReferenceCollection(campaignId, child, entityLookup);
                         await this.writeJournal(campaignId, type, child, references);
+                        successCount += 1;
                     } catch (error) {
-                        // TODO: Show error message?
                         logError(error);
                     }
                 }
+
+                return successCount;
             });
 
-        await Promise.all(promises);
+        const successCounts = await Promise.all(promises);
+        return successCounts.reduce((total, count) => total + count, 0);
     }
 
     protected async writeJournal(

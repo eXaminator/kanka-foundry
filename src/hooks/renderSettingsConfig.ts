@@ -41,7 +41,7 @@ function setCampaignSelectionError(key: string): void {
     setCampaignChoices({ '': kanka.getMessage(key) }, '');
 }
 
-async function onAccessTokenChange(event: JQuery.TriggeredEvent<any, string>): Promise<void> {
+async function onAccessTokenChange(event: JQuery.TriggeredEvent<unknown, string>): Promise<void> {
     const token = event.target.value;
 
     if (!token) {
