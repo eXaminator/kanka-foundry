@@ -13,8 +13,9 @@ module.exports = function (source) {
             setTimeout(() => {
                 Object
                     .values(ui.windows)
-                    .find(a => a.template === '${path}')
-                    ?.render(false);
+                    .forEach(a => {
+                        if (a.template === '${path}') a.render(false);
+                    });
             }, 100);
         });
         module.hot.accept();
