@@ -1,7 +1,7 @@
 {
   "name": "kanka-foundry",
   "title": "Kanka-Foundry",
-  "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign\nmanagement tool, with <a href=\"https://foundryvtt.com\">Foundry Virtual Tabletop</a>, allowing you to import entries written\nin Kanka as journal entries into Foundry VTT. this module imports Kanka entries including their main entry text,\ntheir main image and some metadata, which will be included as a table above the main entry text.</p>",
+  "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign\nmanagement tool, with <a href=\"https://foundryvtt.com\">Foundry Virtual Tabletop</a>, allowing you to import entities written in Kanka as journal entries into Foundry VTT. This module imports full Kanka entities, including their main entry text, image relations and other data. This is not an official module but a fan creation by someone who uses both Kanka and Foundry VTT.</p>",
   "url": "",
   "manifest": "",
   "download": "",
