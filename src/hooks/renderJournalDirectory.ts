@@ -25,6 +25,11 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
     button.on('click', () => {
         if (!game.user.isGM) return;
 
+        if (!kanka.isInitialized) {
+            kanka.showError('browser.error.initializationError');
+            return;
+        }
+
         if (!kanka.api.isReady) {
             kanka.showError('browser.error.provideAccessToken');
             return;

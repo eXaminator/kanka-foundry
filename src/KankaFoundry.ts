@@ -19,6 +19,7 @@ export default class KankaFoundry {
     #debugElement = $('<span class="kanka-limit-debug">0 / 0 (0)</span>');
     #renderLocalization = new Localization();
     #journalHelper = new KankaJournalHelper(this);
+    #isInitialized = false;
 
     public async initialize(): Promise<void> {
         logInfo('Initializing');
@@ -41,9 +42,18 @@ export default class KankaFoundry {
             await this.#renderLocalization.initialize();
             await this.#renderLocalization.setLanguage(this.settings.importLanguage || game.i18n.lang);
             migrateV1(this);
+
+            this.#isInitialized = true;
         } catch (error) {
             logError(error);
-            this.showError('settings.error.fetchError');
+
+            // Special case, because notifications and translations might not be ready yet.
+            const interval = setInterval(() => {
+                if (ui?.notifications && (game?.i18n?.translations as Record<string, unknown>)?.KANKA) {
+                    this.showError('general.initializationError');
+                    clearInterval(interval);
+                }
+            }, 100);
         }
 
         logInfo('Done initializing!');
@@ -52,6 +62,7 @@ export default class KankaFoundry {
     public async dispose(): Promise<void> {
         this.#debugElement.remove();
         await this.#settings.dispose();
+        this.#isInitialized = false;
     }
 
     public async setToken(token: string): Promise<void> {
@@ -78,6 +89,10 @@ export default class KankaFoundry {
             logError('Error setting a token', error);
             this.showError('settings.error.ErrorInvalidAccessToken');
         }
+    }
+
+    public get isInitialized(): boolean {
+        return this.#isInitialized;
     }
 
     public get name(): string {
@@ -113,24 +128,27 @@ export default class KankaFoundry {
         return this.#currentCampaign;
     }
 
-    public getMessage(...key: string[]): string {
-        return game.i18n.localize(`KANKA.${key.join('.')}`);
+    public getMessage(...args: [...string[], Record<string, unknown>] | string[]): string {
+        const values = args.slice(-1)[0];
+        const keys = args.slice(0, -1);
+
+        if (typeof values === 'string') {
+            return game.i18n.localize(`KANKA.${[...keys, values].join('.')}`);
+        }
+
+        return game.i18n.format(`KANKA.${keys.join('.')}`, values);
     }
 
-    public formatMessage(key: string, values: Record<string, unknown>): string {
-        return game.i18n.format(`KANKA.${key}`, values);
+    public showInfo(...args: [...string[], Record<string, unknown>] | string[]): void {
+        ui.notifications?.info(this.getMessage(...args));
     }
 
-    public showInfo(...key: string[]): void {
-        ui.notifications?.info(this.getMessage(...key));
+    public showWarning(...args: [...string[], Record<string, unknown>] | string[]): void {
+        ui.notifications?.warn(this.getMessage(...args));
     }
 
-    public showWarning(...key: string[]): void {
-        ui.notifications?.warn(this.getMessage(...key));
-    }
-
-    public showError(...key: string[]): void {
-        ui.notifications?.error(this.getMessage(...key));
+    public showError(...args: [...string[], Record<string, unknown>] | string[]): void {
+        ui.notifications.error(this.getMessage(...args), { permanent: true });
     }
 
     public async loadCurrentCampaignById(id: number | null): Promise<void> {

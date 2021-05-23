@@ -1,9 +1,9 @@
 {{#if (kankaIsOneOf attribute.type 'section')}}
-    <dt class="section">{{ attribute.name }}</dt>
+    <dt class="section {{#if (kankaIsSecret attribute) }}-secret{{/if}}">{{ attribute.name }}</dt>
 {{/if}}
 
 {{#if (kankaIsOneOf attribute.type 'checkbox')}}
-    <dt>{{ attribute.name }}</dt>
+    <dt class="{{#if (kankaIsSecret attribute) }}-secret{{/if}}">{{ attribute.name }}</dt>
     <dd>
         {{#if (kankaToInt attribute.value)}}
             {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}
@@ -14,6 +14,6 @@
 {{/if}}
 
 {{#if (kankaIsOneOf attribute.type 'text' null)}}
-    <dt>{{ attribute.name }}</dt>
-    <dd>{{{ kankaNl2br attribute.parsed }}}</dd>
+    <dt class="{{#if (kankaIsSecret attribute) }}-secret{{/if}}">{{ attribute.name }}</dt>
+    <dd>{{{ kankaNl2br (kankaReplaceMentions attribute.parsed) }}}</dd>
 {{/if}}

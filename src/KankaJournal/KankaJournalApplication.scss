@@ -54,13 +54,9 @@
         flex: none;
     }
 
-    p {
+    p, details {
         margin-bottom: 1em;
-    }
-
-    details {
-        margin-bottom: 1em;
-        clear: both;
+        overflow: hidden;
     }
 
     nav.tabs {
@@ -84,10 +80,38 @@
         }
     }
 
-    .kanka-main-image {
-        margin: 0 .5em .5em 0;
-        max-width: 40% !important;
+    .image-column {
         float: left;
+        max-width: 40%;
+        min-width: min-content;
+        width: max-content;
+        z-index: 2;
+        position: relative;
+
+        margin: 0 .5em .5em 0;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: .5em;
+
+        > img {
+            justify-self: center;
+            max-width: 100%;
+        }
+
+        > div {
+            width: 100%;
+        }
+
+        &:empty {
+            margin: 0;
+        }
+    }
+
+    .kanka-main-image {
+        // margin: 0 .5em .5em 0;
+        // max-width: 40% !important;
+        //float: left;
     }
 
     dl.grid {
@@ -98,22 +122,23 @@
         border-top: 1px solid rgba(0, 0, 0, .2);
         border-bottom: 1px solid rgba(0, 0, 0, .2);
 
-        &:empty {
-            display: none;
+        &.-borderless {
+            border-top: none;
+            border-bottom: none;
         }
 
-        dt {
-            &:nth-of-type(odd) {
-
-                &, & + dd {
-                    background: rgba(255, 255, 255, .2);
-                }
-            }
+        &:empty {
+            display: none;
         }
 
         dt, dd {
             margin: 0;
             padding: .3em;
+            border-bottom: 1px solid rgba(0, 0, 0, .07);
+
+            &:last-of-type {
+                border-bottom: none;
+            }
         }
 
         dt {
@@ -125,13 +150,38 @@
                 font-size: 1em;
                 background: rgba(0, 0, 0, .2);
             }
+
+            &.-secret {
+                &, & + dd {
+                    background: #fc758920;
+                }
+
+                & + dd {
+                    position: relative;
+
+                    &:before {
+                        background-image: url('../assets/silenced.svg');
+                        background-repeat: no-repeat;
+                        background-position: right 2px;
+                        background-size: 20px 20px;
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        opacity: .3;
+                        pointer-events: none;
+                    }
+                }
+            }
         }
 
         dd {
             grid-column: 2;
             padding-left: 1.5em;
 
-            > a {
+            &.path > a {
                 margin-right: 1em;
                 position: relative;
 

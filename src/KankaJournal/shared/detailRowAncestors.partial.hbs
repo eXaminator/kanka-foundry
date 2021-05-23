@@ -6,7 +6,7 @@
             {{~ kankaLocalize 'journal' label ~}}
         {{~/if~}}
     </dt>
-    <dd>
+    <dd class="path">
     {{~#each ancestors as | ancestorId |~}}
         {{~kankaLinkReference (kankaFindReference ancestorId) ~}}
     {{~/each~}}

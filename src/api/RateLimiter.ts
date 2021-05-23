@@ -27,18 +27,15 @@ export default class RateLimiter {
     }
 
     public set limit(limit: number) {
-        logInfo('set limit', limit);
+        logInfo('RateLimiter - set limit', limit);
         this.#limit = limit;
         this.callListeners();
     }
 
     public set remaining(remaining: number) {
-        logInfo('set remaining', { remaining, currentRemaining: this.remaining });
+        logInfo('RateLimiter - set remaining', { remaining, currentRemaining: this.remaining });
 
-        while (remaining >= this.remaining) {
-            this.freeSlot();
-        }
-
+        // never reduce the number of remaining slots due to problems that can occur with parallel requests
         while (remaining < this.remaining) {
             this.slot();
         }
@@ -60,7 +57,7 @@ export default class RateLimiter {
     public slot(): Promise<void> {
         // eslint-disable-next-line no-plusplus
         const id = ++this.#requestCounter;
-        logInfo('RequestLimiter - run', { id, slots: this.#slots.length, queue: this.#queue.length });
+        logInfo('RateLimiter - run', { id, slots: this.#slots.length, queue: this.#queue.length, currentRemaining: this.remaining });
 
         return new Promise((resolve) => {
             const run = (): void => {
@@ -68,14 +65,14 @@ export default class RateLimiter {
                 this.#slots.push(timeout);
                 this.callListeners();
 
-                logInfo('RequestLimiter - run now', { id });
+                logInfo('RateLimiter - run now', { id });
                 resolve();
             };
 
             if (this.remaining > 0) {
                 run();
             } else {
-                logInfo('RequestLimiter – add to queue', { id });
+                logInfo('RateLimiter – add to queue', { id });
                 this.#queue.push(run);
             }
             this.callListeners();
@@ -83,7 +80,7 @@ export default class RateLimiter {
     }
 
     private freeSlot(slot?: NodeJS.Timeout): void {
-        logInfo('RequestLimiter - free slot');
+        logInfo('RateLimiter - free slot', { previousRemaining: this.remaining });
 
         const index = slot ? this.#slots.indexOf(slot) : 0;
 

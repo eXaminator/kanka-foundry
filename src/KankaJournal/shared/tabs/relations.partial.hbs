@@ -2,7 +2,7 @@
     {{#each (kankaFilterAccessible entity.relations)}}
         {{#with this as | rel | }}
             {{#with (kankaFindReference target_id) as | ref | }}
-                <li class="kanka-card {{#if (kankaIsSecret rel) }}-secret{{/if}}">
+                <li class="kanka-card {{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
                     <div class="kanka-avatar" {{#if rel.colour}}style="--highlight-color: {{ rel.colour }}"{{/if}}>
                         {{#if rel.attitude}}
                             <span>{{ rel.attitude }}</span>

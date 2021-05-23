@@ -2,7 +2,6 @@
 import { KankaApiEntityType } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
-import kankaIsSecret from './kankaIsSecret';
 
 export default function kankaFilterReferences(
     ...args: [any[]?, string?, KankaApiEntityType?, Handlebars.HelperOptions?]

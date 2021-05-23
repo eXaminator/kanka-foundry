@@ -20,13 +20,21 @@
         {{~>../shared/detailRow value=kankaEntity.location_id type='location' label='shared.labels.location' reference=true }}
         {{~>../shared/detailRow value=kankaEntity.race_id type='race' label='character.labels.race' reference=true }}
         {{~>../shared/detailRow value=kankaEntity.family_id type='family' label='character.labels.family' reference=true }}
+    {{~/inline}}
 
-        {{~#each (kankaGroupBy kankaEntity.traits 'section')~}}
+    {{#*inline 'additionalDetails'~}}
+        {{~#each (kankaGroupBy (kankaSortBy kankaEntity.traits 'section') 'section')~}}
             {{~#if (kankaOr (kankaEq @key 'personality' not=true) ../kankaEntity.is_personality_visible ../owner)~}}
-                <dt class="section">{{kankaLocalize 'journal.character.traits' @key}}</dt>
-                {{~#each (kankaSortBy this 'default_order')~}}
-                    {{~>../shared/detailRow value=entry rawLabel=name }}
-                {{~/each~}}
+                <div class="kanka-card {{#unless (kankaOr ../kankaEntity.is_personality_visible (kankaEq @key 'appearance')) }}-secret{{/unless}}">
+                    <h2 class="kanka-card-header">{{kankaLocalize 'journal.character.traits' @key}}</h2>
+                    <div class="kanka-card-content -outdent">
+                        <dl class="grid -borderless">
+                            {{~#each (kankaSortBy this 'default_order')~}}
+                                {{~>../shared/detailRow value=entry rawLabel=name }}
+                            {{~/each~}}
+                        </dl>
+                    </div>
+                </div>
             {{~/if~}}
         {{~/each~}}
     {{~/inline}}
@@ -37,7 +45,7 @@
                 {{#each kankaEntity.organisations.data }}
                     {{#with this as | rel | }}
                         {{#with (kankaFindReference rel.organisation_id 'organisation') as | org | }}
-                            <li class="kanka-card {{#if (kankaIsSecret rel) }}-secret{{/if}}">
+                            <li class="kanka-card {{#if (kankaIsSecret rel org) }}-secret{{/if}}">
                                 {{#if org.thumb}}
                                     <div class="kanka-avatar">
                                         <img src="{{org.thumb}}" alt="{{org.name}}">
@@ -45,7 +53,7 @@
                                 {{/if}}
 
                                 <h2 class="kanka-card-header">{{{ kankaLinkReference org }}}</h2>
-                                <div class="kanka-card-content">{{ rel.role }}</div>
+                                <div class="kanka-card-content">{{ kankaReplaceMentions rel.role }}</div>
                             </li>
                         {{/with}}
                     {{/with}}

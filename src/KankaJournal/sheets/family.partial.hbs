@@ -21,7 +21,7 @@
                 {{#each kankaEntity.members }}
                     {{#with this as | rel | }}
                         {{#with (kankaFindReference rel 'character') as | member | }}
-                            <li class="kanka-card {{#if (kankaIsSecret member) }}-secret{{/if}}">
+                            <li class="kanka-card {{#if (kankaIsSecret member rel) }}-secret{{/if}}">
                                 <div class="kanka-avatar">
                                     {{#if member.thumb}}
                                         <img src="{{member.thumb}}" alt="{{member.name}}">

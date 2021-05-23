@@ -1,5 +1,5 @@
 {{#with (lookup (kankaFilterReferences collection idProperty type optionalReference=optionalReference) 'length') as |count| }}
-    {{#if (kankaOr count (kankaEq collection undefined))}}
+    {{#if (kankaOr count (kankaEq ../collection undefined))}}
         <a class="item" data-tab="{{../name}}">
             {{ kankaLocalize 'journal' ../label }}
             {{#if ../showCount}}<span class="counter">{{count}}</span>{{/if}}

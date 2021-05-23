@@ -13,7 +13,6 @@ const refreshRenderSettingsConfig = hmrWrapHook('renderSettingsConfig', () => re
 const refreshDeleteJournalSheet = hmrWrapHook('deleteJournalEntry', () => deleteJournalEntry, 'on');
 
 if (module.hot) {
-    CONFIG.debug.hooks = true;
     module.hot.accept('./hooks/init', refreshInit);
     module.hot.accept('./hooks/renderJournalDirectory', refreshRenderJournalDirectory);
     module.hot.accept('./hooks/renderSettingsConfig', refreshRenderSettingsConfig);

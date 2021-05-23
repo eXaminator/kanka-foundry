@@ -20,6 +20,7 @@ class KankaJournalApplication extends BaseSheet {
         return Boolean(this.object.getFlag(kanka.name, 'snapshot'));
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getData(): BaseEntitySheet.Data & Record<string, any> {
         if (!this.isKankaEntry) return super.getData();
 

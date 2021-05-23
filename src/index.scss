@@ -210,6 +210,7 @@ ul.kanka-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     grid-gap: 5px;
+    // clear: both;
 
     &.-single {
         grid-template-columns: 1fr;
@@ -234,7 +235,7 @@ ul.kanka-cards {
     border: 1px solid #00000030;
     box-shadow: 2px 2px 6px -2px var(--highlight-color, #00000050);
     border-radius: 5px;
-    padding: .5em;
+    padding: 5px;
 
     background: #fff5;
 
@@ -249,18 +250,22 @@ ul.kanka-cards {
     &.-secret {
         background: #fc758910;
 
-        &:before {
+        .kanka-card-header {
+            padding-right: 30px;
+        }
+
+        &:after {
             background-image: url('./assets/silenced.svg');
             background-repeat: no-repeat;
-            background-position: bottom right;
-            background-size: 40px 40px;
+            background-position: top right;
+            background-size: 25px 25px;
             content: '';
             position: absolute;
             top: 0;
             bottom: 0;
             left: 0;
             right: 0;
-            opacity: .1;
+            opacity: .3;
             pointer-events: none;
         }
     }
@@ -275,6 +280,7 @@ ul.kanka-cards {
         font-size: 1.3em;
         font-weight: bold;
         margin: 0 0 .5rem;
+        padding: 0;
 
         & > a {
             color: inherit;
@@ -291,6 +297,10 @@ ul.kanka-cards {
 
     .kanka-card-content {
         grid-column: 2;
+
+        &.-outdent {
+            margin: 0 -5px;
+        }
     }
 
     .kanka-card-actions {

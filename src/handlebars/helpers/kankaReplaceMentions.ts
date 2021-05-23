@@ -16,7 +16,7 @@ export default function kankaReplaceMentions(text: string): Handlebars.SafeStrin
         }
 
         if (kanka.settings.disableExternalLinks) {
-            $link.replaceWith(label);
+            $link.replaceWith(`<strong>${label}</strong>`);
         }
     });
 
