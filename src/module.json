@@ -42,7 +42,11 @@
     },
     {
       "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/kanka-button.png"
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/character.png"
+    },
+    {
+      "type": "screenshot",
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/character_relations.png"
     },
     {
       "type": "screenshot",
@@ -50,11 +54,7 @@
     },
     {
       "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/location.png"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/settings.png"
+      "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/main/docs/assets/kanka-button.png"
     }
   ],
   "allowBugReporter": true,
