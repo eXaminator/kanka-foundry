@@ -1,0 +1,188 @@
+KANKA:
+    general:
+        initializationError: >
+            Beim Initialisieren von Kanka-Foundry ist ein Fehler aufgetreten. Dabei könnte es sich um Probleme mit der
+            Kanka-API, dem konfigurierten Token oder der ausgewählten Kampagne handeln.
+
+    sidebar:
+        button: Aus Kanka importieren
+
+    entityType:
+        ability: Fähigkeiten
+        character: Charaktere
+        family: Familien
+        item: Gegenstände
+        event: Ereignisse
+        location: Orte
+        note: Notizen
+        organisation: Organisationen
+        race: Rassen
+        journal: Logbücher
+        quest: Quests
+
+    browser:
+        error:
+            initializationError: >
+                Das Modul wurde nicht korrekt initialisiert. Das kann an der Konfiguration oder Kanka selbst liegen.
+            provideAccessToken: Du hast kein gültiges Kanka Zugriffs-Token konfiguriert oder es ist abgelaufen.
+            selectCampaign: Bitte stelle sicher, dass du eine Kampagne in den Einstellungen ausgewählt hast.
+            actionError: Bei der angeforderten Aktion ist ein Fehler aufgetreten.
+            loadEntity: Beim Laden der Einträge von Kanka ist ein Fehler aufgetreten.
+            syncAll: >
+                Beim Synchronisieren der Einträge ist ein Fehler aufgetreten. Einige Einträge konnten nicht
+                synchronisiert werden.
+        action:
+            updateOutdated: Geänderte aktualisieren
+            viewGrid: Kacheln
+            viewList: Liste
+            linkAll: Alle verknüpfen
+            openJournal: Öffnen
+            updateSingle: Aktualisieren
+            linkSingle: Verknüpfen
+        filter:
+            label: Filter
+        title: Kanka Journal Import
+
+    journal:
+        shared:
+            action:
+                refresh: Aktualisieren
+                openInKanka: In Kanka öffnen
+            tabs:
+                details: Details
+                notes: Notizen
+                attributes: Attribute
+                relations: Beziehungen
+                inventory: Inventar
+                abilities: Fähigkeiten
+            labels:
+                type: Typ
+                location: Ort
+                character: Charakter
+                parent: Gehört zu
+                unknownReference: Unbekannte Referenz
+            value:
+                yes: Ja
+                no: Nein
+
+        character:
+            tabs:
+                organisations: Organisationen
+            labels:
+                title: Titel
+                sex: Geschlecht
+                pronouns: Pronomen
+                age: Alter
+                isDead: Verstorben
+                race: Rasse
+                family: Familie
+            traits:
+                appearance: Aussehen
+                personality: Persönlichkeit
+        ability:
+            tabs:
+                abilities: Fähigkeiten
+            labels:
+                charges: Ladungen
+        family:
+            tabs:
+                members: Mitglieder
+        journal:
+            labels:
+                date: Datum
+        organisation:
+            tabs:
+                members: Mitglieder
+        quest:
+            tabs:
+                elements: Elemente
+            labels:
+                instigator: Auslöser
+                date: Datum
+                completed: Abgeschlossen
+
+    settings:
+        token:
+            label: Kanka Persönliches Zugriffs-Token
+            hint: Du kannst ein Token auf https://kanka.io/de/settings/api erstellen
+        campaign:
+            label: Kampagne
+            hint: Wähle die Kampagne, aus der Einträge importiert werden sollen.
+            noToken: Bitte gib ein gültiges Zugriffs-Token ein.
+            pleaseChoose: "-- Kampagne auswählen --"
+        locale:
+            label: Inhaltssprache
+            hint: >
+                Diese Einstellung erlaubt es dir eine Sprache zu wählen, welche für die die Labels in importierten
+                Einträgen verwendet werden soll.
+            default: "-- Standard Foundry Sprache verwenden --"
+        importPrivate:
+            label: Private Einträge anzeigen
+            hint: Wenn dies deselektiert wird, werden im Import-Fenster nur öffentliche Einträge angezeigt.
+        disableExternalLinks:
+            label: Externe Links entfernen
+            hint: >
+                Wenn diese Option ausgewählt wird, werden alle Links zu Referenzen und Erwähnungen entfernt, wenn der
+                verlinkte Eintrag nicht ebenfalls importiert wurde.
+        imageInText:
+            label: Bild neben Text anzeigen
+            hint: Soll das Bild des Eintrags neben dem Text angezeigt werden?
+        treeStructure:
+            label: Ordnerstruktur erstellen
+            hint: >
+                Soll die Hierarchie aus Kanka mit Ordnern reproduziert werden? Die maximale Tiefe beträgt
+                3 Verzeichnisse.
+        error:
+            ErrorInvalidAccessToken: Das Kanka Zugriffs-Token ist ungültig..
+            ErrorTokenExpired: Dein Kanka Zugriffs-Token ist abgelaufen. Bitte hinterlege ein neues.
+            WarningTokenExpiration: >
+                Dein Kanka Zugriffs-Token wird in weniger als einer Woche ablaufen. Bitte hinterlege ein neues.
+            fetchError: >
+                Es gab einen Fehler beim Abrufen der Daten von Kanka. Bitte überprüfe deine Einstellungen und probiere es erneut.
+    migration:
+        dialog:
+            header: Kanka-Foundry Migration
+            text: >
+                <h1>Kanka-Foundry Migration</h1>
+                <p>Du hast kürzlich
+                das Kanka-Foundry Modul von Version 1.x aktualisiert. Dieses Update bringt viele
+                Änderungenmit sich, welche den Import und den Umgang mit den Daten aus Kanka betreffen,
+                damit eine bessere Benutzererfahrungund mehr Features geboten werden können.</p>
+                <p>Du hast im Augenblick</p>
+                <ul>
+                    <li><strong style="color: red;"><big>{documentCount}</big></strong>Einträge</li>
+                    <li><strong style="color: red;"><big>{folderCount}</big></strong> Verzeichnisse</li>
+                </ul>
+                <p>die von Kanka-Foundry erzeugt wurden und nun aktualisiert werden müssen, damit sie weiterhin
+                funktionierenund die neuen Features nutzen können. Eine Ändeurng besteht darin,
+                dass Einträge die aus Kanka importiert wurden,nicht länger in Foundry veränderbar
+                sind. das wurde nie richtig unterstützt, da Änderungen auch in der Vergangenheitbei
+                einem neuen Import einfach überschrieben wurden und nicht zurück zu Kanka synchronisert
+                werden konnten.</p>
+                <p>Falls du dennoch eigene Änderungen an importierten Einträgen vorgenommen hast:</p>
+                <p><big style="color: red;"><strong>Erstelle jetzt ein Backup deiner Daten! Die Migration wird alle
+                improtierten Einträge überschreiben!</strong></big></p>
+                <p>Bitte shau auf das <a href="https://github.com/eXaminator/kanka-foundry" target="_blank">Github
+                Repository</a> des Moduls für eine genauere Liste der Änderungen in dieser Version.
+                Falls du die alte Versionbeibehalten möchtest, überspringe die Migration jetzt,
+                führe ein manuelles Downgrade des Moduls durch (diese sindauf Github verfügbar)
+                und sperre das automatische Update des Moduls (ein neues Feature von Foundry 0.8.x).</p>
+                <p>Möchtest du deine vorhandenen Einträge auf die neuste Version aktualisieren? <strong>Dies
+                wird einen Neu-Importvon Kanka für alle importierten Einträge auslösen.</strong>
+                Dies kann einige Minuten dauern, abhängig von der Größedeiner Kampagne und der Anzahl
+                der bereits importierten Einträge. Du wirst eine Information erhalten sobald dieMigration
+                fertig ist.</p>
+                <h2>Aber ich habe die Migration schon ausgeführt!</h2>
+                <p>Möglicherweise hast du Einträge aus mehreren Kampagnen importiert. Diese Migration aktualisiert
+                nur Einträge ausder aktuell ausgewählten Kampagne ({campaignName}). Falls du diese
+                Nachricht erneut erhälst, ändere die ausgewählteKampagne in den Einstellungen, lade
+                Foundry in deinem Browser neu und versuche es erneut.</p>
+                <p>Solltest du in weitere Probleme laufen leg' bitte ein Issue auf Github an.</p>
+            action:
+                yes: Aktualisieren und Einträge überschreiben
+                no: Erinnere mich beim nächsten mal!
+        success: >
+            Die Kanka-Foundry Migration wurde abgeschlossen. {success} von {expected} Einträge wurden erfolgreich
+            aktualisiert.
+        nothingToDo: >
+            Kanka-Foundry konnte keine Einträge aktualisieren. Bitte prüfe, dass du die richtige Kampagne in denEinstellungen ausgewählt hast.
