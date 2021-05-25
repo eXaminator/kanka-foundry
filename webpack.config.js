@@ -2,6 +2,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { resolve, extname, basename } = require('path');
 const moduleConfig = require('./src/module.json');
+const yaml = require('js-yaml');
+const flat = require('flat');
 
 const devMode = process.env.NODE_ENV === 'development';
 
@@ -79,7 +81,19 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 './src/module.json',
-                { from: './src/lang', to: './lang' },
+                {
+                    from: './src/lang/**/*.yml',
+                    to: './lang/[name].json',
+                    transform(content, filename) {
+                        return Buffer.from(
+                            JSON.stringify(flat(yaml.load(
+                                content.toString('utf8'),
+                                { schema: yaml.JSON_SCHEMA, filename },
+                            ))),
+                            'utf8',
+                        );
+                    },
+                },
             ],
         }),
         new MiniCssExtractPlugin(),
