@@ -15,6 +15,7 @@ export default class AbilityTypeLoader extends AbstractTypeLoader<KankaApiAbilit
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
+            collection.addById(entity.ability_id, 'ability'),
             ...entity.abilities.map(ability => collection.addById(ability, 'ability')),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
         ]);

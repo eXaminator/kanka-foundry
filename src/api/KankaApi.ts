@@ -223,8 +223,9 @@ export default class KankaApi {
     }
 
     public async getAllRaces(campaignId: KankaApiId): Promise<KankaApiRace[]> {
-        return this.fetchFullList<KankaApiRace>(
+        return this.fetchFullListWithAncestors<KankaApiRace>(
             `campaigns/${Number(campaignId)}/races?related=1`,
+            'race_id',
         );
     }
 

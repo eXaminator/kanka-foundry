@@ -1,8 +1,8 @@
-import { KankaApiId } from '../types/kanka';
+import { KankaApiEntityType, KankaApiId } from '../types/kanka';
 
 export default function createKankaUrl(
     campaignId: KankaApiId,
-    type?: string,
+    type?: KankaApiEntityType,
     id?: KankaApiId,
     locale?: string,
 ): string {

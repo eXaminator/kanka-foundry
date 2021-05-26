@@ -28,6 +28,11 @@ export default class RateLimiter {
 
     public set limit(limit: number) {
         logInfo('RateLimiter - set limit', limit);
+
+        if (limit < 0) {
+            throw new Error('RateLimiter.limit must not be negative');
+        }
+
         this.#limit = limit;
         this.callListeners();
     }
@@ -35,12 +40,14 @@ export default class RateLimiter {
     public set remaining(remaining: number) {
         logInfo('RateLimiter - set remaining', { remaining, currentRemaining: this.remaining });
 
+        if (remaining < 0) {
+            throw new Error('RateLimiter.remaining must not be negative');
+        }
+
         // never reduce the number of remaining slots due to problems that can occur with parallel requests
         while (remaining < this.remaining) {
             this.slot();
         }
-
-        this.callListeners();
     }
 
     public get remaining(): number {
@@ -74,8 +81,8 @@ export default class RateLimiter {
             } else {
                 logInfo('RateLimiter – add to queue', { id });
                 this.#queue.push(run);
+                this.callListeners();
             }
-            this.callListeners();
         });
     }
 
@@ -90,9 +97,9 @@ export default class RateLimiter {
         }
 
         const runNext = this.#queue.shift();
-        this.callListeners();
 
         if (runNext) runNext();
+        else this.callListeners();
     }
 
     private callListeners(): void {
