@@ -1,6 +1,7 @@
 {{#>../shared/baseLayout}}
     {{#*inline 'details'~}}
         {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
+        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
         {{~>../shared/detailRow value=kankaEntity.race_id type='race' label='shared.labels.parent' reference=true }}
     {{~/inline}}
 {{/../shared/baseLayout}}
