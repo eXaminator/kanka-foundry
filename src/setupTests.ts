@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as Handlebars from 'handlebars';
 
-window.getProperty = function getProperty(object, key) {
+global.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
     let target = object;
     // eslint-disable-next-line no-restricted-syntax
@@ -13,4 +13,4 @@ window.getProperty = function getProperty(object, key) {
     return target;
 };
 
-window.Handlebars = Handlebars;
+global.Handlebars = Handlebars;
