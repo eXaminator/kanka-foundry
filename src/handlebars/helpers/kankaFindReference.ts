@@ -9,11 +9,12 @@ function createReference(id: KankaApiAnyId, type?: KankaApiEntityType): Referenc
         ? kanka.journals.findByTypeAndId(type, id as KankaApiId)
         : kanka.journals.findByEntityId(id as KankaApiEntityId);
     const snapshot = kanka.journals.getFlag(journal, 'snapshot');
+    const snapshotType = type ?? kanka.journals.getFlag(journal, 'type');
 
-    if (!snapshot || !type) return undefined;
+    if (!snapshot || !snapshotType) return undefined;
 
     return {
-        type,
+        type: snapshotType,
         id: snapshot.id,
         entityId: snapshot.entity_id,
         name: snapshot.name,

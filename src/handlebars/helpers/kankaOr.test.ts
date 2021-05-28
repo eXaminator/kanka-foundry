@@ -1,25 +1,33 @@
 import kankaOr from './kankaOr';
 
-describe('kankaOr()', () => {
-    let options: Handlebars.HelperOptions;
+function compile(template: string, context = {}): string {
+    return Handlebars.compile(template)(context);
+}
 
-    beforeEach(() => {
-        options = {
-            hash: {},
-            fn: () => '',
-            inverse: () => '',
-        };
+describe('kankaOr()', () => {
+    beforeAll(() => {
+        Handlebars.registerHelper('kankaOr', kankaOr);
+    });
+
+    afterAll(() => {
+        Handlebars.unregisterHelper('kankaOr');
     });
 
     it('returns true if all values are truthy', () => {
-        expect(kankaOr(1, true, 'foo', options)).toBe(true);
+        const template = '{{#if (kankaOr 1 true "foo")}}success{{/if}}';
+
+        expect(compile(template)).toEqual('success');
     });
 
     it('returns true if one value is truthy', () => {
-        expect(kankaOr(0, true, '', options)).toBe(true);
+        const template = '{{#if (kankaOr 0 true "")}}success{{/if}}';
+
+        expect(compile(template)).toEqual('success');
     });
 
     it('returns false if all values are falsey', () => {
-        expect(kankaOr(0, false, '', options)).toBe(false);
+        const template = '{{#unless (kankaOr 0 false "")}}success{{/unless}}';
+
+        expect(compile(template)).toEqual('success');
     });
 });

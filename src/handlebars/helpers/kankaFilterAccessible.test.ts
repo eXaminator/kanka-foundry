@@ -2,78 +2,73 @@
 import { KankaVisibility } from '../../types/kanka';
 import kankaFilterAccessible from './kankaFilterAccessible';
 
-describe('kankaFilterAccessible()', () => {
-    let options: Handlebars.HelperOptions;
+function compile(template: string, context = {}): string {
+    return Handlebars.compile(template)(context);
+}
 
-    beforeEach(() => {
-        options = {
-            hash: {},
-            fn: () => '',
-            inverse: () => '',
-        };
+describe('kankaFilterAccessible()', () => {
+    beforeAll(() => {
+        Handlebars.registerHelper('kankaFilterAccessible', kankaFilterAccessible as unknown as Handlebars.HelperDelegate);
+    });
+
+    afterAll(() => {
+        Handlebars.unregisterHelper('kankaFilterAccessible');
     });
 
     it('filters out all private entries', () => {
         const array = [
-            { foo: 'bar' },
-            { visibility: KankaVisibility.all },
-            { visibility: KankaVisibility.admin },
-            { visibility: KankaVisibility.adminSelf },
-            { visibility: KankaVisibility.members },
-            { visibility: KankaVisibility.self },
-            { is_private: false },
-            { is_private: true },
-            { isPrivate: false },
-            { isPrivate: true },
+            { id: 1, foo: 'bar' },
+            { id: 2, visibility: KankaVisibility.all },
+            { id: 3, visibility: KankaVisibility.admin },
+            { id: 4, visibility: KankaVisibility.adminSelf },
+            { id: 5, visibility: KankaVisibility.members },
+            { id: 6, visibility: KankaVisibility.self },
+            { id: 7, is_private: false },
+            { id: 8, is_private: true },
+            { id: 9, isPrivate: false },
+            { id: 10, isPrivate: true },
         ];
 
-        const result = kankaFilterAccessible(array, options);
+        const template = '{{#each (kankaFilterAccessible array)}}{{id}},{{/each}}';
 
-        expect(result).toHaveLength(5);
-        expect(result).toEqual([
-            { foo: 'bar' },
-            { visibility: KankaVisibility.all },
-            { visibility: KankaVisibility.members },
-            { is_private: false },
-            { isPrivate: false },
-        ]);
+        expect(compile(template, { array })).toEqual('1,2,5,7,9,');
     });
 
     it('returns unfiltered array if ignore option is given', () => {
         const array = [
-            { foo: 'bar' },
-            { visibility: KankaVisibility.all },
-            { visibility: KankaVisibility.admin },
-            { visibility: KankaVisibility.adminSelf },
-            { visibility: KankaVisibility.members },
-            { visibility: KankaVisibility.self },
-            { is_private: false },
-            { is_private: true },
-            { isPrivate: false },
-            { isPrivate: true },
+            { id: 1, foo: 'bar' },
+            { id: 2, visibility: KankaVisibility.all },
+            { id: 3, visibility: KankaVisibility.admin },
+            { id: 4, visibility: KankaVisibility.adminSelf },
+            { id: 5, visibility: KankaVisibility.members },
+            { id: 6, visibility: KankaVisibility.self },
+            { id: 7, is_private: false },
+            { id: 8, is_private: true },
+            { id: 9, isPrivate: false },
+            { id: 10, isPrivate: true },
         ];
 
-        const result = kankaFilterAccessible(array, { ...options, hash: { ignore: true } });
+        const template = '{{#each (kankaFilterAccessible array ignore=true)}}{{id}},{{/each}}';
 
-        expect(result).toEqual(array);
+        expect(compile(template, { array })).toEqual('1,2,3,4,5,6,7,8,9,10,');
     });
 
-    it('returns unfiltered array if owner is set in root data', () => {
+    it('returns unfiltered array if user is owner', () => {
         const array = [
-            { foo: 'bar' },
-            { visibility: KankaVisibility.all },
-            { visibility: KankaVisibility.admin },
-            { visibility: KankaVisibility.adminSelf },
-            { visibility: KankaVisibility.members },
-            { visibility: KankaVisibility.self },
-            { is_private: false },
-            { is_private: true },
-            { isPrivate: false },
-            { isPrivate: true },
+            { id: 1, foo: 'bar' },
+            { id: 2, visibility: KankaVisibility.all },
+            { id: 3, visibility: KankaVisibility.admin },
+            { id: 4, visibility: KankaVisibility.adminSelf },
+            { id: 5, visibility: KankaVisibility.members },
+            { id: 6, visibility: KankaVisibility.self },
+            { id: 7, is_private: false },
+            { id: 8, is_private: true },
+            { id: 9, isPrivate: false },
+            { id: 10, isPrivate: true },
         ];
 
-        const result = kankaFilterAccessible(array, { ...options, data: { root: { owner: true } } });
+        const template = '{{#each (kankaFilterAccessible array)}}{{id}},{{/each}}';
 
-        expect(result).toEqual(array);
+        expect(compile(template, { array, owner: true })).toEqual('1,2,3,4,5,6,7,8,9,10,');
     });
 });
