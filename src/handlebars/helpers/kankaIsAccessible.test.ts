@@ -2,68 +2,80 @@
 import { KankaVisibility } from '../../types/kanka';
 import kankaIsAccessible from './kankaIsAccessible';
 
-describe('kankaIsAccessible()', () => {
-    let options: Handlebars.HelperOptions;
+function compile(template: string, context = {}): string {
+    return Handlebars.compile(template)(context);
+}
 
-    beforeEach(() => {
-        options = {
-            hash: {},
-            fn: () => '',
-            inverse: () => '',
-        };
+describe('kankaIsAccessible()', () => {
+    beforeAll(() => {
+        Handlebars.registerHelper('kankaIsAccessible', kankaIsAccessible as unknown as Handlebars.HelperDelegate);
+    });
+
+    afterAll(() => {
+        Handlebars.unregisterHelper('kankaIsAccessible');
     });
 
     it('returns true if no permission property is present', () => {
-        expect(kankaIsAccessible({ foo: 'bar' }, options)).toBe(true);
+        const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
+
+        expect(compile(template, { object: { foo: 'bar' } })).toEqual('success');
     });
 
-    it('returns true if visibility is "all" or "members"', () => {
-        expect(kankaIsAccessible({ visibility: KankaVisibility.all }, options)).toBe(true);
-        expect(kankaIsAccessible({ visibility: KankaVisibility.members }, options)).toBe(true);
+    [KankaVisibility.all, KankaVisibility.members].forEach((visibility) => {
+        it(`returns true if visibility is "${visibility}"`, () => {
+            const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
+
+            expect(compile(template, { object: { visibility } })).toEqual('success');
+        });
     });
 
-    it('returns true if visibility is anything but "all" or "members" but user is owner', () => {
-        expect(kankaIsAccessible(
-            { visibility: KankaVisibility.admin },
-            { ...options, data: { root: { owner: true } } },
-        )).toBe(true);
-        expect(kankaIsAccessible(
-            { visibility: KankaVisibility.adminSelf },
-            { ...options, data: { root: { owner: true } } },
-        )).toBe(true);
-        expect(kankaIsAccessible(
-            { visibility: KankaVisibility.self },
-            { ...options, data: { root: { owner: true } } },
-        )).toBe(true);
-    });
+    [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self].forEach((visibility) => {
+        it(`returns false if visibility is "${visibility}"`, () => {
+            const template = '{{#unless (kankaIsAccessible object)}}success{{/unless}}';
 
-    it('returns false if visibility is anything but "all" or "members"', () => {
-        expect(kankaIsAccessible({ visibility: KankaVisibility.admin }, options)).toBe(false);
-        expect(kankaIsAccessible({ visibility: KankaVisibility.adminSelf }, options)).toBe(false);
-        expect(kankaIsAccessible({ visibility: KankaVisibility.self }, options)).toBe(false);
+            expect(compile(template, { object: { visibility } })).toEqual('success');
+        });
+
+        it(`returns true if visibility is "${visibility}" but user is owner`, () => {
+            const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
+
+            expect(compile(template, { object: { visibility }, owner: true })).toEqual('success');
+        });
     });
 
     it('returns true if is_private is false', () => {
-        expect(kankaIsAccessible({ is_private: false }, options)).toBe(true);
-    });
+        const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
 
-    it('returns true if is_private is true but user is owner', () => {
-        expect(kankaIsAccessible({ is_private: true }, { ...options, data: { root: { owner: true } } })).toBe(true);
+        expect(compile(template, { object: { is_private: false } })).toEqual('success');
     });
 
     it('returns false if is_private is true', () => {
-        expect(kankaIsAccessible({ is_private: true }, options)).toBe(false);
+        const template = '{{#unless (kankaIsAccessible object)}}success{{/unless}}';
+
+        expect(compile(template, { object: { is_private: true } })).toEqual('success');
+    });
+
+    it('returns true if is_private is true but user is owner', () => {
+        const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
+
+        expect(compile(template, { object: { is_private: true }, owner: true })).toEqual('success');
     });
 
     it('returns true if isPrivate is false', () => {
-        expect(kankaIsAccessible({ isPrivate: false }, options)).toBe(true);
-    });
+        const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
 
-    it('returns true if isPrivate is true but user is owner', () => {
-        expect(kankaIsAccessible({ isPrivate: false }, { ...options, data: { root: { owner: true } } })).toBe(true);
+        expect(compile(template, { object: { isPrivate: false } })).toEqual('success');
     });
 
     it('returns false if isPrivate is true', () => {
-        expect(kankaIsAccessible({ isPrivate: true }, options)).toBe(false);
+        const template = '{{#unless (kankaIsAccessible object)}}success{{/unless}}';
+
+        expect(compile(template, { object: { isPrivate: true } })).toEqual('success');
+    });
+
+    it('returns true if isPrivate is true but user is owner', () => {
+        const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
+
+        expect(compile(template, { object: { isPrivate: true }, owner: true })).toEqual('success');
     });
 });

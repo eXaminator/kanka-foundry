@@ -11,6 +11,7 @@ export default {
         '<rootDir>/src/types',
         '<rootDir>/src/index.ts',
         '<rootDir>/src/kanka.ts',
+        '<rootDir>/src/handlebars/runtime.ts',
         '.d.ts',
     ],
     collectCoverageFrom: ['src/**/*.ts'],

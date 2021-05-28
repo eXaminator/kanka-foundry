@@ -2,53 +2,70 @@
 import { KankaVisibility } from '../../types/kanka';
 import kankaIsSecret from './kankaIsSecret';
 
-describe('kankaIsSecret()', () => {
-    let options: Handlebars.HelperOptions;
+function compile(template: string, context = {}): string {
+    return Handlebars.compile(template)(context);
+}
 
-    beforeEach(() => {
-        options = {
-            hash: {},
-            fn: () => '',
-            inverse: () => '',
-        };
+describe('kankaIsSecret()', () => {
+    beforeAll(() => {
+        Handlebars.registerHelper('kankaIsSecret', kankaIsSecret as unknown as Handlebars.HelperDelegate);
+    });
+
+    afterAll(() => {
+        Handlebars.unregisterHelper('kankaIsSecret');
     });
 
     it('returns false if no permission property is present', () => {
-        expect(kankaIsSecret({ foo: 'bar' }, options)).toBe(false);
+        const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
+
+        expect(compile(template, { object: { foo: 'bar' } })).toEqual('success');
     });
 
-    it('returns false if visibility is "all" or "members"', () => {
-        expect(kankaIsSecret({ visibility: KankaVisibility.all }, options)).toBe(false);
-        expect(kankaIsSecret({ visibility: KankaVisibility.members }, options)).toBe(false);
+    [KankaVisibility.all, KankaVisibility.members].forEach((visibility) => {
+        it(`returns false if visibility is "${visibility}"`, () => {
+            const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
+
+            expect(compile(template, { object: { visibility } })).toEqual('success');
+        });
     });
 
-    it('returns true if visibility is anything but "all" or "members"', () => {
-        expect(kankaIsSecret({ visibility: KankaVisibility.admin }, options)).toBe(true);
-        expect(kankaIsSecret({ visibility: KankaVisibility.adminSelf }, options)).toBe(true);
-        expect(kankaIsSecret({ visibility: KankaVisibility.self }, options)).toBe(true);
+    [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self].forEach((visibility) => {
+        it(`returns true if visibility is "${visibility}"`, () => {
+            const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
+
+            expect(compile(template, { object: { visibility } })).toEqual('success');
+        });
     });
 
     it('returns false if is_private is false', () => {
-        expect(kankaIsSecret({ is_private: false }, options)).toBe(false);
+        const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
+
+        expect(compile(template, { object: { is_private: false } })).toEqual('success');
     });
 
     it('returns true if is_private is true', () => {
-        expect(kankaIsSecret({ is_private: true }, options)).toBe(true);
+        const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
+
+        expect(compile(template, { object: { is_private: true } })).toEqual('success');
     });
 
     it('returns false if isPrivate is false', () => {
-        expect(kankaIsSecret({ isPrivate: false }, options)).toBe(false);
+        const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
+
+        expect(compile(template, { object: { isPrivate: false } })).toEqual('success');
     });
 
     it('returns true if isPrivate is true', () => {
-        expect(kankaIsSecret({ isPrivate: true }, options)).toBe(true);
+        const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
+
+        expect(compile(template, { object: { isPrivate: true } })).toEqual('success');
     });
 
     it('returns true if any argument is private in some way', () => {
-        expect(kankaIsSecret(
-            { isPrivate: false },
-            { isPrivate: true },
-            options,
-        )).toBe(true);
+        const object1 = { isPrivate: false };
+        const object2 = { isPrivate: true };
+        const template = '{{#if (kankaIsSecret object1 object2)}}success{{/if}}';
+
+        expect(compile(template, { object1, object2 })).toEqual('success');
     });
 });
