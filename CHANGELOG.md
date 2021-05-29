@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/eXaminator/kanka-foundry/compare/1.9.7...2.0.0) (2021-05-29)
+
+
+### Features
+
+* add migration to upgrade from v1 to v2 ([d68d086](https://github.com/eXaminator/kanka-foundry/commit/d68d086848eae33a1b3cd989d7b21f037d762fc0))
+* clean up a lot of code ([e471deb](https://github.com/eXaminator/kanka-foundry/commit/e471deb42ddc597b352e37a4a0de6cf2cf45c55b))
+* fully rewrite the whole module ([8b545cf](https://github.com/eXaminator/kanka-foundry/commit/8b545cfa3262d587f43da41bd702cf528b37349f))
+
+
+### BREAKING CHANGES
+
+* This will change almost everything about this module.
+
 ## [1.9.7](https://github.com/eXaminator/kanka-foundry/compare/1.9.6...1.9.7) (2021-03-27)
 
 
