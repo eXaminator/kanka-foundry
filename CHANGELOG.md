@@ -1,16 +1,30 @@
 # [2.0.0](https://github.com/eXaminator/kanka-foundry/compare/1.9.7...2.0.0) (2021-05-29)
 
+This is a big update!
 
-### Features
+Please make a backup of your Journal Entries before updating, just to be sure!
 
-* add migration to upgrade from v1 to v2 ([d68d086](https://github.com/eXaminator/kanka-foundry/commit/d68d086848eae33a1b3cd989d7b21f037d762fc0))
-* clean up a lot of code ([e471deb](https://github.com/eXaminator/kanka-foundry/commit/e471deb42ddc597b352e37a4a0de6cf2cf45c55b))
-* fully rewrite the whole module ([8b545cf](https://github.com/eXaminator/kanka-foundry/commit/8b545cfa3262d587f43da41bd702cf528b37349f))
+In this release I have rewritten almost everything about this module. Instead of just writing a Journal Entry with some formatted HTML in it, it will actually save a full snapshot of the Kanka entity and display it using a fully customized template. This allows for a cleaner and elaborated user interface and also opens the door for some future improvements that weren't possible before.
 
+## Breaking Changes
+* Previously imported Journal Entries are not compatible with this version, but the module will prompt you to update old entries and offers you a way to do so. Please back up you world data before doing this if you don't want to risk having to reimport and reorganize data by hand.
 
-### BREAKING CHANGES
+## Features
 
-* This will change almost everything about this module.
+### General
+* Add support for Foundry 0.8 (but it is still compatible with 0.7)
+* Improve error handling in most places
+
+### Browser
+* Add a gridded view to the Kanka Entity Browser
+* Improve the display for entities that are outdated
+* Add button to easily update all outdated entries
+
+### Journal Entries
+* Enhance Journal Entries by using custom templates that use a tabbed layout to display all the information Kanka has to offer. This is a complete overhaul of how theses Journal Entries look and behave. Take a look at the README to see what this looks like.
+* Improve permission handling by actually displaying different data to Foundry users depending on their permissions of each Journal Entry.
+* Show which information are secret and will thusly not be displayed for non-owners of that Journal Entry.
+* Add button to each Journal Entry to update that entity directly from there (Beware: This uses up more API requests than doing it via the Entity Browser. So only use this for individual updates, not to update multiple entities in a short time See API Limits in the readme).
 
 ## [1.9.7](https://github.com/eXaminator/kanka-foundry/compare/1.9.6...1.9.7) (2021-03-27)
 
