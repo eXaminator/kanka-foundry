@@ -10,7 +10,7 @@
 This is a module which integrates [Kanka.io](https://kanka.io), a free worldbuilding and tabletop RPG campaign
 management tool, with [Foundry Virtual Tabletop](http://foundryvtt.com), allowing you to import entities written
 in Kanka as journal entries into Foundry VTT. This module imports full Kanka entities, including their main entry text,
-image relations and other data. This is not an official module but a fan creation by someone who uses both Kanka and
+image, relations and other data. This is not an official module, but a fan creation by someone who uses both Kanka and
 Foundry VTT.
 
 <img width="49%" alt="Screenshot of a journal entry after importing it from Kanka." src="./docs/assets/character.png" /><img width="49%" alt="Screenshot of the relation tab of a character after importing it." src="./docs/assets/character_relations.png" />
