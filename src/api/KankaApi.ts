@@ -217,9 +217,16 @@ export default class KankaApi {
     }
 
     public async getRace(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiRace> {
+        const list = await this.getAllRaces(campaignId);
+        const entity = list.find(entity => entity.id === id);
+        if (!entity) throw new Error(`Could not find race with ID '${String(id)}'`);
+        return entity;
+        /*
         type Result = KankaApiResult<KankaApiRace>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/races/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/races/${String(id)}?related=1`);
         return result.data;
+        */
     }
 
     public async getAllRaces(campaignId: KankaApiId): Promise<KankaApiRace[]> {
@@ -257,7 +264,7 @@ export default class KankaApi {
         return data;
     }
 
-    private async fetchFullListWithAncestors<T>(path: string, parentProperty: string): Promise<T[]> {
+    private async fetchFullListWithAncestors<T>(path: string, parentProperty: keyof T): Promise<T[]> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const entities = await this.fetchFullList<T>(path) as any[];
 
