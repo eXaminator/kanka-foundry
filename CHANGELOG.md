@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/eXaminator/kanka-foundry/compare/2.0.0...2.0.1) (2021-06-11)
+
+
+### Bug Fixes
+
+* correctly get ancestors when importing individual races ([8122da1](https://github.com/eXaminator/kanka-foundry/commit/8122da1183eadced672d60aa007f3935d772d103)), closes [#45](https://github.com/eXaminator/kanka-foundry/issues/45)
+
 # [2.0.0](https://github.com/eXaminator/kanka-foundry/compare/1.9.7...2.0.0) (2021-05-29)
 
 This is a big update!
