@@ -28,7 +28,7 @@
       "path": "lang/de.json"
     }
   ],
-  "minimumCoreVersion": "0.7.5",
+  "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "0.8.6",
   "manifestPlusVersion": "1.0.0",
   "media": [
