@@ -151,6 +151,15 @@ export interface KankaApiAbilityLink extends KankaApiVisibilityConstrainable {
     position: number,
 }
 
+export interface KankaApiEntityFile extends KankaApiBlamable, KankaApiVisibilityConstrainable {
+    entity_id: KankaApiEntityId;
+    id: KankaApiId;
+    name: string;
+    path: string;
+    size: number;
+    type: string;
+}
+
 export interface KankaApiCampaign extends KankaApiEntityImageData {
     id: KankaApiId;
     name: string;
@@ -165,6 +174,7 @@ export interface KankaApiRelated {
     entity_notes: KankaApiEntityNote[];
     entity_abilities: KankaApiAbilityLink[];
     entity_events: KankaApiEntityEvent[];
+    entity_files: KankaApiEntityFile[];
 }
 
 export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBlamable {

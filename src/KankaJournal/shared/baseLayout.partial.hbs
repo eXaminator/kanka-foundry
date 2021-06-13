@@ -42,6 +42,12 @@
         type='ability'
         showCount=true
     }}
+    {{>tabNav
+        name='entity-files'
+        label='shared.tabs.files'
+        collection=kankaEntity.entity_files
+        showCount=true
+    }}
 </nav>
 
 <section class="flexcol content">
@@ -90,6 +96,9 @@
     </div>
     <div class="tab" data-tab="entity-abilities" data-group="primary-tabs">
         {{>tabs/abilities entity=kankaEntity}}
+    </div>
+    <div class="tab" data-tab="entity-files" data-group="primary-tabs">
+        {{>tabs/files entity=kankaEntity}}
     </div>
     {{#>content}}{{/content}}
 </section>

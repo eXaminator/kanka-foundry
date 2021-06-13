@@ -46,6 +46,12 @@ button#kanka {
     }
 }
 
+a.kanka-button {
+    text-decoration: none;
+    color: black;
+    text-shadow: none;
+}
+
 button.-loading {
     position: relative;
     color: #0002;
