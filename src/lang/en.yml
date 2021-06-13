@@ -47,6 +47,7 @@ KANKA:
             action:
                 refresh: Refresh
                 openInKanka: Open in Kanka
+                openLink: Open link
             tabs:
                 details: Details
                 notes: Notes
@@ -54,6 +55,7 @@ KANKA:
                 relations: Relations
                 inventory: Inventory
                 abilities: Abilities
+                files: Files
             labels:
                 type: Type
                 location: Location
