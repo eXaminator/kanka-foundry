@@ -5,7 +5,9 @@ import './KankaJournalApplication.scss';
 const BaseSheet = window.CONFIG.JournalEntry.sheetClass as typeof JournalSheet;
 
 class KankaJournalApplication extends BaseSheet {
-    static get defaultOptions(): Application.Options {
+    #lastRenderOptions = undefined;
+
+    static get defaultOptions(): FormApplication.Options {
         return {
             ...super.defaultOptions,
             closeOnSubmit: false,
@@ -13,7 +15,21 @@ class KankaJournalApplication extends BaseSheet {
             submitOnChange: false,
             tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'details' }],
             scrollY: ['.tab'],
+            editable: true,
         };
+    }
+
+    constructor(options?: FormApplication.Options) {
+        super(options);
+        this.ensureInitialisation();
+    }
+
+    ensureInitialisation(): void {
+        if (kanka.isInitialized) {
+            this.rerender();
+        } else {
+            setTimeout(() => this.ensureInitialisation(), 200);
+        }
     }
 
     get isKankaEntry(): boolean {
@@ -63,9 +79,14 @@ class KankaJournalApplication extends BaseSheet {
                 this.setLoadingState(event.currentTarget);
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 await kanka.journals.write(campaign, [{ child_id: snapshot.id, type }]);
-                this.render();
+                this.rerender();
             }
         });
+    }
+
+    public rerender(): void {
+        if (!this.rendered) return;
+        this.render(false, this.#lastRenderOptions);
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -98,6 +119,12 @@ class KankaJournalApplication extends BaseSheet {
         if (mode === 'text') {
             this.setPosition({ width: KankaJournalApplication.defaultOptions.width as number });
         }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    protected _render(force?: boolean, options?: any): Promise<void> {
+        this.#lastRenderOptions = options;
+        return super._render(force, options);
     }
 }
 

@@ -2,6 +2,14 @@
     height: 100%;
     padding: 5px;
 
+    .write-action {
+        display: none;
+    }
+
+    &.editable .write-action {
+        display: inline-block;
+    }
+
     .tabs {
         // These styles ensure, that the row collapses if it contains no tabs
         flex: 0 !important;
@@ -106,12 +114,6 @@
         &:empty {
             margin: 0;
         }
-    }
-
-    .kanka-main-image {
-        // margin: 0 .5em .5em 0;
-        // max-width: 40% !important;
-        //float: left;
     }
 
     dl.grid {
