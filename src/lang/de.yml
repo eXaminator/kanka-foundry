@@ -134,6 +134,9 @@ KANKA:
             hint: >
                 Soll die Hierarchie aus Kanka mit Ordnern reproduziert werden? Die maximale Tiefe beträgt
                 3 Verzeichnisse.
+            automaticPermissions:
+                label: Automatisch Berechtigungen setzen
+                hint: Alle Spieler erhalten automatisch Beobachter Rechte für neu importierte Einträge.
         error:
             ErrorInvalidAccessToken: Das Kanka Zugriffs-Token ist ungültig..
             ErrorTokenExpired: Dein Kanka Zugriffs-Token ist abgelaufen. Bitte hinterlege ein neues.

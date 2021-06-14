@@ -117,6 +117,18 @@ export default class KankaFoundrySettings {
             },
         );
 
+        this.register(
+            KankaSettings.automaticPermissions,
+            {
+                name: this.#module.getMessage('settings.automaticPermissions.label'),
+                hint: this.#module.getMessage('settings.automaticPermissions.hint'),
+                scope: 'world',
+                config: true,
+                type: Boolean,
+                default: false,
+            },
+        );
+
         game.settings.register(
             moduleConfig.name,
             KankaSettings.browserView,
@@ -190,6 +202,10 @@ export default class KankaFoundrySettings {
 
     public get keepTreeStructure(): boolean {
         return this.getSetting<boolean>(KankaSettings.keepTreeStructure);
+    }
+
+    public get automaticPermissions(): boolean {
+        return this.getSetting<boolean>(KankaSettings.automaticPermissions);
     }
 
     public isTypeCollapsed(type: EntityType): boolean {

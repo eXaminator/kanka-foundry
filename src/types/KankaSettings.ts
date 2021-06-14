@@ -7,6 +7,7 @@ export enum KankaSettings {
     imageInText = 'imageInText',
     keepTreeStructure = 'keepTreeStructure',
     browserView = 'browserView',
+    automaticPermissions = 'automaticPermissions',
 }
 
 export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {
