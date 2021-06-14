@@ -2,6 +2,7 @@ import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
 import EntityType from '../types/EntityType';
 import { KankaApiCampaign, KankaApiEntity, KankaApiId } from '../types/kanka';
+import { ProgressFn } from '../types/progress';
 import { path as template } from './KankaBrowserApplication.hbs';
 import './KankaBrowserApplication.scss';
 
@@ -161,19 +162,18 @@ export default class KankaBrowserApplication extends Application {
                             return !kanka.journals.findByEntityId(entity.id);
                         }) ?? [];
 
-                        this.setLoadingState(event.currentTarget);
-                        await kanka.journals.write(this.campaign.id, unlinkedEntities, this.#entities);
+                        const updateProgress = this.setLoadingState(event.currentTarget, true);
+                        await kanka.journals.write(this.campaign.id, unlinkedEntities, this.#entities, updateProgress);
                         this.render();
                         break;
                     }
 
                     case 'link-all': {
-                        const unlinkedEntities = this.#entities?.filter((entity) => {
-                            return !kanka.journals.findByEntityId(entity.id);
-                        }) ?? [];
+                        const unlinkedEntities = this.#entities
+                            ?.filter(entity => !kanka.journals.findByEntityId(entity.id)) ?? [];
 
-                        this.setLoadingState(event.currentTarget);
-                        await kanka.journals.write(this.campaign.id, unlinkedEntities, this.#entities);
+                        const updateProgress = this.setLoadingState(event.currentTarget, true);
+                        await kanka.journals.write(this.campaign.id, unlinkedEntities, this.#entities, updateProgress);
                         this.render();
                         break;
                     }
@@ -187,8 +187,8 @@ export default class KankaBrowserApplication extends Application {
                             return !type || entity.type === type;
                         }) ?? [];
 
-                        this.setLoadingState(event.currentTarget);
-                        await kanka.journals.write(this.campaign.id, outdatedEntities, this.#entities);
+                        const updateProgress = this.setLoadingState(event.currentTarget, true);
+                        await kanka.journals.write(this.campaign.id, outdatedEntities, this.#entities, updateProgress);
                         this.render();
                         break;
                     }
@@ -289,8 +289,17 @@ export default class KankaBrowserApplication extends Application {
         await super._render(force, options);
     }
 
-    protected setLoadingState(button: HTMLButtonElement): void {
-        $(button).addClass('-loading');
+    protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {
+        const $button = $(button);
+        $button.addClass('-loading');
         $(this.element).find('[data-action]').prop('disabled', true);
+
+        if (determined) $button.addClass('-determined');
+        else $button.addClass('-undetermined');
+
+        return (current, max) => {
+            $button.addClass('-determined');
+            button.style.setProperty('--progress', `${Math.round((current / max) * 100)}%`);
+        };
     }
 }

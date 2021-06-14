@@ -62,7 +62,7 @@ button.-loading {
     position: relative;
     color: #0002;
 
-    &:before {
+    &.-undetermined:before {
         color: #000;
         font-family: 'Font Awesome 5 Free';
         font-weight: 900;
@@ -77,6 +77,16 @@ button.-loading {
         position: absolute;
         top: calc(50% - .5em);
         left: calc(50% - .5em);
+    }
+
+    &.-determined:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background: rgba(255, 0, 0, .5);
+        height: 3px;
+        width: var(--progress, 0);
     }
 }
 
