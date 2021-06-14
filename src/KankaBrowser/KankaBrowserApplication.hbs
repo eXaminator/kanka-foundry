@@ -8,7 +8,10 @@
             <i class="fas fa-list"></i>
         </button>
         <span class="divider"></span>
-        <button type="button" data-action="update-outdated">
+        <button type="button" data-action="link-all" {{#unless data}}disabled{{/unless}}>
+            <i class="fas fa-link"></i> {{ kankaLocalize 'browser' 'action' 'linkAll' }}
+        </button>
+        <button type="button" data-action="update-outdated" {{#unless data}}disabled{{/unless}}>
             <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
         </button>
     </h1>
