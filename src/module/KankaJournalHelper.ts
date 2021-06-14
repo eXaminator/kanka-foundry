@@ -143,8 +143,15 @@ export default class KankaJournalHelper {
                 .filter((ref): ref is Reference => !!ref) ?? [];
             const folder = await this.ensureFolderPath(type, path);
 
+            let defaultPermissions: number | undefined;
+
+            if (this.module.settings.automaticPermissions && !entity.is_private) {
+                defaultPermissions = CONST.ENTITY_PERMISSIONS.OBSERVER;
+            }
+
             entry = await JournalEntry.create({
                 ...journalData,
+                permission: { default: defaultPermissions },
                 folder: folder?.id,
             }) as JournalEntry;
         }

@@ -131,6 +131,9 @@ KANKA:
         treeStructure:
             label: Create folder tree
             hint: Should Kankas tree structure be replicated via folders? The maximum depth is 3 folders.
+        automaticPermissions:
+            label: Automatically set permissions
+            hint: All players will automatically get observer permissions for for newly imported entities.
         error:
             ErrorInvalidAccessToken: The given Kanka access token is invalid.
             ErrorTokenExpired: Your Kanka access token is expired. Please provide a new one.

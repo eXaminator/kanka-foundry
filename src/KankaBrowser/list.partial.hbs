@@ -8,10 +8,15 @@
                 <div class="kanka-avatar -small">
                     {{#if (kankaIsEntityOutdated this)}}
                         <span><i class="fas fa-cloud-download-alt"></i></span>
+                    {{else}}
+                        {{#if this.is_private}}
+                            <span><i class="fas fa-lock"></i></span>
+                        {{/if}}
                     {{/if}}
                     <img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />
                 </div>
                 {{#kankaLinkEntity this.type this.child_id }}{{ this.name }}{{/kankaLinkEntity}}
+
             </div>
             {{#if (kankaHasJournalEntry this.id)}}
                 <button type="button" data-action="open" data-id="{{ this.id }}" class="kanka-button -small">

@@ -7,6 +7,10 @@
             <div class="kanka-avatar">
                 {{#if (kankaIsEntityOutdated this)}}
                     <span><i class="fas fa-cloud-download-alt"></i></span>
+                {{else}}
+                    {{#if this.is_private}}
+                        <span><i class="fas fa-lock"></i></span>
+                    {{/if}}
                 {{/if}}
                 {{#if this.child.has_custom_image}}
                     <img src="{{this.child.image_thumb}}" alt="{{this.name}}" />
