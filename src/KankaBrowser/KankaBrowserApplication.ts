@@ -167,6 +167,17 @@ export default class KankaBrowserApplication extends Application {
                         break;
                     }
 
+                    case 'link-all': {
+                        const unlinkedEntities = this.#entities?.filter((entity) => {
+                            return !kanka.journals.findByEntityId(entity.id);
+                        }) ?? [];
+
+                        this.setLoadingState(event.currentTarget);
+                        await kanka.journals.write(this.campaign.id, unlinkedEntities, this.#entities);
+                        this.render();
+                        break;
+                    }
+
                     case 'update-outdated': {
                         const outdatedEntities = this.#entities?.filter((entity) => {
                             if (!kanka.journals.hasOutdatedEntryByEntityId(entity)) {
