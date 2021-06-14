@@ -102,7 +102,7 @@
         grid-template-columns: 1fr;
         grid-gap: .5em;
 
-        > img {
+        > img, input {
             justify-self: center;
             max-width: 100%;
         }

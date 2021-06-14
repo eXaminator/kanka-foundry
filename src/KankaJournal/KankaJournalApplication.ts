@@ -67,7 +67,7 @@ class KankaJournalApplication extends BaseSheet {
         super.activateListeners(html);
         if (!this.isKankaEntry) return;
 
-        html.on('click', 'button[data-action]', async (event) => {
+        html.on('click', '[data-action]', async (event) => {
             const { action } = event.currentTarget?.dataset ?? {};
 
             if (!action) return;
@@ -80,6 +80,12 @@ class KankaJournalApplication extends BaseSheet {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 await kanka.journals.write(campaign, [{ child_id: snapshot.id, type }]);
                 this.rerender();
+            }
+
+            if (action === 'show-image') {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                this.render(true, { sheetMode: 'image' });
             }
         });
     }
