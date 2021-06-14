@@ -2,6 +2,7 @@
 import type KankaFoundry from '../KankaFoundry';
 import { logError } from '../logger';
 import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
+import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
 import createTypeLoaders from './createTypeLoaders';
 import ReferenceCollection from './ReferenceCollection';
@@ -56,6 +57,7 @@ export default class KankaJournalHelper {
         campaignId: KankaApiId,
         writableEntities: WritableEntity[],
         entityLookup: KankaApiEntity[] = [],
+        onProgress?: ProgressFn,
     ): Promise<number> {
         const grouped = new Map<KankaApiEntityType, WritableEntity[]>();
         writableEntities.forEach((entity) => {
@@ -66,11 +68,15 @@ export default class KankaJournalHelper {
             grouped.get(entity.type)?.push(entity);
         });
 
+        const total = writableEntities.length;
+        let progress = 0;
+
         const promises = Array
             .from(grouped.entries())
             .map(async ([type, entities]) => {
                 const loader = this.#loaders.get(type);
                 if (!loader) {
+                    progress += entities.length;
                     logError(new Error(`Cannot find TypeLoader for "${String(type)}".`));
                     return 0;
                 }
@@ -92,6 +98,9 @@ export default class KankaJournalHelper {
                         successCount += 1;
                     } catch (error) {
                         logError(error);
+                    } finally {
+                        progress += 1;
+                        onProgress?.(progress, total);
                     }
                 }
 

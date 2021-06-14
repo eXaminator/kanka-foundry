@@ -1,4 +1,5 @@
 import kanka from '../kanka';
+import { ProgressFn } from '../types/progress';
 import { path as template } from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 
@@ -102,9 +103,18 @@ class KankaJournalApplication extends BaseSheet {
         return super._updateObject(event, formData);
     }
 
-    protected setLoadingState(button: HTMLButtonElement): void {
-        $(button).addClass('-loading');
+    protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {
+        const $button = $(button);
+        $button.addClass('-loading');
         $(this.element).find('[data-action]').prop('disabled', true);
+
+        if (determined) $button.addClass('-determined');
+        else $button.addClass('-undetermined');
+
+        return (current, max) => {
+            $button.addClass('-determined');
+            button.style.setProperty('--progress', `${Math.round((current / max) * 100)}%`);
+        };
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
