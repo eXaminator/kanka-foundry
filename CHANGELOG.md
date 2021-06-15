@@ -1,3 +1,22 @@
+# [2.1.0](https://github.com/eXaminator/kanka-foundry/compare/2.0.1...2.1.0) (2021-06-15)
+
+
+### Bug Fixes
+
+* improve rendering in readonly context ([43d2496](https://github.com/eXaminator/kanka-foundry/commit/43d2496ffbe26aa41c801827ca8a61bdc250bd2d))
+
+
+### Features
+
+* add button to link all entities at once ([491827f](https://github.com/eXaminator/kanka-foundry/commit/491827f8640bc68f55122ca657590371cc950bf8)), closes [#46](https://github.com/eXaminator/kanka-foundry/issues/46)
+* add option to automatically set observer permissions for all players on public entities ([4d725f4](https://github.com/eXaminator/kanka-foundry/commit/4d725f4d30b41e1ea392fdd5f943ee6f2d593b5b)), closes [#49](https://github.com/eXaminator/kanka-foundry/issues/49)
+* add progress bar for bulk operations ([505a3da](https://github.com/eXaminator/kanka-foundry/commit/505a3da944df52323f3c9bcaec536a5d9035b2e3))
+* add support for Foundry 0.8.7 ([b733d3c](https://github.com/eXaminator/kanka-foundry/commit/b733d3c23168e5693164066e35f5757512042d39))
+* add tab that displays all files of an entity ([8cdde61](https://github.com/eXaminator/kanka-foundry/commit/8cdde61124023961a9731d062c049085f405f3ea)), closes [#2](https://github.com/eXaminator/kanka-foundry/issues/2)
+* remove Foundry 0.7.x support ([d2c2879](https://github.com/eXaminator/kanka-foundry/commit/d2c287986ab31f4aab52163bd1866729a7cc411b))
+* show specific list of journal entries and folders that will be migrated on module update ([2b4700e](https://github.com/eXaminator/kanka-foundry/commit/2b4700e012d7a5305b85bc19993b7a3340103570))
+* switch to image mode when clicking the image in the entry ([e5ab565](https://github.com/eXaminator/kanka-foundry/commit/e5ab56534ffe48f97ac6fd6edd608ff935d96d6e))
+
 ## [2.0.1](https://github.com/eXaminator/kanka-foundry/compare/2.0.0...2.0.1) (2021-06-11)
 
 
