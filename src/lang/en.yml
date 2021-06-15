@@ -142,16 +142,17 @@ KANKA:
     migration:
         dialog:
             header: Kanka-Foundry migration
+            listHeader:
+                journals: '<strong style="color: red;"><big>{count}</big></strong> journal entries'
+                folders: '<strong style="color: red;"><big>{count}</big></strong> folders'
             text: |
                 <h1>Kanka-Foundry migration</h1>
                 <p>You have recently updated the Kanka-Foundry module from 1.x to this current version. This update
                 brought a lot of big changes to how the module imports and handles data from Kanka, in order to allow
                 for an improved user experience and more features.</p>
                 <p>You currently have</p>
-                <ul>
-                    <li><strong style=\"color: red;\"><big>{documentCount}</big></strong> journal entries</li>
-                    <li><strong style=\"color: red;\"><big>{folderCount}</big></strong> folders</li>
-                </ul>
+                {journalList}
+                {folderList}
                 <p>that were created by Kanka-Foundry and need to be updated in order to properly work and take
                 advantage of the new features. One change is, that journal entries imported from kanka are no longer
                 editable. That was never truly supported anyways, as changes were overwritten with the next import and
@@ -168,9 +169,11 @@ KANKA:
                 synced.</strong> This might take a few minutes, depending on the size of your Kanka campaign and the
                 amount of synced entries. You will receive a notification once it's done.</p>
                 <h2>But I already ran this migration!</h2>
-                <p> You might have synced entries from multiple campaigns. This migration only updates entries from the
+                <p> You might have synced entries from multiple campaigns or perhaps you deleted an entity in Kanka
+                but not the imported entry in Foundry. This migration only updates entries from the
                 currently selected campaign ({campaignName}). If you keep getting this message, change the selected
-                campaign in the modules settings and reload your browser to try again.</p>
+                campaign in the modules settings and reload your browser to try again. Or check each entry individually
+                to see if it still exists in Kanka.</p>
                 <p>Should you keep running into trouble, please let me know by creating an issue in Github.</p>
             action:
                 yes: Update and overwrite my entries

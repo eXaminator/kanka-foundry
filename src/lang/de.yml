@@ -147,6 +147,9 @@ KANKA:
     migration:
         dialog:
             header: Kanka-Foundry Migration
+            listHeader:
+                journals: '<strong style="color: red;"><big>{count}</big></strong> Einträge'
+                folders: '<strong style="color: red;"><big>{count}</big></strong> Verzeichnisse'
             text: >
                 <h1>Kanka-Foundry Migration</h1>
                 <p>Du hast kürzlich
@@ -154,10 +157,8 @@ KANKA:
                 Änderungenmit sich, welche den Import und den Umgang mit den Daten aus Kanka betreffen,
                 damit eine bessere Benutzererfahrungund mehr Features geboten werden können.</p>
                 <p>Du hast im Augenblick</p>
-                <ul>
-                    <li><strong style="color: red;"><big>{documentCount}</big></strong>Einträge</li>
-                    <li><strong style="color: red;"><big>{folderCount}</big></strong> Verzeichnisse</li>
-                </ul>
+                {journalList}
+                {folderList}
                 <p>die von Kanka-Foundry erzeugt wurden und nun aktualisiert werden müssen, damit sie weiterhin
                 funktionierenund die neuen Features nutzen können. Eine Ändeurng besteht darin,
                 dass Einträge die aus Kanka importiert wurden,nicht länger in Foundry veränderbar
@@ -178,10 +179,12 @@ KANKA:
                 der bereits importierten Einträge. Du wirst eine Information erhalten sobald dieMigration
                 fertig ist.</p>
                 <h2>Aber ich habe die Migration schon ausgeführt!</h2>
-                <p>Möglicherweise hast du Einträge aus mehreren Kampagnen importiert. Diese Migration aktualisiert
-                nur Einträge ausder aktuell ausgewählten Kampagne ({campaignName}). Falls du diese
-                Nachricht erneut erhälst, ändere die ausgewählteKampagne in den Einstellungen, lade
-                Foundry in deinem Browser neu und versuche es erneut.</p>
+                <p>Möglicherweise hast du Einträge aus mehreren Kampagnen importiert oder Einträge in Kanka gelöscht
+                aber nicht die entsprechenden Einträge in Foundry. Diese Migration aktualisiert
+                nur Einträge aus der aktuell ausgewählten Kampagne ({campaignName}). Falls du diese
+                Nachricht erneut erhälst, ändere die ausgewählte Kampagne in den Einstellungen, lade
+                Foundry in deinem Browser neu und versuche es erneut. Oder prüfe die einzelnen Einträge oben ob diese
+                in Kanka gelöscht wurden.</p>
                 <p>Solltest du in weitere Probleme laufen leg' bitte ein Issue auf Github an.</p>
             action:
                 yes: Aktualisieren und Einträge überschreiben
