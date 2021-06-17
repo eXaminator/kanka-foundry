@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/eXaminator/kanka-foundry/compare/2.1.0...2.1.1) (2021-06-17)
+
+
+### Bug Fixes
+
+* remove duplicate ancestor detail row for races ([0c61253](https://github.com/eXaminator/kanka-foundry/commit/0c612536d1f48f5c3d1dc476d31d7e762287699b))
+
 # [2.1.0](https://github.com/eXaminator/kanka-foundry/compare/2.0.1...2.1.0) (2021-06-15)
 
 
