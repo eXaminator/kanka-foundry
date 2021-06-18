@@ -49,13 +49,13 @@ KANKA:
                 openInKanka: Open in Kanka
                 openLink: Open link
             tabs:
-                details: Details
+                story: Story
                 notes: Notes
                 attributes: Attributes
                 relations: Relations
                 inventory: Inventory
                 abilities: Abilities
-                files: Files
+                files: Assets
             labels:
                 type: Type
                 location: Location
