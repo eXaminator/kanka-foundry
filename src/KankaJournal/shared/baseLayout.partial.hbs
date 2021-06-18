@@ -7,14 +7,6 @@
             collection=kankaEntity.attributes
         }}
     {{/unless}}
-    {{#unless (kankaHasOnlyPinned kankaEntity.entity_notes 'is_pinned')}}
-        {{>tabNav
-            name='notes'
-            label='shared.tabs.notes'
-            collection=kankaEntity.entity_notes
-            showCount=true
-        }}
-    {{/unless}}
     {{#>nav}}{{/nav}}
     {{#unless (kankaHasOnlyPinned kankaEntity.relations 'is_star')}}
         {{>tabNav
@@ -90,9 +82,6 @@
     </div>
     <div class="tab" data-tab="inventory" data-group="primary-tabs">
         {{>tabs/inventory entity=kankaEntity}}
-    </div>
-    <div class="tab" data-tab="notes" data-group="primary-tabs">
-        {{>tabs/notes entity=kankaEntity}}
     </div>
     <div class="tab" data-tab="entity-abilities" data-group="primary-tabs">
         {{>tabs/abilities entity=kankaEntity}}

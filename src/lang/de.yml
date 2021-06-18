@@ -51,7 +51,6 @@ KANKA:
                 openLink: Link öffnen
             tabs:
                 story: Geschichte
-                notes: Notizen
                 attributes: Attribute
                 relations: Beziehungen
                 inventory: Inventar
