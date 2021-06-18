@@ -1,5 +1,5 @@
 <nav class="tabs" data-group="primary-tabs">
-    {{>tabNav name='details' label='shared.tabs.details'}}
+    {{>tabNav name='story' label='shared.tabs.story'}}
     {{#unless (kankaHasOnlyPinned kankaEntity.attributes 'is_star')}}
         {{>tabNav
             name='attributes'
@@ -51,7 +51,7 @@
 </nav>
 
 <section class="flexcol content">
-    <div class="tab" data-tab="details" data-group="primary-tabs">
+    <div class="tab" data-tab="story" data-group="primary-tabs">
         <div class="image-column">
             {{~#if image~}}
                 {{~#if settings.imageInText~}}
@@ -63,7 +63,7 @@
         </div>
 
         <dl class="grid">
-            {{~#>details~}}{{~/details~}}
+            {{~#>profile~}}{{~/profile~}}
             {{~#with (kankaFilterBy (kankaFilterReferences kankaEntity.relations) 'is_star' true) as | starred |~}}
                 {{~#each starred ~}}
                     {{~>detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
