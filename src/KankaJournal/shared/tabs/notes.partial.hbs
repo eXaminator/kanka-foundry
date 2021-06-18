@@ -1,8 +1,0 @@
-<ul class="kanka-cards -single">
-    {{#each (kankaFilterAccessible entity.entity_notes)}}
-        <li class="kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}">
-            <h2 class="kanka-card-header">{{{ name }}}</h2>
-            <div class="kanka-card-content">{{ kankaReplaceMentions entry_parsed }}</div>
-        </li>
-    {{/each}}
-</ul>

@@ -50,7 +50,6 @@ KANKA:
                 openLink: Open link
             tabs:
                 story: Story
-                notes: Notes
                 attributes: Attributes
                 relations: Relations
                 inventory: Inventory
