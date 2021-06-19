@@ -42,8 +42,8 @@
     }}
 </nav>
 
-<section class="flexcol content">
-    <div class="tab" data-tab="story" data-group="primary-tabs">
+<section class="tab-container -scrollable">
+    <div class="tab -scrollable" data-tab="story" data-group="primary-tabs">
         <div class="image-column">
             {{~#if image~}}
                 {{~#if settings.imageInText~}}
@@ -74,19 +74,19 @@
 
         {{>tabs/pinnedNotes entity=kankaEntity}}
     </div>
-    <div class="tab" data-tab="attributes" data-group="primary-tabs">
+    <div class="tab -scrollable" data-tab="attributes" data-group="primary-tabs">
         {{>tabs/attributes entity=kankaEntity}}
     </div>
-    <div class="tab" data-tab="relations" data-group="primary-tabs">
+    <div class="tab -scrollable" data-tab="relations" data-group="primary-tabs">
         {{>tabs/relations entity=kankaEntity}}
     </div>
-    <div class="tab" data-tab="inventory" data-group="primary-tabs">
+    <div class="tab -scrollable" data-tab="inventory" data-group="primary-tabs">
         {{>tabs/inventory entity=kankaEntity}}
     </div>
-    <div class="tab" data-tab="entity-abilities" data-group="primary-tabs">
+    <div class="tab -scrollable" data-tab="entity-abilities" data-group="primary-tabs">
         {{>tabs/abilities entity=kankaEntity}}
     </div>
-    <div class="tab" data-tab="entity-files" data-group="primary-tabs">
+    <div class="tab -scrollable" data-tab="entity-files" data-group="primary-tabs">
         {{>tabs/files entity=kankaEntity}}
     </div>
     {{#>content}}{{/content}}

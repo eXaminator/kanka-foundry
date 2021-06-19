@@ -1,0 +1,25 @@
+<ul class="kanka-cards">
+    {{#each (kankaSortBy deletedEntries 'name')}}
+        <li class="kanka-card">
+            <div class="kanka-avatar">
+                {{#if this.has_custom_image}}
+                    <img src="{{this.image_thumb}}" alt="{{this.name}}" />
+                {{/if}}
+            </div>
+
+            <h2 class="kanka-card-header">
+                {{ this.name }}
+            </h2>
+
+            <div class="kanka-card-actions">
+                <button type="button" data-action="open" data-id="{{ this.entity_id }}">
+                    <i class="fas fa-book-open fa-fw"></i>
+                    {{ kankaLocalize 'browser' 'action' 'openJournal' }}
+                </button>
+                <button type="button" data-action="delete" data-id="{{ this.entity_id }}">
+                    <i class="fas fa-trash fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'delete' }}
+                </button>
+            </div>
+        </li>
+    {{/each}}
+</ul>

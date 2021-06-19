@@ -38,6 +38,16 @@ KANKA:
             openJournal: Open
             updateSingle: Update
             linkSingle: Link
+            delete: Delete
+            deleteAll: Delete all
+        tabs:
+            import: Import entities
+            delete: View deleted entities
+        deleteTab:
+            header: Deleted entities
+            description: These entities seem to have been deleted in Kanka but are still present in Foundry.
+        importTab:
+            header: Kanka entities
         filter:
             label: Filter
         label:

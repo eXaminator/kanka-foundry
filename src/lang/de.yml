@@ -39,6 +39,16 @@ KANKA:
             openJournal: Öffnen
             updateSingle: Aktualisieren
             linkSingle: Verknüpfen
+            delete: Löschen
+            deleteAll: Alle löschen
+        tabs:
+            import: Einträge importieren
+            delete: Gelöschte Einträge
+        deleteTab:
+            header: Gelöschte Einträge
+            description: Diese Einträge scheinen in Kanka gelöscht worden zu sein, existieren aber noch in Foundry.
+        importTab:
+            header: Kanka Einträge
         filter:
             label: Filter
         label:

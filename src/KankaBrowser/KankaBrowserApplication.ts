@@ -1,7 +1,7 @@
 import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
 import EntityType from '../types/EntityType';
-import { KankaApiCampaign, KankaApiEntity, KankaApiId } from '../types/kanka';
+import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
 import { path as template } from './KankaBrowserApplication.hbs';
 import './KankaBrowserApplication.scss';
@@ -66,11 +66,13 @@ export default class KankaBrowserApplication extends Application {
     static get defaultOptions(): Application.Options {
         return mergeObject(super.defaultOptions, {
             id: 'kanka-browser',
-            classes: ['kanka-browser'],
+            classes: ['kanka', 'kanka-browser'],
             template,
             width: 720,
             height: 'auto',
             title: kanka.getMessage('browser.title'),
+            tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'import' }],
+            resizable: true,
         });
     }
 
@@ -79,7 +81,23 @@ export default class KankaBrowserApplication extends Application {
         return kanka.currentCampaign!;
     }
 
-    public async getData(): Promise<TemplateData> {
+    protected get deletedSnapshots(): KankaApiChildEntity[] {
+        return kanka.journals
+            .findAllKankaEntries()
+            .flatMap((entry) => {
+                const campaignId = kanka.journals.getFlag(entry, 'campaign') as KankaApiId;
+                const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiChildEntity;
+
+                if (!snapshot) return [];
+                if (!this.#entities) return [];
+                if (campaignId !== kanka.currentCampaign?.id) return [];
+                if (this.#entities.some(e => e.id === snapshot.entity_id)) return [];
+
+                return [snapshot];
+            });
+    }
+
+    public getData(): TemplateData {
         const typeConfig = {};
 
         Object
@@ -92,11 +110,13 @@ export default class KankaBrowserApplication extends Application {
             });
 
         return {
+            ...super.getData(),
             campaign: this.campaign,
             kankaCampaignId: this.campaign.id,
             currentFilter: this.#currentFilter,
             typeConfig,
             data: this.#entities?.filter(e => !e.is_template || kanka.settings.importTemplateEntities),
+            deletedEntries: this.deletedSnapshots,
             settings: {
                 showPrivate: kanka.settings.importPrivateEntities,
                 view: kanka.settings.browserView,
@@ -190,6 +210,20 @@ export default class KankaBrowserApplication extends Application {
                         const updateProgress = this.setLoadingState(event.currentTarget, true);
                         await kanka.journals.write(this.campaign.id, outdatedEntities, this.#entities, updateProgress);
                         this.render();
+                        break;
+                    }
+
+                    case 'delete': {
+                        const entry = kanka.journals.findByEntityId(id);
+                        await entry?.delete({});
+                        break;
+                    }
+
+                    case 'delete-all': {
+                        await Promise.all(this.deletedSnapshots.map(async (snapshot) => {
+                            const entry = kanka.journals.findByEntityId(snapshot.entity_id);
+                            await entry?.delete({});
+                        }));
                         break;
                     }
 
