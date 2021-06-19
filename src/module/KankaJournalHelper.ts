@@ -18,6 +18,10 @@ export default class KankaJournalHelper {
         this.#loaders = createTypeLoaders(module.api);
     }
 
+    public findAllKankaEntries(): JournalEntry[] {
+        return game.journal.filter(e => this.getFlag(e, 'id')) ?? undefined;
+    }
+
     public findByEntityId(id: KankaApiEntityId): JournalEntry | undefined {
         return game.journal.find(e => this.getFlag(e, 'id') === id) ?? undefined;
     }

@@ -11,11 +11,12 @@ class KankaJournalApplication extends BaseSheet {
     static get defaultOptions(): FormApplication.Options {
         return {
             ...super.defaultOptions,
+            classes: ['kanka', 'kanka-journal'],
             closeOnSubmit: false,
             submitOnClose: false,
             submitOnChange: false,
-            tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'details' }],
-            scrollY: ['.tab'],
+            tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'details' }],
+            scrollY: ['.kanka-tab'],
             editable: true,
         };
     }
