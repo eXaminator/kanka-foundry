@@ -41,6 +41,8 @@ KANKA:
             linkSingle: Verknüpfen
         filter:
             label: Filter
+        label:
+            template: Vorlage
         title: Kanka Journal Import
 
     journal:
@@ -119,7 +121,10 @@ KANKA:
             default: "-- Standard Foundry Sprache verwenden --"
         importPrivate:
             label: Private Einträge anzeigen
-            hint: Wenn dies deselektiert wird, werden im Import-Fenster nur öffentliche Einträge angezeigt.
+            hint: Wenn dies selektiert ist, werden im Import-Fenster auch private Einträge zum Import angezeigt.
+        importTemplate:
+            label: Vorlagen importieren
+            hint: Wenn dies selektiert ist, werden im Import-Fenster auch als Vorlage markierte Einträge angezeigt.
         disableExternalLinks:
             label: Externe Links entfernen
             hint: >
