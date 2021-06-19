@@ -184,6 +184,7 @@ export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBla
     child_id: KankaApiId;
     campaign_id: KankaApiId;
     child: KankaApiEntityImageData;
+    is_template: boolean;
 }
 
 export interface KankaApiCharacterTrait {

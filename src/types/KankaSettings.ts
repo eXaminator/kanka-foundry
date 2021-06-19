@@ -8,6 +8,7 @@ export enum KankaSettings {
     keepTreeStructure = 'keepTreeStructure',
     browserView = 'browserView',
     automaticPermissions = 'automaticPermissions',
+    importTemplateEntities = 'importTemplateEntities',
 }
 
 export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {

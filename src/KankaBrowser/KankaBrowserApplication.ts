@@ -96,7 +96,7 @@ export default class KankaBrowserApplication extends Application {
             kankaCampaignId: this.campaign.id,
             currentFilter: this.#currentFilter,
             typeConfig,
-            data: this.#entities,
+            data: this.#entities?.filter(e => !e.is_template || kanka.settings.importTemplateEntities),
             settings: {
                 showPrivate: kanka.settings.importPrivateEntities,
                 view: kanka.settings.browserView,

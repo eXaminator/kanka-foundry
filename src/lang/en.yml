@@ -40,6 +40,8 @@ KANKA:
             linkSingle: Link
         filter:
             label: Filter
+        label:
+            template: Template entity
         title: Kanka Journal Import
 
     journal:
@@ -120,7 +122,10 @@ KANKA:
             default: "-- Use default Foundry language --"
         importPrivate:
             label: Show private entities
-            hint: If this is unchecked private entities will be hidden from the import browser.
+            hint: If this is checked private entities will be shown in the import browser.
+        importTemplate:
+            label: Show template entities
+            hint: If this is checked template entities will be shown in the import browser.
         disableExternalLinks:
             label: Remove external links
             hint: If this is checked all mention links to entries that were not imported to Foundry will be removed.

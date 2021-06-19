@@ -35,6 +35,7 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
         campaign_id: 4711,
         created_by: 1,
         updated_by: 1,
+        is_template: false,
         child: {
             has_custom_image: false,
         },

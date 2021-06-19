@@ -106,6 +106,18 @@ export default class KankaFoundrySettings {
         );
 
         this.register(
+            KankaSettings.importTemplateEntities,
+            {
+                name: this.#module.getMessage('settings.importTemplate.label'),
+                hint: this.#module.getMessage('settings.importTemplate.hint'),
+                scope: 'world',
+                config: true,
+                type: Boolean,
+                default: false,
+            },
+        );
+
+        this.register(
             KankaSettings.disableExternalMentionLinks,
             {
                 name: this.#module.getMessage('settings.disableExternalLinks.label'),
@@ -190,6 +202,10 @@ export default class KankaFoundrySettings {
 
     public get importPrivateEntities(): boolean {
         return this.getSetting<boolean>(KankaSettings.importPrivateEntities);
+    }
+
+    public get importTemplateEntities(): boolean {
+        return this.getSetting<boolean>(KankaSettings.importTemplateEntities);
     }
 
     public get imageInText(): boolean {
