@@ -138,7 +138,7 @@ class KankaJournalApplication extends BaseSheet {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
+    // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
     protected _render(force?: boolean, options?: any): Promise<void> {
         this.#lastRenderOptions = options;
         return super._render(force, options);

@@ -1,29 +1,16 @@
-<ul class="kanka-cards">
-{{#each (kankaFilterBy (kankaFilterAccessible entity.entity_files) 'type' 'regex:^image/.*')}}
-    <li class="kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}">
-        <h2 class="kanka-card-header">{{ this.name }}</h2>
-
-        <div class="kanka-card-content">
-            <a href="{{ this.path }}" target="_blank">
+<div class="kanka-gallery">
+    {{#each (kankaFilterAccessible entity.entity_files)}}
+        <a href="{{ this.path }}" target="_blank"{{#if (kankaIsSecret this) }} class="-secret"{{/if}}>
+            {{#if (kankaEq this.type 'regex:^image/.*') }}
                 <img src="{{this.path}}" alt="{{this.name}}" />
-            </a>
-        </div>
-    </li>
-{{/each}}
-{{#each (kankaFilterBy (kankaFilterAccessible entity.entity_files) 'type' 'regex:^image/.*' true)}}
-    <li class="kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}">
-        <div class="kanka-avatar">
-            <span>{{ kankaFileIcon this.type }}</span>
-        </div>
-
-        <h2 class="kanka-card-header">{{ this.name }}</h2>
-
-        <div class="kanka-card-actions">
-            <a href="{{ this.path }}" class="kanka-button" target="_blank">
-                <i class="fas fa-external-link-alt"></i>
-                {{ kankaLocalize 'journal' 'shared' 'action' 'openLink' }}
-            </a>
-        </div>
-    </li>
-{{/each}}
-</ul>
+            {{else}}
+                {{ kankaFileIcon this.type }}
+            {{/if}}
+            <strong>
+                {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
+                {{ this.name }}
+            </strong>
+            <small>{{ kankaFileSize this.size }}</small>
+        </a>
+    {{/each}}
+</div>
