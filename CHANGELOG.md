@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/eXaminator/kanka-foundry/compare/2.1.1...2.2.0) (2021-06-26)
+
+
+### Features
+
+* add list of entities that have been deleted in kanka but exist in foundry ([6018241](https://github.com/eXaminator/kanka-foundry/commit/601824182ed8ad90cbfdf0e6ecec57201c1b34fc)), closes [#47](https://github.com/eXaminator/kanka-foundry/issues/47)
+* add official 0.8.8 support ([d6160cd](https://github.com/eXaminator/kanka-foundry/commit/d6160cd1f044144b051c7cb32d269f387ba500dd))
+* hide entities that are marked as template by default ([7c99f52](https://github.com/eXaminator/kanka-foundry/commit/7c99f52f5b96669ccc4c8250411cabd6c10a806e))
+* improve asset gallery view ([8b86f8b](https://github.com/eXaminator/kanka-foundry/commit/8b86f8b589affe67d3a18a05ca8af6658263cc00))
+* move all notes to the first tab to mirror Kankas new behavior ([48a9203](https://github.com/eXaminator/kanka-foundry/commit/48a920393370489ac1b504ec9f051a3d516f7396))
+* rename tabs to fall in line with recent Kanka update ([9a20ebe](https://github.com/eXaminator/kanka-foundry/commit/9a20ebe173fa6b2ba227c45b9a2561bcdf3e8515))
+
 ## [2.1.1](https://github.com/eXaminator/kanka-foundry/compare/2.1.0...2.1.1) (2021-06-17)
 
 
