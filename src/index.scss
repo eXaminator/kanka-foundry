@@ -434,6 +434,70 @@ ul.kanka-cards {
     }
 }
 
+.kanka-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 1em;
+    margin-bottom: 1em;
+
+    a {
+        color: inherit;
+        text-shadow: none;
+        text-decoration: none;
+        line-height: 1.5em;
+        display: grid;
+        grid-gap: .3em;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto 1fr;
+
+        &.-secret {
+            color: #f600248a;
+
+            > img, > i {
+                border-color: #f600248a;
+            }
+        }
+
+        *:first-child {
+            grid-column: span 2;
+        }
+
+        > img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        > i {
+            aspect-ratio: 1;
+            font-size: 150px;
+            text-align: center;
+            border: 1px solid black;
+            border-radius: 2px;
+            color: #00000050;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        strong, span, small {
+            display: block;
+        }
+
+        small {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        &:hover {
+            > img, > i {
+                box-shadow: 0 0 1rem 0 #00000099;
+            }
+        }
+    }
+}
+
 @keyframes kanka-spin {
     100% {
         transform: rotate(360deg);
