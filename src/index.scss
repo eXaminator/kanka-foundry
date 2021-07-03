@@ -30,10 +30,11 @@ button#kanka {
     border: 1px solid #b5b3a4;
     border-radius: 3px;
     font-size: 14px;
-    line-height: 28px;
-    height: 32px;
+    line-height: 22px;
+    height: 24px;
     padding: 1px 6px;
     white-space: nowrap;
+    box-sizing: border-box;
 
     > i:last-child {
         margin: 0;
@@ -42,13 +43,6 @@ button#kanka {
     &:hover, &:focus {
         outline: none;
         box-shadow: 0 0 5px red;
-    }
-
-    &.-small {
-        height: 24px;
-        margin: 0 0 0 .2em;
-        padding: 0 4px;
-        line-height: 24px;
     }
 }
 
@@ -121,7 +115,7 @@ details.kanka-details {
             display: flex;
 
             > button {
-                @extend .kanka-button, .-small;
+                @extend .kanka-button;
             }
         }
 
@@ -155,12 +149,6 @@ details.kanka-details {
         flex: none;
         width: auto;
         cursor: pointer;
-        height: 24px;
-        line-height: 24px;
-    }
-
-    &.-small > button {
-        @extend .kanka-button, .-small;
     }
 
     > a {
@@ -170,8 +158,7 @@ details.kanka-details {
 
         img {
             border: none;
-            height: 1.5em !important;
-            vertical-align: middle;
+            height: 20px !important;
         }
     }
 }
@@ -333,7 +320,7 @@ ul.kanka-cards {
         align-self: end;
 
         > button {
-            @extend .kanka-button, .-small;
+            @extend .kanka-button;
             flex: 1;
 
             &:first-child {

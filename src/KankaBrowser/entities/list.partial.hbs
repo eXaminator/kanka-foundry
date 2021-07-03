@@ -20,12 +20,12 @@
 
             </div>
             {{#if (kankaHasJournalEntry this.id)}}
-                <button type="button" data-action="open" data-id="{{ this.id }}" class="kanka-button -small">
+                <button type="button" data-action="open" data-id="{{ this.id }}" class="kanka-button">
                     <i class="fas fa-book-open"></i>
                     {{ kankaLocalize 'browser' 'action' 'openJournal' }}
                 </button>
             {{/if}}
-            <button type="button" data-action="sync" data-id="{{ this.id }}" class="kanka-button -small">
+            <button type="button" data-action="sync" data-id="{{ this.id }}" class="kanka-button">
                 {{#if (kankaHasJournalEntry this.id)}}
                     <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateSingle' }}
                 {{else}}
