@@ -11,22 +11,24 @@ class KankaJournalApplication extends BaseSheet {
     static get defaultOptions(): FormApplication.Options {
         return {
             ...super.defaultOptions,
-            classes: ['kanka', 'kanka-journal'],
+        };
+    }
+
+    constructor(object: any, options?: FormApplication.Options) {
+        super(object, object.getFlag(kanka.name, 'snapshot') ? {
+            ...options,
             closeOnSubmit: false,
             submitOnClose: false,
             submitOnChange: false,
             tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'details' }],
             scrollY: ['.kanka-tab'],
-            editable: true,
-        };
-    }
-
-    constructor(options?: FormApplication.Options) {
-        super(options);
+        } : options);
         this.ensureInitialisation();
     }
 
     ensureInitialisation(): void {
+        if (!this.isKankaEntry) return;
+
         if (kanka.isInitialized) {
             this.rerender();
         } else {
@@ -133,7 +135,7 @@ class KankaJournalApplication extends BaseSheet {
         // @ts-ignore
         await super._onSwapMode(event, mode);
 
-        if (mode === 'text') {
+        if (this.isKankaEntry && mode === 'text') {
             this.setPosition({ width: KankaJournalApplication.defaultOptions.width as number });
         }
     }
