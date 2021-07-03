@@ -1,3 +1,12 @@
+## [2.2.1](https://github.com/eXaminator/kanka-foundry/compare/2.2.0...2.2.1) (2021-07-03)
+
+
+### Bug Fixes
+
+* improve asset tab styling when few files were added to an entity ([8a9faae](https://github.com/eXaminator/kanka-foundry/commit/8a9faaebc0b057b82feed32a35e391f9254c80ba))
+* keep styles and options of non-kanka journal entries intact ([1deb4cb](https://github.com/eXaminator/kanka-foundry/commit/1deb4cb46975a93780069becd942102e6a123926))
+* streamline button styles across all kanka windows ([ba222db](https://github.com/eXaminator/kanka-foundry/commit/ba222db1a38dfdce5a6b226ffd2573319a56cb8e))
+
 # [2.2.0](https://github.com/eXaminator/kanka-foundry/compare/2.1.1...2.2.0) (2021-06-26)
 
 
