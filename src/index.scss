@@ -426,6 +426,7 @@ ul.kanka-cards {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     grid-gap: 1em;
     margin-bottom: 1em;
+    padding: 0 1em;
 
     a {
         color: inherit;
@@ -436,6 +437,7 @@ ul.kanka-cards {
         grid-gap: .3em;
         grid-template-columns: 1fr auto;
         grid-template-rows: auto 1fr;
+        max-width: 250px;
 
         &.-secret {
             color: #f600248a;
