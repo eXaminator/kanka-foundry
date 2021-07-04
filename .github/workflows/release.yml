@@ -30,20 +30,18 @@ jobs:
             -   name: Build
                 run: npm run build
 
-            -   name: Substitute Manifest and Download Links For Versioned Ones
-                id: sub_manifest_link_latest
-                uses: microsoft/variable-substitution@v1
-                with:
-                    files: './dist/module.json'
-                env:
-                    url: https://github.com/${{github.repository}}
-                    bugs: https://github.com/${{github.repository}}/issues
-                    manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-                    download: https://github.com/${{github.repository}}/releases/latest/download/module.zip
-
             -   name: Release
                 id: create-release
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 run: npm run release
+
+            -   name: Deploy on FoundryVTT
+                uses: eXaminator/foundry-auto-release@1.0.2
+                with:
+                    manifest-path: ./dist/module.json
+                    package-id: ${{ secrets.FVTT_PACKAGE_ID }}
+                    fvtt-username: ${{ secrets.FVTT_USERNAME }}
+                    fvtt-password: ${{ secrets.FVTT_PASSWORD }}
+
 

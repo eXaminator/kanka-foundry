@@ -2,10 +2,10 @@
   "name": "kanka-foundry",
   "title": "Kanka-Foundry",
   "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign management tool, with Foundry Virtual Tabletop, allowing you to import entities written in Kanka as journal entries into Foundry VTT. This module imports full Kanka entities, including their main entry text, image, relations and other data. This is not an official module, but a fan creation by someone who uses both Kanka and Foundry VTT.</p>",
-  "url": "",
-  "manifest": "",
-  "download": "",
-  "version": "0.0.0",
+  "url": "https://github.com/eXaminator/kanka-foundry",
+  "manifest": "https://github.com/eXaminator/kanka-foundry/releases/download/{{version}}/module.json",
+  "download": "https://github.com/eXaminator/kanka-foundry/releases/download/{{version}}/module.zip",
+  "version": "{{version}}",
   "author": "eXaminator",
   "authors": [
     {
@@ -58,5 +58,5 @@
     }
   ],
   "allowBugReporter": true,
-  "bugs": ""
+  "bugs": "https://github.com/eXaminator/kanka-foundry/issues"
 }
