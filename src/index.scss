@@ -9,9 +9,11 @@
 }
 
 input[type="image"] {
-    box-sizing: border-box;
-    border: 1px solid #000;
-    border-radius: 2px;
+    &, &:disabled {
+        box-sizing: border-box;
+        border: 1px solid #000;
+        border-radius: 2px;
+    }
 }
 
 button#kanka {
