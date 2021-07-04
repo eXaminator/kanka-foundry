@@ -37,7 +37,7 @@ jobs:
                 run: npm run release
 
             -   name: Deploy on FoundryVTT
-                uses: eXaminator/foundry-auto-release@1.0.2
+                uses: eXaminator/foundry-auto-release@1.0.6
                 with:
                     manifest-path: ./dist/module.json
                     package-id: ${{ secrets.FVTT_PACKAGE_ID }}
