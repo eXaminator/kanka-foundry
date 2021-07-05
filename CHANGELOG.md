@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/eXaminator/kanka-foundry/compare/2.2.2...2.2.3) (2021-07-05)
+
+
+### Bug Fixes
+
+* fix version replacement in semantic-release config ([c34846e](https://github.com/eXaminator/kanka-foundry/commit/c34846ec693a1a3b8c6e14608314e32d0b8b838a))
+
 ## [2.2.2](https://github.com/eXaminator/kanka-foundry/compare/2.2.1...2.2.2) (2021-07-05)
 
 
