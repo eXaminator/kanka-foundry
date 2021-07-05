@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/eXaminator/kanka-foundry/compare/2.2.1...2.2.2) (2021-07-05)
+
+
+### Bug Fixes
+
+* fix hover styles of images when displayed in GM Screen ([15f9146](https://github.com/eXaminator/kanka-foundry/commit/15f9146b5dbb9a495988a9205e49a7723bf39b57))
+
 ## [2.2.1](https://github.com/eXaminator/kanka-foundry/compare/2.2.0...2.2.1) (2021-07-03)
 
 
