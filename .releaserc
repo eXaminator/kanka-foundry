@@ -10,7 +10,7 @@ plugins:
     -   - '@google/semantic-release-replace-plugin'
         -   replacements:
             -   files: [ dist/module.json ]
-                from: "{{version}}"
+                from: "__VERSION__"
                 to: "${nextRelease.version}"
     -   - '@semantic-release/exec'
         - prepareCmd: cd ./dist && zip -r ../module.zip .
