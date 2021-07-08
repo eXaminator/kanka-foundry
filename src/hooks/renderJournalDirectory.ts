@@ -6,7 +6,8 @@ import { logInfo } from '../logger';
 let button: JQuery<HTMLButtonElement> | undefined;
 
 export default async function renderJournalDirectory(app: JournalSheet, html: JQuery<HTMLDivElement>): Promise<void> {
-    if (!game.user.isGM) return;
+    const isGm = !!(game as Game).user?.isGM;
+    if (!isGm) return;
 
     logInfo('renderJournalDirectory');
 
@@ -23,7 +24,7 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
     `);
 
     button.on('click', () => {
-        if (!game.user.isGM) return;
+        if (!isGm) return;
 
         if (!kanka.isInitialized) {
             kanka.showError('browser.error.initializationError');
@@ -40,7 +41,8 @@ export default async function renderJournalDirectory(app: JournalSheet, html: JQ
             return;
         }
 
-        browserApplication.render(true).bringToTop();
+        browserApplication.render(true);
+        browserApplication.bringToTop();
         browserApplication.maximize();
     });
 

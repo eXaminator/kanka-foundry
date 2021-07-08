@@ -1,4 +1,3 @@
-/// <reference types="foundry-pc-types" />
 import deleteJournalEntry from './hooks/deleteJournalEntry';
 import hmrWrapHook from './hooks/hmrWrapHook';
 import init from './hooks/init';

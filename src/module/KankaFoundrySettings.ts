@@ -27,7 +27,7 @@ export default class KankaFoundrySettings {
                 type: String,
                 default: '',
                 onChange: async (value) => {
-                    await this.#module.setToken(value);
+                    await this.#module.setToken(String(value));
                 },
             },
         );
@@ -45,7 +45,7 @@ export default class KankaFoundrySettings {
                     '': '',
                 },
                 onChange: async (value) => {
-                    await this.#module.loadCurrentCampaignById(parseInt(value, 10) || null);
+                    await this.#module.loadCurrentCampaignById(parseInt(String(value), 10) || null);
                 },
             },
         );
@@ -64,7 +64,7 @@ export default class KankaFoundrySettings {
                     ...this.#module.languages,
                 },
                 onChange: async (value) => {
-                    await this.#module.setLanguage(value);
+                    await this.#module.setLanguage(String(value));
                 },
             },
         );
@@ -141,7 +141,7 @@ export default class KankaFoundrySettings {
             },
         );
 
-        game.settings.register(
+        this.#module.game.settings.register(
             moduleConfig.name,
             KankaSettings.browserView,
             {
@@ -156,7 +156,7 @@ export default class KankaFoundrySettings {
             .values(EntityType)
             .filter(type => type !== EntityType.campaign)
             .forEach((type: EntityType) => {
-                game.settings.register(
+                this.#module.game.settings.register(
                     moduleConfig.name,
                     kankaBrowserTypeCollapseSetting(type),
                     {
@@ -171,13 +171,16 @@ export default class KankaFoundrySettings {
 
     public async dispose(): Promise<void> {
         Array
-            .from<string>(game.settings.settings.keys())
+            .from<string>(this.#module.game.settings.settings.keys())
             .filter((key: string) => key.startsWith(moduleConfig.name))
-            .forEach(key => game.settings.settings.delete(key));
+            .forEach(key => this.#module.game.settings.settings.delete(key));
     }
 
-    private register(setting: KankaSettings, data: unknown): void {
-        game.settings.register(this.#module.name, setting, data);
+    private register(
+        setting: KankaSettings,
+        data: ClientSettings.PartialSetting,
+    ): void {
+        this.#module.game.settings.register(this.#module.name, setting, data);
     }
 
     public get token(): string {
@@ -234,11 +237,11 @@ export default class KankaFoundrySettings {
 
     private getSetting<T = unknown>(setting: KankaSettings): T {
         logInfo('getSettings', setting);
-        return game.settings.get(this.#module.name, setting);
+        return this.#module.game.settings.get(this.#module.name, setting) as T;
     }
 
     private async setSetting<T = unknown>(setting: KankaSettings, value: T): Promise<void> {
         logInfo('setSettings', setting, value);
-        await game.settings.set(this.#module.name, setting, value);
+        await this.#module.game.settings.set(this.#module.name, setting, value);
     }
 }

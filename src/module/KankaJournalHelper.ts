@@ -8,6 +8,14 @@ import createTypeLoaders from './createTypeLoaders';
 import ReferenceCollection from './ReferenceCollection';
 import AbstractTypeLoader from './TypeLoaders/AbstractTypeLoader';
 
+type FlagTypes = {
+    id: KankaApiEntityId;
+    campaign: KankaApiId;
+    snapshot: KankaApiChildEntity;
+    type: KankaApiEntityType;
+    version: string;
+};
+
 type WritableEntity = Pick<KankaApiEntity, 'child_id' | 'type'>;
 
 export default class KankaJournalHelper {
@@ -19,31 +27,33 @@ export default class KankaJournalHelper {
     }
 
     public findAllKankaEntries(): JournalEntry[] {
-        return game.journal.filter(e => this.getFlag(e, 'id')) ?? undefined;
+        return this.journal.filter(e => !!this.getFlag(e, 'id')) ?? undefined;
     }
 
     public findByEntityId(id: KankaApiEntityId): JournalEntry | undefined {
-        return game.journal.find(e => this.getFlag(e, 'id') === id) ?? undefined;
+        return this.journal.find(e => this.getFlag(e, 'id') === id) ?? undefined;
     }
 
     public findByTypeAndId(type: KankaApiEntityType, id: KankaApiId): JournalEntry | undefined {
-        return game.journal
+        return this.journal
             .find(e => this.getFlag(e, 'type') === type && this.getFlag(e, 'snapshot')?.id === id) ?? undefined;
     }
 
-    public findFolderByFlags(flags: Record<string, unknown>): Folder | null {
+    public findFolderByFlags(flags: Record<string, unknown>): Folder | undefined {
         const entries = Object.entries(flags);
 
-        return game.folders.find((folder) => {
+        return this.folders.find((folder) => {
             if (folder.data.type !== 'JournalEntry') return false;
             return entries.every(([flag, value]) => folder.getFlag(this.module.name, flag) === value);
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public getFlag(entry: JournalEntry | undefined, name: string): any {
+    public getFlag<FlagName extends keyof FlagTypes>(
+        entry: JournalEntry | undefined,
+        name: FlagName,
+    ): FlagTypes[FlagName] | undefined {
         if (!entry) return undefined;
-        return entry.getFlag(this.module.name, name);
+        return entry.getFlag(this.module.name, name) as FlagTypes[typeof name];
     }
 
     public hasOutdatedEntryByEntityId(entity: KankaApiEntity): boolean {
@@ -147,7 +157,7 @@ export default class KankaJournalHelper {
                 .filter((ref): ref is Reference => !!ref) ?? [];
             const folder = await this.ensureFolderPath(type, path);
 
-            let defaultPermissions: number | undefined;
+            let defaultPermissions: foundry.CONST.EntityPermission | undefined;
 
             if (this.module.settings.automaticPermissions && !entity.is_private) {
                 defaultPermissions = CONST.ENTITY_PERMISSIONS.OBSERVER;
@@ -160,7 +170,7 @@ export default class KankaJournalHelper {
             }) as JournalEntry;
         }
 
-        entry.sheet.render();
+        entry.sheet?.render();
 
         return entry;
     }
@@ -169,12 +179,8 @@ export default class KankaJournalHelper {
         name: string,
         parent: Folder | undefined,
         flags: Record<string, unknown> = {},
-    ): Promise<Folder> {
-        const data = {
-            name,
-            parent: parent?.id ?? null,
-            type: 'JournalEntry',
-        };
+    ): Promise<Folder | undefined> {
+        const data: Record<`flags.${string}.${string}`, unknown> = {};
 
         Object
             .entries(flags)
@@ -182,14 +188,19 @@ export default class KankaJournalHelper {
                 data[`flags.${this.module.name}.${flag}`] = value;
             });
 
-        return await Folder.create(data) as Folder;
+        return Folder.create({
+            name,
+            parent: parent?.id ?? null,
+            type: 'JournalEntry',
+            ...data,
+        });
     }
 
     async ensureFolderByFlags(
         name: string,
         parent: Folder | undefined,
         flags: Record<string, unknown>,
-    ): Promise<Folder> {
+    ): Promise<Folder | undefined> {
         const folder = this.findFolderByFlags(flags);
 
         if (folder) return folder;
@@ -197,11 +208,11 @@ export default class KankaJournalHelper {
         return this.createFolder(name, parent, flags);
     }
 
-    async ensureTypeFolder(type: KankaApiEntityType): Promise<Folder> {
+    async ensureTypeFolder(type: KankaApiEntityType): Promise<Folder | undefined> {
         return this.ensureFolderByFlags(`[KANKA] ${this.module.getMessage('entityType', type)}`, undefined, { type });
     }
 
-    async ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder> {
+    async ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder | undefined> {
         let parent = await this.ensureTypeFolder(type);
 
         if (!this.module.settings.keepTreeStructure) return parent;
@@ -219,5 +230,15 @@ export default class KankaJournalHelper {
     protected buildVersionString(entity: { updated_at: string }): string {
         const version = String(this.module.currentVersion).padStart(6, '0');
         return `${version}-${entity.updated_at}`;
+    }
+
+    protected get journal(): Journal {
+        if (!(this.module.game.journal instanceof Journal)) throw new Error('Journal has not been initialized yet.');
+        return this.module.game.journal;
+    }
+
+    protected get folders(): Folders {
+        if (!(this.module.game.folders instanceof Folders)) throw new Error('Folders have not been initialized yet.');
+        return this.module.game.folders;
     }
 }

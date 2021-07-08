@@ -1,20 +1,34 @@
 import kanka from '../kanka';
+import { KankaApiChildEntity, KankaApiEntityType, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
+import Reference from '../types/Reference';
 import { path as template } from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 
-const BaseSheet = window.CONFIG.JournalEntry.sheetClass as typeof JournalSheet;
+interface Data extends JournalSheet.Data {
+    kankaIsGm: boolean;
+    kankaEntity: KankaApiChildEntity;
+    kankaEntityType: KankaApiEntityType;
+    kankaReferences: Reference;
+    kankaCampaignId: KankaApiId;
+    settings: {
+        imageInText: boolean;
+    };
+    localization: Localization;
+}
+
+const BaseSheet = CONFIG.JournalEntry.sheetClass as typeof JournalSheet;
 
 class KankaJournalApplication extends BaseSheet {
-    #lastRenderOptions = undefined;
+    #lastRenderOptions?: JournalSheet.RenderOptions = undefined;
 
-    static get defaultOptions(): FormApplication.Options {
+    static get defaultOptions(): JournalSheet.Options {
         return {
             ...super.defaultOptions,
         };
     }
 
-    constructor(object: any, options?: FormApplication.Options) {
+    constructor(object: JournalEntry, options?: JournalSheet.Options) {
         super(object, object.getFlag(kanka.name, 'snapshot') ? {
             ...options,
             closeOnSubmit: false,
@@ -40,17 +54,18 @@ class KankaJournalApplication extends BaseSheet {
         return Boolean(this.object.getFlag(kanka.name, 'snapshot'));
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public getData(): BaseEntitySheet.Data & Record<string, any> {
-        if (!this.isKankaEntry) return super.getData();
+    public getData(
+        options?: Application.RenderOptions,
+    ): Promise<DocumentSheet.Data<JournalEntry> | Data> | DocumentSheet.Data<JournalEntry> | Data {
+        if (!this.isKankaEntry) return super.getData(options);
 
         return {
             ...super.getData(),
-            kankaIsGm: game.user.isGM,
-            kankaEntity: this.object.getFlag(kanka.name, 'snapshot'),
-            kankaEntityType: this.object.getFlag(kanka.name, 'type'),
-            kankaReferences: this.object.getFlag(kanka.name, 'references'),
-            kankaCampaignId: this.object.getFlag(kanka.name, 'campaign'),
+            kankaIsGm: kanka.game.user?.isGM ?? false,
+            kankaEntity: this.object.getFlag(kanka.name, 'snapshot') as KankaApiChildEntity,
+            kankaEntityType: this.object.getFlag(kanka.name, 'type') as KankaApiEntityType,
+            kankaReferences: this.object.getFlag(kanka.name, 'references') as Reference,
+            kankaCampaignId: this.object.getFlag(kanka.name, 'campaign') as KankaApiId,
             settings: {
                 imageInText: kanka.settings.imageInText,
             },
@@ -77,9 +92,9 @@ class KankaJournalApplication extends BaseSheet {
             if (!action) return;
 
             if (action === 'refresh') {
-                const type = this.object.getFlag(kanka.name, 'type');
-                const campaign = this.object.getFlag(kanka.name, 'campaign');
-                const snapshot = this.object.getFlag(kanka.name, 'snapshot');
+                const type = this.object.getFlag(kanka.name, 'type') as KankaApiEntityType;
+                const campaign = this.object.getFlag(kanka.name, 'campaign') as KankaApiId;
+                const snapshot = this.object.getFlag(kanka.name, 'snapshot') as KankaApiChildEntity;
                 this.setLoadingState(event.currentTarget);
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 await kanka.journals.write(campaign, [{ child_id: snapshot.id, type }]);
@@ -87,9 +102,7 @@ class KankaJournalApplication extends BaseSheet {
             }
 
             if (action === 'show-image') {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                this.render(true, { sheetMode: 'image' });
+                this.render(true, { sheetMode: 'image' } as JournalSheet.RenderOptions);
             }
         });
     }
@@ -100,7 +113,7 @@ class KankaJournalApplication extends BaseSheet {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected _updateObject(event: Event | JQuery.Event, formData: unknown): Promise<unknown> {
+    protected _updateObject(event: Event, formData: Record<string, unknown>): Promise<JournalEntry> {
         if (!this.isKankaEntry) return super._updateObject(event, formData);
 
         return super._updateObject(event, formData);
@@ -121,18 +134,14 @@ class KankaJournalApplication extends BaseSheet {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected _inferDefaultMode(): 'image' | 'text' | null {
+    protected _inferDefaultMode(): JournalSheet.SheetMode | null {
         if (this.isKankaEntry) return 'text';
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         return super._inferDefaultMode();
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected async _onSwapMode(event: unknown, mode: string): Promise<void> {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+    protected async _onSwapMode(event: Event, mode: JournalSheet.SheetMode): Promise<void> {
         await super._onSwapMode(event, mode);
 
         if (this.isKankaEntry && mode === 'text') {
@@ -140,11 +149,11 @@ class KankaJournalApplication extends BaseSheet {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
-    protected _render(force?: boolean, options?: any): Promise<void> {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    protected _render(force?: boolean, options?: JournalSheet.RenderOptions): Promise<void> {
         this.#lastRenderOptions = options;
         return super._render(force, options);
     }
 }
 
-window.CONFIG.JournalEntry.sheetClass = KankaJournalApplication;
+CONFIG.JournalEntry.sheetClass = KankaJournalApplication;
