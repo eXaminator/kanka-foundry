@@ -12,6 +12,6 @@ export default function kankaLocalize(...args: unknown[]): string {
 
     const key = ['KANKA', ...parts].join('.');
 
-    const localization = options.data?.root?.localization ?? game.i18n;
+    const localization = options.data?.root?.localization ?? (game as Game).i18n;
     return isObjectEmpty(data) ? localization.localize(key) : localization.format(String(key), data);
 }

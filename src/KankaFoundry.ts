@@ -11,20 +11,24 @@ export default class KankaFoundry {
     public readonly currentVersion = 1;
 
     #name = moduleConfig.name;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    #module?: Record<string, any>;
+    #module?: Game.ModuleData<unknown>;
     #settings = new KankaFoundrySettings(this);
     #api = new KankaApi();
     #currentCampaign?: KankaApiCampaign;
     #debugElement = $('<span class="kanka-limit-debug">0 / 0 (0)</span>');
-    #renderLocalization = new Localization();
+    #renderLocalization = new Localization('en');
     #journalHelper = new KankaJournalHelper(this);
     #isInitialized = false;
+
+    get game(): Game {
+        if (!(game instanceof Game)) throw new Error('Game is not initialized yet.');
+        return game;
+    }
 
     public async initialize(): Promise<void> {
         logInfo('Initializing');
 
-        this.#module = game.modules.get(this.#name);
+        this.#module = this.game.modules.get(this.#name);
 
         // Debug output to show current rate limiting
         if (process.env.NODE_ENV === 'development') {
@@ -40,7 +44,7 @@ export default class KankaFoundry {
             await this.loadCurrentCampaignById(this.#settings.currentCampaignId);
 
             await this.#renderLocalization.initialize();
-            await this.#renderLocalization.setLanguage(this.settings.importLanguage || game.i18n.lang);
+            await this.#renderLocalization.setLanguage(this.settings.importLanguage || this.game.i18n.lang);
             migrateV1(this);
 
             this.#isInitialized = true;
@@ -49,7 +53,7 @@ export default class KankaFoundry {
 
             // Special case, because notifications and translations might not be ready yet.
             const interval = setInterval(() => {
-                if (ui?.notifications && (game?.i18n?.translations as Record<string, unknown>)?.KANKA) {
+                if (ui?.notifications && (this.game.i18n.translations as Record<string, unknown>)?.KANKA) {
                     this.showError('general.initializationError');
                     clearInterval(interval);
                 }
@@ -109,7 +113,7 @@ export default class KankaFoundry {
     }
 
     public setLanguage(language: string): Promise<void> {
-        return this.#renderLocalization.setLanguage(language || game.i18n.lang);
+        return this.#renderLocalization.setLanguage(language || this.game.i18n.lang);
     }
 
     public get settings(): KankaFoundrySettings {
@@ -133,10 +137,10 @@ export default class KankaFoundry {
         const keys = args.slice(0, -1);
 
         if (typeof values === 'string') {
-            return game.i18n.localize(`KANKA.${[...keys, values].join('.')}`);
+            return this.game.i18n.localize(`KANKA.${[...keys, values].join('.')}`);
         }
 
-        return game.i18n.format(`KANKA.${keys.join('.')}`, values);
+        return this.game.i18n.format(`KANKA.${keys.join('.')}`, values);
     }
 
     public showInfo(...args: [...string[], Record<string, unknown>] | string[]): void {
@@ -148,7 +152,7 @@ export default class KankaFoundry {
     }
 
     public showError(...args: [...string[], Record<string, unknown>] | string[]): void {
-        ui.notifications.error(this.getMessage(...args), { permanent: true });
+        ui.notifications?.error(this.getMessage(...args), { permanent: true });
     }
 
     public async loadCurrentCampaignById(id: number | null): Promise<void> {

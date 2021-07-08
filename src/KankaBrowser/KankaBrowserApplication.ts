@@ -17,6 +17,7 @@ interface TemplateData {
     data?: KankaApiEntity[];
     typeConfig: Record<string, EntityTypeConfig>,
     currentFilter: string;
+    deletedEntries: KankaApiChildEntity[];
     settings: {
         showPrivate: boolean;
         view: typeof kanka.settings.browserView;
@@ -64,7 +65,8 @@ export default class KankaBrowserApplication extends Application {
     #entities: KankaApiEntity[] | undefined;
 
     static get defaultOptions(): Application.Options {
-        return mergeObject(super.defaultOptions, {
+        return {
+            ...super.defaultOptions,
             id: 'kanka-browser',
             classes: ['kanka', 'kanka-browser'],
             template,
@@ -73,20 +75,20 @@ export default class KankaBrowserApplication extends Application {
             title: kanka.getMessage('browser.title'),
             tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'import' }],
             resizable: true,
-        });
+        };
     }
 
     protected get campaign(): KankaApiCampaign {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return kanka.currentCampaign!;
+        if (!kanka.currentCampaign) throw new Error('Campaign has not been loaded yet.');
+        return kanka.currentCampaign;
     }
 
     protected get deletedSnapshots(): KankaApiChildEntity[] {
         return kanka.journals
             .findAllKankaEntries()
             .flatMap((entry) => {
-                const campaignId = kanka.journals.getFlag(entry, 'campaign') as KankaApiId;
-                const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiChildEntity;
+                const campaignId = kanka.journals.getFlag(entry, 'campaign');
+                const snapshot = kanka.journals.getFlag(entry, 'snapshot');
 
                 if (!snapshot) return [];
                 if (!this.#entities) return [];
