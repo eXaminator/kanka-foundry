@@ -32,11 +32,12 @@ jobs:
 
             -   name: Release
                 id: create-release
+                uses: docker://codfish/semantic-release-action:latest
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: npm run release
 
             -   name: Deploy on FoundryVTT
+                if: steps.create-release.outputs.new-release-published == 'true'
                 uses: eXaminator/foundry-auto-release@1.0.6
                 with:
                     manifest-path: ./dist/module.json
