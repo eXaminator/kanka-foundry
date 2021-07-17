@@ -4,6 +4,7 @@ const { resolve, extname, basename } = require('path');
 const moduleConfig = require('./src/module.json');
 const yaml = require('js-yaml');
 const flat = require('flat');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const devMode = process.env.NODE_ENV === 'development';
 
@@ -123,6 +124,15 @@ module.exports = {
     },
     optimization: {
         minimize: !devMode,
+        minimizer: [
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    keep_fnames: true,
+                },
+            }),
+        ],
     },
     watchOptions: {
         ignored: /node_modules/,
