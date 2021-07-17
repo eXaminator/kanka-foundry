@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/eXaminator/kanka-foundry/compare/2.3.0...2.3.1) (2021-07-17)
+
+
+### Bug Fixes
+
+* fix code minification so that the correct sheet class will be selected for kanka entries ([229697e](https://github.com/eXaminator/kanka-foundry/commit/229697ed6b1f15a2f6cb05150ec118925f41d290))
+
 # [2.3.0](https://github.com/eXaminator/kanka-foundry/compare/2.2.3...2.3.0) (2021-07-17)
 
 
