@@ -13,7 +13,7 @@ plugins:
                 from: "__VERSION__"
                 to: "${nextRelease.version}"
     -   - '@semantic-release/exec'
-        - prepareCmd: cd ./dist && zip -r ../module.zip .
+        - prepareCmd: apt-get update && apt-get install zip && cd ./dist && zip -r ../module.zip .
     -   - '@semantic-release/github'
         - assets:
             -   path: dist/module.json
