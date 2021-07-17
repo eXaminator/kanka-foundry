@@ -21,4 +21,8 @@ export default {
         'jest-watch-typeahead/testname',
     ],
     setupFiles: ['./src/setupTests.ts'],
+    moduleNameMapper: {
+        '\\.(hbs)$': '<rootDir>/src/__mocks__/templates.ts',
+        '\\.(scss)$': '<rootDir>/src/__mocks__/scss.ts',
+    },
 };
