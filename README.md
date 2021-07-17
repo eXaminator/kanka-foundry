@@ -34,6 +34,7 @@ almost everything from the Kanka entries, including:
     "members" or "all" will be handled as secret.
 - Dynamically link between imported Journal Entries to allow easy navigation of all your data without leaving your VTT.
 - Show which entities are outdated and need to be updated.
+- Show the completion status of Kanka quests in the journal sidebar.
 
 ## Configuration
 This module provides many configuration options to handle authentication to Kanka as well as details on how do display
@@ -59,6 +60,10 @@ level will be flattened to this 3rd level instead.
 - **Include image in text**: When importing an entity from Kanka it will use its main image as the journal entries image 
 in foundry. With this setting the image will additionally be displayed in the journal entry next to its meta data and
 text.
+- **Automatically set permissions**: When importing an entity, set the best default permission based on whether the
+entity is marked as private or public.
+- **Quest status icon**: Adds an icon in front of every Kanka quest in the journal sidebar to show whether it is
+completed or not.
 - **Show private entities**: If you disable this option, the module won't allow you sync entities that were marked as
 private in Kanka. Private entities that were imported before changing this setting will remain in your journal but can't
 be refreshed from Kanka until this setting has been enabled again.
