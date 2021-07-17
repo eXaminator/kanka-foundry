@@ -14,6 +14,7 @@
       "twitter": "@eXXaminator"
     }
   ],
+  "scripts": ["sheetClassShim.js"],
   "esmodules": ["index.js"],
   "styles": ["index.css"],
   "languages": [

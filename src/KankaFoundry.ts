@@ -1,7 +1,10 @@
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
+import registerSheet from './KankaJournal/KankaJournalApplication';
+import KankaJournalApplication from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
+import migrateV2 from './migrations/migrateV2';
 import moduleConfig from './module.json';
 import KankaFoundrySettings from './module/KankaFoundrySettings';
 import KankaJournalHelper from './module/KankaJournalHelper';
@@ -46,6 +49,9 @@ export default class KankaFoundry {
             await this.#renderLocalization.initialize();
             await this.#renderLocalization.setLanguage(this.settings.importLanguage || this.game.i18n.lang);
             migrateV1(this);
+            await migrateV2(this);
+
+            registerSheet(this);
 
             this.#isInitialized = true;
         } catch (error) {

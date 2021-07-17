@@ -135,6 +135,7 @@ export default class KankaJournalHelper {
             name: entity.name,
             img: entity.has_custom_image ? entity.image_full : undefined,
             content: entity.entry_parsed,
+            'flags.core.sheetClass': `${this.module.name}.KankaJournalApplication`,
             [`flags.${this.module.name}.campaign`]: campaignId,
             [`flags.${this.module.name}.type`]: type,
             [`flags.${this.module.name}.id`]: entity.entity_id,

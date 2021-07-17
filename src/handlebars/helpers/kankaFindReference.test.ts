@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import kanka from '../../kanka';
-import KankaJournalHelper from '../../module/KankaJournalHelper';
+import type KankaJournalHelper from '../../module/KankaJournalHelper';
 import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import Reference from '../../types/Reference';
 import kankaFindReference from './kankaFindReference';
