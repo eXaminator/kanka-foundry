@@ -151,6 +151,11 @@ KANKA:
             automaticPermissions:
                 label: Automatisch Berechtigungen setzen
                 hint: Alle Spieler erhalten automatisch Beobachter Rechte für neu importierte Einträge.
+            questStatusIcon:
+                label: Quest Status-Icon
+                hint: |
+                    Zeigt ein Icon entsprechend des Quest-Status vor dem Namen von Quests in der Liste aller Einträge
+                    an.
         error:
             ErrorInvalidAccessToken: Das Kanka Zugriffs-Token ist ungültig..
             ErrorTokenExpired: Dein Kanka Zugriffs-Token ist abgelaufen. Bitte hinterlege ein neues.

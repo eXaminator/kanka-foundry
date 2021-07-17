@@ -39,6 +39,10 @@ export default class KankaJournalHelper {
             .find(e => this.getFlag(e, 'type') === type && this.getFlag(e, 'snapshot')?.id === id) ?? undefined;
     }
 
+    public findAllByType(type: KankaApiEntityType): JournalEntry[] {
+        return this.journal.filter(e => this.getFlag(e, 'type') === type);
+    }
+
     public findFolderByFlags(flags: Record<string, unknown>): Folder | undefined {
         const entries = Object.entries(flags);
 

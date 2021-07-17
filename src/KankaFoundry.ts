@@ -1,7 +1,6 @@
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
 import registerSheet from './KankaJournal/KankaJournalApplication';
-import KankaJournalApplication from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
 import migrateV2 from './migrations/migrateV2';

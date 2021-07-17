@@ -141,6 +141,18 @@ export default class KankaFoundrySettings {
             },
         );
 
+        this.register(
+            KankaSettings.questQuestStatusIcon,
+            {
+                name: this.#module.getMessage('settings.questStatusIcon.label'),
+                hint: this.#module.getMessage('settings.questStatusIcon.hint'),
+                scope: 'world',
+                config: true,
+                type: Boolean,
+                default: false,
+            },
+        );
+
         this.#module.game.settings.register(
             moduleConfig.name,
             KankaSettings.browserView,
@@ -225,6 +237,10 @@ export default class KankaFoundrySettings {
 
     public get automaticPermissions(): boolean {
         return this.getSetting<boolean>(KankaSettings.automaticPermissions);
+    }
+
+    public get questStatusIcon(): boolean {
+        return this.getSetting<boolean>(KankaSettings.questQuestStatusIcon);
     }
 
     public isTypeCollapsed(type: EntityType): boolean {
