@@ -77,7 +77,7 @@ export default class KankaFoundrySettings {
                 scope: 'world',
                 config: true,
                 type: Boolean,
-                default: false,
+                default: true,
             },
         );
 
@@ -89,7 +89,7 @@ export default class KankaFoundrySettings {
                 scope: 'world',
                 config: true,
                 type: Boolean,
-                default: false,
+                default: true,
             },
         );
 
