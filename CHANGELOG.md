@@ -1,3 +1,16 @@
+# [2.3.0](https://github.com/eXaminator/kanka-foundry/compare/2.2.3...2.3.0) (2021-07-17)
+
+
+### Bug Fixes
+
+* change default settings for folder tree and image in text ([ace1868](https://github.com/eXaminator/kanka-foundry/commit/ace186848ecf484968e6491dd1dd2319d9a68bb8))
+
+
+### Features
+
+* add option to add an icon to quest names in the sidebar to show their completion status ([d28e792](https://github.com/eXaminator/kanka-foundry/commit/d28e792255a1a50e5657fa873df0f1b4f19784ca))
+* add shim for journal sheet registration to improve compatibility with other modules and systems ([8760add](https://github.com/eXaminator/kanka-foundry/commit/8760addc1243ce9683f2853b5083b24f270690a3))
+
 ## [2.2.3](https://github.com/eXaminator/kanka-foundry/compare/2.2.2...2.2.3) (2021-07-05)
 
 
