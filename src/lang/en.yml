@@ -148,6 +148,11 @@ KANKA:
         automaticPermissions:
             label: Automatically set permissions
             hint: All players will automatically get observer permissions for for newly imported entities.
+        questStatusIcon:
+            label: Quest status icon
+            hint: |
+                Display an icon showing the current completion status of a quest in front of its name in the list of
+                all journal entries.
         error:
             ErrorInvalidAccessToken: The given Kanka access token is invalid.
             ErrorTokenExpired: Your Kanka access token is expired. Please provide a new one.

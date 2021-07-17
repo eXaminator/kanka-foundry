@@ -9,6 +9,7 @@ export enum KankaSettings {
     browserView = 'browserView',
     automaticPermissions = 'automaticPermissions',
     importTemplateEntities = 'importTemplateEntities',
+    questQuestStatusIcon = 'questQuestStatusIcon',
 }
 
 export function kankaBrowserTypeCollapseSetting(type: string): KankaSettings {

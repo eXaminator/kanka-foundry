@@ -489,6 +489,16 @@ ul.kanka-cards {
     }
 }
 
+.kanka-quest-status {
+    &.-complete {
+        color: #56d956;
+    }
+
+    &.-open {
+        color: #eab553;
+    }
+}
+
 @keyframes kanka-spin {
     100% {
         transform: rotate(360deg);
