@@ -54,7 +54,7 @@
             {{~#>additionalDetails~}}{{~/additionalDetails~}}
         </div>
 
-        <dl class="grid">
+        <dl class="kanka-grid">
             {{~#>profile~}}{{~/profile~}}
             {{~#with (kankaFilterBy (kankaFilterReferences kankaEntity.relations) 'is_star' true) as | starred |~}}
                 {{~#each starred ~}}
