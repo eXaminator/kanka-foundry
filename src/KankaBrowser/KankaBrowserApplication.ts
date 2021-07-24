@@ -117,7 +117,7 @@ export default class KankaBrowserApplication extends Application {
             kankaCampaignId: this.campaign.id,
             currentFilter: this.#currentFilter,
             typeConfig,
-            data: this.#entities?.filter(e => !e.is_template || kanka.settings.importTemplateEntities),
+            data: this.#entities,
             deletedEntries: this.deletedSnapshots,
             settings: {
                 showPrivate: kanka.settings.importPrivateEntities,
@@ -288,7 +288,7 @@ export default class KankaBrowserApplication extends Application {
     }
 
     protected async loadEntities(): Promise<void> {
-        this.#entities = await kanka.api.getAllEntities(
+        const entities = await kanka.api.getAllEntities(
             this.campaign.id,
             [
                 'ability',
@@ -303,6 +303,18 @@ export default class KankaBrowserApplication extends Application {
                 'quest',
             ],
         );
+
+        this.#entities = entities?.filter((entity) => {
+            if (!kanka.settings.importTemplateEntities && entity.is_template) {
+                return false;
+            }
+
+            if (!kanka.settings.importPrivateEntities && entity.is_private) {
+                return false;
+            }
+
+            return true;
+        });
 
         this.render();
     }

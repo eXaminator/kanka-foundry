@@ -55,31 +55,29 @@
                 {{#if data}}
                     {{#each (kankaGroupBy (kankaSortBy data 'type' 'name') 'type') as |entities type|}}
                         {{#with (lookup ../typeConfig type) as |typeConfig|}}
-                            {{#with (kankaFilterAccessible entities ignore=../../settings.showPrivate) as |entities| }}
-                                <details class="kanka-details" data-type="{{ type }}" {{#if typeConfig.isOpen}}open{{/if}}>
-                                    <summary class="action-row">
-                                        <i class="fas {{ typeConfig.icon }}"></i>
-                                        <div>
-                                            {{#kankaLinkEntity type }}{{ kankaLocalize 'entityType' type }}{{/kankaLinkEntity}}
-                                        </div>
-                                        <div class="actions">
-                                            <button type="button" data-action="link-type" data-type="{{ type }}">
-                                                <i class="fas fa-link fa-fw"></i>
-                                                {{ kankaLocalize 'browser' 'action' 'linkAll' }}
-                                            </button>
-                                            <button type="button" data-action="update-outdated" data-type="{{ type }}">
-                                                <i class="fas fa-sync fa-fw"></i>
-                                                {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
-                                            </button>
-                                        </div>
-                                    </summary>
-                                    {{#if (kankaIsOneOf ../../../settings.view 'grid')}}
-                                        {{>entities/grid entities=entities}}
-                                    {{else}}
-                                        {{>entities/list entities=entities}}
-                                    {{/if}}
-                                </details>
-                            {{/with}}
+                            <details class="kanka-details" data-type="{{ type }}" {{#if typeConfig.isOpen}}open{{/if}}>
+                                <summary class="action-row">
+                                    <i class="fas {{ typeConfig.icon }}"></i>
+                                    <div>
+                                        {{#kankaLinkEntity type }}{{ kankaLocalize 'entityType' type }}{{/kankaLinkEntity}}
+                                    </div>
+                                    <div class="actions">
+                                        <button type="button" data-action="link-type" data-type="{{ type }}">
+                                            <i class="fas fa-link fa-fw"></i>
+                                            {{ kankaLocalize 'browser' 'action' 'linkAll' }}
+                                        </button>
+                                        <button type="button" data-action="update-outdated" data-type="{{ type }}">
+                                            <i class="fas fa-sync fa-fw"></i>
+                                            {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
+                                        </button>
+                                    </div>
+                                </summary>
+                                {{#if (kankaIsOneOf ../../../settings.view 'grid')}}
+                                    {{>entities/grid entities=entities}}
+                                {{else}}
+                                    {{>entities/list entities=entities}}
+                                {{/if}}
+                            </details>
                         {{/with}}
                     {{/each}}
                 {{else}}
