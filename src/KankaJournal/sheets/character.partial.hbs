@@ -28,7 +28,7 @@
                 <div class="kanka-card {{#unless (kankaOr ../kankaEntity.is_personality_visible (kankaEq @key 'appearance')) }}-secret{{/unless}}">
                     <h2 class="kanka-card-header">{{kankaLocalize 'journal.character.traits' @key}}</h2>
                     <div class="kanka-card-content -outdent">
-                        <dl class="grid -borderless">
+                        <dl class="kanka-grid -borderless">
                             {{~#each (kankaSortBy this 'default_order')~}}
                                 {{~>../shared/detailRow value=entry rawLabel=name }}
                             {{~/each~}}

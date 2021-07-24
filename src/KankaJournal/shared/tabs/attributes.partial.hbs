@@ -6,7 +6,7 @@
     {{/if}}
 {{/if}}
 
-<dl class="grid">
+<dl class="kanka-grid">
     {{~#each (kankaSortBy (kankaFilterAccessible kankaEntity.attributes) 'default_order') ~}}
         {{~>attributeEntry attribute=this~}}
     {{~/each~}}

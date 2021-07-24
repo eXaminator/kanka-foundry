@@ -24,6 +24,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
         static get defaultOptions(): JournalSheet.Options {
             return {
                 ...super.defaultOptions,
+                classes: [],
             };
         }
 
@@ -34,7 +35,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 submitOnClose: false,
                 submitOnChange: false,
                 tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'details' }],
-                scrollY: ['.kanka-tab'],
+                scrollY: ['.tab'],
             } : options);
             this.ensureInitialisation();
         }
