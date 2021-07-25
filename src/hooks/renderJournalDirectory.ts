@@ -24,7 +24,7 @@ export default async function renderJournalDirectory(
         const questEntries = kanka.journals.findAllByType('quest');
         questEntries.forEach((entry) => {
             const li = html.find(`[data-entity-id="${entry.id}"]`);
-            const link = li.find('a');
+            const link = li.find('.entity-name a');
             const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiQuest;
 
             link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
