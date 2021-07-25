@@ -11,25 +11,22 @@ const questStatus = {
     open: '<i class="fas fa-circle kanka-quest-status -open"></i>',
 };
 
-export default async function renderJournalDirectory(
-    app: JournalDirectory,
-    html: JQuery<HTMLDivElement>,
-): Promise<void> {
+function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
+    if (!kanka.settings.questStatusIcon) return;
+
+    const questEntries = kanka.journals.findAllByType('quest');
+    questEntries.forEach((entry) => {
+        const li = html.find(`[data-entity-id="${entry.id}"]`);
+        const link = li.find('.entity-name a');
+        const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiQuest;
+
+        link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
+    });
+}
+
+function renderKankaButton(html: JQuery<HTMLDivElement>): void {
     const isGm = !!(game as Game).user?.isGM;
     if (!isGm) return;
-
-    logInfo('renderJournalDirectory');
-
-    if (kanka.settings.questStatusIcon) {
-        const questEntries = kanka.journals.findAllByType('quest');
-        questEntries.forEach((entry) => {
-            const li = html.find(`[data-entity-id="${entry.id}"]`);
-            const link = li.find('.entity-name a');
-            const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiQuest;
-
-            link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
-        });
-    }
 
     const browserApplication = new KankaBrowserApplication();
 
@@ -65,6 +62,15 @@ export default async function renderJournalDirectory(
     });
 
     html.find('.header-actions').append(button);
+}
+
+export default async function renderJournalDirectory(
+    app: JournalDirectory,
+    html: JQuery<HTMLDivElement>,
+): Promise<void> {
+    logInfo('renderJournalDirectory');
+    renderQuestStatusIcons(html);
+    renderKankaButton(html);
 }
 
 if (module.hot) {
