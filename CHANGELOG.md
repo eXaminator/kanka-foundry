@@ -1,3 +1,13 @@
+## [2.3.2](https://github.com/eXaminator/kanka-foundry/compare/2.3.1...2.3.2) (2021-07-25)
+
+
+### Bug Fixes
+
+* make css classes for specific to prevent style interference from other systems / modules ([63135f8](https://github.com/eXaminator/kanka-foundry/commit/63135f8437ace11eb52f1c2c59e90b0f34e2c16b))
+* register sheet class earlier in initialization to prevent them from not being loaded ([c9e72a6](https://github.com/eXaminator/kanka-foundry/commit/c9e72a6f70a1ef0ab159ac84453e111477265dfe))
+* take settings for private and template entities into account when using "link all" ([0655b37](https://github.com/eXaminator/kanka-foundry/commit/0655b37bd28be8f7d53278f211f0cba5b58b655f))
+* use correct method to bring kanka window into focus ([13cfd42](https://github.com/eXaminator/kanka-foundry/commit/13cfd425d747c4c80f3e9aff8c205c42da7ff9a9))
+
 ## [2.3.1](https://github.com/eXaminator/kanka-foundry/compare/2.3.0...2.3.1) (2021-07-17)
 
 
