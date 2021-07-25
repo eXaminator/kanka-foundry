@@ -1,3 +1,10 @@
+## [2.3.4](https://github.com/eXaminator/kanka-foundry/compare/2.3.3...2.3.4) (2021-07-25)
+
+
+### Bug Fixes
+
+* display quest completion icon for players, not just GM ([4b5ad6d](https://github.com/eXaminator/kanka-foundry/commit/4b5ad6de6711d0e5859221c668e412fa5a72d846))
+
 ## [2.3.3](https://github.com/eXaminator/kanka-foundry/compare/2.3.2...2.3.3) (2021-07-25)
 
 
