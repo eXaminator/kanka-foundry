@@ -43,7 +43,7 @@ export default async function renderJournalDirectory(
         </button>
     `);
 
-    button.on('click', () => {
+    button.on('click', async () => {
         if (!isGm) return;
 
         if (!kanka.isInitialized) {
@@ -61,9 +61,7 @@ export default async function renderJournalDirectory(
             return;
         }
 
-        browserApplication.render(true);
-        browserApplication.bringToTop();
-        browserApplication.maximize();
+        browserApplication.render(true, { focus: true });
     });
 
     html.find('.header-actions').append(button);
