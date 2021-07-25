@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/eXaminator/kanka-foundry/compare/2.3.2...2.3.3) (2021-07-25)
+
+
+### Bug Fixes
+
+* fix quest completion icon to not intefere with permission viewer ([ecf324e](https://github.com/eXaminator/kanka-foundry/commit/ecf324ee6fd9a428fe48a53f82af8c854b918339))
+
 ## [2.3.2](https://github.com/eXaminator/kanka-foundry/compare/2.3.1...2.3.2) (2021-07-25)
 
 
