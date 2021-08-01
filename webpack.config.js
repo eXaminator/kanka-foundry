@@ -82,7 +82,6 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 './src/module.json',
-                ...moduleConfig.scripts.map(script => `./src/${String(script)}`),
                 {
                     from: './src/lang/**/*.yml',
                     to: './lang/[name].json',
