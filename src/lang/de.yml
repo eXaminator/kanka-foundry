@@ -3,6 +3,13 @@ KANKA:
         initializationError: >
             Beim Initialisieren von Kanka-Foundry ist ein Fehler aufgetreten. Dabei könnte es sich um Probleme mit der
             Kanka-API, dem konfigurierten Token oder der ausgewählten Kampagne handeln.
+        missingDocumentSheetRegistrar:
+            title: Modul Abhängigkeit fehlt
+            text: |
+                <p>Kanka-Foundry benötigt das Modul <strong>"Lib: Document Sheet Registrar"</strong> um die aus Kanka
+                synchronisierten Einträge korrekt anzeigen zu können. Bitte stelle sicher, dass das Modul instaliert und
+                aktiviert wurde.
+            button: OK
 
     sidebar:
         button: Aus Kanka importieren

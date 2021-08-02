@@ -140,7 +140,7 @@ export default class KankaFoundry {
         const values = args.slice(-1)[0];
         const keys = args.slice(0, -1);
 
-        if (typeof values === 'string') {
+        if (!values || typeof values === 'string') {
             return this.game.i18n.localize(`KANKA.${[...keys, values].join('.')}`);
         }
 

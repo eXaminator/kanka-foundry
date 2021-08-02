@@ -3,7 +3,13 @@ KANKA:
         initializationError: |
             There was an error when initializing Kanka-Foundry. This might be due to problems with the Kanka-API or
             with your Token or Campaign settings.
-
+        missingDocumentSheetRegistrar:
+            title: Module dependency is missing
+            text: |
+                <p>Kanka-Foundry needs the module <strong>"Lib: Document Sheet Registrar"</strong> in order to properly
+                display synced Kanka entries in Foundry. Please make sure that the module is properly installed and
+                activated for this world.</p>
+            button: OK
     sidebar:
         button: Import from Kanka
 
