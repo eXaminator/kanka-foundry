@@ -1,3 +1,10 @@
+## [2.3.5](https://github.com/eXaminator/kanka-foundry/compare/2.3.4...2.3.5) (2021-08-02)
+
+
+### Bug Fixes
+
+* exchange shim with dependency to _document-sheet-registrar ([b99db12](https://github.com/eXaminator/kanka-foundry/commit/b99db124bb9ae98244fd57aa4c9d6e8475dfce3f)), closes [#67](https://github.com/eXaminator/kanka-foundry/issues/67)
+
 ## [2.3.4](https://github.com/eXaminator/kanka-foundry/compare/2.3.3...2.3.4) (2021-07-25)
 
 
