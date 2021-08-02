@@ -1,3 +1,10 @@
+## [2.3.6](https://github.com/eXaminator/kanka-foundry/compare/2.3.5...2.3.6) (2021-08-02)
+
+
+### Bug Fixes
+
+* add dialog to inform the user if the sheet registrar module is not activated ([ca9bd92](https://github.com/eXaminator/kanka-foundry/commit/ca9bd92e6c5e110800e91d428d2824879c75cafc))
+
 ## [2.3.5](https://github.com/eXaminator/kanka-foundry/compare/2.3.4...2.3.5) (2021-08-02)
 
 
