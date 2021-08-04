@@ -1,3 +1,10 @@
+## [2.3.7](https://github.com/eXaminator/kanka-foundry/compare/2.3.6...2.3.7) (2021-08-04)
+
+
+### Bug Fixes
+
+* set correct root classes for journal applications ([50f4e03](https://github.com/eXaminator/kanka-foundry/commit/50f4e03c5087aca5ec159833c0cec2894bb9fe31))
+
 ## [2.3.6](https://github.com/eXaminator/kanka-foundry/compare/2.3.5...2.3.6) (2021-08-02)
 
 
