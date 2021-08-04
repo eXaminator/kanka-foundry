@@ -24,19 +24,17 @@ export default function registerSheet(kanka: KankaFoundry): void {
         static get defaultOptions(): JournalSheet.Options {
             return {
                 ...super.defaultOptions,
-                classes: [],
-            };
-        }
-
-        constructor(object: JournalEntry, options?: JournalSheet.Options) {
-            super(object, object.getFlag(kanka.name, 'snapshot') ? {
-                ...options,
                 closeOnSubmit: false,
                 submitOnClose: false,
                 submitOnChange: false,
                 tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'details' }],
                 scrollY: ['.tab'],
-            } : options);
+                classes: ['kanka', 'kanka-journal'],
+            };
+        }
+
+        constructor(object: JournalEntry, options?: JournalSheet.Options) {
+            super(object, options);
             this.ensureInitialisation();
         }
 
@@ -60,7 +58,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
             if (!this.isKankaEntry) return super.getData(options);
 
             return {
-                ...super.getData(),
+                ...super.getData(options),
                 kankaIsGm: kanka.game.user?.isGM ?? false,
                 kankaEntity: this.object.getFlag(kanka.name, 'snapshot') as KankaApiChildEntity,
                 kankaEntityType: this.object.getFlag(kanka.name, 'type') as KankaApiEntityType,
@@ -74,10 +72,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
         }
 
         get template(): string {
-            const parentTemplate = super.template;
-
-            if (!this.isKankaEntry) return parentTemplate;
-            if (parentTemplate !== 'templates/journal/sheet.html') return parentTemplate;
+            if (!this.isKankaEntry) return super.template;
 
             return template;
         }
@@ -112,13 +107,6 @@ export default function registerSheet(kanka: KankaFoundry): void {
             this.render(false, this.#lastRenderOptions);
         }
 
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        protected _updateObject(event: Event, formData: Record<string, unknown>): Promise<JournalEntry> {
-            if (!this.isKankaEntry) return super._updateObject(event, formData);
-
-            return super._updateObject(event, formData);
-        }
-
         protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {
             const $button = $(button);
             $button.addClass('-loading');
@@ -135,16 +123,14 @@ export default function registerSheet(kanka: KankaFoundry): void {
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
         protected _inferDefaultMode(): JournalSheet.SheetMode | null {
-            if (this.isKankaEntry) return 'text';
-
-            return super._inferDefaultMode();
+            return 'text';
         }
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
         protected async _onSwapMode(event: Event, mode: JournalSheet.SheetMode): Promise<void> {
             await super._onSwapMode(event, mode);
 
-            if (this.isKankaEntry && mode === 'text') {
+            if (mode === 'text') {
                 this.setPosition({ width: KankaJournalApplication.defaultOptions.width as number });
             }
         }

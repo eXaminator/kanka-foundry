@@ -1,48 +1,30 @@
-<form class="kanka kanka-journal flexcol {{cssClass}}" autocomplete="off">
-    <h1 class="kanka-action-row">
-        <span>{{kankaEntity.name}}</span>
-        {{#if kankaIsGm}}
-            {{#kankaLinkEntity kankaEntityType kankaEntity.id }}
-                <img
-                    src="../assets/kanka.png"
-                    alt="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
-                    title="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
-                />
-            {{/kankaLinkEntity}}
-            <button data-action="refresh" class="kanka-button write-action">
-                <i class="fas fa-sync"></i> {{ kankaLocalize 'journal' 'shared' 'action' 'refresh' }}
-            </button>
-        {{/if}}
-    </h1>
-
-    {{#if (kankaEq kankaEntityType 'ability')}}
-        {{>sheets/ability}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'character')}}
-        {{>sheets/character}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'family')}}
-        {{>sheets/family}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'item')}}
-        {{>sheets/item}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'journal')}}
-        {{>sheets/journal}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'location')}}
-        {{>sheets/location}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'note')}}
-        {{>sheets/note}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'organisation')}}
-        {{>sheets/organisation}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'quest')}}
-        {{>sheets/quest}}
-    {{/if}}
-    {{#if (kankaEq kankaEntityType 'race')}}
-        {{>sheets/race}}
-    {{/if}}
-</form>
+{{#if (kankaEq kankaEntityType 'ability')}}
+    {{>sheets/ability}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'character')}}
+    {{>sheets/character}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'family')}}
+    {{>sheets/family}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'item')}}
+    {{>sheets/item}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'journal')}}
+    {{>sheets/journal}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'location')}}
+    {{>sheets/location}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'note')}}
+    {{>sheets/note}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'organisation')}}
+    {{>sheets/organisation}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'quest')}}
+    {{>sheets/quest}}
+{{/if}}
+{{#if (kankaEq kankaEntityType 'race')}}
+    {{>sheets/race}}
+{{/if}}
