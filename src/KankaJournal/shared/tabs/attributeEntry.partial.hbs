@@ -13,7 +13,7 @@
     </dd>
 {{/if}}
 
-{{#if (kankaIsOneOf attribute.type 'text' null)}}
+{{#if (kankaIsOneOf attribute.type 'text' '' null)}}
     <dt class="{{#if (kankaIsSecret attribute) }}-secret{{/if}}">{{ attribute.name }}</dt>
     <dd>{{{ kankaNl2br (kankaReplaceMentions attribute.parsed) }}}</dd>
 {{/if}}
