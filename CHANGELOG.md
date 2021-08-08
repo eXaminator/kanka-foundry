@@ -1,3 +1,10 @@
+## [2.3.8](https://github.com/eXaminator/kanka-foundry/compare/2.3.7...2.3.8) (2021-08-08)
+
+
+### Bug Fixes
+
+* use correct template when switching journal entry to image mode ([30c275c](https://github.com/eXaminator/kanka-foundry/commit/30c275cb6de053c3749f4035ffd34b876392eb5b)), closes [#71](https://github.com/eXaminator/kanka-foundry/issues/71)
+
 ## [2.3.7](https://github.com/eXaminator/kanka-foundry/compare/2.3.6...2.3.7) (2021-08-04)
 
 
