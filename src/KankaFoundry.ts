@@ -31,7 +31,6 @@ export default class KankaFoundry {
         logInfo('Initializing');
 
         this.#module = this.game.modules.get(this.#name);
-        registerSheet(this);
 
         // Debug output to show current rate limiting
         if (process.env.NODE_ENV === 'development') {
@@ -65,6 +64,12 @@ export default class KankaFoundry {
         }
 
         logInfo('Done initializing!');
+    }
+
+    public onReady(): void {
+        logInfo('onReady');
+
+        registerSheet(this);
     }
 
     public async dispose(): Promise<void> {
