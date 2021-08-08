@@ -1,3 +1,11 @@
+## [2.3.9](https://github.com/eXaminator/kanka-foundry/compare/2.3.8...2.3.9) (2021-08-08)
+
+
+### Bug Fixes
+
+* correctly handle empty attributes with empty type ([2cd1d93](https://github.com/eXaminator/kanka-foundry/commit/2cd1d933f0a9c0aa792e1515c2aa4ec13ae13608)), closes [#72](https://github.com/eXaminator/kanka-foundry/issues/72)
+* register sheet on ready to make sure the sheet registrar module was loaded ([ab57710](https://github.com/eXaminator/kanka-foundry/commit/ab577104c64a1eda3f07ea4cae4aae93b014dd5d))
+
 ## [2.3.8](https://github.com/eXaminator/kanka-foundry/compare/2.3.7...2.3.8) (2021-08-08)
 
 
