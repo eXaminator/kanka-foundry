@@ -74,7 +74,10 @@ export default function registerSheet(kanka: KankaFoundry): void {
         get template(): string {
             if (!this.isKankaEntry) return super.template;
 
-            return template;
+            // Only replace the default text template, not the image template
+            if (super.template === 'templates/journal/sheet.html') return template;
+
+            return super.template;
         }
 
         async activateListeners(html: JQuery): Promise<void> {
