@@ -22,6 +22,26 @@ describe('sortBy()', () => {
             ]);
         });
 
+        it('sorts array by numeric property', () => {
+            const input = [
+                { foo: 10, bar: 'w' },
+                { foo: 1, bar: 'z' },
+                { foo: 3, bar: 'x' },
+                { foo: 2, bar: 'y' },
+                { foo: 3, bar: 'w' },
+            ];
+
+            const result = [...input].sort(sortBy('foo'));
+
+            expect(result).toEqual([
+                { foo: 1, bar: 'z' },
+                { foo: 2, bar: 'y' },
+                { foo: 3, bar: 'x' },
+                { foo: 3, bar: 'w' },
+                { foo: 10, bar: 'w' },
+            ]);
+        });
+
         it('sorts array by multiple properties', () => {
             const input = [
                 { foo: 'd', bar: 'w' },
