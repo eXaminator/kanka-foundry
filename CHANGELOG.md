@@ -1,3 +1,10 @@
+## [2.3.10](https://github.com/eXaminator/kanka-foundry/compare/2.3.9...2.3.10) (2021-08-10)
+
+
+### Bug Fixes
+
+* correctly sort attributes the way they are in Kanka ([ff7f0c6](https://github.com/eXaminator/kanka-foundry/commit/ff7f0c68f2caae85cfded96acc83fff4b43eb980))
+
 ## [2.3.9](https://github.com/eXaminator/kanka-foundry/compare/2.3.8...2.3.9) (2021-08-08)
 
 
