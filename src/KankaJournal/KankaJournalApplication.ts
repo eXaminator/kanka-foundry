@@ -100,7 +100,9 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 }
 
                 if (action === 'show-image') {
-                    this.render(true, { sheetMode: 'image' } as JournalSheet.RenderOptions);
+                    if (this.isEditable) {
+                        this.render(true, { sheetMode: 'image' } as JournalSheet.RenderOptions);
+                    }
                 }
             });
         }
