@@ -145,29 +145,10 @@ export default function registerSheet(kanka: KankaFoundry): void {
         }
     }
 
-    if (!kanka.game.modules.get('_document-sheet-registrar')?.active) {
-        // Keep in mind that this dialog needs to be shown on "ready"
-        const dialog = new Dialog({
-            title: kanka.getMessage('general.missingDocumentSheetRegistrar.title'),
-            content: kanka.getMessage('general.missingDocumentSheetRegistrar.text'),
-            buttons: {
-                ok: {
-                    label: kanka.getMessage('general.missingDocumentSheetRegistrar.button'),
-                    async callback() {
-                        await dialog.close();
-                    },
-                },
-            },
-            default: 'ok',
-        });
-
-        dialog.render(true);
-    } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        Journal.registerSheet(kanka.name, KankaJournalApplication, {
-            makeDefault: false,
-            label: 'Kanka-Foundry Journal sheet',
-        });
-    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    Journal.registerSheet(kanka.name, KankaJournalApplication, {
+        makeDefault: false,
+        label: 'Kanka-Foundry Journal sheet',
+    });
 }
