@@ -5,6 +5,7 @@ import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityId, KankaApiEntityTy
 import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
 import createTypeLoaders from './createTypeLoaders';
+import { AutomaticPermissionValue } from './KankaFoundrySettings';
 import ReferenceCollection from './ReferenceCollection';
 import AbstractTypeLoader from './TypeLoaders/AbstractTypeLoader';
 
@@ -154,6 +155,7 @@ export default class KankaJournalHelper {
             await entry.update({
                 [`flags.${this.module.name}.snapshot`]: null,
                 [`flags.${this.module.name}.references`]: null,
+                permission: { default: this.getExpectedPermission(entity, true) },
             });
             await entry.update(journalData);
         } else {
@@ -162,15 +164,9 @@ export default class KankaJournalHelper {
                 .filter((ref): ref is Reference => !!ref) ?? [];
             const folder = await this.ensureFolderPath(type, path);
 
-            let defaultPermissions: foundry.CONST.EntityPermission | undefined;
-
-            if (this.module.settings.automaticPermissions && !entity.is_private) {
-                defaultPermissions = CONST.ENTITY_PERMISSIONS.OBSERVER;
-            }
-
             entry = await JournalEntry.create({
                 ...journalData,
-                permission: { default: defaultPermissions },
+                permission: { default: this.getExpectedPermission(entity, false) },
                 folder: folder?.id,
             }) as JournalEntry;
         }
@@ -178,6 +174,19 @@ export default class KankaJournalHelper {
         entry.sheet?.render();
 
         return entry;
+    }
+
+    protected getExpectedPermission(
+        entity: KankaApiChildEntity,
+        isUpdate: boolean,
+    ): foundry.CONST.EntityPermission | undefined {
+        const setting = this.module.settings.automaticPermissions;
+
+        if (setting === AutomaticPermissionValue.never) return undefined;
+        if (setting === AutomaticPermissionValue.initial && isUpdate) return undefined;
+
+        if (entity.is_private) return CONST.ENTITY_PERMISSIONS.NONE;
+        return CONST.ENTITY_PERMISSIONS.OBSERVER;
     }
 
     protected async createFolder(
