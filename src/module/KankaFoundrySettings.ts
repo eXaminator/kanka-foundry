@@ -9,6 +9,12 @@ import {
 
 type KankaBrowserViews = 'list' | 'grid';
 
+export enum AutomaticPermissionValue {
+    never = 'never',
+    initial = 'initial',
+    always = 'always'
+}
+
 export default class KankaFoundrySettings {
     #module: KankaFoundry;
 
@@ -130,18 +136,6 @@ export default class KankaFoundrySettings {
         );
 
         this.register(
-            KankaSettings.automaticPermissions,
-            {
-                name: this.#module.getMessage('settings.automaticPermissions.label'),
-                hint: this.#module.getMessage('settings.automaticPermissions.hint'),
-                scope: 'world',
-                config: true,
-                type: Boolean,
-                default: false,
-            },
-        );
-
-        this.register(
             KankaSettings.questQuestStatusIcon,
             {
                 name: this.#module.getMessage('settings.questStatusIcon.label'),
@@ -150,6 +144,23 @@ export default class KankaFoundrySettings {
                 config: true,
                 type: Boolean,
                 default: false,
+            },
+        );
+
+        this.register(
+            KankaSettings.automaticPermissions,
+            {
+                name: this.#module.getMessage('settings.automaticPermissions.label'),
+                hint: this.#module.getMessage('settings.automaticPermissions.hint'),
+                scope: 'world',
+                config: true,
+                type: String,
+                default: AutomaticPermissionValue.never,
+                choices: {
+                    [AutomaticPermissionValue.never]: this.#module.getMessage('settings.automaticPermissions.values.never'),
+                    [AutomaticPermissionValue.initial]: this.#module.getMessage('settings.automaticPermissions.values.initial'),
+                    [AutomaticPermissionValue.always]: this.#module.getMessage('settings.automaticPermissions.values.always'),
+                },
             },
         );
 
@@ -235,8 +246,8 @@ export default class KankaFoundrySettings {
         return this.getSetting<boolean>(KankaSettings.keepTreeStructure);
     }
 
-    public get automaticPermissions(): boolean {
-        return this.getSetting<boolean>(KankaSettings.automaticPermissions);
+    public get automaticPermissions(): AutomaticPermissionValue {
+        return this.getSetting<AutomaticPermissionValue>(KankaSettings.automaticPermissions);
     }
 
     public get questStatusIcon(): boolean {

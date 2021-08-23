@@ -61,7 +61,8 @@ level will be flattened to this 3rd level instead.
 in foundry. With this setting the image will additionally be displayed in the journal entry next to its meta data and
 text.
 - **Automatically set permissions**: When importing an entity, set the best default permission based on whether the
-entity is marked as private or public.
+entity is marked as private or public. This can be set to never sync the permissions, only sync them on the initial
+import or sync them for every import (and potentially override manually set default permissions).
 - **Quest status icon**: Adds an icon in front of every Kanka quest in the journal sidebar to show whether it is
 completed or not.
 - **Show private entities**: If you disable this option, the module won't allow you sync entities that were marked as

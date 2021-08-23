@@ -154,6 +154,10 @@ KANKA:
         automaticPermissions:
             label: Automatically set permissions
             hint: All players will automatically get observer permissions for for newly imported entities.
+            values:
+                never: Never set permissions
+                initial: Set permissions on initial sync
+                always: Set permissions on every update
         questStatusIcon:
             label: Quest status icon
             hint: |
