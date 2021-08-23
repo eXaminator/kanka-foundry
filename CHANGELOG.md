@@ -1,3 +1,21 @@
+# [2.4.0](https://github.com/eXaminator/kanka-foundry/compare/2.3.10...2.4.0) (2021-08-23)
+
+
+### Bug Fixes
+
+* activate JournalEntry settings for newest documentSheetRegistrar versions ([5d8d92d](https://github.com/eXaminator/kanka-foundry/commit/5d8d92d1c70304fc993bae68d954cc57f27e127a))
+* don't switch to image mode when clicking the image of an entity in readonly mode ([3ecbd6a](https://github.com/eXaminator/kanka-foundry/commit/3ecbd6ad0617963a4e53c74aa51c9b79e82e0dba))
+* ensure document-sheet-registrar is active on ready ([1096a4d](https://github.com/eXaminator/kanka-foundry/commit/1096a4deed3fe128aefb77568a644f6c8ee268ae))
+* fix grid view in entity browser ([db5b7e1](https://github.com/eXaminator/kanka-foundry/commit/db5b7e16b13c85c4419ed526389ef75e67812a3a))
+* remove extra padding outside of the main document sheet ([fef7f5e](https://github.com/eXaminator/kanka-foundry/commit/fef7f5e3bcd67a6477b4e867b586029f2b4ebecd))
+* switch from ready to documentSheetRegistrarInit hook ([5e0a496](https://github.com/eXaminator/kanka-foundry/commit/5e0a49600ff70e0f662dc630b3285c12f91367ff))
+* update supported foundry version to 0.8.9 ([0b73999](https://github.com/eXaminator/kanka-foundry/commit/0b73999ac0c25815c0a08e5fb7b3ad95014a9cc7))
+
+
+### Features
+
+* add setting to sync permissions of an entry on every sync ([7a6f805](https://github.com/eXaminator/kanka-foundry/commit/7a6f8054dce1c6e422b0d264f30f4db0dc7e4cf2)), closes [#69](https://github.com/eXaminator/kanka-foundry/issues/69)
+
 ## [2.3.10](https://github.com/eXaminator/kanka-foundry/compare/2.3.9...2.3.10) (2021-08-10)
 
 
