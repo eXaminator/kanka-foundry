@@ -1,6 +1,5 @@
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
-import registerSheet from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
 import migrateV2 from './migrations/migrateV2';
@@ -64,12 +63,6 @@ export default class KankaFoundry {
         }
 
         logInfo('Done initializing!');
-    }
-
-    public onReady(): void {
-        logInfo('onReady');
-
-        registerSheet(this);
     }
 
     public async dispose(): Promise<void> {
