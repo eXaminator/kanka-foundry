@@ -112,6 +112,10 @@ KANKA:
             labels:
                 date: Date
 
+        event:
+            labels:
+                date: Date
+
         organisation:
             tabs:
                 members: Members

@@ -301,6 +301,7 @@ export default class KankaBrowserApplication extends Application {
                 'journal',
                 'note',
                 'quest',
+                'event',
             ],
         );
 

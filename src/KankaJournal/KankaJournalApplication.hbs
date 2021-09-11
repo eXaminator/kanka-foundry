@@ -10,6 +10,9 @@
 {{#if (kankaEq kankaEntityType 'item')}}
     {{>sheets/item}}
 {{/if}}
+{{#if (kankaEq kankaEntityType 'event')}}
+    {{>sheets/event}}
+{{/if}}
 {{#if (kankaEq kankaEntityType 'journal')}}
     {{>sheets/journal}}
 {{/if}}

@@ -3,7 +3,7 @@ import {
     KankaApiCampaign,
     KankaApiCharacter,
     KankaApiEntity,
-    KankaApiEntityId,
+    KankaApiEntityId, KankaApiEvent,
     KankaApiFamily,
     KankaApiId,
     KankaApiItem,
@@ -233,6 +233,26 @@ export default class KankaApi {
         return this.fetchFullListWithAncestors<KankaApiRace>(
             `campaigns/${Number(campaignId)}/races?related=1`,
             'race_id',
+        );
+    }
+
+    public async getEvent(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiEvent> {
+        const list = await this.getAllEvents(campaignId);
+        const entity = list.find(entity => entity.id === id);
+        if (!entity) throw new Error(`Could not find event with ID '${String(id)}'`);
+        return entity;
+        /*
+        type Result = KankaApiResult<KankaApiEvent>;
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/events/${String(id)}?related=1`);
+        return result.data;
+        */
+    }
+
+    public async getAllEvents(campaignId: KankaApiId): Promise<KankaApiEvent[]> {
+        return this.fetchFullListWithAncestors<KankaApiEvent>(
+            `campaigns/${Number(campaignId)}/events?related=1`,
+            'event_id',
         );
     }
 
