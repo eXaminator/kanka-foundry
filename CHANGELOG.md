@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/eXaminator/kanka-foundry/compare/2.4.0...2.5.0) (2021-09-11)
+
+
+### Features
+
+* add support for events ([debd7fd](https://github.com/eXaminator/kanka-foundry/commit/debd7fd5ba12ec1c066ba93d3a9da7e9e9ff882e))
+
 # [2.4.0](https://github.com/eXaminator/kanka-foundry/compare/2.3.10...2.4.0) (2021-08-23)
 
 
