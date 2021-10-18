@@ -26,15 +26,13 @@
             }}
         {{/unless}}
         {{#>nav}}{{/nav}}
-        {{#unless (kankaHasOnlyPinned kankaEntity.relations 'is_star')}}
-            {{>tabNav
-                name='relations'
-                label='shared.tabs.relations'
-                collection=kankaEntity.relations
-                idProperty='target_id'
-                showCount=true
-            }}
-        {{/unless}}
+        {{>tabNav
+            name='relations'
+            label='shared.tabs.relations'
+            collection=kankaEntity.relations
+            idProperty='target_id'
+            showCount=true
+        }}
         {{>tabNav
             name='inventory'
             label='shared.tabs.inventory'
