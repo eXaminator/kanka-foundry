@@ -76,7 +76,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: resolve(__dirname, 'dist'),
-        publicPath: `/modules/${moduleConfig.name}/`,
+        publicPath: `modules/${moduleConfig.name}/`,
     },
     plugins: [
         new CopyPlugin({
@@ -110,11 +110,11 @@ module.exports = {
         },
         proxy: {
             '/': {
-                target: 'http://localhost',
+                target: 'http://foundry.localtest.me',
                 ws: false,
             },
             '/socket.io': {
-                target: 'http://localhost',
+                target: 'http://foundry.localtest.me',
                 ws: true,
             },
         },
