@@ -101,25 +101,30 @@ module.exports = {
     ],
     devtool: 'cheap-module-source-map',
     devServer: {
-        inline: true,
         port: 3000,
-        publicPath: `/modules/${moduleConfig.name}/`,
-        overlay: {
-            warnings: false,
-            errors: true,
+        client: {
+            overlay: {
+                warnings: false,
+                errors: true,
+            },
         },
         proxy: {
             '/': {
                 target: 'http://foundry.localtest.me',
+                changeOrigin: true,
                 ws: false,
             },
             '/socket.io': {
                 target: 'http://foundry.localtest.me',
+                changeOrigin: true,
                 ws: true,
             },
         },
         liveReload: false,
-        writeToDisk: filePath => /\/(lang)\//.test(filePath),
+        devMiddleware: {
+            publicPath: `/modules/${moduleConfig.name}/`,
+            writeToDisk: filePath => /\/(lang)\//.test(filePath),
+        },
     },
     optimization: {
         minimize: !devMode,
