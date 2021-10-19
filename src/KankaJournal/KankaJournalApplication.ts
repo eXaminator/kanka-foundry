@@ -17,9 +17,11 @@ interface Data extends JournalSheet.Data {
     localization: Localization;
 }
 
+type RenderOptions = Application.RenderOptions<JournalSheet.Options>;
+
 export default function registerSheet(kanka: KankaFoundry): void {
     class KankaJournalApplication extends JournalSheet {
-        #lastRenderOptions?: JournalSheet.RenderOptions = undefined;
+        #lastRenderOptions?: RenderOptions = undefined;
 
         static get defaultOptions(): JournalSheet.Options {
             return {
@@ -53,8 +55,8 @@ export default function registerSheet(kanka: KankaFoundry): void {
         }
 
         public getData(
-            options?: Application.RenderOptions,
-        ): Promise<DocumentSheet.Data<JournalEntry> | Data> | DocumentSheet.Data<JournalEntry> | Data {
+            options?: Partial<JournalSheet.Options>,
+        ): Promise<JournalSheet.Data | Data> | JournalSheet.Data | Data {
             if (!this.isKankaEntry) return super.getData(options);
 
             return {
@@ -101,7 +103,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
 
                 if (action === 'show-image') {
                     if (this.isEditable) {
-                        this.render(true, { sheetMode: 'image' } as JournalSheet.RenderOptions);
+                        this.render(true, { sheetMode: 'image' } as RenderOptions);
                     }
                 }
             });
@@ -141,7 +143,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
         }
 
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        protected _render(force?: boolean, options?: JournalSheet.RenderOptions): Promise<void> {
+        protected _render(force?: boolean, options?: RenderOptions): Promise<void> {
             this.#lastRenderOptions = options;
             return super._render(force, options);
         }
