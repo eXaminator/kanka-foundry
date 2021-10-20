@@ -19,6 +19,7 @@ export default class QuestTypeLoader extends AbstractTypeLoader<KankaApiQuest> {
             collection.addById(entity.character_id, 'character'),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
             ...entity.elements.map(element => collection.addByEntityId(element.entity_id)),
+            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

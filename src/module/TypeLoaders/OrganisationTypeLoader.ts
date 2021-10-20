@@ -19,6 +19,7 @@ export default class OrganisationTypeLoader extends AbstractTypeLoader<KankaApiO
             collection.addById(entity.location_id, 'location'),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
             ...entity.members.map(member => collection.addById(member.character_id, 'character')),
+            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

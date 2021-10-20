@@ -299,6 +299,15 @@ export default class KankaApi {
                 entity.ancestors.unshift(parent.entity_id);
                 current = parent;
             }
+
+            // eslint-disable-next-line no-param-reassign
+            entity.children = entities
+                .filter(e => e[parentProperty] === entity.id)
+                .map(e => ({
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    entity_id: e.entity_id,
+                    type: e.type,
+                }));
         });
 
         return entities;

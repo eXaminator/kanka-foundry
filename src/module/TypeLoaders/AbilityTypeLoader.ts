@@ -16,8 +16,8 @@ export default class AbilityTypeLoader extends AbstractTypeLoader<KankaApiAbilit
 
         await Promise.all([
             collection.addById(entity.ability_id, 'ability'),
-            ...entity.abilities.map(ability => collection.addById(ability, 'ability')),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
+            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

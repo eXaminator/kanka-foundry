@@ -20,6 +20,7 @@ function createJournal(data: Partial<KankaApiJournal> = {}): KankaApiJournal {
         inventory: [],
         entity_abilities: [],
         ancestors: [],
+        children: [],
         ...data,
     } as KankaApiJournal;
 }
@@ -157,6 +158,29 @@ describe('JournalTypeLoader', () => {
         it('includes ancestors from the lookup array', async () => {
             const expectedResult = createJournal({
                 ancestors: [1002],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'journal'),
+                createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new JournalTypeLoader(api);
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: {
+                    id: 2002,
+                    entityId: 1002,
+                    type: 'journal',
+                },
+            });
+        });
+
+        it('includes children from the lookup array', async () => {
+            const expectedResult = createJournal({
+                children: [{ entity_id: 1002 }],
             });
 
             const entities = [
