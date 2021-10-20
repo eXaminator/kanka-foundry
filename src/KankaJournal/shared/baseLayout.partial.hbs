@@ -15,7 +15,6 @@
         {{/if}}
     </h1>
 
-
     <nav class="tabs" data-group="primary-tabs">
         {{>tabNav name='story' label='shared.tabs.story'}}
         {{#unless (kankaHasOnlyPinned kankaEntity.attributes 'is_star')}}
@@ -25,6 +24,15 @@
                 collection=kankaEntity.attributes
             }}
         {{/unless}}
+        {{#if kankaEntity.children.length}}
+            {{>tabNav
+                name='children'
+                labelString=(kankaLocalize 'entityType' kankaEntityType)
+                collection=kankaEntity.children
+                idProperty='entity_id'
+                showCount=true
+            }}
+        {{/if}}
         {{#>nav}}{{/nav}}
         {{>tabNav
             name='relations'
@@ -92,6 +100,9 @@
         </div>
         <div class="tab -scrollable" data-tab="attributes" data-group="primary-tabs">
             {{>tabs/attributes entity=kankaEntity}}
+        </div>
+        <div class="tab -scrollable" data-tab="children" data-group="primary-tabs">
+            {{>tabs/children entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="relations" data-group="primary-tabs">
             {{>tabs/relations entity=kankaEntity}}

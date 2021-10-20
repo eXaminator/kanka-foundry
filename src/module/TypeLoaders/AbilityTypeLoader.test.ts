@@ -18,6 +18,7 @@ function createAbility(data: Partial<KankaApiAbility> = {}): KankaApiAbility {
     return {
         abilities: [],
         ancestors: [],
+        children: [],
         relations: [],
         inventory: [],
         entity_abilities: [],
@@ -201,9 +202,9 @@ describe('AbilityTypeLoader', () => {
             });
         });
 
-        it('includes abilities from the lookup array', async () => {
+        it('includes children from the lookup array', async () => {
             const expectedResult = createAbility({
-                abilities: [2002],
+                children: [{ entity_id: 1002 }],
             });
 
             const entities = [

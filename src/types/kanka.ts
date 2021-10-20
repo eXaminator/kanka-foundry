@@ -177,6 +177,11 @@ export interface KankaApiRelated {
     entity_files: KankaApiEntityFile[];
 }
 
+export interface KankaApiChild {
+    entity_id: KankaApiEntityId;
+    type?: string;
+}
+
 export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBlamable {
     id: KankaApiEntityId;
     name: string;
@@ -219,6 +224,7 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
 
 export interface KankaApiAbility extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     ability_id: KankaApiId | null;
     type: string | null;
     charges: string | null;
@@ -227,6 +233,7 @@ export interface KankaApiAbility extends KankaApiChildEntity {
 
 export interface KankaApiFamily extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     family_id: KankaApiId | null;
     type: string | null;
     members: KankaApiId[];
@@ -242,6 +249,7 @@ export interface KankaApiItem extends KankaApiChildEntity {
 
 export interface KankaApiJournal extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     journal_id: KankaApiId | null;
     location_id: KankaApiId | null;
     character_id: KankaApiId | null;
@@ -255,18 +263,21 @@ export interface KankaApiJournal extends KankaApiChildEntity {
 
 export interface KankaApiLocation extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     parent_location_id: KankaApiId | null;
     type: string | null;
 }
 
 export interface KankaApiNote extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     note_id: KankaApiId | null;
     type: string | null;
 }
 
 export interface KankaApiOrganisation extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     organisation_id: KankaApiId | null;
     location_id: KankaApiId | null;
     type: string | null;
@@ -284,6 +295,7 @@ export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
 
 export interface KankaApiQuest extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     quest_id: KankaApiId | null;
     character_id: KankaApiId | null;
     type: string | null;
@@ -299,6 +311,7 @@ export interface KankaApiQuest extends KankaApiChildEntity {
 
 export interface KankaApiRace extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
     race_id: KankaApiId | null;
     type: string | null;
 }
