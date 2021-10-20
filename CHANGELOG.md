@@ -1,3 +1,17 @@
+# [2.6.0](https://github.com/eXaminator/kanka-foundry/compare/2.5.0...2.6.0) (2021-10-20)
+
+
+### Bug Fixes
+
+* always display relations tab, even if all relations are pinned ([67d4a13](https://github.com/eXaminator/kanka-foundry/commit/67d4a13d7313f58cfbec131869968807bf6b76d4)), closes [#77](https://github.com/eXaminator/kanka-foundry/issues/77)
+* use correct path for images when hosted with a route prefix (like http://somehost.com/foundry) ([19e9536](https://github.com/eXaminator/kanka-foundry/commit/19e953677d8aa882b7a82c059ed33e240142c61d)), closes [#78](https://github.com/eXaminator/kanka-foundry/issues/78)
+
+
+### Features
+
+* Correctly parse Foundry links like `@Actor[Name]` in entries, attributes etc. ([c29d077](https://github.com/eXaminator/kanka-foundry/commit/c29d07788da1c62e9764d2badb9b43f531806e41)), closes [#80](https://github.com/eXaminator/kanka-foundry/issues/80)
+* show child entries for all supported entity types ([a112988](https://github.com/eXaminator/kanka-foundry/commit/a112988c2a34827cb603f8cbc2623c117256d591)), closes [#82](https://github.com/eXaminator/kanka-foundry/issues/82)
+
 # [2.5.0](https://github.com/eXaminator/kanka-foundry/compare/2.4.0...2.5.0) (2021-09-11)
 
 
