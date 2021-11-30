@@ -36,7 +36,7 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
                 src="${logo}" 
                 title="${kanka.getMessage('sidebar.button')}"
                 alt="${kanka.getMessage('sidebar.button')}"
-            />
+            /> Kanka
         </button>
     `);
 
@@ -61,7 +61,7 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
         browserApplication.render(true, { focus: true });
     });
 
-    html.find('.header-actions').append(button);
+    html.find('.directory-footer').append(button);
 }
 
 export default async function renderJournalDirectory(

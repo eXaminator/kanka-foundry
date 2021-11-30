@@ -1,15 +1,16 @@
 .kanka-limit-debug {
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     z-index: 9999;
 }
 
-input[type="image"] {
-    &, &:disabled {
+input[type='image'] {
+    &,
+    &:disabled {
         box-sizing: border-box;
         border: 1px solid #000;
         border-radius: 2px;
@@ -21,8 +22,9 @@ button#kanka {
 
     > img {
         position: relative;
-        top: 4px;
         border: none;
+        height: 22px;
+        vertical-align: middle;
     }
 }
 
@@ -42,7 +44,8 @@ button#kanka {
         margin: 0;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         outline: none;
         box-shadow: 0 0 5px red;
     }
@@ -71,8 +74,8 @@ button.-loading {
         animation: kanka-spin 1.5s linear infinite;
 
         position: absolute;
-        top: calc(50% - .5em);
-        left: calc(50% - .5em);
+        top: calc(50% - 0.5em);
+        left: calc(50% - 0.5em);
     }
 
     &.-determined:after {
@@ -80,7 +83,7 @@ button.-loading {
         position: absolute;
         bottom: 0;
         left: 0;
-        background: rgba(255, 0, 0, .5);
+        background: rgba(255, 0, 0, 0.5);
         height: 3px;
         width: var(--progress, 0);
     }
@@ -90,8 +93,8 @@ details.kanka-details {
     & > summary:before {
         flex: none;
         content: '➤';
-        transition: transform .3s;
-        margin-right: .2em;
+        transition: transform 0.3s;
+        margin-right: 0.2em;
     }
 
     &[open] > summary:before {
@@ -101,8 +104,8 @@ details.kanka-details {
     summary {
         font-size: 1.2em;
         border-bottom: 1px solid #782e22;
-        margin-bottom: .3em;
-        padding: .3em 0;
+        margin-bottom: 0.3em;
+        padding: 0.3em 0;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -125,7 +128,7 @@ details.kanka-details {
             flex: none;
             width: 1.5em;
             text-align: center;
-            margin-right: .5em;
+            margin-right: 0.5em;
         }
     }
 }
@@ -142,7 +145,7 @@ details.kanka-details {
         flex: none;
         border-right: 1px solid #782e22;
         align-self: stretch;
-        margin: .2rem .5rem;
+        margin: 0.2rem 0.5rem;
     }
 
     > button {
@@ -169,8 +172,8 @@ details.kanka-details {
     display: inline-block;
     vertical-align: middle;
     border-radius: 50%;
-    box-shadow: 0 0 2px 3px var(--highlight-color, rgba(0, 0, 0, .1));
-    background: rgba(0, 0, 0, .2);
+    box-shadow: 0 0 2px 3px var(--highlight-color, rgba(0, 0, 0, 0.1));
+    background: rgba(0, 0, 0, 0.2);
     overflow: hidden;
     width: 46px;
     height: 46px;
@@ -278,7 +281,7 @@ ul.kanka-cards {
             bottom: 0;
             left: 0;
             right: 0;
-            opacity: .3;
+            opacity: 0.3;
             pointer-events: none;
         }
     }
@@ -292,7 +295,7 @@ ul.kanka-cards {
         grid-column: 2;
         font-size: 1.3em;
         font-weight: bold;
-        margin: 0 0 .5rem;
+        margin: 0 0 0.5rem;
         padding: 0;
 
         & > a {
@@ -304,7 +307,7 @@ ul.kanka-cards {
         }
 
         & > small {
-            font-size: .8em;
+            font-size: 0.8em;
         }
     }
 
@@ -364,7 +367,7 @@ ul.kanka-cards {
         border-bottom: 0 !important;
 
         > .item {
-            padding: 0 .3em;
+            padding: 0 0.3em;
 
             border-left: 1px solid #0003;
             border-bottom: 1px solid #000;
@@ -391,8 +394,8 @@ ul.kanka-cards {
 
                 border-radius: 1em;
                 background: #0002;
-                margin-left: .2em;
-                font-size: .8em;
+                margin-left: 0.2em;
+                font-size: 0.8em;
 
                 vertical-align: super;
             }
@@ -436,7 +439,7 @@ ul.kanka-cards {
         text-decoration: none;
         line-height: 1.5em;
         display: grid;
-        grid-gap: .3em;
+        grid-gap: 0.3em;
         grid-template-columns: 1fr auto;
         grid-template-rows: auto 1fr;
         max-width: 250px;
@@ -444,7 +447,8 @@ ul.kanka-cards {
         &.-secret {
             color: #f600248a;
 
-            > img, > i {
+            > img,
+            > i {
                 border-color: #f600248a;
             }
         }
@@ -472,7 +476,9 @@ ul.kanka-cards {
             justify-content: center;
         }
 
-        strong, span, small {
+        strong,
+        span,
+        small {
             display: block;
         }
 
@@ -482,7 +488,8 @@ ul.kanka-cards {
         }
 
         &:hover {
-            > img, > i {
+            > img,
+            > i {
                 box-shadow: 0 0 1rem 0 #00000099;
             }
         }
