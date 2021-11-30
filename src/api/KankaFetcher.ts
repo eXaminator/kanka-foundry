@@ -36,8 +36,7 @@ export default class KankaFetcher {
 
         await this.#limiter.slot();
 
-        const url = (path.startsWith('http') ? path : `${this.#base}/${path}`)
-            .replace('http://', 'https://');
+        const url = path.startsWith('http') ? path : `${this.#base}/${path}`;
 
         const response = await fetch(
             url,
