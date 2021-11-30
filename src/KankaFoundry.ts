@@ -1,5 +1,6 @@
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
+import registerSheet from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
 import migrateV2 from './migrations/migrateV2';
@@ -31,6 +32,8 @@ export default class KankaFoundry {
         logInfo('Initializing');
 
         this.#module = this.game.modules.get(this.#name);
+
+        registerSheet(this);
 
         // Debug output to show current rate limiting
         if (process.env.NODE_ENV === 'development') {

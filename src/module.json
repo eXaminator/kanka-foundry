@@ -17,10 +17,6 @@
   ],
   "esmodules": ["index.js"],
   "styles": ["index.css"],
-  "dependencies": [{
-    "name": "_document-sheet-registrar",
-    "manifest": "https://github.com/League-of-Foundry-Developers/document-sheet-registrar/releases/latest/download/module.json"
-  }],
   "languages": [
     {
       "lang": "en",
