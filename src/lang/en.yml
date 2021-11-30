@@ -67,7 +67,7 @@ KANKA:
                 openInKanka: Open in Kanka
                 openLink: Open link
             tabs:
-                story: Story
+                story: Overview
                 attributes: Attributes
                 relations: Relations
                 inventory: Inventory
