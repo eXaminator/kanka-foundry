@@ -1,3 +1,19 @@
+# [2.7.0](https://github.com/eXaminator/kanka-foundry/compare/2.6.0...2.7.0) (2021-12-16)
+
+
+### Bug Fixes
+
+* improve tab styles to work as expected in foundry 9 ([58494a7](https://github.com/eXaminator/kanka-foundry/commit/58494a71c1c1962601c60056597afc160b60fb1b))
+* remove unnecessary workaround for broken Kanka links ([b2daa5d](https://github.com/eXaminator/kanka-foundry/commit/b2daa5dc7f804a11edcc82d17bf99ab5ede6723d))
+
+
+### Features
+
+* move kanka button to journal list footer ([660968b](https://github.com/eXaminator/kanka-foundry/commit/660968b4f648783f3a33653e0a55dc7296ec1284))
+* remove dependency to documentSheetRegistrar library ([472337d](https://github.com/eXaminator/kanka-foundry/commit/472337d02c2694ff4de127d6f7a56a7016b70c86))
+* rename "Story" tab to "Overview" in accordance with recent changes in Kanka ([d79027d](https://github.com/eXaminator/kanka-foundry/commit/d79027d8ea72e93ed097c6c88def5f61038e533b))
+* update minimum and maximum supported foundry version to 9 ([18a6827](https://github.com/eXaminator/kanka-foundry/commit/18a68272c1f25fa1d807da8a33a766d63c3cec87))
+
 # [2.6.0](https://github.com/eXaminator/kanka-foundry/compare/2.5.0...2.6.0) (2021-10-20)
 
 
