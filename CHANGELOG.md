@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/eXaminator/kanka-foundry/compare/2.7.0...2.7.1) (2021-12-21)
+
+
+### Bug Fixes
+
+* remove check for document sheet registrar dependency ([1bcd3a3](https://github.com/eXaminator/kanka-foundry/commit/1bcd3a33a1bc455153d69cfd358c5d7b3ab26b54))
+
 # [2.7.0](https://github.com/eXaminator/kanka-foundry/compare/2.6.0...2.7.0) (2021-12-16)
 
 
