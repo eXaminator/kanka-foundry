@@ -1,3 +1,10 @@
+## [2.7.2](https://github.com/eXaminator/kanka-foundry/compare/2.7.1...2.7.2) (2021-12-21)
+
+
+### Bug Fixes
+
+* update foundry version to support all foundry 9 versions ([1634229](https://github.com/eXaminator/kanka-foundry/commit/163422926c936c64a365d48edd2b113e63996368))
+
 ## [2.7.1](https://github.com/eXaminator/kanka-foundry/compare/2.7.0...2.7.1) (2021-12-21)
 
 
