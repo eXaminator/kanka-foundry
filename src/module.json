@@ -30,7 +30,7 @@
     }
   ],
   "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9.2",
+  "compatibleCoreVersion": "9",
   "manifestPlusVersion": "1.2.0",
   "media": [
     {
