@@ -9,4 +9,9 @@ parserOptions:
 rules:
     class-methods-use-this: [off]
     no-underscore-dangle: [off]
-
+    arrow-parens: [off]
+overrides:
+  - files: ["*.js"]
+    rules:
+        '@typescript-eslint/explicit-function-return-type': [off]
+        '@typescript-eslint/restrict-template-expressions': [off]
