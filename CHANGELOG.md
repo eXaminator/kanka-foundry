@@ -1,3 +1,15 @@
+# [2.8.0](https://github.com/eXaminator/kanka-foundry/compare/2.7.2...2.8.0) (2022-01-07)
+
+
+### Bug Fixes
+
+* update handling of reference links to work in FVTT 9 and onwards ([6631836](https://github.com/eXaminator/kanka-foundry/commit/6631836b6bbb5c9d24120923889de705a7bd6648)), closes [#85](https://github.com/eXaminator/kanka-foundry/issues/85)
+
+
+### Features
+
+* display pinned organisations and organisation members ([2584d55](https://github.com/eXaminator/kanka-foundry/commit/2584d5557f2f327ea5ac227951c933ad83ead272))
+
 ## [2.7.2](https://github.com/eXaminator/kanka-foundry/compare/2.7.1...2.7.2) (2021-12-21)
 
 
