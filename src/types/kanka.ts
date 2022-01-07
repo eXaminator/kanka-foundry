@@ -28,6 +28,12 @@ export enum KankaVisibility {
     adminSelf = 'admin-self',
 }
 
+export enum KankaOrganisationPinId {
+    Character = 1,
+    Organisation = 2,
+    Both = 3,
+}
+
 export interface KankaApiSimpleConstrainable {
     is_private: boolean;
 }
@@ -205,6 +211,7 @@ export interface KankaApiCharacterOrganisationLink extends KankaApiSimpleConstra
     character_id: KankaApiId;
     organisation_id: KankaApiId;
     role?: string;
+    pin_id?: KankaOrganisationPinId | null;
 }
 
 export interface KankaApiCharacter extends KankaApiChildEntity {
