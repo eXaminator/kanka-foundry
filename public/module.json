@@ -1,0 +1,74 @@
+{
+    "name": "kanka-foundry",
+    "title": "Kanka-Foundry",
+    "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign management tool, with Foundry Virtual Tabletop, allowing you to import entities written in Kanka as journal entries into Foundry VTT. This module imports full Kanka entities, including their main entry text, image, relations and other data. This is not an official module, but a fan creation by someone who uses both Kanka and Foundry VTT.</p>",
+    "url": "https://github.com/eXaminator/kanka-foundry",
+    "manifest": "https://github.com/eXaminator/kanka-foundry/releases/latest/download/module.json",
+    "download": "https://github.com/eXaminator/kanka-foundry/releases/download/__VERSION__/module.zip",
+    "version": "__VERSION__",
+    "author": "eXaminator",
+    "authors": [
+        {
+            "name": "eXaminator",
+            "discord": "eXaminator#0079",
+            "twitter": "@eXXaminator",
+            "ko-fi": "examinator"
+        }
+    ],
+    "esmodules": ["index.js"],
+    "styles": ["style.css"],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "de",
+            "name": "Deutsch",
+            "path": "lang/de.json"
+        }
+    ],
+    "minimumCoreVersion": "9",
+    "compatibleCoreVersion": "9",
+    "manifestPlusVersion": "1.2.0",
+    "media": [
+        {
+            "type": "cover",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/cover.png",
+            "caption": "Kanka-Foundry"
+        },
+        {
+            "type": "icon",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/kanka-logo.png",
+            "caption": "Kanka logo"
+        },
+        {
+            "type": "screenshot",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/character.png",
+            "caption": "Example of a character imported from Kanka"
+        },
+        {
+            "type": "screenshot",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/character_relations.png",
+            "caption": "Example of the relations tab of an imported character"
+        },
+        {
+            "type": "screenshot",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/browser.png",
+            "caption": "The dialog that allows you to import your Kanka entities"
+        },
+        {
+            "type": "screenshot",
+            "url": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/docs/assets/kanka-button.png",
+            "caption": "The button that opens the dialog to import your Kanka entities"
+        }
+    ],
+    "bugs": "https://github.com/eXaminator/kanka-foundry/issues",
+    "changelog": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/CHANGELOG.md",
+    "license": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/LICENSE",
+    "readme": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/README.md",
+    "flags": {
+        "allowBugReporter": true
+    }
+}

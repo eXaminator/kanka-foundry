@@ -5,7 +5,7 @@ import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
 import migrateV2 from './migrations/migrateV2';
 import migrateV3 from './migrations/migrateV3';
-import moduleConfig from './module.json';
+import moduleConfig from '../public/module.json';
 import KankaFoundrySettings from './module/KankaFoundrySettings';
 import KankaJournalHelper from './module/KankaJournalHelper';
 import { KankaApiCampaign } from './types/kanka';
@@ -33,6 +33,7 @@ export default class KankaFoundry {
 
         this.#module = this.game.modules.get(this.#name);
 
+        this.registerHelpers();
         registerSheet(this);
 
         // Debug output to show current rate limiting
@@ -172,5 +173,16 @@ export default class KankaFoundry {
         } else {
             this.#currentCampaign = undefined;
         }
+    }
+
+    private registerHelpers(): void {
+        const helpers = import.meta.globEager('./handlebars/helpers/!(*.test).ts');
+
+        Object
+            .entries(helpers)
+            .forEach(([path, helper]) => {
+                const name = path.match(/([a-zA-Z0-9]+)\.ts$/)?.[1];
+                if (name) Handlebars.registerHelper(name, helper.default);
+            });
     }
 }

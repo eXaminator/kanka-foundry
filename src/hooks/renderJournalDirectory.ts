@@ -73,8 +73,8 @@ export default async function renderJournalDirectory(
     renderKankaButton(html);
 }
 
-if (module.hot) {
-    module.hot.dispose(() => {
+if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
         button?.remove();
     });
 }

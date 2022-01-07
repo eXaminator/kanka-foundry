@@ -2,7 +2,7 @@ import type KankaFoundry from '../KankaFoundry';
 import { KankaApiChildEntity, KankaApiEntityType, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
-import { path as template } from './KankaJournalApplication.hbs';
+import template from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 
 interface Data extends JournalSheet.Data {

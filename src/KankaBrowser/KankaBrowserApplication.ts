@@ -3,7 +3,7 @@ import { logError, logInfo } from '../logger';
 import EntityType from '../types/EntityType';
 import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
-import { path as template } from './KankaBrowserApplication.hbs';
+import template from './KankaBrowserApplication.hbs';
 import './KankaBrowserApplication.scss';
 
 interface EntityTypeConfig {

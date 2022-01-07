@@ -1,6 +1,6 @@
 import type KankaFoundry from '../KankaFoundry';
 import { logInfo } from '../logger';
-import moduleConfig from '../module.json';
+import moduleConfig from '../../public/module.json';
 import EntityType from '../types/EntityType';
 import {
     kankaBrowserTypeCollapseSetting,

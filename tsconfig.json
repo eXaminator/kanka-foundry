@@ -1,16 +1,18 @@
 {
     "compilerOptions": {
-        "target": "es2019",
+        "target": "es2020",
+        "module": "es2020",
         "lib": [
             "dom",
             "dom.iterable",
-            "es2019",
+            "es2020",
         ],
         "strictNullChecks": true,
         "strict": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "isolatedModules": true
     }
 }
