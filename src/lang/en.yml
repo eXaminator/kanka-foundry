@@ -87,6 +87,7 @@ KANKA:
                 isDead: Is dead
                 race: Race
                 family: Family
+                member: Member
             traits:
                 appearance: Appearance
                 personality: Personality
@@ -112,6 +113,8 @@ KANKA:
         organisation:
             tabs:
                 members: Members
+            labels:
+                member: Member
 
         quest:
             tabs:

@@ -89,6 +89,7 @@ KANKA:
                 isDead: Verstorben
                 race: Rasse
                 family: Familie
+                member: Mitglied
             traits:
                 appearance: Aussehen
                 personality: Persönlichkeit
@@ -109,6 +110,8 @@ KANKA:
         organisation:
             tabs:
                 members: Mitglieder
+            labels:
+                member: Mitglied
         quest:
             tabs:
                 elements: Elemente
