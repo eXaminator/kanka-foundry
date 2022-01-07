@@ -14,3 +14,12 @@ global.getProperty = function getProperty(object, key) {
 };
 
 global.Handlebars = Handlebars;
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+global.TextEditor = class TextEditor {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    static enrichHTML(text): string {
+        return text;
+    }
+};
