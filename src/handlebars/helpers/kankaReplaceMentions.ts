@@ -1,7 +1,9 @@
 import kanka from '../../kanka';
 import createJournalLink from '../../util/createJournalLink';
 
-export default function kankaReplaceMentions(text: string): Handlebars.SafeString {
+export default function kankaReplaceMentions(text: string | null): Handlebars.SafeString | null {
+    if (!text) return null;
+
     const el = $(`<div>${text}</div>`);
 
     el.find('a[data-id][href*="kanka.io"]').each((_, link): void => {
