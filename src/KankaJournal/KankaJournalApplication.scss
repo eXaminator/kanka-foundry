@@ -1,4 +1,8 @@
 .kanka-journal {
+    * {
+        user-select: text;
+    }
+
     .write-action {
         display: none;
     }
@@ -18,7 +22,8 @@
         flex: none;
     }
 
-    p, details {
+    p,
+    details {
         margin-bottom: 1em;
         overflow: hidden;
     }
@@ -31,13 +36,14 @@
         z-index: 2;
         position: relative;
 
-        margin: 0 .5em .5em 0;
+        margin: 0 0.5em 0.5em 0;
 
         display: grid;
         grid-template-columns: 1fr;
-        grid-gap: .5em;
+        grid-gap: 0.5em;
 
-        > img, input {
+        > img,
+        input {
             justify-self: center;
             max-width: 100%;
         }
@@ -56,8 +62,8 @@
         display: grid;
         grid-template-columns: auto 1fr;
 
-        border-top: 1px solid rgba(0, 0, 0, .2);
-        border-bottom: 1px solid rgba(0, 0, 0, .2);
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
         &.-borderless {
             border-top: none;
@@ -68,10 +74,11 @@
             display: none;
         }
 
-        dt, dd {
+        dt,
+        dd {
             margin: 0;
-            padding: .3em;
-            border-bottom: 1px solid rgba(0, 0, 0, .07);
+            padding: 0.3em;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 
             &:last-of-type {
                 border-bottom: none;
@@ -85,11 +92,12 @@
                 grid-column: 1 / span 2;
                 font-weight: bold;
                 font-size: 1em;
-                background: rgba(0, 0, 0, .2);
+                background: rgba(0, 0, 0, 0.2);
             }
 
             &.-secret {
-                &, & + dd {
+                &,
+                & + dd {
                     background: #fc758920;
                 }
 
@@ -107,7 +115,7 @@
                         bottom: 0;
                         left: 0;
                         right: 0;
-                        opacity: .3;
+                        opacity: 0.3;
                         pointer-events: none;
                     }
                 }
@@ -125,7 +133,7 @@
                 &:after {
                     content: '»';
                     position: absolute;
-                    right: -.8em;
+                    right: -0.8em;
                     pointer-events: none;
                     text-shadow: none;
                 }
