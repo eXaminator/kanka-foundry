@@ -1,3 +1,13 @@
+## [2.8.1](https://github.com/eXaminator/kanka-foundry/compare/2.8.0...2.8.1) (2022-01-18)
+
+
+### Bug Fixes
+
+* allow selecting and copying text in journal entries ([d6abb89](https://github.com/eXaminator/kanka-foundry/commit/d6abb89dcc3915360e520ade689280822b34166e))
+* fix quest status display in journal entry list for FoundryVTT v9 ([78ae753](https://github.com/eXaminator/kanka-foundry/commit/78ae7530ef8e3f7df0e21831f9bde6b131ea08b9))
+* remove "null" text for missing descriptions in quest elements and organisation members ([5a4b4b6](https://github.com/eXaminator/kanka-foundry/commit/5a4b4b661e3394ad5310e6e4d39ad00389641229))
+* show quest elements that are not linked to an entity ([b05b9d1](https://github.com/eXaminator/kanka-foundry/commit/b05b9d1b274367dbccbb68be4e19712b7e84dcce)), closes [#89](https://github.com/eXaminator/kanka-foundry/issues/89)
+
 # [2.8.0](https://github.com/eXaminator/kanka-foundry/compare/2.7.2...2.8.0) (2022-01-07)
 
 
