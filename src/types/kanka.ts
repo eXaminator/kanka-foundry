@@ -105,7 +105,7 @@ export interface KankaApiListResult<T> extends KankaApiResult<T[]> {
 
 export interface KankaApiAttribute extends KankaApiSimpleConstrainable {
     id: KankaApiId;
-    type: null | 'checkbox' | 'section' | 'text';
+    type: null | 'checkbox' | 'section' | 'text' | 'number';
     name: string;
     value: string | null;
     parsed: string | null;
