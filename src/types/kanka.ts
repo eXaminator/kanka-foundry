@@ -20,12 +20,20 @@ export type KankaApiEntityType =
     | 'journal'
     | 'tag';
 
-export enum KankaVisibility {
+export enum LegacyKankaVisibility {
     all = 'all',
     members = 'members',
     admin = 'admin',
     self = 'self',
     adminSelf = 'admin-self',
+}
+
+export enum KankaVisibility {
+    all = 1,
+    admin = 2,
+    adminSelf = 3,
+    self = 4,
+    members = 5,
 }
 
 export enum KankaOrganisationPinId {
@@ -38,8 +46,12 @@ export interface KankaApiSimpleConstrainable {
     is_private: boolean;
 }
 
+export interface LegacyKankaApiVisibilityConstrainable {
+    visibility: LegacyKankaVisibility;
+}
+
 export interface KankaApiVisibilityConstrainable {
-    visibility: KankaVisibility;
+    visibility_id: KankaVisibility;
 }
 
 export interface KankaApiEntityImageData {
@@ -101,7 +113,7 @@ export interface KankaApiAttribute extends KankaApiSimpleConstrainable {
     default_order: number;
 }
 
-export interface KankaApiRelation extends KankaApiVisibilityConstrainable {
+export interface KankaApiRelation extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     owner_id: KankaApiEntityId;
     target_id: KankaApiEntityId;
@@ -111,7 +123,7 @@ export interface KankaApiRelation extends KankaApiVisibilityConstrainable {
     is_star: boolean;
 }
 
-export interface KankaApiInventory extends KankaApiVisibilityConstrainable {
+export interface KankaApiInventory extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     amount: number;
     is_equipped: boolean;
@@ -121,7 +133,7 @@ export interface KankaApiInventory extends KankaApiVisibilityConstrainable {
     position?: string;
 }
 
-export interface KankaApiEntityNote extends KankaApiVisibilityConstrainable {
+export interface KankaApiEntityNote extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     entry: string;
@@ -132,7 +144,7 @@ export interface KankaApiEntityNote extends KankaApiVisibilityConstrainable {
     settings: { collapsed: '0' | '1' } | null,
 }
 
-export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, KankaApiBlamable {
+export interface KankaApiEntityEvent extends LegacyKankaApiVisibilityConstrainable, KankaApiBlamable {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     calendar_id: KankaApiId;
@@ -149,7 +161,7 @@ export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, Ka
     type_id: number | null;
 }
 
-export interface KankaApiAbilityLink extends KankaApiVisibilityConstrainable {
+export interface KankaApiAbilityLink extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     charges: number | null;
     ability_id: KankaApiId;
@@ -157,7 +169,7 @@ export interface KankaApiAbilityLink extends KankaApiVisibilityConstrainable {
     position: number,
 }
 
-export interface KankaApiEntityFile extends KankaApiBlamable, KankaApiVisibilityConstrainable {
+export interface KankaApiEntityFile extends KankaApiBlamable, LegacyKankaApiVisibilityConstrainable {
     entity_id: KankaApiEntityId;
     id: KankaApiId;
     name: string;
@@ -291,7 +303,7 @@ export interface KankaApiOrganisation extends KankaApiChildEntity {
     members: KankaApiCharacterOrganisationLink[];
 }
 
-export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
+export interface KankaApiQuestElement extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     colour: string | null;

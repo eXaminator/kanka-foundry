@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { KankaVisibility } from '../../types/kanka';
+import { KankaVisibility, LegacyKankaVisibility } from '../../types/kanka';
 import kankaIsSecret from './kankaIsSecret';
 
 function compile(template: string, context = {}): string {
@@ -22,6 +22,22 @@ describe('kankaIsSecret()', () => {
     });
 
     [KankaVisibility.all, KankaVisibility.members].forEach((visibility) => {
+        it(`returns false if visibility_id is ${visibility}`, () => {
+            const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
+
+            expect(compile(template, { object: { visibility_id: visibility } })).toEqual('success');
+        });
+    });
+
+    [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self].forEach((visibility) => {
+        it(`returns true if visibility_id is ${visibility}`, () => {
+            const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
+
+            expect(compile(template, { object: { visibility_id: visibility } })).toEqual('success');
+        });
+    });
+
+    [LegacyKankaVisibility.all, LegacyKankaVisibility.members].forEach((visibility) => {
         it(`returns false if visibility is "${visibility}"`, () => {
             const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
 
@@ -29,7 +45,7 @@ describe('kankaIsSecret()', () => {
         });
     });
 
-    [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self].forEach((visibility) => {
+    [LegacyKankaVisibility.admin, LegacyKankaVisibility.adminSelf, LegacyKankaVisibility.self].forEach((visibility) => {
         it(`returns true if visibility is "${visibility}"`, () => {
             const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
 
