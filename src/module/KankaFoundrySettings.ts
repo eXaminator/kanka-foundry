@@ -48,7 +48,7 @@ export default class KankaFoundrySettings {
                 type: String,
                 default: '',
                 choices: {
-                    '': '',
+                    '': '', // eslint-disable-line @typescript-eslint/naming-convention
                 },
                 onChange: async (value) => {
                     await this.#module.loadCurrentCampaignById(parseInt(String(value), 10) || null);
@@ -66,7 +66,6 @@ export default class KankaFoundrySettings {
                 type: String,
                 default: '',
                 choices: {
-                    '': this.#module.getMessage('settings.locale.default'),
                     ...this.#module.languages,
                 },
                 onChange: async (value) => {

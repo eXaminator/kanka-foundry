@@ -10,6 +10,7 @@ const campaignInputName = `${kanka.name}.${KankaSettings.campaign}`;
 
 function buildCampaignChoices(campaigns: KankaApiCampaign[]): Record<string, string> {
     const campaignChoices: Record<string, string> = {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         '': kanka.getMessage('settings.campaign.pleaseChoose'),
     };
 
@@ -38,6 +39,7 @@ function setCampaignChoices(choices: Record<string, string>, value: string | nul
 }
 
 function setCampaignSelectionError(key: string): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     setCampaignChoices({ '': kanka.getMessage(key) }, '');
 }
 

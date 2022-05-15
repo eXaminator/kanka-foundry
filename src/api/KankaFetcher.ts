@@ -44,7 +44,7 @@ export default class KankaFetcher {
                 mode: 'cors',
                 headers: {
                     Authorization: `Bearer ${this.#token.toString()}`,
-                    'Content-type': 'application/json',
+                    'Content-type': 'application/json', // eslint-disable-line @typescript-eslint/naming-convention
                 },
             },
         );
