@@ -1,3 +1,11 @@
+## [2.8.2](https://github.com/eXaminator/kanka-foundry/compare/2.8.1...2.8.2) (2022-05-15)
+
+
+### Bug Fixes
+
+* add support for attributes of type number ([291f32a](https://github.com/eXaminator/kanka-foundry/commit/291f32aede87f795106cea00a3830e0b17024b58))
+* add support for the new visibility_id API field ([4b0956c](https://github.com/eXaminator/kanka-foundry/commit/4b0956cc82d2bd109ccd389902eed08fb1ec575b))
+
 ## [2.8.1](https://github.com/eXaminator/kanka-foundry/compare/2.8.0...2.8.1) (2022-01-18)
 
 
