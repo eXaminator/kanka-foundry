@@ -1,5 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
 import * as Handlebars from 'handlebars';
+import { vi } from 'vitest';
 
 global.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
@@ -23,3 +24,7 @@ global.TextEditor = class TextEditor {
         return text;
     }
 };
+
+vi.mock('./kanka.ts');
+vi.mock('./scss.ts');
+vi.mock('./templates.ts');

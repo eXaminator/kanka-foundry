@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { MockedFunction, MockedObject, vi } from 'vitest';
 import kanka from '../../kanka';
 import type KankaJournalHelper from '../../module/KankaJournalHelper';
 import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
@@ -6,10 +7,10 @@ import Reference from '../../types/Reference';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
 
-jest.mock('../../kanka');
-jest.mock('./kankaIsAccessible');
+vi.mock('../../kanka');
+vi.mock('./kankaIsAccessible');
 
-const mockedKankaIsAccessible = kankaIsAccessible as jest.Mock;
+const mockedKankaIsAccessible = kankaIsAccessible as MockedFunction<typeof kankaIsAccessible>;
 
 function compile(template: string, context = {}): string {
     return Handlebars.compile(template)(context);
@@ -32,10 +33,10 @@ function createReference(
 }
 
 describe('kankaFindReference()', () => {
-    let journals: jest.Mocked<KankaJournalHelper>;
+    let journals: MockedObject<KankaJournalHelper>;
 
     beforeAll(() => {
-        journals = kanka.journals as jest.Mocked<KankaJournalHelper>;
+        journals = kanka.journals as MockedObject<KankaJournalHelper>;
         mockedKankaIsAccessible.mockReturnValue(true);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);

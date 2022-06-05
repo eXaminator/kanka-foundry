@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { MockedObject, vi } from 'vitest';
 import KankaApi from '../../api/KankaApi';
 import {
     KankaApiAbilityLink,
@@ -12,7 +13,7 @@ import {
 } from '../../types/kanka';
 import LocationTypeLoader from './LocationTypeLoader';
 
-jest.mock('../../api/KankaApi');
+vi.mock('../../api/KankaApi');
 
 function createLocation(data: Partial<KankaApiLocation> = {}): KankaApiLocation {
     return {
@@ -45,10 +46,10 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('LocationTypeLoader', () => {
-    let api: jest.Mocked<KankaApi>;
+    let api: MockedObject<KankaApi>;
 
     beforeEach(() => {
-        api = new KankaApi() as jest.Mocked<KankaApi>;
+        api = new KankaApi() as MockedObject<KankaApi>;
     });
 
     describe('getType()', () => {

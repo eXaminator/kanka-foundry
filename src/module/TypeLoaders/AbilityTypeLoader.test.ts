@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { MockedObject, vi } from 'vitest';
 import KankaApi from '../../api/KankaApi';
 import {
     KankaApiAbility,
@@ -12,7 +13,7 @@ import {
 } from '../../types/kanka';
 import AbilityTypeLoader from './AbilityTypeLoader';
 
-jest.mock('../../api/KankaApi');
+vi.mock('../../api/KankaApi');
 
 function createAbility(data: Partial<KankaApiAbility> = {}): KankaApiAbility {
     return {
@@ -46,10 +47,10 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('AbilityTypeLoader', () => {
-    let api: jest.Mocked<KankaApi>;
+    let api: MockedObject<KankaApi>;
 
     beforeEach(() => {
-        api = new KankaApi() as jest.Mocked<KankaApi>;
+        api = new KankaApi() as MockedObject<KankaApi>;
     });
 
     describe('getType()', () => {

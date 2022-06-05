@@ -1,11 +1,12 @@
 /* eslint-disable promise/no-callback-in-promise,promise/catch-or-return */
+import { vi } from 'vitest';
 import RateLimiter from './RateLimiter';
 
-jest.mock('../logger');
-jest.useFakeTimers();
+vi.mock('../logger');
+vi.useFakeTimers();
 
 async function fakeTime(time: number): Promise<void> {
-    jest.advanceTimersByTime(time);
+    vi.advanceTimersByTime(time);
     await Promise.resolve();
 }
 
@@ -20,7 +21,7 @@ describe('RateLimiter', () => {
 
     describe('slot()', () => {
         it('resolves immediately if limiter as free slots', async () => {
-            const cb = jest.fn();
+            const cb = vi.fn();
             const limiter = new RateLimiter(10, 1);
 
             limiter.slot().then(cb);
@@ -30,7 +31,7 @@ describe('RateLimiter', () => {
         });
 
         it('resolves once a slot becomes available', async () => {
-            const cb = jest.fn();
+            const cb = vi.fn();
             const limiter = new RateLimiter(10, 1);
 
             limiter.slot().then(() => null); // First slot, runs immediately
@@ -61,7 +62,7 @@ describe('RateLimiter', () => {
         });
 
         it('calls change listeners', async () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
             const limiter = new RateLimiter(10, 2);
             limiter.onChange(onChange);
 
@@ -94,7 +95,7 @@ describe('RateLimiter', () => {
 
     describe('reset()', () => {
         it('clears slots', async () => {
-            const cb = jest.fn();
+            const cb = vi.fn();
             const limiter = new RateLimiter(10, 1);
 
             limiter.slot().then(() => null); // First slot, runs immediately
@@ -120,8 +121,8 @@ describe('RateLimiter', () => {
         });
 
         it('calls change listeners', () => {
-            const onChange1 = jest.fn();
-            const onChange2 = jest.fn();
+            const onChange1 = vi.fn();
+            const onChange2 = vi.fn();
             const limiter = new RateLimiter(10, 2);
             limiter.onChange(onChange1);
             limiter.onChange(onChange2);
@@ -170,7 +171,7 @@ describe('RateLimiter', () => {
         });
 
         it('calls change listeners', () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
             const limiter = new RateLimiter(10, 2);
             limiter.onChange(onChange);
 
@@ -200,7 +201,7 @@ describe('RateLimiter', () => {
         });
 
         it('calls change listeners', () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
             const limiter = new RateLimiter(10, 2);
             limiter.onChange(onChange);
 

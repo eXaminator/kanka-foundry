@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { MockedObject, vi } from 'vitest';
 import KankaApi from '../../api/KankaApi';
 import {
     KankaApiAbilityLink,
@@ -13,7 +14,7 @@ import {
 } from '../../types/kanka';
 import OrganisationTypeLoader from './OrganisationTypeLoader';
 
-jest.mock('../../api/KankaApi');
+vi.mock('../../api/KankaApi');
 
 function createOrganisation(data: Partial<KankaApiOrganisation> = {}): KankaApiOrganisation {
     return {
@@ -47,10 +48,10 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('OrganisationTypeLoader', () => {
-    let api: jest.Mocked<KankaApi>;
+    let api: MockedObject<KankaApi>;
 
     beforeEach(() => {
-        api = new KankaApi() as jest.Mocked<KankaApi>;
+        api = new KankaApi() as MockedObject<KankaApi>;
     });
 
     describe('getType()', () => {
