@@ -23,5 +23,5 @@ export default function kankaReplaceMentions(text: string | null): Handlebars.Sa
         }
     });
 
-    return new Handlebars.SafeString(TextEditor.enrichHTML(el.html()));
+    return new Handlebars.SafeString(TextEditor.enrichHTML(el.html(), { async: false }));
 }

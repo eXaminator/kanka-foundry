@@ -34,8 +34,8 @@
             "path": "lang/it.json"
         }
     ],
-    "minimumCoreVersion": "9",
-    "compatibleCoreVersion": "9",
+    "minimumCoreVersion": "10",
+    "compatibleCoreVersion": "10",
     "manifestPlusVersion": "1.2.0",
     "media": [
         {

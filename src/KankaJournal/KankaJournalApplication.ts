@@ -89,27 +89,6 @@ export default function registerSheet(kanka: KankaFoundry): void {
             super.activateListeners(html);
             if (!this.isKankaEntry) return;
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            if (game.version?.startsWith('9.')) {
-                // This is a fallback for Foundry V9. Sicne V10 this seems to be the deault
-                html.on('click', 'img', (event) => {
-                    const target = event.currentTarget;
-                    if ($(target).closest('a').length) {
-                        // If the image is inside of a link, don't handle it
-                        return;
-                    }
-
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    const ip = new ImagePopout(target.src, { title: target.title, shareable: true });
-                    ip.render(true);
-
-                    event.preventDefault();
-                    event.stopPropagation();
-                });
-            }
-
             html.on('click', '[data-action]', async (event) => {
                 const { action } = event.currentTarget?.dataset ?? {};
 
