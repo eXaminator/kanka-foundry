@@ -13,6 +13,9 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": false,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "types": [
+            "vitest/globals"
+        ]
     }
 }

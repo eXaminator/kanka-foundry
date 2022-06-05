@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { MockedObject, vi } from 'vitest';
 import KankaApi from '../../api/KankaApi';
 import {
     KankaApiAbilityLink,
@@ -7,12 +8,13 @@ import {
     KankaApiEntityType,
     KankaApiId,
     KankaApiInventory,
-    KankaApiQuest, KankaApiQuestElement,
+    KankaApiQuest,
+    KankaApiQuestElement,
     KankaApiRelation,
 } from '../../types/kanka';
 import QuestTypeLoader from './QuestTypeLoader';
 
-jest.mock('../../api/KankaApi');
+vi.mock('../../api/KankaApi');
 
 function createQuest(data: Partial<KankaApiQuest> = {}): KankaApiQuest {
     return {
@@ -46,10 +48,10 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('QuestTypeLoader', () => {
-    let api: jest.Mocked<KankaApi>;
+    let api: MockedObject<KankaApi>;
 
     beforeEach(() => {
-        api = new KankaApi() as jest.Mocked<KankaApi>;
+        api = new KankaApi() as MockedObject<KankaApi>;
     });
 
     describe('getType()', () => {

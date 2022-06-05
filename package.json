@@ -12,9 +12,9 @@
         "check:types": "tsc --noEmit",
         "check:lint": "eslint --ext .ts src",
         "release": "semantic-release",
-        "test": "jest",
-        "test:watch": "jest --watchAll",
-        "test:coverage": "jest --collectCoverage"
+        "test": "vitest run",
+        "test:watch": "vitest watch",
+        "test:coverage": "vitest run --coverage"
     },
     "author": "Steven Weingärtner",
     "license": "MIT",
@@ -28,6 +28,7 @@
         "@types/node": "^14.17.27",
         "@typescript-eslint/eslint-plugin": "^5.1.0",
         "@typescript-eslint/parser": "^5.1.0",
+        "c8": "^7.11.3",
         "eslint": "^8.0.1",
         "eslint-config-brainbits-typescript": "^3.0.9",
         "eslint-plugin-babel": "^5.3.1",
@@ -43,7 +44,8 @@
         "semantic-release": "^19.0.2",
         "ts-node": "^10.3.0",
         "typescript": "^4.4.4",
-        "vite": "^2.9.9"
+        "vite": "^2.9.9",
+        "vitest": "^0.13.1"
     },
     "dependencies": {
         "jwt-decode": "^3.1.2"
