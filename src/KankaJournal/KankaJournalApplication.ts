@@ -102,9 +102,11 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 }
 
                 if (action === 'show-image') {
-                    if (this.isEditable) {
-                        this.render(true, { sheetMode: 'image' } as RenderOptions);
-                    }
+                    const target = event.currentTarget;
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    const ip = new ImagePopout(target.src, { title: target.title, shareable: true });
+                    ip.render(true);
                 }
             });
         }
