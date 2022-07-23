@@ -3,6 +3,14 @@
 
 ### Bug Fixes
 
+* update auto-deploy version to match foundrys new landingpage ([ca08668](https://github.com/eXaminator/kanka-foundry/commit/ca086684ac439f6cc29a83cedef68f6dce1f1cca))
+* update auto-deploy version to match foundrys new landingpage ([a71a0e0](https://github.com/eXaminator/kanka-foundry/commit/a71a0e0f2addf91a32bb661a4228f82c69bc832c))
+
+## [2.9.1](https://github.com/eXaminator/kanka-foundry/compare/2.9.0...2.9.1) (2022-07-23)
+
+
+### Bug Fixes
+
 * update auto-deploy version to match foundrys new landingpage ([a71a0e0](https://github.com/eXaminator/kanka-foundry/commit/a71a0e0f2addf91a32bb661a4228f82c69bc832c))
 
 # [2.9.0](https://github.com/eXaminator/kanka-foundry/compare/2.8.2...2.9.0) (2022-07-23)
