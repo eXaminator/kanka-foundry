@@ -20,6 +20,9 @@ const config: UserConfig = {
             },
         },
     },
+    esbuild: {
+        keepNames: true,
+    },
     build: {
         outDir: resolve(__dirname, 'dist'),
         emptyOutDir: true,
