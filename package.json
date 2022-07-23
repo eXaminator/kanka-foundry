@@ -30,7 +30,7 @@
         "@typescript-eslint/parser": "^5.1.0",
         "c8": "^7.11.3",
         "eslint": "^8.0.1",
-        "eslint-config-brainbits-typescript": "^3.0.9",
+        "eslint-config-brainbits-typescript": "^4.0.0-beta.6",
         "eslint-plugin-babel": "^5.3.1",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-promise": "^6.0.0",

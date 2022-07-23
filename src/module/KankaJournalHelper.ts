@@ -76,7 +76,7 @@ export default class KankaJournalHelper {
         campaignId: KankaApiId,
         writableEntities: WritableEntity[],
         entityLookup: KankaApiEntity[] = [],
-        onProgress?: ProgressFn,
+        onProgress: ProgressFn | undefined = undefined,
     ): Promise<number> {
         const grouped = new Map<KankaApiEntityType, WritableEntity[]>();
         writableEntities.forEach((entity) => {

@@ -110,7 +110,8 @@ export default class KankaApi {
         if (!entity) throw new Error(`Could not find item with ID '${String(id)}'`);
         return entity;
         /* type Result = KankaApiResult<KankaApiItem>;
-        const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/items/${String(id)}?related=1`);
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/items/${String(id)}?related=1`);
         return result.data; */
     }
 

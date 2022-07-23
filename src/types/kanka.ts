@@ -175,7 +175,10 @@ export enum KankaApiAssetType {
     alias = 3,
 }
 
-interface KankaApiEntityBaseAsset extends KankaApiBlamable, KankaApiVisibilityConstrainable, KankaApiSimpleConstrainable {
+interface KankaApiEntityBaseAsset extends
+    KankaApiBlamable,
+    KankaApiVisibilityConstrainable,
+    KankaApiSimpleConstrainable {
     entity_id: KankaApiEntityId;
     id: KankaApiId;
     name: string;
