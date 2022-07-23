@@ -4,6 +4,7 @@ import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
 import template from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
+import logo from '../assets/kanka.png';
 
 interface Data extends JournalSheet.Data {
     kankaIsGm: boolean;
@@ -11,6 +12,7 @@ interface Data extends JournalSheet.Data {
     kankaEntityType: KankaApiEntityType;
     kankaReferences: Reference;
     kankaCampaignId: KankaApiId;
+    kankaLogo: string;
     settings: {
         imageInText: boolean;
     };
@@ -66,6 +68,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 kankaEntityType: this.object.getFlag(kanka.name, 'type') as KankaApiEntityType,
                 kankaReferences: this.object.getFlag(kanka.name, 'references') as Reference,
                 kankaCampaignId: this.object.getFlag(kanka.name, 'campaign') as KankaApiId,
+                kankaLogo: logo,
                 settings: {
                     imageInText: kanka.settings.imageInText,
                 },

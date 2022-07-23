@@ -73,9 +73,9 @@
                                     </div>
                                 </summary>
                                 {{#if (kankaIsOneOf ../../settings.view 'grid')}}
-                                    {{>entities/grid entities=entities}}
+                                    {{>./entities/grid entities=entities}}
                                 {{else}}
-                                    {{>entities/list entities=entities}}
+                                    {{>./entities/list entities=entities}}
                                 {{/if}}
                             </details>
                         {{/with}}
@@ -94,9 +94,9 @@
             </h2>
             <p>{{ kankaLocalize 'browser' 'deleteTab' 'description' }}</p>
             {{#if (kankaIsOneOf settings.view 'grid')}}
-                {{>deletedEntries/grid deletedEntries=deletedEntries}}
+                {{>./deletedEntries/grid deletedEntries=deletedEntries}}
             {{else}}
-                {{>deletedEntries/list deletedEntries=deletedEntries}}
+                {{>./deletedEntries/list deletedEntries=deletedEntries}}
             {{/if}}
         </div>
     </section>

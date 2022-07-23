@@ -13,6 +13,7 @@ const config: UserConfig = {
         proxy: {
             '^(?!/modules/kanka-foundry)': 'http://localhost/',
             '^/modules/kanka-foundry/lang': 'http://localhost/',
+            '^/modules/kanka-foundry/templates': 'http://localhost/',
             '/socket.io': {
                 target: 'ws://localhost',
                 ws: true,

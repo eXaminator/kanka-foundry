@@ -4,7 +4,7 @@
         {{#if kankaIsGm}}
             {{#kankaLinkEntity kankaEntityType kankaEntity.id }}
                 <img
-                    src="../../assets/kanka.png"
+                    src="{{kankaLogo}}"
                     alt="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
                     title="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
                 />
@@ -16,16 +16,16 @@
     </h1>
 
     <nav class="tabs" data-group="primary-tabs">
-        {{>tabNav name='story' label='shared.tabs.story'}}
+        {{>./tabNav name='story' label='shared.tabs.story'}}
         {{#unless (kankaHasOnlyPinned kankaEntity.attributes 'is_star')}}
-            {{>tabNav
+            {{>./tabNav
                 name='attributes'
                 label='shared.tabs.attributes'
                 collection=kankaEntity.attributes
             }}
         {{/unless}}
         {{#if kankaEntity.children.length}}
-            {{>tabNav
+            {{>./tabNav
                 name='children'
                 labelString=(kankaLocalize 'entityType' kankaEntityType)
                 collection=kankaEntity.children
@@ -34,14 +34,14 @@
             }}
         {{/if}}
         {{#>nav}}{{/nav}}
-        {{>tabNav
+        {{>./tabNav
             name='relations'
             label='shared.tabs.relations'
             collection=kankaEntity.relations
             idProperty='target_id'
             showCount=true
         }}
-        {{>tabNav
+        {{>./tabNav
             name='inventory'
             label='shared.tabs.inventory'
             collection=kankaEntity.inventory
@@ -50,7 +50,7 @@
             optionalReference=true
             showCount=true
         }}
-        {{>tabNav
+        {{>./tabNav
             name='entity-abilities'
             label='shared.tabs.abilities'
             collection=kankaEntity.entity_abilities
@@ -58,7 +58,7 @@
             type='ability'
             showCount=true
         }}
-        {{>tabNav
+        {{>./tabNav
             name='entity-files'
             label='shared.tabs.files'
             collection=kankaEntity.entity_files
@@ -69,9 +69,9 @@
     <section class="tab-container -scrollable">
         <div class="tab -scrollable" data-tab="story" data-group="primary-tabs">
             <div class="image-column">
-                {{~#if image~}}
+                {{~#if kankaEntity.image_full ~}}
                     {{~#if settings.imageInText~}}
-                        <input type="image" src="{{image}}" alt="{{name}}" data-action="show-image">
+                        <input type="image" src="{{kankaEntity.image_full}}" alt="{{name}}" data-action="show-image">
                     {{~/if~}}
                 {{~/if~}}
 
@@ -82,12 +82,12 @@
                 {{~#>profile~}}{{~/profile~}}
                 {{~#with (kankaFilterBy (kankaFilterReferences kankaEntity.relations) 'is_star' true) as | starred |~}}
                     {{~#each starred ~}}
-                        {{~>detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
+                        {{~>./detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
                     {{~/each~}}
                 {{~/with~}}
                 {{~#with (kankaSortBy (kankaFilterBy (kankaFilterAccessible kankaEntity.attributes) 'is_star' true) 'default_order') as | starred |~}}
                     {{~#each starred ~}}
-                        {{~>tabs/attributeEntry attribute=this~}}
+                        {{~>./tabs/attributeEntry attribute=this~}}
                     {{~/each~}}
                 {{~/with~}}
             </dl>
@@ -96,45 +96,26 @@
                 {{ kankaReplaceMentions kankaEntity.entry_parsed }}
             {{/if}}
 
-            {{>tabs/pinnedNotes entity=kankaEntity}}
+            {{>./tabs/pinnedNotes entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="attributes" data-group="primary-tabs">
-            {{>tabs/attributes entity=kankaEntity}}
+            {{>./tabs/attributes entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="children" data-group="primary-tabs">
-            {{>tabs/children entity=kankaEntity}}
+            {{>./tabs/children entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="relations" data-group="primary-tabs">
-            {{>tabs/relations entity=kankaEntity}}
+            {{>./tabs/relations entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="inventory" data-group="primary-tabs">
-            {{>tabs/inventory entity=kankaEntity}}
+            {{>./tabs/inventory entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="entity-abilities" data-group="primary-tabs">
-            {{>tabs/abilities entity=kankaEntity}}
+            {{>./tabs/abilities entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="entity-files" data-group="primary-tabs">
-            {{>tabs/files entity=kankaEntity}}
+            {{>./tabs/files entity=kankaEntity}}
         </div>
         {{#>content}}{{/content}}
     </section>
-
-    <!--
-    <input name="name" type="text" value="{{data.name}}" placeholder="Entry Title"/>
-
-    <select name="folder">
-        {{#select data.folder}}
-            <option value=""></option>
-            {{#each folders}}
-                <option value="{{this.id}}">{{this.name}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
-
-    {{editor content=data.content target="content" button=true editable=editable owner=owner}}
-
-            {{#if editable}}
-        <button type="submit" name="submit"><i class="fas fa-feather-alt"></i> {{ localize "JOURNAL.Submit"}}</button>
-    {{/if}}
-    -->
 </form>

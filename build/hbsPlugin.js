@@ -30,20 +30,23 @@ export default function hbsPlugin() {
             const outputUrl = join(config.base, outputRelativePath).replace(/^\//, '');
             const content = readFileSync(id).toString('utf-8');
 
-            const partialRegex = /\{\{>([-a-zA-Z0-9/_.]+)([^}]*)}}/g;
+            const partialRegex = /\{\{(#|~)?>(\.[-a-zA-Z0-9/_.]+)([^}]*)}}/g;
             const matches = Array.from(content.matchAll(partialRegex));
-            const partials = matches.map(([, partialPath]) => getPartialPath(id, partialPath));
-            // if (this.addWatchFile) partials.forEach((partial) => this.addWatchFile(partial));
+            const partials = matches.map(([, , partialPath]) => getPartialPath(id, partialPath));
 
             const partialImports = partials
                 .map((partial) => `import ${JSON.stringify(partial)};`)
                 .join('\n');
 
-            const parsedContent = content.replaceAll(partialRegex, (all, p1, p2) => {
-                const partialPath = relative(inputBasePath, getPartialPath(id, p1));
+            const parsedContent = matches.reduce((content, match) => {
+                if (!match[2]) return content;
+                const partialPath = relative(inputBasePath, getPartialPath(id, match[2]));
                 const partialUrl = join(config.base, 'templates', partialPath).replace(/^\//, '');
-                return `{{>${partialUrl}${p2}}}`;
-            });
+                return content.replaceAll(
+                    new RegExp(`${match[2]}(}| |\n)`, 'g'),
+                    (all, ending) => `${partialUrl}${ending}`,
+                );
+            }, content);
 
             if (server) {
                 mkdirSync(dirname(outputPath), { recursive: true });
