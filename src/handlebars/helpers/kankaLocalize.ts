@@ -13,6 +13,7 @@ export default function kankaLocalize(...args: unknown[]): string {
     const key = ['KANKA', ...parts].join('.');
 
     const localization = options.data?.root?.localization ?? (game as Game).i18n;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return foundry.utils.isEmpty(data) ? localization.localize(key) : localization.format(String(key), data);
 }
