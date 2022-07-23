@@ -1,3 +1,17 @@
+# [2.9.0](https://github.com/eXaminator/kanka-foundry/compare/2.8.2...2.9.0) (2022-07-23)
+
+
+### Bug Fixes
+
+* fix template handling after switching to vite.js ([cf6f2d9](https://github.com/eXaminator/kanka-foundry/commit/cf6f2d9899b1922aede75ae90ca7316ad054fb2e))
+
+
+### Features
+
+* add support for alias and link assets ([a98aaea](https://github.com/eXaminator/kanka-foundry/commit/a98aaeaf100eba26bc4dd2c4677745a8e2e9dce5))
+* add support for nested items ([3455969](https://github.com/eXaminator/kanka-foundry/commit/34559698667444d52694ba034bbab959396a8060)), closes [#93](https://github.com/eXaminator/kanka-foundry/issues/93)
+* use ImagePopout to display images when clicked on ([efe702a](https://github.com/eXaminator/kanka-foundry/commit/efe702a04fa6a2466b780cd450c8f84b949ff952)), closes [#92](https://github.com/eXaminator/kanka-foundry/issues/92)
+
 ## [2.8.2](https://github.com/eXaminator/kanka-foundry/compare/2.8.1...2.8.2) (2022-05-15)
 
 
