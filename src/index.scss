@@ -434,7 +434,7 @@ ul.kanka-cards {
     margin-bottom: 1em;
     padding: 0 1em;
 
-    a {
+    div, a {
         color: inherit;
         text-shadow: none;
         text-decoration: none;
@@ -487,12 +487,12 @@ ul.kanka-cards {
             text-align: right;
             white-space: nowrap;
         }
+    }
 
-        &:hover {
-            > img,
-            > i {
-                box-shadow: 0 0 1rem 0 #00000099;
-            }
+    a:hover {
+        > img,
+        > i {
+            box-shadow: 0 0 1rem 0 #00000099;
         }
     }
 }

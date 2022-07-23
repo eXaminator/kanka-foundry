@@ -169,6 +169,44 @@ export interface KankaApiAbilityLink extends LegacyKankaApiVisibilityConstrainab
     position: number,
 }
 
+export enum KankaApiAssetType {
+    file = 1,
+    link = 2,
+    alias = 3,
+}
+
+interface KankaApiEntityBaseAsset extends KankaApiBlamable, KankaApiVisibilityConstrainable, KankaApiSimpleConstrainable {
+    entity_id: KankaApiEntityId;
+    id: KankaApiId;
+    name: string;
+    type_id: KankaApiAssetType;
+    metadata: unknown;
+}
+
+export interface KankaApiEntityAssetAlias extends KankaApiEntityBaseAsset {
+    type_id: KankaApiAssetType.alias;
+    metadata: null;
+}
+
+export interface KankaApiEntityAssetFile extends KankaApiEntityBaseAsset {
+    type_id: KankaApiAssetType.file;
+    metadata: {
+        path: string;
+        size: number;
+        type: string;
+    };
+}
+
+export interface KankaApiEntityAssetLink extends KankaApiEntityBaseAsset {
+    type_id: KankaApiAssetType.link;
+    metadata: {
+        url: string;
+        link: string;
+    };
+}
+
+export type KankaApiEntityAsset = KankaApiEntityAssetAlias | KankaApiEntityAssetFile | KankaApiEntityAssetLink;
+
 export interface KankaApiEntityFile extends KankaApiBlamable, LegacyKankaApiVisibilityConstrainable {
     entity_id: KankaApiEntityId;
     id: KankaApiId;
@@ -192,7 +230,7 @@ export interface KankaApiRelated {
     entity_notes: KankaApiEntityNote[];
     entity_abilities: KankaApiAbilityLink[];
     entity_events: KankaApiEntityEvent[];
-    entity_files: KankaApiEntityFile[];
+    entity_assets: KankaApiEntityAsset[];
 }
 
 export interface KankaApiChild {

@@ -1,16 +1,39 @@
 <div class="kanka-gallery">
-    {{#each (kankaFilterAccessible entity.entity_files)}}
-        <a href="{{ this.path }}" target="_blank"{{#if (kankaIsSecret this) }} class="-secret"{{/if}}>
-            {{#if (kankaEq this.type 'regex:^image/.*') }}
-                <img src="{{this.path}}" alt="{{this.name}}" />
-            {{else}}
-                {{ kankaFileIcon this.type }}
-            {{/if}}
-            <strong>
-                {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
-                {{ this.name }}
-            </strong>
-            <small>{{ kankaFileSize this.size }}</small>
-        </a>
+    {{#each (kankaFilterAccessible entity.entity_assets)}}
+        {{#if (kankaEq this.type_id 1)}}
+            <!-- File -->
+            <a href="{{ this.metadata.path }}" target="_blank"{{#if (kankaIsSecret this) }} class="-secret"{{/if}}>
+                {{#if (kankaEq this.metadata.type 'regex:^image/.*') }}
+                    <img src="{{this.metadata.path}}" alt="{{this.name}}" />
+                {{else}}
+                    {{ kankaFileIcon this.metadata.type }}
+                {{/if}}
+                <strong>
+                    {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
+                    {{ this.name }}
+                </strong>
+                <small>{{ kankaFileSize this.metadata.size }}</small>
+            </a>
+        {{else if (kankaEq this.type_id 2)}}
+            <!-- Link -->
+            <a href="{{ this.metadata.url }}" target="_blank"{{#if (kankaIsSecret this) }} class="-secret"{{/if}}>
+                <i class="fas {{ this.metadata.icon }} fw"></i>
+                <strong>
+                    {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
+                    {{ this.name }}
+                </strong>
+                <small>Link</small>
+            </a>
+        {{else if (kankaEq this.type_id 3)}}
+            <!-- Alias -->
+            <div {{#if (kankaIsSecret this) }} class="-secret"{{/if}}>
+                <i class="fas fa-arrow-right fw"></i>
+                <strong>
+                    {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
+                    {{ this.name }}
+                </strong>
+                <small>Alias</small>
+            </div>
+        {{/if}}
     {{/each}}
 </div>

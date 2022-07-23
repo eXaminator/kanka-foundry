@@ -67,7 +67,7 @@ KANKA:
                 relations: Beziehungen
                 inventory: Inventar
                 abilities: Fähigkeiten
-                files: Dateien
+                files: Anhänge
             labels:
                 type: Typ
                 location: Ort
