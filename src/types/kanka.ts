@@ -297,6 +297,9 @@ export interface KankaApiFamily extends KankaApiChildEntity {
 }
 
 export interface KankaApiItem extends KankaApiChildEntity {
+    ancestors: KankaApiEntityId[];
+    children: KankaApiChild[];
+    item_id: KankaApiId | null;
     location_id: KankaApiId | null;
     character_id: KankaApiId | null;
     type: string | null;

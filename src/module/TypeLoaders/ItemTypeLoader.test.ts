@@ -20,6 +20,8 @@ function createItem(data: Partial<KankaApiItem> = {}): KankaApiItem {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        ancestors: [],
+        children: [],
         ...data,
     } as KankaApiItem;
 }
@@ -196,6 +198,52 @@ describe('ItemTypeLoader', () => {
                     id: 2002,
                     entityId: 1002,
                     type: 'character',
+                },
+            });
+        });
+
+        it('includes ancestors from the lookup array', async () => {
+            const expectedResult = createItem({
+                ancestors: [1002],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'item'),
+                createEntity(1002, 2002, 'item'),
+                createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new ItemTypeLoader(api);
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: {
+                    id: 2002,
+                    entityId: 1002,
+                    type: 'item',
+                },
+            });
+        });
+
+        it('includes children from the lookup array', async () => {
+            const expectedResult = createItem({
+                children: [{ entity_id: 1002 }],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'item'),
+                createEntity(1002, 2002, 'item'),
+                createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new ItemTypeLoader(api);
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: {
+                    id: 2002,
+                    entityId: 1002,
+                    type: 'item',
                 },
             });
         });

@@ -105,14 +105,19 @@ export default class KankaApi {
     }
 
     public async getItem(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiItem> {
-        type Result = KankaApiResult<KankaApiItem>;
+        const list = await this.getAllItems(campaignId);
+        const entity = list.find(entity => entity.id === id);
+        if (!entity) throw new Error(`Could not find item with ID '${String(id)}'`);
+        return entity;
+        /* type Result = KankaApiResult<KankaApiItem>;
         const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/items/${String(id)}?related=1`);
-        return result.data;
+        return result.data; */
     }
 
     public async getAllItems(campaignId: KankaApiId): Promise<KankaApiItem[]> {
-        return this.fetchFullList<KankaApiItem>(
+        return this.fetchFullListWithAncestors<KankaApiItem>(
             `campaigns/${Number(campaignId)}/items?related=1`,
+            'item_id',
         );
     }
 
