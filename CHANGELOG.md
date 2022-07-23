@@ -1,3 +1,10 @@
+## [2.9.2](https://github.com/eXaminator/kanka-foundry/compare/2.9.1...2.9.2) (2022-07-23)
+
+
+### Bug Fixes
+
+* keep names when minifying code to ensure Foundry can find all classes ([5cab29c](https://github.com/eXaminator/kanka-foundry/commit/5cab29c625c079335a002646d76a5730c0389520))
+
 ## [2.9.1](https://github.com/eXaminator/kanka-foundry/compare/2.9.0...2.9.1) (2022-07-23)
 
 
