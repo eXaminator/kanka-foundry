@@ -23,5 +23,7 @@ export default function kankaReplaceMentions(text: string | null): Handlebars.Sa
         }
     });
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     return new Handlebars.SafeString(TextEditor.enrichHTML(el.html(), { async: false }));
 }
