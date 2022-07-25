@@ -1,3 +1,10 @@
+## [2.9.3](https://github.com/eXaminator/kanka-foundry/compare/2.9.2...2.9.3) (2022-07-25)
+
+
+### Bug Fixes
+
+* fix assets to link to the correct URL ([3748855](https://github.com/eXaminator/kanka-foundry/commit/374885594e39e48766ab9d53c41a7b0cb988e793))
+
 ## [2.9.2](https://github.com/eXaminator/kanka-foundry/compare/2.9.1...2.9.2) (2022-07-23)
 
 
