@@ -193,6 +193,7 @@ export interface KankaApiEntityAssetAlias extends KankaApiEntityBaseAsset {
 
 export interface KankaApiEntityAssetFile extends KankaApiEntityBaseAsset {
     type_id: KankaApiAssetType.file;
+    _url: string;
     metadata: {
         path: string;
         size: number;

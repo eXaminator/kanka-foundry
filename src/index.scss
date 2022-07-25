@@ -489,7 +489,7 @@ ul.kanka-cards {
         }
     }
 
-    a:hover {
+    a:hover, .interactive:hover {
         > img,
         > i {
             box-shadow: 0 0 1rem 0 #00000099;

@@ -89,6 +89,19 @@ export default function registerSheet(kanka: KankaFoundry): void {
             super.activateListeners(html);
             if (!this.isKankaEntry) return;
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            if (game.version?.startsWith('9.')) {
+                // This is a fallback for Foundry V9. Sicne V10 this seems to be the deault
+                html.on('click', 'img', (event) => {
+                    const target = event.currentTarget;
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    const ip = new ImagePopout(target.src, { title: target.title, shareable: true });
+                    ip.render(true);
+                });
+            }
+
             html.on('click', '[data-action]', async (event) => {
                 const { action } = event.currentTarget?.dataset ?? {};
 
@@ -102,14 +115,6 @@ export default function registerSheet(kanka: KankaFoundry): void {
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     await kanka.journals.write(campaign, [{ child_id: snapshot.id, type }]);
                     this.rerender();
-                }
-
-                if (action === 'show-image') {
-                    const target = event.currentTarget;
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    const ip = new ImagePopout(target.src, { title: target.title, shareable: true });
-                    ip.render(true);
                 }
             });
         }
