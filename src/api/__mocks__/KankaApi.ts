@@ -5,6 +5,7 @@ export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
     isReady: true,
     reset: vi.fn(),
     switchUser: vi.fn(),
+    switchBaseUrl: vi.fn(),
     getAllCampaigns: vi.fn(),
     getCampaign: vi.fn(),
     getCharacter: vi.fn(),
@@ -31,4 +32,5 @@ export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
     getAllEvents: vi.fn(),
     getEntity: vi.fn(),
     getAllEntities: vi.fn(),
+    baseUrl: 'kanka.io',
 }));

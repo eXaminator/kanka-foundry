@@ -5,12 +5,12 @@ import RateLimiter from './RateLimiter';
 const freeLimit = 30;
 
 export default class KankaFetcher {
-    readonly #base: string;
+    #base: string;
     #token?: AccessToken;
     #limiter = new RateLimiter(61, freeLimit);
 
     constructor(base: string) {
-        this.#base = base;
+        this.#base = this.normalizeUrl(base);
     }
 
     public get limiter(): RateLimiter {
@@ -29,6 +29,15 @@ export default class KankaFetcher {
         this.#token = token;
     }
 
+    public set base(base: string) {
+        this.#base = this.normalizeUrl(base);
+        this.#limiter.reset();
+    }
+
+    public get base(): string {
+        return this.#base;
+    }
+
     public async fetch<T extends KankaApiResult<unknown>>(path: string): Promise<T> {
         if (!this.#token) {
             throw new Error('Missing token in KankaFetcher');
@@ -36,7 +45,7 @@ export default class KankaFetcher {
 
         await this.#limiter.slot();
 
-        const url = path.startsWith('http') ? path : `${this.#base}/${path}`;
+        const url = path.startsWith('http') ? path : `${this.#base}${path}`;
 
         const response = await fetch(
             url,
@@ -60,5 +69,23 @@ export default class KankaFetcher {
         }
 
         return response.json();
+    }
+
+    private normalizeUrl(url: string): string {
+        let result = url.trim();
+
+        if (!result.endsWith('/')) {
+            result = `${result}/`;
+        }
+
+        if (!result.endsWith('api/1.0/')) {
+            result = `${result}api/1.0/`;
+        }
+
+        if (!result.startsWith('http')) {
+            result = `https://${result}`;
+        }
+
+        return result;
     }
 }

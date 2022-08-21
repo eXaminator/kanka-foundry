@@ -24,6 +24,21 @@ export default class KankaFoundrySettings {
 
     public async initialize(): Promise<void> {
         this.register(
+            KankaSettings.baseUrl,
+            {
+                name: this.#module.getMessage('settings.baseUrl.label'),
+                hint: this.#module.getMessage('settings.baseUrl.hint'),
+                scope: 'world',
+                config: true,
+                type: String,
+                default: 'https://kanka.io',
+                onChange: async (value) => {
+                    await this.#module.setBaseUrl(String(value));
+                },
+            },
+        );
+
+        this.register(
             KankaSettings.accessToken,
             {
                 name: this.#module.getMessage('settings.token.label'),
@@ -203,6 +218,10 @@ export default class KankaFoundrySettings {
         data: ClientSettings.PartialSetting,
     ): void {
         this.#module.game.settings.register(this.#module.name, setting, data);
+    }
+
+    public get baseUrl(): string {
+        return this.getSetting<string>(KankaSettings.baseUrl);
     }
 
     public get token(): string {

@@ -46,6 +46,7 @@ export default class KankaFoundry {
 
         try {
             await this.#settings.initialize();
+            await this.setBaseUrl(this.#settings.baseUrl);
             await this.setToken(this.#settings.token);
             await this.loadCurrentCampaignById(this.#settings.currentCampaignId);
 
@@ -103,12 +104,20 @@ export default class KankaFoundry {
         }
     }
 
+    public async setBaseUrl(baseUrl: string): Promise<void> {
+        this.#api.switchBaseUrl(baseUrl);
+    }
+
     public get isInitialized(): boolean {
         return this.#isInitialized;
     }
 
     public get name(): string {
         return this.#name;
+    }
+
+    public get baseUrl(): string {
+        return this.#api.baseUrl;
     }
 
     public get languages(): Record<string, string> {

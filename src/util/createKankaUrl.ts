@@ -1,3 +1,4 @@
+import kanka from '../kanka';
 import { KankaApiEntityType, KankaApiId } from '../types/kanka';
 
 export default function createKankaUrl(
@@ -6,7 +7,8 @@ export default function createKankaUrl(
     id?: KankaApiId,
     locale?: string,
 ): string {
-    const parts = [`https://kanka.io/${locale || 'en'}/campaign/${String(campaignId)}`];
+    const url = new URL(kanka.baseUrl);
+    const parts = [`${url.origin}/${locale || 'en'}/campaign/${String(campaignId)}`];
 
     if (type) {
         const pluralType = `${type.replace(/y$/, 'ie')}s`;
