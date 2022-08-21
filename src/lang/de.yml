@@ -121,6 +121,12 @@ KANKA:
                 completed: Abgeschlossen
 
     settings:
+        baseUrl:
+            label: Kanka URL
+            hint: |
+                Gib hier die Adresse zu deiner eigenen Kanka Installation an falls du eine hast. 
+                Sonst benutze https://kanka.io. Bitte beachte, dass deine Kanka-Installation die gleiche API-Version haben
+                muss die die offizielle Kanka-Seite um mit diesem Modul kompatibel zu sein.
         token:
             label: Kanka Persönliches Zugriffs-Token
             hint: Du kannst ein Token auf https://kanka.io/de/settings/api erstellen
@@ -128,6 +134,7 @@ KANKA:
             label: Kampagne
             hint: Wähle die Kampagne, aus der Einträge importiert werden sollen.
             noToken: Bitte gib ein gültiges Zugriffs-Token ein.
+            noBaseUrl: Bitte gib eine gültige Kanka URL ein.
             pleaseChoose: "-- Kampagne auswählen --"
         locale:
             label: Inhaltssprache

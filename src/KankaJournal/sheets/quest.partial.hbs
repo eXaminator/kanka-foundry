@@ -26,7 +26,7 @@
                             <li class="kanka-card {{#if (kankaIsSecret rel element) }}-secret{{/if}}">
                                 <div class="kanka-avatar" {{#if rel.colour}}style="--highlight-color: {{ rel.colour }}"{{/if}}>
                                     {{#if element.thumb}}
-                                        <img src="{{element.thumb}}" alt="{{element.name}}" />
+                                        <img src="{{kankaFileUrl element.thumb}}" alt="{{element.name}}" />
                                     {{/if}}
                                 </div>
 

@@ -5,6 +5,7 @@ import { logError, logInfo } from '../logger';
 import { KankaApiCampaign } from '../types/kanka';
 import { KankaSettings } from '../types/KankaSettings';
 
+const baseUrlInputName = `${kanka.name}.${KankaSettings.baseUrl}`;
 const accessTokenInputName = `${kanka.name}.${KankaSettings.accessToken}`;
 const campaignInputName = `${kanka.name}.${KankaSettings.campaign}`;
 
@@ -51,7 +52,7 @@ async function onAccessTokenChange(event: JQuery.TriggeredEvent<unknown, string>
         return;
     }
 
-    const api = new KankaApi();
+    const api = new KankaApi(String($(`[name="${baseUrlInputName}"]`).val()));
 
     try {
         const accessToken = new AccessToken(token);
@@ -82,8 +83,32 @@ async function onAccessTokenChange(event: JQuery.TriggeredEvent<unknown, string>
     }
 }
 
+async function onBaseUrlChange(event: JQuery.TriggeredEvent<unknown, string>): Promise<void> {
+    const baseUrl = event.target.value;
+
+    if (!baseUrl) {
+        setCampaignSelectionError('settings.campaign.noBaseUrl');
+        return;
+    }
+
+    const api = new KankaApi(baseUrl);
+
+    const token = String($(`[name="${accessTokenInputName}"]`).val());
+    const accessToken = new AccessToken(token);
+    api.switchUser(accessToken);
+
+    try {
+        const choices = await fetchCampaignChoices(api);
+        setCampaignChoices(choices);
+    } catch (error) {
+        logError('Error while fetching campaign choices with new base url', error);
+        setCampaignSelectionError('settings.error.fetchError');
+    }
+}
+
 export default async function renderSettingsConfig(app: SettingsConfig, html: JQuery<HTMLDivElement>): Promise<void> {
     html.on('change', `[name="${accessTokenInputName}"]`, onAccessTokenChange);
+    html.on('change', `[name="${baseUrlInputName}"]`, onBaseUrlChange);
 
     logInfo('Load campaigns...');
     const choices = await fetchCampaignChoices(kanka.api);

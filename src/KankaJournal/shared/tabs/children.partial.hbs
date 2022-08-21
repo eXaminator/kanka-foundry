@@ -4,7 +4,7 @@
             <li class="kanka-card {{#if (kankaIsSecret ref) }}-secret{{/if}}">
                 <div class="kanka-avatar">
                     {{#if ref.thumb}}
-                        <img src="{{ref.thumb}}" alt="{{ref.name}}" />
+                        <img src="{{kankaFileUrl ref.thumb}}" alt="{{ref.name}}" />
                     {{/if}}
                 </div>
 

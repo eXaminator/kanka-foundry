@@ -9,5 +9,6 @@ const kanka = vi.mocked(new KankaFoundry());
 const journalHelper = vi.mocked(new KankaJournalHelper(kanka));
 
 kanka.journals = journalHelper;
+kanka.baseUrl = 'https://kanka.io';
 
 export default kanka;

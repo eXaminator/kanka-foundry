@@ -124,6 +124,12 @@ KANKA:
                 date: Date
                 completed: Is completed
     settings:
+        baseUrl:
+            label: Kanka URL
+            hint: |
+                You can enter your personal Kanka URL here if you have one. Otherwise use https://kanka.io.
+                Please keep in mind that your Kanka installation needs to have the same API version as the official Kanka
+                to be compatible with this module.
         token:
             label: Kanka Personal Access Token
             hint: You can retrieve an access token from https://kanka.io/en/settings/api
@@ -131,6 +137,7 @@ KANKA:
             label: Campaign
             hint: Select the campaign from which to import entries.
             noToken: Please enter a valid access token
+            noBaseUrl: Please enter a valid Kanka URL.
             pleaseChoose: "-- Please choose a campaign --"
         locale:
             label: Content language

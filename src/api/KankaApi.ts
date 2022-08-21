@@ -21,7 +21,11 @@ import KankaFetcher from './KankaFetcher';
 import RateLimiter from './RateLimiter';
 
 export default class KankaApi {
-    #fetcher = new KankaFetcher('https://kanka.io/api/1.0');
+    #fetcher: KankaFetcher;
+
+    public constructor(baseUrl = 'https://kanka.io/api/1.0') {
+        this.#fetcher = new KankaFetcher(baseUrl);
+    }
 
     public get isReady(): boolean {
         return Boolean(this.#fetcher.hasToken);
@@ -38,6 +42,14 @@ export default class KankaApi {
     public switchUser(token: AccessToken): void {
         this.reset();
         this.#fetcher.token = token;
+    }
+
+    public switchBaseUrl(baseUrl: string): void {
+        this.#fetcher.base = baseUrl;
+    }
+
+    public get baseUrl(): string {
+        return this.#fetcher.base;
     }
 
     public async getAllCampaigns(): Promise<KankaApiCampaign[]> {

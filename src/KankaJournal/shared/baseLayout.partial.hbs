@@ -71,7 +71,7 @@
             <div class="image-column">
                 {{~#if kankaEntity.image_full ~}}
                     {{~#if settings.imageInText~}}
-                        <img src="{{kankaEntity.image_full}}" alt="{{name}}" />
+                        <img src="{{kankaFileUrl kankaEntity.image_full}}" alt="{{name}}" />
                     {{~/if~}}
                 {{~/if~}}
 

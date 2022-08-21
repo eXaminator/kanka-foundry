@@ -1,4 +1,5 @@
 export enum KankaSettings {
+    baseUrl = 'baseUrl',
     accessToken = 'access_token',
     campaign = 'campaign',
     importLanguage = 'importLanguage',

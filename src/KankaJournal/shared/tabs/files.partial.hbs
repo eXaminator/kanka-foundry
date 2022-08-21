@@ -4,7 +4,7 @@
         <!-- File -->
             {{#if (kankaEq this.metadata.type 'regex:^image/.*') }}
                 <div class="interactive{{#if (kankaIsSecret this) }} -secret{{/if}}">
-                    <img src="{{this._url}}" alt="{{this.name}}" />
+                    <img src="{{kankaFileUrl this._url}}" alt="{{this.name}}" />
                     <strong>
                         {{#if (kankaIsSecret this) }}<i class="fas fa-lock fw"></i>{{/if}}
                         {{ this.name }}

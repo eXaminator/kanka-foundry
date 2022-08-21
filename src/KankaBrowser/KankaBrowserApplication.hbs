@@ -28,7 +28,7 @@
             {{#if campaign.entry }}
                 <section class="campaign-description">
                     {{#if campaign.image }}
-                        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+                        <img src="{{ kankaFileUrl campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
                     {{/if}}
                     {{{ campaign.entry }}}
                 </section>
