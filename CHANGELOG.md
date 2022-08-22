@@ -1,3 +1,16 @@
+# [2.10.0](https://github.com/eXaminator/kanka-foundry/compare/2.9.3...2.10.0) (2022-08-22)
+
+
+### Bug Fixes
+
+* do not try to show image popover for images that are part of a link ([74d4eb8](https://github.com/eXaminator/kanka-foundry/commit/74d4eb8c4738c5000534f3831f61f866a9b6dcd9))
+* improve check to hide unneccesary tabs in journal entries ([d832a2d](https://github.com/eXaminator/kanka-foundry/commit/d832a2d361cbbe10c80dd958be402004de52df4f))
+
+
+### Features
+
+* allow setting a custom Kanka URL ([254808c](https://github.com/eXaminator/kanka-foundry/commit/254808c8c12fb73270b11807e902e4fc42b7daf8)), closes [#95](https://github.com/eXaminator/kanka-foundry/issues/95)
+
 ## [2.9.3](https://github.com/eXaminator/kanka-foundry/compare/2.9.2...2.9.3) (2022-07-25)
 
 
