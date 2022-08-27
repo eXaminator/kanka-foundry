@@ -1,3 +1,10 @@
+# [2.11.0](https://github.com/eXaminator/kanka-foundry/compare/2.10.0...2.11.0) (2022-08-27)
+
+
+### Features
+
+* add italian translations (thanks to [Kraken Kompany](https://www.youtube.com/channel/UCpTYEWgz3FV7BBEpDb1N-Gw)) ([073debf](https://github.com/eXaminator/kanka-foundry/commit/073debf5c304dbf79ede5921cb5159adb74f61c6))
+
 # [2.10.0](https://github.com/eXaminator/kanka-foundry/compare/2.9.3...2.10.0) (2022-08-22)
 
 
