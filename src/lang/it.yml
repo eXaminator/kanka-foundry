@@ -1,0 +1,215 @@
+KANKA:
+    general:
+        initializationError: |
+            Si è verificato un errore durante l'avvio di Kanka-Foundry. Questo potrebbe essere dovuto a problemi con l'API di Kanka o
+            con il tuo Token o con la configurazione della Campagna.
+    sidebar:
+        button: Importa da Kanka
+
+    entityType:
+        ability: Abilità
+        character: Personaggi
+        family: Famiglie
+        item: Oggetti
+        event: Eventi
+        location: Luoghi
+        note: Appunti
+        organisation: Organizzazioni
+        race: Razze
+        journal: Diario
+        quest: Missioni
+
+    browser:
+        error:
+            initializationError: |
+                Il modulo non è stato avviato correttamente. Questo potrebbe essere dovuto ad un errore di configurazione o al fatto che Kanka sta avendo dei problemi.
+            provideAccessToken: Non hai fornito un token di accesso valido per Kanka o è scaduto.
+            selectCampaign: Per favore assicurati di aver selezionato una campagna nella configurazione.
+            actionError: Si è verificato un errore durante l'esecuzione dell'azione richiesta.
+            loadEntity: Si è verificato un errore durante il caricamento dell'elenco di entità da Kanka.
+            syncAll: Si è verificato un errore durante il tentativo di sincronizzare più entità. Alcune entità non possono essere sincronizzate.
+        action:
+            updateOutdated: Aggiornamento obsoleto
+            viewGrid: Visualizza come griglia
+            viewList: Visualizza come lista
+            linkAll: Collega tutto
+            openJournal: Apri
+            updateSingle: Aggiornamento
+            linkSingle: Collega
+            delete: Cancella
+            deleteAll: Cancella tutto
+        tabs:
+            import: Importa entità
+            delete: Vedi entità eliminate
+        deleteTab:
+            header: Entità eliminate
+            description: Queste entità sembrano essere state cancellate su Kanka ma sono ancora presenti in Foundry.
+        importTab:
+            header: Entità di Kanka
+        filter:
+            label: Filtro
+        label:
+            template: Modello entità
+        title: Importazione Diario Kanka
+
+    journal:
+        shared:
+            action:
+                refresh: Aggiorna
+                openInKanka: Apri su Kanka
+                openLink: Apri collegamento
+            tabs:
+                story: Panoramica
+                attributes: Attributi
+                relations: Relazioni
+                inventory: Inventario
+                abilities: Abilità
+                files: Assets
+            labels:
+                type: Tipo
+                location: Luogo
+                character: Personaggio
+                parent: Appartiene a
+                unknownReference: Riferimento sconosciuto
+            value:
+                yes: Si
+                no: No
+
+        character:
+            tabs:
+                organisations: Organizzazioni
+            labels:
+                title: Titolo
+                sex: Sesso
+                pronouns: Pronomi
+                age: Età
+                isDead: È morto
+                race: Razza
+                family: Famiglia
+                member: Membro
+            traits:
+                appearance: Aspetto
+                personality: Personalità
+
+        ability:
+            tabs:
+                abilities: Abilità
+            labels:
+                charges: Cariche
+
+        family:
+            tabs:
+                members: Membri
+
+        journal:
+            labels:
+                date: Data
+
+        event:
+            labels:
+                date: Data
+
+        organisation:
+            tabs:
+                members: Membri
+            labels:
+                member: Membro
+
+        quest:
+            tabs:
+                elements: Elementi
+            labels:
+                instigator: Mandante
+                date: Data
+                completed: Completata
+    settings:
+        baseUrl:
+            label: Kanka URL
+            hint: |
+                Puoi inserire qui il tuo Kanka URL personale se ne hai uno. In alternativa usa https://kanka.io.
+                Per favore ricorda che la tua installazione di Kanka necessita la stessa versione API dell'ufficiale Kanka
+                per essere compatibile con questo modulo.
+        token:
+            label: Token di accesso personale a Kanka
+            hint: Puoi recuperare il tuo token di accesso da https://kanka.io/en/settings/api
+        campaign:
+            label: Campagna
+            hint: Seleziona la campagna dalla quale vuoi importare le voci.
+            noToken: Per favore inserisci un token di accesso valido
+            noBaseUrl: Per favore inserisci un URL di Kanka valido.
+            pleaseChoose: "-- Per favore scegli una Campagna --"
+        locale:
+            label: Lingua del contenuto
+            hint: Questa opzione ti permette di impostare la lingua che verrà usata per i vari campi se diversa dalla lingua predefinita di Foundry.
+            default: "-- Usa la lingua predefinita di Foundry --"
+        importPrivate:
+            label: Mostra entità private
+            hint: Se l'opzione è selezionata, verranno mostrate le entità private nel navigatore di importazione.
+        importTemplate:
+            label: Mostra modelli entità
+            hint: Se l'opzione è selezionata, verranno mostrati i modelli entità nel navigatore di importazione.
+        disableExternalLinks:
+            label: Rimuovi link esterni
+            hint: Se l'opzione è selezionata, tutti i collegamenti alle voci che non sono state importate in Foundry vengono rimossi.
+        imageInText:
+            label: Includi immagine nel testo
+            hint: L'immagine deve essere inclusa accanto al testo, oltre alla normale immagine del diario?
+        treeStructure:
+            label: Crea una struttura di cartelle ad albero
+            hint: La struttura ad albero di Kanka deve essere replicata tramite cartelle? La profondità massima è di 3 cartelle.
+        automaticPermissions:
+            label: Impostazione automatica autorizzazioni
+            hint: Tutti i giocatori otterranno automaticamente i permessi di osservatore per le entità appena importate.
+            values:
+                never: Non impostare autorizzazioni
+                initial: Impostare autorizzazioni sincronizzazione iniziale
+                always: Impostare autorizzazioni ad ogni aggiornamento
+        questStatusIcon:
+            label: Icona status missione
+            hint: |
+                Visualizza un'icona che mostra lo stato di completamento di una missione davanti al nome nell'elenco delle voci del diario.
+        error:
+            ErrorInvalidAccessToken: Il token di accesso a Kanka non è valido.
+            ErrorTokenExpired: Il tuo token di accesso a Kanka è scaduto. Inseriscine uno nuovo.
+            WarningTokenExpiration: Il tuo token di accesso a Kanka scadrà entro la prossima settimana. Inseriscine uno nuovo.
+            fetchError: Si è verificato un errore nell'acquisizione dei dati da Kanka. Controllare le impostazioni e riprovare.
+    migration:
+        dialog:
+            header: Migrazione Kanka-Foundry
+            listHeader:
+                journals: '<strong style="color: red;"><big>{count}</big></strong> journal entries'
+                folders: '<strong style="color: red;"><big>{count}</big></strong> folders'
+            text: |
+                <h1>Migrazione Kanka-Foundry</h1>
+                <p>Avete recentemente aggiornato il modulo Kanka-Foundry dalla versione 1.x alla versione attuale. Questo aggiornamento ha apportato molte modifiche
+                importanti al modo in cui il modulo importa e gestisce i dati da Kanka, al fine di permettere un'esperienza utente migliore e più funzioni.</p>
+                <p>Attualmente hai</p>
+                {journalList}
+                {folderList}
+                <p>che sono stati creati da Kanka-Foundry e che devono essere aggiornati per poter funzionare correttamente e sfruttare le nuove funzionalità
+                Una modifica consiste nel fatto che le voci del diario importate da kanka non sono più
+                modificabili. Questo non è mai stato veramente supportato in ogni caso, poiché le modifiche venivano sovrascritte con la successiva importazione e
+                e non potevano essere sincronizzate con Kanka.</p>
+                <p>Se è stata modificata manualmente una qualsiasi voce del diario importato:</p>
+                <p><big style=\"color: red;\"><strong>Eseguite subito il backup dei vostri dati! L'aggiornamento sovrascriverà tutte le voci del
+                diario importate!</strong></big></p><p>Si prega di fare riferimento ai moduli
+                <a href=\"https://github.com/eXaminator/kanka-foundry\" target=\"_blank\">Github repository</a> per vedere
+                 tutte le modifiche della nuova versione. Se si vuole mantenere la vecchia versione, si dovrà saltare la migrazione
+                ora, retrocedere manualmente a una versione precedente (tutte disponibili su github) e bloccare la versione del modulo
+                nella schermata di gestione (una nuova funzione di Foundry 0.8.x).</p>
+                <p> Desideri aggiornare le voci del diario esistenti alla nuova versione? <strong>In questo modo si
+                avvierà una reimpostazione da Kanka di tutte le voci del diario importate e si sovrascriveranno le versioni
+                attualmente sincronizzate.</strong>Questa operazione potrebbe richiedere alcuni minuti, a seconda della
+                dimensione della campagna di Kanka e della quantità di voci sincronizzate. Riceverai una notifica una volta terminata l'operazione.</p>
+                <h2>Ma ho già eseguito questa migrazione!</h2>
+                <p> È possibile che siano state sincronizzate le voci di più campagne o che sia stata cancellata un'entità in Kanka
+                ma non la voce importata in Foundry. Questa migrazione aggiorna solo le voci della campagna
+                attualmente selezionata ({campaignName}). Se continui a ricevere questo messaggio, cambia la campagna selezionata
+                nelle impostazioni dei moduli e ricarica il browser per riprovare. In alternativa controlla ogni voce individualmente
+                per vedere se esiste ancora in Kanka.</p>
+                <p>Se continuate a riscontrare problemi, fatemelo sapere creando un "issue" su Github.</p>
+            action:
+                yes: Aggiorna e sovrascrivi le mie voci
+                no: Ricordamelo la prossima volta!
+        success: La migrazione Kanka-Foundry è completata. Migrazione riuscita {success} delle voci {expected}.
+        nothingToDo: Kanka-Foundry non ha trovato nessuna voce da migrare. Verificare di aver selezionato la campagna corretta.

@@ -5,8 +5,8 @@ import renderJournalDirectory from './hooks/renderJournalDirectory';
 import renderSettingsConfig from './hooks/renderSettingsConfig';
 import './index.scss';
 import './KankaJournal/KankaJournalApplication';
-import './lang/de.yml';
-import './lang/en.yml';
+
+import.meta.glob('./lang/*.yml', { eager: true });
 
 const refreshInit = hmrWrapHook('init', () => init, 'once');
 const refreshRenderJournalDirectory = hmrWrapHook('renderJournalDirectory', () => renderJournalDirectory, 'on');
