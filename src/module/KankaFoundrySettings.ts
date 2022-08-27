@@ -53,7 +53,7 @@ export default class KankaFoundrySettings {
             },
         );
 
-        this.register(
+        this.register<string>(
             KankaSettings.campaign,
             {
                 name: this.#module.getMessage('settings.campaign.label'),
@@ -71,7 +71,7 @@ export default class KankaFoundrySettings {
             },
         );
 
-        this.register(
+        this.register<string>(
             KankaSettings.importLanguage,
             {
                 name: this.#module.getMessage('settings.locale.label'),
@@ -161,7 +161,7 @@ export default class KankaFoundrySettings {
             },
         );
 
-        this.register(
+        this.register<string>(
             KankaSettings.automaticPermissions,
             {
                 name: this.#module.getMessage('settings.automaticPermissions.label'),
@@ -213,9 +213,9 @@ export default class KankaFoundrySettings {
             .forEach(key => this.#module.game.settings.settings.delete(key));
     }
 
-    private register(
+    private register<T = unknown>(
         setting: KankaSettings,
-        data: ClientSettings.PartialSetting,
+        data: ClientSettings.PartialSettingConfig<T>,
     ): void {
         this.#module.game.settings.register(this.#module.name, setting, data);
     }

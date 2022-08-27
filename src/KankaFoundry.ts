@@ -1,3 +1,5 @@
+import type { HelperDelegate } from 'handlebars';
+import moduleConfig from '../public/module.json';
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
 import registerSheet from './KankaJournal/KankaJournalApplication';
@@ -5,7 +7,6 @@ import { logError, logInfo } from './logger';
 import migrateV1 from './migrations/migrateV1';
 import migrateV2 from './migrations/migrateV2';
 import migrateV3 from './migrations/migrateV3';
-import moduleConfig from '../public/module.json';
 import KankaFoundrySettings from './module/KankaFoundrySettings';
 import KankaJournalHelper from './module/KankaJournalHelper';
 import { KankaApiCampaign } from './types/kanka';
@@ -185,7 +186,10 @@ export default class KankaFoundry {
     }
 
     private registerHelpers(): void {
-        const helpers = import.meta.globEager('./handlebars/helpers/!(*.test).ts');
+        const helpers = import.meta.glob<true, '', { default: HelperDelegate }>(
+            './handlebars/helpers/!(*.test).ts',
+            { eager: true },
+        );
 
         Object
             .entries(helpers)

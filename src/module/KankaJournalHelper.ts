@@ -180,14 +180,14 @@ export default class KankaJournalHelper {
     protected getExpectedPermission(
         entity: KankaApiChildEntity,
         isUpdate: boolean,
-    ): foundry.CONST.EntityPermission | undefined {
+    ): foundry.CONST.DOCUMENT_PERMISSION_LEVELS | undefined {
         const setting = this.module.settings.automaticPermissions;
 
         if (setting === AutomaticPermissionValue.never) return undefined;
         if (setting === AutomaticPermissionValue.initial && isUpdate) return undefined;
 
-        if (entity.is_private) return CONST.ENTITY_PERMISSIONS.NONE;
-        return CONST.ENTITY_PERMISSIONS.OBSERVER;
+        if (entity.is_private) return CONST.DOCUMENT_PERMISSION_LEVELS.NONE;
+        return CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER;
     }
 
     protected async createFolder(

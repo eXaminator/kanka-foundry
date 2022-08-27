@@ -64,7 +64,7 @@ export default class KankaBrowserApplication extends Application {
     #currentFilter = '';
     #entities: KankaApiEntity[] | undefined;
 
-    static get defaultOptions(): Application.Options {
+    static get defaultOptions(): ApplicationOptions {
         return {
             ...super.defaultOptions,
             id: 'kanka-browser',

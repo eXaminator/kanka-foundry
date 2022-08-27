@@ -19,13 +19,13 @@ interface Data extends JournalSheet.Data {
     localization: Localization;
 }
 
-type RenderOptions = Application.RenderOptions<JournalSheet.Options>;
+type RenderOptions = Application.RenderOptions<JournalSheetOptions>;
 
 export default function registerSheet(kanka: KankaFoundry): void {
     class KankaJournalApplication extends JournalSheet {
         #lastRenderOptions?: RenderOptions = undefined;
 
-        static get defaultOptions(): JournalSheet.Options {
+        static get defaultOptions(): JournalSheetOptions {
             return {
                 ...super.defaultOptions,
                 closeOnSubmit: false,
@@ -37,7 +37,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
             };
         }
 
-        constructor(object: JournalEntry, options?: JournalSheet.Options) {
+        constructor(object: JournalEntry, options?: JournalSheetOptions) {
             super(object, options);
             this.ensureInitialisation();
         }
@@ -57,7 +57,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
         }
 
         public getData(
-            options?: Partial<JournalSheet.Options>,
+            options?: Partial<JournalSheetOptions>,
         ): Promise<JournalSheet.Data | Data> | JournalSheet.Data | Data {
             if (!this.isKankaEntry) return super.getData(options);
 
