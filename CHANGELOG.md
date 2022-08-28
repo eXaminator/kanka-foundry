@@ -1,3 +1,10 @@
+## [2.11.1](https://github.com/eXaminator/kanka-foundry/compare/2.11.0...2.11.1) (2022-08-28)
+
+
+### Bug Fixes
+
+* ensure NODE_ENV evariable is set ind production build of this module ([a2447a9](https://github.com/eXaminator/kanka-foundry/commit/a2447a971d6c60f8631002c7259a7dacacdf71ab)), closes [#97](https://github.com/eXaminator/kanka-foundry/issues/97)
+
 # [2.11.0](https://github.com/eXaminator/kanka-foundry/compare/2.10.0...2.11.0) (2022-08-27)
 
 
