@@ -178,8 +178,7 @@ export default class KankaFoundrySettings {
             },
         );
 
-        this.#module.game.settings.register(
-            moduleConfig.name,
+        this.register(
             KankaSettings.browserView,
             {
                 scope: 'client',
