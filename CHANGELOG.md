@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/eXaminator/kanka-foundry/compare/2.11.1...3.0.0) (2022-09-11)
+
+
+### Features
+
+* add basic support for FoundryVTT V10 ([b7e1c11](https://github.com/eXaminator/kanka-foundry/commit/b7e1c110dc4c80b463272c65794002c0787b3678))
+
+
+### BREAKING CHANGES
+
+* This version does no longer support foundry v9
+
 ## [2.11.1](https://github.com/eXaminator/kanka-foundry/compare/2.11.0...2.11.1) (2022-08-28)
 
 
