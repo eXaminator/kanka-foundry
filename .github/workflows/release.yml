@@ -38,7 +38,7 @@ jobs:
 
             -   name: Deploy on FoundryVTT
                 if: steps.create-release.outputs.new-release-published == 'true'
-                uses: eXaminator/foundry-auto-release@1.1.4
+                uses: eXaminator/foundry-auto-release@1.1.5
                 with:
                     manifest-path: dist/module.json
                     package-id: ${{ secrets.FVTT_PACKAGE_ID }}
