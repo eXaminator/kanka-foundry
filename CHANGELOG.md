@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/eXaminator/kanka-foundry/compare/3.0.1...3.0.2) (2022-09-21)
+
+
+### Bug Fixes
+
+* fix module.json to prevent installation of new versions in V9 ([268a2f0](https://github.com/eXaminator/kanka-foundry/commit/268a2f06e6de42c85d6a016a121c37d27d0f22ce))
+
 ## [3.0.1](https://github.com/eXaminator/kanka-foundry/compare/3.0.0...3.0.1) (2022-09-19)
 
 
