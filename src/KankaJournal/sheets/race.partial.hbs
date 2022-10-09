@@ -1,6 +1,7 @@
 {{#>../shared/baseLayout}}
     {{#*inline 'profile'~}}
         {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
-        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=kankaEntity.locations type='location' label='shared.labels.location' delimiter=" " }}
     {{~/inline}}
 {{/../shared/baseLayout}}

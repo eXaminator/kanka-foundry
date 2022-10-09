@@ -22,6 +22,7 @@ function createRace(data: Partial<KankaApiRace> = {}): KankaApiRace {
         entity_abilities: [],
         ancestors: [],
         children: [],
+        locations: [],
         ...data,
     } as KankaApiRace;
 }
@@ -221,6 +222,35 @@ describe('RaceTypeLoader', () => {
                     id: 2002,
                     entityId: 1002,
                     type: 'race',
+                },
+            });
+        });
+
+        it('includes locations from the lookup array', async () => {
+            const expectedResult = createRace({
+                locations: [2001, 2004],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'race'),
+                createEntity(1003, 2003, 'quest'),
+                createEntity(1004, 2004, 'location'),
+            ];
+
+            const loader = new RaceTypeLoader(api);
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1001: {
+                    id: 2001,
+                    entityId: 1001,
+                    type: 'location',
+                },
+                1004: {
+                    id: 2004,
+                    entityId: 1004,
+                    type: 'location',
                 },
             });
         });

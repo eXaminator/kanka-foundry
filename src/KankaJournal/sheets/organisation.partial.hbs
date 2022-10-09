@@ -12,7 +12,7 @@
 
     {{#*inline 'profile'~}}
         {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type' }}
-        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=kankaEntity.ancestors label='shared.labels.parent' }}
         {{~>../shared/detailRow value=kankaEntity.location_id type='location' label='shared.labels.location' reference=true }}
 
         {{~#with (kankaFilterBy (kankaFilterReferences kankaEntity.members) 'pin_id' 'regex:2|3') as | starred |~}}

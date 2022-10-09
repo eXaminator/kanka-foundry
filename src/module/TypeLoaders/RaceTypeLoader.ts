@@ -16,6 +16,7 @@ export default class RaceTypeLoader extends AbstractTypeLoader<KankaApiRace> {
 
         await Promise.all([
             collection.addById(entity.race_id, 'race'),
+            ...entity.locations.map(location => collection.addById(location, 'location')),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
             ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);

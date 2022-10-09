@@ -1,0 +1,17 @@
+{{~#if references.length ~}}
+    <dt>
+        {{~#if rawLabel~}}
+            {{~rawLabel~}}
+        {{~else~}}
+            {{~ kankaLocalize 'journal' label ~}}
+        {{~/if~}}
+    </dt>
+    <dd class="path">
+    {{~#each references as | referenceId |~}}
+        {{~kankaLinkReference (kankaFindReference referenceId ../type) ~}}
+        {{#unless @last}}
+            <span class="delimiter">{{#if ../delimiter}}{{../delimiter}}{{else}}»{{/if}}</span>
+        {{/unless}}
+    {{~/each~}}
+    </dd>
+{{~/if~}}
