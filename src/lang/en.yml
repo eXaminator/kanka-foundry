@@ -72,6 +72,7 @@ KANKA:
                 character: Character
                 parent: Belongs to
                 unknownReference: Unknown reference
+                entry: Entry
             value:
                 yes: Yes
                 no: No

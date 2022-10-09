@@ -74,6 +74,7 @@ KANKA:
                 character: Charakter
                 parent: Gehört zu
                 unknownReference: Unbekannte Referenz
+                entry: Eintrag
             value:
                 yes: Ja
                 no: Nein

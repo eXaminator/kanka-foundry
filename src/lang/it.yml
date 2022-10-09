@@ -71,6 +71,7 @@ KANKA:
                 character: Personaggio
                 parent: Appartiene a
                 unknownReference: Riferimento sconosciuto
+                entry: Dato inserito
             value:
                 yes: Si
                 no: No

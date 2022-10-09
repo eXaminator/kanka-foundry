@@ -90,11 +90,18 @@ button.-loading {
 }
 
 details.kanka-details {
-    & > summary:before {
+    &:not(.-static) > summary:before {
         flex: none;
         content: '➤';
         transition: transform 0.3s;
         margin-right: 0.2em;
+    }
+
+    &.-static {
+        summary {
+            cursor: auto;
+            pointer-events: none;
+        }
     }
 
     &[open] > summary:before {

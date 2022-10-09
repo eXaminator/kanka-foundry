@@ -93,11 +93,7 @@
                 {{~/with~}}
             </dl>
 
-            {{#if kankaEntity.entry_parsed }}
-                {{ kankaReplaceMentions kankaEntity.entry_parsed }}
-            {{/if}}
-
-            {{>./tabs/pinnedNotes entity=kankaEntity}}
+            {{>./tabs/posts entity=kankaEntity}}
         </div>
         <div class="tab -scrollable" data-tab="attributes" data-group="primary-tabs">
             {{>./tabs/attributes entity=kankaEntity}}
