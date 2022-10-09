@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/eXaminator/kanka-foundry/compare/3.0.2...3.1.0) (2022-10-09)
+
+
+### Features
+
+* display locations for races ([9f4f6d4](https://github.com/eXaminator/kanka-foundry/commit/9f4f6d48b7a098e0977966d86d2a5d54117319d4)), closes [#100](https://github.com/eXaminator/kanka-foundry/issues/100)
+* use same order for posts as in kanka ([f67fdea](https://github.com/eXaminator/kanka-foundry/commit/f67fdeae27eb24dc534036d187b01950f6f22893)), closes [#94](https://github.com/eXaminator/kanka-foundry/issues/94)
+
 ## [3.0.2](https://github.com/eXaminator/kanka-foundry/compare/3.0.1...3.0.2) (2022-09-21)
 
 
