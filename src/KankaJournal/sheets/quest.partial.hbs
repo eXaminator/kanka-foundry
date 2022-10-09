@@ -11,7 +11,7 @@
 
     {{#*inline 'profile'~}}
         {{~>../shared/detailRow value=kankaEntity.type label='shared.labels.type'~}}
-        {{~>../shared/detailRowAncestors ancestors=kankaEntity.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=kankaEntity.ancestors label='shared.labels.parent' }}
         {{~>../shared/detailRow value=kankaEntity.character_id type='quest' label='quest.labels.instigator' reference=true~}}
         {{~>../shared/detailRow value=kankaEntity.date label='quest.labels.date'~}}
         {{~>../shared/detailRow value=kankaEntity.is_completed label='quest.labels.completed' localizeValue='shared.value'~}}

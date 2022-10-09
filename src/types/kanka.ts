@@ -376,6 +376,7 @@ export interface KankaApiQuest extends KankaApiChildEntity {
 export interface KankaApiRace extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
     children: KankaApiChild[];
+    locations: KankaApiId[];
     race_id: KankaApiId | null;
     type: string | null;
 }
