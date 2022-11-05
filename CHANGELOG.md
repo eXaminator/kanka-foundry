@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/eXaminator/kanka-foundry/compare/3.1.0...3.1.1) (2022-11-05)
+
+
+### Bug Fixes
+
+* update manifest to remove FVTT v10 warnings ([2f4291c](https://github.com/eXaminator/kanka-foundry/commit/2f4291c7e6c785ca7c3b47c973c125819bd662d6))
+
 # [3.1.0](https://github.com/eXaminator/kanka-foundry/compare/3.0.2...3.1.0) (2022-10-09)
 
 
