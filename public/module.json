@@ -1,4 +1,5 @@
 {
+    "id": "kanka-foundry",
     "name": "kanka-foundry",
     "title": "Kanka-Foundry",
     "description": "<p>This is a module which integrates <a href=\"https://kanka.io\">Kanka.io</a>, a free worldbuilding and tabletop RPG campaign management tool, with Foundry Virtual Tabletop, allowing you to import entities written in Kanka as journal entries into Foundry VTT. This module imports full Kanka entities, including their main entry text, image, relations and other data. This is not an official module, but a fan creation by someone who uses both Kanka and Foundry VTT.</p>",
@@ -36,7 +37,7 @@
     ],
     "compatibility": {
         "minimum": "10",
-        "verified": "10.285"
+        "verified": "10"
     },
     "minimumCoreVersion": "10",
     "manifestPlusVersion": "1.2.0",
