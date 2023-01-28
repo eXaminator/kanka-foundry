@@ -1,4 +1,3 @@
-import type { HelperDelegate } from 'handlebars';
 import moduleConfig from '../public/module.json';
 import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
@@ -34,7 +33,6 @@ export default class KankaFoundry {
 
         this.#module = this.game.modules.get(this.#name);
 
-        this.registerHelpers();
         registerSheet(this);
 
         // Debug output to show current rate limiting
@@ -183,19 +181,5 @@ export default class KankaFoundry {
         } else {
             this.#currentCampaign = undefined;
         }
-    }
-
-    private registerHelpers(): void {
-        const helpers = import.meta.glob<true, '', { default: HelperDelegate }>(
-            './handlebars/helpers/!(*.test).ts',
-            { eager: true },
-        );
-
-        Object
-            .entries(helpers)
-            .forEach(([path, helper]) => {
-                const name = path.match(/([a-zA-Z0-9]+)\.ts$/)?.[1];
-                if (name) Handlebars.registerHelper(name, helper.default);
-            });
     }
 }

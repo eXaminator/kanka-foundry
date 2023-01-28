@@ -77,7 +77,7 @@ export default function hbsPlugin() {
 
             const promises = modules.map(async (module) => {
                 await load(module.id);
-                
+
                 const inputBasePath = dirname(config.build.lib.entry);
                 const inputRelativePath = relative(inputBasePath, module.file);
                 const url = join(config.base, 'templates', inputRelativePath).replace(/^\//, '');
