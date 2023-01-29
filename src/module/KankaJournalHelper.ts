@@ -4,7 +4,9 @@ import { logError } from '../logger';
 import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
+import api from './api';
 import createTypeLoaders from './createTypeLoaders';
+import getMessage from './getMessage';
 import ReferenceCollection from './ReferenceCollection';
 import { getSetting } from './settings';
 import AbstractTypeLoader from './TypeLoaders/AbstractTypeLoader';
@@ -24,7 +26,7 @@ export default class KankaJournalHelper {
     #loaders: Map<KankaApiEntityType, AbstractTypeLoader>;
 
     constructor(protected module: KankaFoundry) {
-        this.#loaders = createTypeLoaders(module.api);
+        this.#loaders = createTypeLoaders(api);
     }
 
     public findAllKankaEntries(): JournalEntry[] {
@@ -224,7 +226,7 @@ export default class KankaJournalHelper {
     }
 
     async ensureTypeFolder(type: KankaApiEntityType): Promise<Folder | undefined> {
-        return this.ensureFolderByFlags(`[KANKA] ${this.module.getMessage('entityType', type)}`, undefined, { type });
+        return this.ensureFolderByFlags(`[KANKA] ${getMessage('entityType', type)}`, undefined, { type });
     }
 
     async ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder | undefined> {

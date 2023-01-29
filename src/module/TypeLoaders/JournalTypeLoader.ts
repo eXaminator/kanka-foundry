@@ -1,4 +1,5 @@
 import { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiJournal } from '../../types/kanka';
+import api from '../api';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -26,10 +27,10 @@ export default class JournalTypeLoader extends AbstractTypeLoader<KankaApiJourna
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiJournal> {
-        return this.api.getJournal(campaignId, id);
+        return api.getJournal(campaignId, id);
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiJournal[]> {
-        return this.api.getAllJournals(campaignId);
+        return api.getAllJournals(campaignId);
     }
 }

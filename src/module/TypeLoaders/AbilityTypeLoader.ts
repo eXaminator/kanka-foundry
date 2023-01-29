@@ -1,4 +1,5 @@
 import { KankaApiAbility, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import api from '../api';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -24,10 +25,10 @@ export default class AbilityTypeLoader extends AbstractTypeLoader<KankaApiAbilit
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiAbility> {
-        return this.api.getAbility(campaignId, id);
+        return api.getAbility(campaignId, id);
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiAbility[]> {
-        return this.api.getAllAbilities(campaignId);
+        return api.getAllAbilities(campaignId);
     }
 }

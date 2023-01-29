@@ -1,4 +1,7 @@
 import type KankaFoundry from '../KankaFoundry';
+import api from '../module/api';
+import getMessage from '../module/getMessage';
+import { showInfo, showWarning } from '../module/notifications';
 import { KankaApiEntity } from '../types/kanka';
 import createJournalLink from '../util/createJournalLink';
 
@@ -9,7 +12,7 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
         return;
     }
 
-    const entities = await module.api.getAllEntities(
+    const entities = await api.getAllEntities(
         campaignId,
         [
             'ability',
@@ -42,7 +45,7 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
         .filter((entity): entity is KankaApiEntity => !!entity) ?? [];
 
     if (!updateEntities.length) {
-        module.showWarning('migration.nothingToDo');
+        showWarning('migration.nothingToDo');
         return;
     }
 
@@ -59,7 +62,7 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
 
     const successCount = await module.journals.write(campaignId, updateEntities, entities);
 
-    module.showInfo('migration.success', { success: successCount, expected: updateEntities.length });
+    showInfo('migration.success', { success: successCount, expected: updateEntities.length });
 }
 
 function createEntryList(label: string, entries: JournalEntry[]): string {
@@ -103,24 +106,24 @@ export default function migrateV1(module: KankaFoundry): void {
     }
 
     const dialog = new Dialog({
-        title: module.getMessage('migration.dialog.header'),
-        content: module.getMessage('migration.dialog.text', {
+        title: getMessage('migration.dialog.header'),
+        content: getMessage('migration.dialog.text', {
             documentCount: outdatedJournals.length,
             folderCount: outdatedFolders.length,
             campaignName: module.currentCampaign?.name,
             journalList: createEntryList(
-                module.getMessage('migration.dialog.listHeader.journals', { count: outdatedJournals.length }),
+                getMessage('migration.dialog.listHeader.journals', { count: outdatedJournals.length }),
                 outdatedJournals,
             ),
             folderList: createFolderList(
-                module.getMessage('migration.dialog.listHeader.folders', { count: outdatedFolders.length }),
+                getMessage('migration.dialog.listHeader.folders', { count: outdatedFolders.length }),
                 outdatedFolders,
             ),
         }),
         buttons: {
             yes: {
                 icon: '<i class="fas fa-check"></i>',
-                label: module.getMessage('migration.dialog.action.yes'),
+                label: getMessage('migration.dialog.action.yes'),
                 async callback() {
                     await migrateAll(module);
                     await dialog.close();
@@ -128,7 +131,7 @@ export default function migrateV1(module: KankaFoundry): void {
             },
             no: {
                 icon: '<i class="fas fa-times"></i>',
-                label: module.getMessage('migration.dialog.action.no'),
+                label: getMessage('migration.dialog.action.no'),
                 async callback() {
                     await dialog.close();
                 },

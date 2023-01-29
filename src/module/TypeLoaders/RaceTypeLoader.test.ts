@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedObject, vi } from 'vitest';
-import KankaApi from '../../api/KankaApi';
+import { vi } from 'vitest';
 import {
     KankaApiAbilityLink,
     KankaApiEntity,
@@ -11,6 +10,7 @@ import {
     KankaApiRace,
     KankaApiRelation,
 } from '../../types/kanka';
+import api from '../api';
 import RaceTypeLoader from './RaceTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -47,15 +47,9 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('RaceTypeLoader', () => {
-    let api: MockedObject<KankaApi>;
-
-    beforeEach(() => {
-        api = vi.mocked(new KankaApi());
-    });
-
     describe('getType()', () => {
         it('returns the correct type', () => {
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
 
             expect(loader.getType()).toEqual('race');
         });
@@ -64,8 +58,8 @@ describe('RaceTypeLoader', () => {
     describe('load()', () => {
         it('returns result of getRace', async () => {
             const expectedResult = createRace();
-            const loader = new RaceTypeLoader(api);
-            api.getRace.mockResolvedValue(expectedResult);
+            const loader = new RaceTypeLoader();
+            vi.mocked(api).getRace.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
@@ -77,8 +71,8 @@ describe('RaceTypeLoader', () => {
     describe('loadAll()', () => {
         it('returns result of getAllRaces', async () => {
             const expectedResult = [createRace()];
-            const loader = new RaceTypeLoader(api);
-            api.getAllRaces.mockResolvedValue(expectedResult);
+            const loader = new RaceTypeLoader();
+            vi.mocked(api).getAllRaces.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
@@ -99,7 +93,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -122,7 +116,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -145,7 +139,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -168,7 +162,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -191,7 +185,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -214,7 +208,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -238,7 +232,7 @@ describe('RaceTypeLoader', () => {
                 createEntity(1004, 2004, 'location'),
             ];
 
-            const loader = new RaceTypeLoader(api);
+            const loader = new RaceTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({

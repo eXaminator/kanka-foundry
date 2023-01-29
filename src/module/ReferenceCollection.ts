@@ -1,17 +1,15 @@
-import KankaApi from '../api/KankaApi';
 import { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
 import Reference from '../types/Reference';
+import api from './api';
 
 export default class ReferenceCollection {
     #campaignId: KankaApiId;
     #entities: KankaApiEntity[];
-    #api: KankaApi;
     #record: Record<number, Reference> = {};
 
-    constructor(campaignId: KankaApiId, entities: KankaApiEntity[], api: KankaApi) {
+    constructor(campaignId: KankaApiId, entities: KankaApiEntity[]) {
         this.#campaignId = campaignId;
         this.#entities = [...entities];
-        this.#api = api;
     }
 
     public async addById(id?: KankaApiId | null, type?: KankaApiEntityType | null): Promise<void> {
@@ -62,10 +60,10 @@ export default class ReferenceCollection {
 
         try {
             if (!type) {
-                return await this.#api.getEntity(this.#campaignId, id as KankaApiEntityId);
+                return await api.getEntity(this.#campaignId, id as KankaApiEntityId);
             }
 
-            const list = await this.#api.getAllEntities(this.#campaignId, [type]);
+            const list = await api.getAllEntities(this.#campaignId, [type]);
             this.#entities.push(...list);
 
             return this.findEntityInCollection(id, type);

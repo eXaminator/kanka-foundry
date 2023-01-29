@@ -1,5 +1,8 @@
 import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
+import api from '../module/api';
+import getMessage from '../module/getMessage';
+import { showError } from '../module/notifications';
 import { getSetting, KankaSettings, setSetting } from '../module/settings';
 import EntityType from '../types/EntityType';
 import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiId } from '../types/kanka';
@@ -73,7 +76,7 @@ export default class KankaBrowserApplication extends Application {
             template,
             width: 720,
             height: 'auto',
-            title: kanka.getMessage('browser.title'),
+            title: getMessage('browser.title'),
             tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'import' }],
             resizable: true,
         };
@@ -235,7 +238,7 @@ export default class KankaBrowserApplication extends Application {
                 }
             } catch (error) {
                 logError(error);
-                kanka.showError('browser.error.actionError');
+                showError('browser.error.actionError');
                 this.render(); // Ensure loaders are removed etc.
             }
         });
@@ -289,7 +292,7 @@ export default class KankaBrowserApplication extends Application {
     }
 
     protected async loadEntities(): Promise<void> {
-        const entities = await kanka.api.getAllEntities(
+        const entities = await api.getAllEntities(
             this.campaign.id,
             [
                 'ability',
@@ -329,7 +332,7 @@ export default class KankaBrowserApplication extends Application {
                 try {
                     await this.loadEntities();
                 } catch (error) {
-                    kanka.showError('browser.error.loadEntity');
+                    showError('browser.error.loadEntity');
                     logError(error);
                     await this.close();
                 }

@@ -1,4 +1,5 @@
 import { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiLocation } from '../../types/kanka';
+import api from '../api';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -24,10 +25,10 @@ export default class LocationTypeLoader extends AbstractTypeLoader<KankaApiLocat
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiLocation> {
-        return this.api.getLocation(campaignId, id);
+        return api.getLocation(campaignId, id);
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiLocation[]> {
-        return this.api.getAllLocations(campaignId);
+        return api.getAllLocations(campaignId);
     }
 }

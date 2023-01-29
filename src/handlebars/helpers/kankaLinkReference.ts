@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import kanka from '../../kanka';
+import getMessage from '../../module/getMessage';
 import { getSetting } from '../../module/settings';
 import Reference from '../../types/Reference';
 import createJournalLink from '../../util/createJournalLink';
@@ -12,7 +13,7 @@ export default function kankaLinkReference(
 ): Handlebars.SafeString | string | undefined {
     const label = options?.fn?.(this)
         || reference?.name
-        || kanka.getMessage('journal.shared.labels.unknownReference');
+        || getMessage('journal.shared.labels.unknownReference');
 
     if (!reference) return new Handlebars.SafeString(label);
 
