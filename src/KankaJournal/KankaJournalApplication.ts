@@ -5,6 +5,7 @@ import Reference from '../types/Reference';
 import template from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 import logo from '../assets/kanka.png';
+import { getSetting } from '../module/settings';
 
 interface Data extends JournalSheet.Data {
     kankaIsGm: boolean;
@@ -70,7 +71,7 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 kankaCampaignId: this.object.getFlag(kanka.name, 'campaign') as KankaApiId,
                 kankaLogo: logo,
                 settings: {
-                    imageInText: kanka.settings.imageInText,
+                    imageInText: getSetting('imageInText'),
                 },
                 localization: kanka.localization,
             };

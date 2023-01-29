@@ -1,7 +1,7 @@
 import type { HelperDelegate } from 'handlebars';
 
 const helpers = import.meta.glob<true, '', { default: HelperDelegate }>(
-    './handlebars/helpers/!(*.test).ts',
+    '../handlebars/helpers/!(*.test).ts',
     { eager: true },
 );
 

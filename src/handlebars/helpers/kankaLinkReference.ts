@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import kanka from '../../kanka';
+import { getSetting } from '../../module/settings';
 import Reference from '../../types/Reference';
 import createJournalLink from '../../util/createJournalLink';
 import createKankaLink from '../../util/createKankaLink';
@@ -21,7 +22,7 @@ export default function kankaLinkReference(
         return new Handlebars.SafeString(createJournalLink(journalEntry, label));
     }
 
-    if (kanka.settings.disableExternalLinks) return new Handlebars.SafeString(label);
+    if (getSetting('disableExternalMentionLinks')) return new Handlebars.SafeString(label);
 
     const link = createKankaLink(
         label,
