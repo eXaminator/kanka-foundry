@@ -1,4 +1,5 @@
 import { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiOrganisation } from '../../types/kanka';
+import api from '../api';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -26,10 +27,10 @@ export default class OrganisationTypeLoader extends AbstractTypeLoader<KankaApiO
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiOrganisation> {
-        return this.api.getOrganisation(campaignId, id);
+        return api.getOrganisation(campaignId, id);
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiOrganisation[]> {
-        return this.api.getAllOrganisations(campaignId);
+        return api.getAllOrganisations(campaignId);
     }
 }

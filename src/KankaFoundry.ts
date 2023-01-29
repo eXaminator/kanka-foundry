@@ -1,9 +1,9 @@
 import moduleConfig from '../public/module.json';
-import AccessToken from './api/AccessToken';
-import KankaApi from './api/KankaApi';
 import registerSheet from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
+import api from './module/api';
 import KankaJournalHelper from './module/KankaJournalHelper';
+import { showError } from './module/notifications';
 import { getSetting } from './module/settings';
 import { KankaApiCampaign } from './types/kanka';
 
@@ -12,9 +12,7 @@ export default class KankaFoundry {
 
     #name = moduleConfig.name;
     #module?: Game.ModuleData<unknown>;
-    #api = new KankaApi();
     #currentCampaign?: KankaApiCampaign;
-    #debugElement = $('<span class="kanka-limit-debug">0 / 0 (0)</span>');
     #renderLocalization = new Localization('en');
     #journalHelper = new KankaJournalHelper(this);
     #isInitialized = false;
@@ -31,17 +29,7 @@ export default class KankaFoundry {
 
         registerSheet(this);
 
-        // Debug output to show current rate limiting
-        if (process.env.NODE_ENV === 'development') {
-            $('body').append(this.#debugElement);
-            this.#api.limiter.onChange((event) => {
-                this.#debugElement.text(`${event.usedSlots} / ${event.maxSlots} (${event.queue})`);
-            });
-        }
-
         try {
-            await this.setBaseUrl(getSetting('baseUrl'));
-            await this.setToken(getSetting('accessToken'));
             await this.loadCurrentCampaignById(parseInt(getSetting('campaign'), 10));
 
             await this.#renderLocalization.initialize();
@@ -59,7 +47,7 @@ export default class KankaFoundry {
                     ui?.notifications
                     && (this.game.i18n.translations as Record<string, unknown>)?.KANKA
                 ) {
-                    this.showError('general.initializationError');
+                    showError('general.initializationError');
                     clearInterval(interval);
                 }
             }, 100);
@@ -69,39 +57,7 @@ export default class KankaFoundry {
     }
 
     public async dispose(): Promise<void> {
-        this.#debugElement.remove();
         this.#isInitialized = false;
-    }
-
-    public async setToken(token: string): Promise<void> {
-        if (!token) {
-            this.#api.reset();
-            return;
-        }
-
-        try {
-            const accessToken = new AccessToken(token);
-
-            if (accessToken.isExpired()) {
-                this.#api.reset();
-                this.showError('settings.error.ErrorTokenExpired');
-                return;
-            }
-
-            if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) {
-                // One week
-                this.showError('settings.error.WarningTokenExpiration');
-            }
-
-            this.#api.switchUser(accessToken);
-        } catch (error) {
-            logError('Error setting a token', error);
-            this.showError('settings.error.ErrorInvalidAccessToken');
-        }
-    }
-
-    public async setBaseUrl(baseUrl: string): Promise<void> {
-        this.#api.switchBaseUrl(baseUrl);
     }
 
     public get isInitialized(): boolean {
@@ -113,7 +69,7 @@ export default class KankaFoundry {
     }
 
     public get baseUrl(): string {
-        return this.#api.baseUrl;
+        return api.baseUrl;
     }
 
     public get languages(): Record<string, string> {
@@ -137,44 +93,17 @@ export default class KankaFoundry {
         return this.#journalHelper;
     }
 
-    public get api(): KankaApi {
-        return this.#api;
-    }
-
     public get currentCampaign(): KankaApiCampaign | undefined {
         return this.#currentCampaign;
     }
 
-    public getMessage(...args: [...string[], Record<string, unknown>] | string[]): string {
-        const values = args.slice(-1)[0];
-        const keys = args.slice(0, -1);
-
-        if (!values || typeof values === 'string') {
-            return this.game.i18n.localize(`KANKA.${[...keys, values].join('.')}`);
-        }
-
-        return this.game.i18n.format(`KANKA.${keys.join('.')}`, values);
-    }
-
-    public showInfo(...args: [...string[], Record<string, unknown>] | string[]): void {
-        ui.notifications?.info(this.getMessage(...args));
-    }
-
-    public showWarning(...args: [...string[], Record<string, unknown>] | string[]): void {
-        ui.notifications?.warn(this.getMessage(...args));
-    }
-
-    public showError(...args: [...string[], Record<string, unknown>] | string[]): void {
-        ui.notifications?.error(this.getMessage(...args), { permanent: true });
-    }
-
     public async loadCurrentCampaignById(id: number | null): Promise<void> {
-        if (!this.#api.isReady) {
+        if (!api.isReady) {
             return;
         }
 
         if (id) {
-            this.#currentCampaign = await this.#api.getCampaign(id);
+            this.#currentCampaign = await api.getCampaign(id);
         } else {
             this.#currentCampaign = undefined;
         }

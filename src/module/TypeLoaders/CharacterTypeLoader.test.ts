@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedObject, vi } from 'vitest';
-import KankaApi from '../../api/KankaApi';
+import { vi } from 'vitest';
 import {
     KankaApiAbilityLink,
     KankaApiCharacter,
@@ -12,6 +11,7 @@ import {
     KankaApiInventory,
     KankaApiRelation,
 } from '../../types/kanka';
+import api from '../api';
 import CharacterTypeLoader from './CharacterTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -46,15 +46,9 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('CharacterTypeLoader', () => {
-    let api: MockedObject<KankaApi>;
-
-    beforeEach(() => {
-        api = new KankaApi() as MockedObject<KankaApi>;
-    });
-
     describe('getType()', () => {
         it('returns the correct type', () => {
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
 
             expect(loader.getType()).toEqual('character');
         });
@@ -63,8 +57,8 @@ describe('CharacterTypeLoader', () => {
     describe('load()', () => {
         it('returns result of getCharacter', async () => {
             const expectedResult = createCharacter();
-            const loader = new CharacterTypeLoader(api);
-            api.getCharacter.mockResolvedValue(expectedResult);
+            const loader = new CharacterTypeLoader();
+            vi.mocked(api).getCharacter.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
@@ -76,8 +70,8 @@ describe('CharacterTypeLoader', () => {
     describe('loadAll()', () => {
         it('returns result of getAllCharacters', async () => {
             const expectedResult = [createCharacter()];
-            const loader = new CharacterTypeLoader(api);
-            api.getAllCharacters.mockResolvedValue(expectedResult);
+            const loader = new CharacterTypeLoader();
+            vi.mocked(api).getAllCharacters.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
@@ -98,7 +92,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -121,7 +115,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -144,7 +138,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -167,7 +161,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -190,7 +184,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -213,7 +207,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -236,7 +230,7 @@ describe('CharacterTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new CharacterTypeLoader(api);
+            const loader = new CharacterTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({

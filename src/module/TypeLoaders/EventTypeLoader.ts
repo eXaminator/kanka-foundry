@@ -1,4 +1,5 @@
 import { KankaApiEntity, KankaApiEntityType, KankaApiEvent, KankaApiId } from '../../types/kanka';
+import api from '../api';
 import ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -23,10 +24,10 @@ export default class EventTypeLoader extends AbstractTypeLoader<KankaApiEvent> {
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiEvent> {
-        return this.api.getEvent(campaignId, id);
+        return api.getEvent(campaignId, id);
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiEvent[]> {
-        return this.api.getAllEvents(campaignId);
+        return api.getAllEvents(campaignId);
     }
 }

@@ -4,6 +4,9 @@ import kanka from '../kanka';
 import { logInfo } from '../logger';
 import { KankaApiQuest } from '../types/kanka';
 import { getSetting } from '../module/settings';
+import { showError } from '../module/notifications';
+import getMessage from '../module/getMessage';
+import api from '../module/api';
 
 let button: JQuery<HTMLButtonElement> | undefined;
 
@@ -37,8 +40,8 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
         <button type="button" id="kanka">
             <img
                 src="${logo}" 
-                title="${kanka.getMessage('sidebar.button')}"
-                alt="${kanka.getMessage('sidebar.button')}"
+                title="${getMessage('sidebar.button')}"
+                alt="${getMessage('sidebar.button')}"
             /> Kanka
         </button>
     `);
@@ -47,17 +50,17 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
         if (!isGm) return;
 
         if (!kanka.isInitialized) {
-            kanka.showError('browser.error.initializationError');
+            showError('browser.error.initializationError');
             return;
         }
 
-        if (!kanka.api.isReady) {
-            kanka.showError('browser.error.provideAccessToken');
+        if (!api.isReady) {
+            showError('browser.error.provideAccessToken');
             return;
         }
 
         if (!kanka.currentCampaign) {
-            kanka.showError('browser.error.selectCampaign');
+            showError('browser.error.selectCampaign');
             return;
         }
 

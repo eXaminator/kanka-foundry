@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedObject, vi } from 'vitest';
-import KankaApi from '../../api/KankaApi';
+import { vi } from 'vitest';
 import {
     KankaApiAbility,
     KankaApiAbilityLink,
@@ -11,6 +10,7 @@ import {
     KankaApiInventory,
     KankaApiRelation,
 } from '../../types/kanka';
+import api from '../api';
 import AbilityTypeLoader from './AbilityTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -47,15 +47,9 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('AbilityTypeLoader', () => {
-    let api: MockedObject<KankaApi>;
-
-    beforeEach(() => {
-        api = new KankaApi() as MockedObject<KankaApi>;
-    });
-
     describe('getType()', () => {
         it('returns the correct type', () => {
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
 
             expect(loader.getType()).toEqual('ability');
         });
@@ -64,8 +58,8 @@ describe('AbilityTypeLoader', () => {
     describe('load()', () => {
         it('returns result of getAbility', async () => {
             const expectedResult = createAbility();
-            const loader = new AbilityTypeLoader(api);
-            api.getAbility.mockResolvedValue(expectedResult);
+            const loader = new AbilityTypeLoader();
+            vi.mocked(api).getAbility.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
@@ -77,8 +71,8 @@ describe('AbilityTypeLoader', () => {
     describe('loadAll()', () => {
         it('returns result of getAllAbilities', async () => {
             const expectedResult = [createAbility()];
-            const loader = new AbilityTypeLoader(api);
-            api.getAllAbilities.mockResolvedValue(expectedResult);
+            const loader = new AbilityTypeLoader();
+            vi.mocked(api).getAllAbilities.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
@@ -99,7 +93,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -122,7 +116,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -145,7 +139,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -168,7 +162,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -191,7 +185,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -214,7 +208,7 @@ describe('AbilityTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new AbilityTypeLoader(api);
+            const loader = new AbilityTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({

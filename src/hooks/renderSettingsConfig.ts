@@ -3,6 +3,7 @@ import AccessToken from '../api/AccessToken';
 import KankaApi from '../api/KankaApi';
 import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
+import api from '../module/api';
 import getMessage from '../module/getMessage';
 import { KankaApiCampaign } from '../types/kanka';
 
@@ -42,7 +43,7 @@ function setCampaignChoices(choices: Record<string, string>, value: string | nul
 
 function setCampaignSelectionError(key: string): void {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    setCampaignChoices({ '': kanka.getMessage(key) }, '');
+    setCampaignChoices({ '': getMessage(key) }, '');
 }
 
 async function onAccessTokenChange(event: JQuery.TriggeredEvent<unknown, string>): Promise<void> {
@@ -112,6 +113,7 @@ export default async function renderSettingsConfig(app: SettingsConfig, html: JQ
     html.on('change', `[name="${baseUrlInputName}"]`, onBaseUrlChange);
 
     logInfo('Load campaigns...');
-    const choices = await fetchCampaignChoices(kanka.api);
+    const choices = await fetchCampaignChoices(api);
+    console.log('load config', choices);
     setCampaignChoices(choices);
 }

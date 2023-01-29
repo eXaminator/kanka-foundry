@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedObject, vi } from 'vitest';
-import KankaApi from '../../api/KankaApi';
+import { vi } from 'vitest';
 import {
     KankaApiAbilityLink,
     KankaApiEntity,
@@ -11,6 +10,7 @@ import {
     KankaApiLocation,
     KankaApiRelation,
 } from '../../types/kanka';
+import api from '../api';
 import LocationTypeLoader from './LocationTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -46,15 +46,9 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('LocationTypeLoader', () => {
-    let api: MockedObject<KankaApi>;
-
-    beforeEach(() => {
-        api = new KankaApi() as MockedObject<KankaApi>;
-    });
-
     describe('getType()', () => {
         it('returns the correct type', () => {
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
 
             expect(loader.getType()).toEqual('location');
         });
@@ -63,8 +57,8 @@ describe('LocationTypeLoader', () => {
     describe('load()', () => {
         it('returns result of getLocation', async () => {
             const expectedResult = createLocation();
-            const loader = new LocationTypeLoader(api);
-            api.getLocation.mockResolvedValue(expectedResult);
+            const loader = new LocationTypeLoader();
+            vi.mocked(api).getLocation.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
@@ -76,8 +70,8 @@ describe('LocationTypeLoader', () => {
     describe('loadAll()', () => {
         it('returns result of getAllLocations', async () => {
             const expectedResult = [createLocation()];
-            const loader = new LocationTypeLoader(api);
-            api.getAllLocations.mockResolvedValue(expectedResult);
+            const loader = new LocationTypeLoader();
+            vi.mocked(api).getAllLocations.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
@@ -98,7 +92,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -121,7 +115,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -144,7 +138,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -167,7 +161,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -190,7 +184,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -213,7 +207,7 @@ describe('LocationTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new LocationTypeLoader(api);
+            const loader = new LocationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({

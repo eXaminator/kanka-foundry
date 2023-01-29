@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedObject, vi } from 'vitest';
-import KankaApi from '../../api/KankaApi';
+import { vi } from 'vitest';
 import {
     KankaApiAbilityLink,
     KankaApiEntity,
@@ -11,6 +10,7 @@ import {
     KankaApiNote,
     KankaApiRelation,
 } from '../../types/kanka';
+import api from '../api';
 import NoteTypeLoader from './NoteTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -46,15 +46,9 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
 }
 
 describe('NoteTypeLoader', () => {
-    let api: MockedObject<KankaApi>;
-
-    beforeEach(() => {
-        api = new KankaApi() as MockedObject<KankaApi>;
-    });
-
     describe('getType()', () => {
         it('returns the correct type', () => {
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
 
             expect(loader.getType()).toEqual('note');
         });
@@ -63,8 +57,8 @@ describe('NoteTypeLoader', () => {
     describe('load()', () => {
         it('returns result of getNote', async () => {
             const expectedResult = createNote();
-            const loader = new NoteTypeLoader(api);
-            api.getNote.mockResolvedValue(expectedResult);
+            const loader = new NoteTypeLoader();
+            vi.mocked(api).getNote.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
@@ -76,8 +70,8 @@ describe('NoteTypeLoader', () => {
     describe('loadAll()', () => {
         it('returns result of getAllNotes', async () => {
             const expectedResult = [createNote()];
-            const loader = new NoteTypeLoader(api);
-            api.getAllNotes.mockResolvedValue(expectedResult);
+            const loader = new NoteTypeLoader();
+            vi.mocked(api).getAllNotes.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
@@ -98,7 +92,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -121,7 +115,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -144,7 +138,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -167,7 +161,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -190,7 +184,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
@@ -213,7 +207,7 @@ describe('NoteTypeLoader', () => {
                 createEntity(1003, 2003, 'quest'),
             ];
 
-            const loader = new NoteTypeLoader(api);
+            const loader = new NoteTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
