@@ -3,11 +3,8 @@ import AccessToken from './api/AccessToken';
 import KankaApi from './api/KankaApi';
 import registerSheet from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
-import migrateV1 from './migrations/migrateV1';
-import migrateV2 from './migrations/migrateV2';
-import migrateV3 from './migrations/migrateV3';
-import KankaFoundrySettings from './module/KankaFoundrySettings';
 import KankaJournalHelper from './module/KankaJournalHelper';
+import { getSetting } from './module/settings';
 import { KankaApiCampaign } from './types/kanka';
 
 export default class KankaFoundry {
@@ -15,7 +12,6 @@ export default class KankaFoundry {
 
     #name = moduleConfig.name;
     #module?: Game.ModuleData<unknown>;
-    #settings = new KankaFoundrySettings(this);
     #api = new KankaApi();
     #currentCampaign?: KankaApiCampaign;
     #debugElement = $('<span class="kanka-limit-debug">0 / 0 (0)</span>');
@@ -44,16 +40,14 @@ export default class KankaFoundry {
         }
 
         try {
-            await this.#settings.initialize();
-            await this.setBaseUrl(this.#settings.baseUrl);
-            await this.setToken(this.#settings.token);
-            await this.loadCurrentCampaignById(this.#settings.currentCampaignId);
+            await this.setBaseUrl(getSetting('baseUrl'));
+            await this.setToken(getSetting('accessToken'));
+            await this.loadCurrentCampaignById(parseInt(getSetting('campaign'), 10));
 
             await this.#renderLocalization.initialize();
-            await this.#renderLocalization.setLanguage(this.settings.importLanguage || this.game.i18n.lang);
-            migrateV1(this);
-            await migrateV2(this);
-            await migrateV3(this);
+            await this.#renderLocalization.setLanguage(
+                getSetting('importLanguage') || this.game.i18n.lang,
+            );
 
             this.#isInitialized = true;
         } catch (error) {
@@ -61,7 +55,10 @@ export default class KankaFoundry {
 
             // Special case, because notifications and translations might not be ready yet.
             const interval = setInterval(() => {
-                if (ui?.notifications && (this.game.i18n.translations as Record<string, unknown>)?.KANKA) {
+                if (
+                    ui?.notifications
+                    && (this.game.i18n.translations as Record<string, unknown>)?.KANKA
+                ) {
                     this.showError('general.initializationError');
                     clearInterval(interval);
                 }
@@ -73,7 +70,6 @@ export default class KankaFoundry {
 
     public async dispose(): Promise<void> {
         this.#debugElement.remove();
-        await this.#settings.dispose();
         this.#isInitialized = false;
     }
 
@@ -92,7 +88,8 @@ export default class KankaFoundry {
                 return;
             }
 
-            if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) { // One week
+            if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) {
+                // One week
                 this.showError('settings.error.WarningTokenExpiration');
             }
 
@@ -120,8 +117,12 @@ export default class KankaFoundry {
     }
 
     public get languages(): Record<string, string> {
-        return this.#module?.languages
-            .reduce((map, { lang, name }) => ({ ...map, [lang]: name }), {}) ?? {};
+        return (
+            this.#module?.languages.reduce(
+                (map, { lang, name }) => ({ ...map, [lang]: name }),
+                {},
+            ) ?? {}
+        );
     }
 
     public get localization(): Localization {
@@ -130,10 +131,6 @@ export default class KankaFoundry {
 
     public setLanguage(language: string): Promise<void> {
         return this.#renderLocalization.setLanguage(language || this.game.i18n.lang);
-    }
-
-    public get settings(): KankaFoundrySettings {
-        return this.#settings;
     }
 
     public get journals(): KankaJournalHelper {

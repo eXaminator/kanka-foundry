@@ -1,15 +1,13 @@
-import type KankaFoundry from '../KankaFoundry';
-import { AutomaticPermissionValue } from '../module/KankaFoundrySettings';
-import { KankaSettings } from '../types/KankaSettings';
+import { getSetting, setSetting } from '../module/settings';
 
-export default async function migrateV3(module: KankaFoundry): Promise<void> {
-    const permissionSetting = module.game.settings.get(module.name, KankaSettings.automaticPermissions) as string;
+export default async function migrateV3(): Promise<void> {
+    const permissionSetting = getSetting('automaticPermissions') as string;
 
     if (permissionSetting === 'false') {
-        module.game.settings.set(module.name, KankaSettings.automaticPermissions, AutomaticPermissionValue.never);
+        await setSetting('automaticPermissions', 'never');
     } else if (permissionSetting === 'true') {
-        module.game.settings.set(module.name, KankaSettings.automaticPermissions, AutomaticPermissionValue.initial);
-    } else if (!AutomaticPermissionValue[permissionSetting]) {
-        module.game.settings.set(module.name, KankaSettings.automaticPermissions, AutomaticPermissionValue.never);
+        await setSetting('automaticPermissions', 'initial');
+    } else {
+        await setSetting('automaticPermissions', 'never');
     }
 }

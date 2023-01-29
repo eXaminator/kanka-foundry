@@ -1,4 +1,5 @@
 import kanka from '../../kanka';
+import { getSetting } from '../../module/settings';
 import createJournalLink from '../../util/createJournalLink';
 
 export default function kankaReplaceMentions(text: string | null): Handlebars.SafeString | null {
@@ -18,7 +19,7 @@ export default function kankaReplaceMentions(text: string | null): Handlebars.Sa
             return;
         }
 
-        if (kanka.settings.disableExternalLinks) {
+        if (getSetting('disableExternalMentionLinks')) {
             $link.replaceWith(`<strong>${label}</strong>`);
         }
     });

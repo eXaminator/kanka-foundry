@@ -1,5 +1,6 @@
 import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
+import { getSetting, KankaSettings, setSetting } from '../module/settings';
 import EntityType from '../types/EntityType';
 import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
@@ -20,7 +21,7 @@ interface TemplateData {
     deletedEntries: KankaApiChildEntity[];
     settings: {
         showPrivate: boolean;
-        view: typeof kanka.settings.browserView;
+        view: KankaSettings['browserView'];
     },
 }
 
@@ -120,8 +121,8 @@ export default class KankaBrowserApplication extends Application {
             data: this.#entities,
             deletedEntries: this.deletedSnapshots,
             settings: {
-                showPrivate: kanka.settings.importPrivateEntities,
-                view: kanka.settings.browserView,
+                showPrivate: getSetting('importPrivateEntities'),
+                view: getSetting('browserView'),
             },
         };
     }
@@ -150,13 +151,13 @@ export default class KankaBrowserApplication extends Application {
             try {
                 switch (action) {
                     case 'view-grid': {
-                        await kanka.settings.setBrowserView('grid');
+                        await setSetting('browserView', 'grid');
                         this.render();
                         break;
                     }
 
                     case 'view-list': {
-                        await kanka.settings.setBrowserView('list');
+                        await setSetting('browserView', 'list');
                         this.render();
                         break;
                     }
@@ -244,7 +245,7 @@ export default class KankaBrowserApplication extends Application {
             if (!type) return;
             this.setPosition({ ...this.position, height: 'auto' });
             if (this.#currentFilter) return; // Don't save toggle if filter is active
-            kanka.settings.setIsTypeCollapsed(type, event.currentTarget.open);
+            setSetting(`collapseType_${type}`, event.currentTarget.open);
         });
     }
 
@@ -257,7 +258,7 @@ export default class KankaBrowserApplication extends Application {
             .each((_, el) => {
                 if (el.dataset?.type) {
                     // eslint-disable-next-line no-param-reassign
-                    el.open = kanka.settings.isTypeCollapsed(el.dataset?.type as EntityType);
+                    el.open = getSetting(`collapseType_${el.dataset?.type as EntityType}`);
                 }
             });
 
@@ -306,11 +307,11 @@ export default class KankaBrowserApplication extends Application {
         );
 
         this.#entities = entities?.filter((entity) => {
-            if (!kanka.settings.importTemplateEntities && entity.is_template) {
+            if (!getSetting('importTemplateEntities') && entity.is_template) {
                 return false;
             }
 
-            if (!kanka.settings.importPrivateEntities && entity.is_private) {
+            if (!getSetting('importPrivateEntities') && entity.is_private) {
                 return false;
             }
 

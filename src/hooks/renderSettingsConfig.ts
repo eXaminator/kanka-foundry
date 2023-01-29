@@ -1,18 +1,19 @@
-import kanka from '../kanka';
+import moduleConfig from '../../public/module.json';
 import AccessToken from '../api/AccessToken';
 import KankaApi from '../api/KankaApi';
+import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
+import getMessage from '../module/getMessage';
 import { KankaApiCampaign } from '../types/kanka';
-import { KankaSettings } from '../types/KankaSettings';
 
-const baseUrlInputName = `${kanka.name}.${KankaSettings.baseUrl}`;
-const accessTokenInputName = `${kanka.name}.${KankaSettings.accessToken}`;
-const campaignInputName = `${kanka.name}.${KankaSettings.campaign}`;
+const baseUrlInputName = `${moduleConfig.name}.baseUrl`;
+const accessTokenInputName = `${moduleConfig.name}.accessToken`;
+const campaignInputName = `${moduleConfig.name}.campaign`;
 
 function buildCampaignChoices(campaigns: KankaApiCampaign[]): Record<string, string> {
     const campaignChoices: Record<string, string> = {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        '': kanka.getMessage('settings.campaign.pleaseChoose'),
+        '': getMessage('settings.campaign.pleaseChoose'),
     };
 
     campaigns.forEach((campaign) => {

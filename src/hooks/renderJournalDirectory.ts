@@ -3,6 +3,7 @@ import logo from '../assets/kanka.png';
 import kanka from '../kanka';
 import { logInfo } from '../logger';
 import { KankaApiQuest } from '../types/kanka';
+import { getSetting } from '../module/settings';
 
 let button: JQuery<HTMLButtonElement> | undefined;
 
@@ -12,7 +13,7 @@ const questStatus = {
 };
 
 function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
-    if (!kanka.settings.questStatusIcon) return;
+    if (!getSetting('questQuestStatusIcon')) return;
 
     const questEntries = kanka.journals.findAllByType('quest');
     questEntries.forEach((entry) => {
@@ -20,7 +21,9 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
         const link = li.find('.document-name a');
         const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiQuest;
 
-        link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
+        link.html(
+            `${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`,
+        );
     });
 }
 

@@ -5,8 +5,8 @@ import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityId, KankaApiEntityTy
 import { ProgressFn } from '../types/progress';
 import Reference from '../types/Reference';
 import createTypeLoaders from './createTypeLoaders';
-import { AutomaticPermissionValue } from './KankaFoundrySettings';
 import ReferenceCollection from './ReferenceCollection';
+import { getSetting } from './settings';
 import AbstractTypeLoader from './TypeLoaders/AbstractTypeLoader';
 
 type FlagTypes = {
@@ -181,10 +181,10 @@ export default class KankaJournalHelper {
         entity: KankaApiChildEntity,
         isUpdate: boolean,
     ): foundry.CONST.DOCUMENT_PERMISSION_LEVELS | undefined {
-        const setting = this.module.settings.automaticPermissions;
+        const setting = getSetting('automaticPermissions');
 
-        if (setting === AutomaticPermissionValue.never) return undefined;
-        if (setting === AutomaticPermissionValue.initial && isUpdate) return undefined;
+        if (setting === 'never') return undefined;
+        if (setting === 'initial' && isUpdate) return undefined;
 
         if (entity.is_private) return CONST.DOCUMENT_PERMISSION_LEVELS.NONE;
         return CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER;
@@ -230,7 +230,7 @@ export default class KankaJournalHelper {
     async ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder | undefined> {
         let parent = await this.ensureTypeFolder(type);
 
-        if (!this.module.settings.keepTreeStructure) return parent;
+        if (!getSetting('keepTreeStructure')) return parent;
         if (!path.length) return parent;
 
         for (let i = 0; i < Math.min(path.length, this.#maxFolderDepth - 1); i += 1) {
