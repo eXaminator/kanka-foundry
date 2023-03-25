@@ -34,9 +34,6 @@ const config: UserConfig = {
             fileName: () => 'index.js',
         },
     },
-    define: {
-        'process.env.NODE_ENV': '"production"',
-    },
     plugins: [
         hbsPlugin(),
         translationPlugin('./src/lang', './dist/lang'),
