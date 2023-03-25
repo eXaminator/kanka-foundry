@@ -11,11 +11,11 @@ const config: UserConfig = {
         port: 3000,
         open: false,
         proxy: {
-            '^(?!/modules/kanka-foundry)': 'http://localhost/',
-            '^/modules/kanka-foundry/lang': 'http://localhost/',
-            '^/modules/kanka-foundry/templates': 'http://localhost/',
+            '^(?!/modules/kanka-foundry)': 'http://localhost:30000/',
+            '^/modules/kanka-foundry/lang': 'http://localhost:30000/',
+            '^/modules/kanka-foundry/templates': 'http://localhost:30000/',
             '/socket.io': {
-                target: 'ws://localhost',
+                target: 'ws://localhost:30000',
                 ws: true,
             },
         },
