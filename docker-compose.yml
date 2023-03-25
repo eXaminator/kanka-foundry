@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    foundry:
+        image: 'felddy/foundryvtt:10'
+        environment:
+            TIMEZONE: Europe/Berlin
+            FOUNDRY_WORLD: 'test'
+        secrets:
+            - source: config_json
+              target: config.json
+        volumes:
+            - ./data:/data
+            - ./dist:/data/Data/modules/kanka-foundry
+        init: true
+        restart: unless-stopped
+        ports:
+            - '30000:30000'
+
+secrets:
+    config_json:
+        file: ./secrets.json
