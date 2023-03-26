@@ -1,5 +1,5 @@
 {{#with (lookup (kankaFilterReferences collection idProperty type optionalReference=optionalReference) 'length') as |count| }}
-    {{#if (kankaOr count (eq ../showCount undefined) (eq ../showCount false))}}
+    {{#if (or count (eq ../showCount undefined) (eq ../showCount false))}}
         <a class="item" data-tab="{{../name}}">
             {{#if ../labelString}}
                 {{../labelString}}

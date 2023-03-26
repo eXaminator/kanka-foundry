@@ -2,7 +2,7 @@
     {{#each (kankaFilterAccessible entity.entity_assets)}}
         {{#if (eq this.type_id 1)}}
         <!-- File -->
-            {{#if (eq this.metadata.type 'regex:^image/.*') }}
+            {{#if (eqRegex this.metadata.type '^image/.*') }}
                 <div class="interactive{{#if (kankaIsSecret this) }} -secret{{/if}}">
                     <img src="{{kankaFileUrl this._url}}" alt="{{this.name}}" />
                     <strong>

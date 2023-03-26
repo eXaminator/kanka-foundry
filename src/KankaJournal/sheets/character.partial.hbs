@@ -30,8 +30,8 @@
 
     {{#*inline 'additionalDetails'~}}
         {{~#each (kankaGroupBy (kankaSortBy kankaEntity.traits 'section') 'section')~}}
-            {{~#if (kankaOr (eq @key 'personality' not=true) ../kankaEntity.is_personality_visible ../owner)~}}
-                <div class="kanka-card {{#unless (kankaOr ../kankaEntity.is_personality_visible (eq @key 'appearance')) }}-secret{{/unless}}">
+            {{~#if (or (ne @key 'personality') ../kankaEntity.is_personality_visible ../owner)~}}
+                <div class="kanka-card {{#unless (or ../kankaEntity.is_personality_visible (eq @key 'appearance')) }}-secret{{/unless}}">
                     <h2 class="kanka-card-header">{{kankaLocalize 'journal.character.traits' @key}}</h2>
                     <div class="kanka-card-content -outdent">
                         <dl class="kanka-grid -borderless">
