@@ -64,7 +64,7 @@ export function registerSettings(onChangeMap: OnChangeMap): void {
         {
             name: getMessage('settings.token.label'),
             hint: getMessage('settings.token.hint'),
-            scope: 'world',
+            scope: 'client',
             config: true,
             type: String,
             default: '',

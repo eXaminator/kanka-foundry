@@ -15,8 +15,6 @@ function setToken(token: string): void {
     try {
         const accessToken = new AccessToken(token);
 
-        console.log('TOKEN in init', token);
-
         if (accessToken.isExpired()) {
             api.reset();
             showError('settings.error.ErrorTokenExpired');
