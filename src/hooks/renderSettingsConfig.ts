@@ -114,6 +114,5 @@ export default async function renderSettingsConfig(app: SettingsConfig, html: JQ
 
     logInfo('Load campaigns...');
     const choices = await fetchCampaignChoices(api);
-    console.log('load config', choices);
     setCampaignChoices(choices);
 }
