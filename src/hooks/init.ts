@@ -1,7 +1,7 @@
 import moduleConfig from '../../public/module.json';
 import KankaJournalApplication from '../KankaJournal/KankaJournalApplication';
 import AccessToken from '../api/AccessToken';
-import { logError } from '../logger';
+import { logError } from '../module/logger';
 import api from '../module/api';
 import { setCurrentCampaign } from '../module/currentCampaign';
 import executeMigrations from '../module/executeMigrations';
