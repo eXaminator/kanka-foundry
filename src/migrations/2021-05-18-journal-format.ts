@@ -98,7 +98,7 @@ function createFolderList(label: string, folders: Folder[]): string {
     return `<details><summary><strong>${label}</strong></summary><ul>${listItems}</ul></details>`;
 }
 
-export default async function migrateV1(): Promise<void> {
+export default async function migrate(): Promise<void> {
     const outdatedJournals = getGame().journal
         ?.filter(e => !!e.getFlag(moduleConfig.name, 'id') && !e.getFlag(moduleConfig.name, 'snapshot')) ?? [];
     const outdatedFolders = getGame().folders
