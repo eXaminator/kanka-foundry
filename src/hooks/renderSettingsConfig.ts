@@ -1,7 +1,7 @@
 import moduleConfig from '../../public/module.json';
 import AccessToken from '../api/AccessToken';
 import KankaApi from '../api/KankaApi';
-import { logError, logInfo } from '../logger';
+import { logError, logInfo } from '../module/logger';
 import api from '../module/api';
 import { getCurrentCampaign } from '../module/currentCampaign';
 import getMessage from '../module/getMessage';

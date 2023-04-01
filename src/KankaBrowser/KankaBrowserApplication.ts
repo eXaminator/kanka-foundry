@@ -1,4 +1,4 @@
-import { logError, logInfo } from '../logger';
+import { logError, logInfo } from '../module/logger';
 import api from '../module/api';
 import { getCurrentCampaign } from '../module/currentCampaign';
 import getMessage from '../module/getMessage';

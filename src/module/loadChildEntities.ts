@@ -1,8 +1,8 @@
-import { logError } from '../logger';
 import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../types/kanka';
 import { ProgressFn } from '../types/progress';
 import groupBy from '../util/groupBy';
 import loaders from './loaders';
+import { logError } from './logger';
 
 type Entity = Pick<KankaApiEntity, 'child_id' | 'type'>;
 

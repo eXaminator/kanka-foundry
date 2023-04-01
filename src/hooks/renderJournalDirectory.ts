@@ -1,6 +1,6 @@
 import KankaBrowserApplication from '../KankaBrowser/KankaBrowserApplication';
 import logo from '../assets/kanka.png';
-import { logInfo } from '../logger';
+import { logInfo } from '../module/logger';
 import api from '../module/api';
 import { getCurrentCampaign } from '../module/currentCampaign';
 import getGame from '../module/getGame';
