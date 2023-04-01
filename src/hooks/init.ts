@@ -2,12 +2,9 @@ import moduleConfig from '../../public/module.json';
 import KankaJournalApplication from '../KankaJournal/KankaJournalApplication';
 import AccessToken from '../api/AccessToken';
 import { logError } from '../logger';
-import migrateV1 from '../migrations/migrateV1';
-import migrateV2 from '../migrations/migrateV2';
-import migrateV3 from '../migrations/migrateV3';
-import migrateV4 from '../migrations/migrateV4';
 import api from '../module/api';
 import { setCurrentCampaign } from '../module/currentCampaign';
+import executeMigrations from '../module/executeMigrations';
 import getGame from '../module/getGame';
 import localization from '../module/localization';
 import { showError } from '../module/notifications';
@@ -93,10 +90,7 @@ export default async function init(): Promise<void> {
         await localization.initialize();
         await localization.setLanguage(getSetting('importLanguage') ?? getGame().i18n.lang);
 
-        await migrateV1();
-        await migrateV2();
-        await migrateV3();
-        await migrateV4();
+        await executeMigrations();
     } catch (error) {
         logError(error);
         showError('general.initializationError');

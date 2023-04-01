@@ -1,6 +1,6 @@
 import { getSetting, setSetting } from '../module/settings';
 
-export default async function migrateV3(): Promise<void> {
+export default async function migrate(): Promise<void> {
     const permissionSetting = getSetting('automaticPermissions') as string;
 
     if (permissionSetting === 'false') {
