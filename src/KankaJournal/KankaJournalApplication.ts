@@ -6,6 +6,8 @@ import template from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 import logo from '../assets/kanka.png';
 import { getSetting } from '../module/settings';
+import syncEntities from '../module/syncEntities';
+import { getEntryFlag } from '../module/journalEntries';
 
 interface Data extends JournalSheet.Data {
     kankaIsGm: boolean;
@@ -96,12 +98,15 @@ export default function registerSheet(kanka: KankaFoundry): void {
                 if (!action) return;
 
                 if (action === 'refresh') {
-                    const type = this.object.getFlag(kanka.name, 'type') as KankaApiEntityType;
-                    const campaign = this.object.getFlag(kanka.name, 'campaign') as KankaApiId;
-                    const snapshot = this.object.getFlag(kanka.name, 'snapshot') as KankaApiChildEntity;
+                    const type = getEntryFlag(this.object, 'type');
+                    const campaign = getEntryFlag(this.object, 'campaign');
+                    const snapshot = getEntryFlag(this.object, 'snapshot');
                     this.setLoadingState(event.currentTarget);
+
+                    if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
+
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    await kanka.journals.write(campaign, [{ child_id: snapshot.id, type }]);
+                    await syncEntities(campaign, [{ child_id: snapshot.id, type }], []);
                     this.rerender();
                 }
             });

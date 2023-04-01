@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedFunction, MockedObject, vi } from 'vitest';
-import kanka from '../../kanka';
-import type KankaJournalHelper from '../../module/KankaJournalHelper';
-import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import { MockedFunction, vi } from 'vitest';
 import Reference from '../../types/Reference';
+import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
+import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../module/journalEntries';
 
 vi.mock('../../kanka');
 vi.mock('./kankaIsAccessible');
+vi.mock('../../module/journalEntries');
 
 const mockedKankaIsAccessible = kankaIsAccessible as MockedFunction<typeof kankaIsAccessible>;
 
@@ -33,11 +33,9 @@ function createReference(
 }
 
 describe('kankaFindReference()', () => {
-    let journals: MockedObject<KankaJournalHelper>;
-
     beforeAll(() => {
-        journals = kanka.journals as MockedObject<KankaJournalHelper>;
         mockedKankaIsAccessible.mockReturnValue(true);
+        vitest.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);
     });
@@ -95,13 +93,13 @@ describe('kankaFindReference()', () => {
             is_private: false,
         };
 
-        const journal = { id: 'foo-123', flags: { snapshot, type: 'character' } };
-        journals.findByEntityId.mockReturnValue(journal as unknown as JournalEntry);
+        const journal = { id: 'foo-123', flags: { snapshot, type: 'character' }, getFlag: (_, name) => journal.flags[name] };
+        vitest.mocked(findEntryByEntityId).mockReturnValue(journal as unknown as JournalEntry);
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}, {{ name }}{{/with}}';
 
         expect(compile(template)).toEqual('1, Foobar');
-        expect(journals.findByEntityId).toHaveBeenCalledWith(4711);
+        expect(findEntryByEntityId).toHaveBeenCalledWith(4711);
     });
 
     it('returns reference based on id and type created from existing journal entry with snapshot', () => {
@@ -114,12 +112,12 @@ describe('kankaFindReference()', () => {
         };
 
         const journal = { id: 'foo-123', flags: { snapshot, type: 'character' } };
-        journals.findByTypeAndId.mockReturnValue(journal as unknown as JournalEntry);
+        vitest.mocked(findEntryByTypeAndChildId).mockReturnValue(journal as unknown as JournalEntry);
 
         const template = '{{#with (kankaFindReference 1 "character")}}{{ id }}, {{ name }}{{/with}}';
 
         expect(compile(template)).toEqual('1, Foobar');
-        expect(journals.findByTypeAndId).toHaveBeenCalledWith('character', 1);
+        expect(findEntryByTypeAndChildId).toHaveBeenCalledWith('character', 1);
     });
 
     it('returns undefined if undefined id was given', () => {

@@ -1,5 +1,5 @@
-import type KankaApi from '../api/KankaApi';
 import { KankaApiEntityType } from '../types/kanka';
+import api from './api';
 import AbstractTypeLoader from './TypeLoaders/AbstractTypeLoader';
 
 const loaderModules = import.meta.glob<true, '', { default: ConstructorOf<AbstractTypeLoader> }>(
@@ -10,7 +10,7 @@ const loaderModules = import.meta.glob<true, '', { default: ConstructorOf<Abstra
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Result = Map<KankaApiEntityType, AbstractTypeLoader<any>>;
 
-export default function createTypeLoaders(api: KankaApi): Result {
+export default function createTypeLoaders(): Result {
     const loaders: Result = new Map();
 
     Object.keys(loaderModules).forEach((key) => {

@@ -2,7 +2,6 @@ import moduleConfig from '../public/module.json';
 import registerSheet from './KankaJournal/KankaJournalApplication';
 import { logError, logInfo } from './logger';
 import api from './module/api';
-import KankaJournalHelper from './module/KankaJournalHelper';
 import { showError } from './module/notifications';
 import { getSetting } from './module/settings';
 import { KankaApiCampaign } from './types/kanka';
@@ -14,7 +13,6 @@ export default class KankaFoundry {
     #module?: Game.ModuleData<unknown>;
     #currentCampaign?: KankaApiCampaign;
     #renderLocalization = new Localization('en');
-    #journalHelper = new KankaJournalHelper(this);
     #isInitialized = false;
 
     get game(): Game {
@@ -87,10 +85,6 @@ export default class KankaFoundry {
 
     public setLanguage(language: string): Promise<void> {
         return this.#renderLocalization.setLanguage(language || this.game.i18n.lang);
-    }
-
-    public get journals(): KankaJournalHelper {
-        return this.#journalHelper;
     }
 
     public get currentCampaign(): KankaApiCampaign | undefined {
