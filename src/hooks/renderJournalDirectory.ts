@@ -1,14 +1,14 @@
 import KankaBrowserApplication from '../KankaBrowser/KankaBrowserApplication';
 import logo from '../assets/kanka.png';
-import kanka from '../kanka';
 import { logInfo } from '../logger';
-import { KankaApiQuest } from '../types/kanka';
-import { getSetting } from '../module/settings';
-import { showError } from '../module/notifications';
-import getMessage from '../module/getMessage';
 import api from '../module/api';
-import { findEntriesByType, getEntryFlag } from '../module/journalEntries';
+import { getCurrentCampaign } from '../module/currentCampaign';
 import getGame from '../module/getGame';
+import getMessage from '../module/getMessage';
+import { findEntriesByType, getEntryFlag } from '../module/journalEntries';
+import { showError } from '../module/notifications';
+import { getSetting } from '../module/settings';
+import { KankaApiQuest } from '../types/kanka';
 
 const questStatus = {
     complete: '<i class="fas fa-check-circle kanka-quest-status -complete"></i>',
@@ -49,17 +49,12 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
     button.on('click', async () => {
         if (!isGm) return;
 
-        if (!kanka.isInitialized) {
-            showError('browser.error.initializationError');
-            return;
-        }
-
         if (!api.isReady) {
             showError('browser.error.provideAccessToken');
             return;
         }
 
-        if (!kanka.currentCampaign) {
+        if (!getCurrentCampaign()) {
             showError('browser.error.selectCampaign');
             return;
         }

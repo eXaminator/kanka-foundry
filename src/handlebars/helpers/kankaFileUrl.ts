@@ -1,4 +1,4 @@
-import kanka from '../../kanka';
+import api from '../../module/api';
 
 export default function kankaFileUrl(url: string): string {
     if (url.startsWith('http')) {
@@ -11,6 +11,6 @@ export default function kankaFileUrl(url: string): string {
         path = `/${path}`;
     }
 
-    const baseUrl = new URL(kanka.baseUrl);
+    const baseUrl = new URL(api.baseUrl);
     return `${baseUrl.origin}${path}`;
 }

@@ -27,14 +27,14 @@ export async function setSetting<T extends keyof KankaSettings>(setting: T, valu
 }
 
 type OnChangeMap<K extends keyof KankaSettings = keyof KankaSettings> = {
-    [P in K]?: (value?: KankaSettings[P]) => void;
+    [P in K]?: (value?: KankaSettings[P]) => unknown | Promise<unknown>;
 };
 
-function register<T extends keyof KankaSettings>(
+async function register<T extends keyof KankaSettings>(
     setting: T,
     data: ClientSettings.PartialSettingConfig<KankaSettings[T]>,
     onChangeMap: OnChangeMap,
-): void {
+): Promise<void> {
     getGame().settings.register<string, string, KankaSettings[T]>(moduleConfig.name, setting, {
         ...data,
         onChange: (value) => {
@@ -43,7 +43,7 @@ function register<T extends keyof KankaSettings>(
     });
 }
 
-export function registerSettings(onChangeMap: OnChangeMap): void {
+export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> {
     const languages = moduleConfig.languages.reduce((map, { lang, name }) => ({ ...map, [lang]: name }), {}) ?? {};
 
     register(
@@ -213,18 +213,24 @@ export function registerSettings(onChangeMap: OnChangeMap): void {
 
     Object.values(EntityType)
         .filter((type) => type !== EntityType.campaign)
-        .forEach((type: EntityType) => {
-            register(
-                `collapseType_${type}`,
-                {
-                    scope: 'client',
-                    config: false,
-                    type: Boolean,
-                    default: false,
-                },
-                onChangeMap,
-            );
-        });
+        .forEach((type: EntityType) => register(
+            `collapseType_${type}`,
+            {
+                scope: 'client',
+                config: false,
+                type: Boolean,
+                default: false,
+            },
+            onChangeMap,
+        ));
+
+    return async () => {
+        const promises = Object
+            .entries(onChangeMap)
+            .map(([setting, onChange]) => onChange(getSetting(setting as keyof KankaSettings) as unknown as undefined));
+
+        await Promise.all(promises);
+    };
 }
 
 if (import.meta.hot) {

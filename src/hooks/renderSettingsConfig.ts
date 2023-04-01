@@ -1,9 +1,9 @@
 import moduleConfig from '../../public/module.json';
 import AccessToken from '../api/AccessToken';
 import KankaApi from '../api/KankaApi';
-import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
 import api from '../module/api';
+import { getCurrentCampaign } from '../module/currentCampaign';
 import getMessage from '../module/getMessage';
 import { KankaApiCampaign } from '../types/kanka';
 
@@ -38,7 +38,7 @@ function setCampaignChoices(choices: Record<string, string>, value: string | nul
         select.append(option);
     });
 
-    select.val(value ?? String(kanka.currentCampaign?.id ?? ''));
+    select.val(value ?? String(getCurrentCampaign()?.id ?? ''));
 }
 
 function setCampaignSelectionError(key: string): void {

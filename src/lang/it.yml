@@ -21,8 +21,6 @@ KANKA:
 
     browser:
         error:
-            initializationError: |
-                Il modulo non è stato avviato correttamente. Questo potrebbe essere dovuto ad un errore di configurazione o al fatto che Kanka sta avendo dei problemi.
             provideAccessToken: Non hai fornito un token di accesso valido per Kanka o è scaduto.
             selectCampaign: Per favore assicurati di aver selezionato una campagna nella configurazione.
             actionError: Si è verificato un errore durante l'esecuzione dell'azione richiesta.
@@ -138,11 +136,11 @@ KANKA:
             hint: Seleziona la campagna dalla quale vuoi importare le voci.
             noToken: Per favore inserisci un token di accesso valido
             noBaseUrl: Per favore inserisci un URL di Kanka valido.
-            pleaseChoose: "-- Per favore scegli una Campagna --"
+            pleaseChoose: '-- Per favore scegli una Campagna --'
         locale:
             label: Lingua del contenuto
             hint: Questa opzione ti permette di impostare la lingua che verrà usata per i vari campi se diversa dalla lingua predefinita di Foundry.
-            default: "-- Usa la lingua predefinita di Foundry --"
+            default: '-- Usa la lingua predefinita di Foundry --'
         importPrivate:
             label: Mostra entità private
             hint: Se l'opzione è selezionata, verranno mostrate le entità private nel navigatore di importazione.

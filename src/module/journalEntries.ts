@@ -14,6 +14,7 @@ type FlagTypes = {
     snapshot: KankaApiChildEntity,
     type: KankaApiEntityType,
     version: string,
+    references: Record<number, Reference>,
     [key: string]: unknown,
 };
 

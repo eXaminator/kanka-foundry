@@ -1,13 +1,15 @@
-import type KankaFoundry from '../KankaFoundry';
+import moduleConfig from '../../public/module.json';
 import api from '../module/api';
+import { getCurrentCampaign } from '../module/currentCampaign';
+import getGame from '../module/getGame';
 import getMessage from '../module/getMessage';
 import { showInfo, showWarning } from '../module/notifications';
 import syncEntities from '../module/syncEntities';
 import { KankaApiEntity } from '../types/kanka';
 import createJournalLink from '../util/createJournalLink';
 
-async function migrateAll(module: KankaFoundry): Promise<void> {
-    const campaignId = module.currentCampaign?.id;
+async function migrateAll(): Promise<void> {
+    const campaignId = getCurrentCampaign()?.id;
 
     if (!campaignId) {
         return;
@@ -29,20 +31,20 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
         ],
     );
 
-    await Promise.all(module.game.folders
-        ?.filter(folder => !!folder.getFlag(module.name, 'folderType'))
+    await Promise.all(getGame().folders
+        ?.filter(folder => !!folder.getFlag(moduleConfig.name, 'folderType'))
         .map(async (folder) => {
-            const folderType = folder.getFlag(module.name, 'folderType');
+            const folderType = folder.getFlag(moduleConfig.name, 'folderType');
             if (folderType !== 'type') {
-                await folder.unsetFlag(module.name, 'type');
+                await folder.unsetFlag(moduleConfig.name, 'type');
             }
-            await folder.unsetFlag(module.name, 'folderType');
-            await folder.unsetFlag(module.name, 'id');
+            await folder.unsetFlag(moduleConfig.name, 'folderType');
+            await folder.unsetFlag(moduleConfig.name, 'id');
         }) ?? []);
 
-    const updateEntities = module.game.journal
-        ?.filter(e => !!e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot'))
-        .map(entry => entities.find(e => e.id === entry.getFlag(module.name, 'entityId')))
+    const updateEntities = getGame().journal
+        ?.filter(e => !!e.getFlag(moduleConfig.name, 'id') && !e.getFlag(moduleConfig.name, 'snapshot'))
+        .map(entry => entities.find(e => e.id === entry.getFlag(moduleConfig.name, 'entityId')))
         .filter((entity): entity is KankaApiEntity => !!entity) ?? [];
 
     if (!updateEntities.length) {
@@ -50,15 +52,15 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
         return;
     }
 
-    await Promise.all(module.game.journal
-        ?.filter(e => !!e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot'))
+    await Promise.all(getGame().journal
+        ?.filter(e => !!e.getFlag(moduleConfig.name, 'id') && !e.getFlag(moduleConfig.name, 'snapshot'))
         .map(async (entry) => {
-            const entity = entities.find(e => e.id === entry.getFlag(module.name, 'entityId'));
+            const entity = entities.find(e => e.id === entry.getFlag(moduleConfig.name, 'entityId'));
             if (!entity) return;
-            await entry.setFlag(module.name, 'id', entity.id);
-            await entry.unsetFlag(module.name, 'entityId');
-            await entry.unsetFlag(module.name, 'updatedAt');
-            await entry.unsetFlag(module.name, 'campaignId');
+            await entry.setFlag(moduleConfig.name, 'id', entity.id);
+            await entry.unsetFlag(moduleConfig.name, 'entityId');
+            await entry.unsetFlag(moduleConfig.name, 'updatedAt');
+            await entry.unsetFlag(moduleConfig.name, 'campaignId');
         }) ?? []);
 
     const stats = await syncEntities(campaignId, updateEntities, entities);
@@ -96,11 +98,11 @@ function createFolderList(label: string, folders: Folder[]): string {
     return `<details><summary><strong>${label}</strong></summary><ul>${listItems}</ul></details>`;
 }
 
-export default function migrateV1(module: KankaFoundry): void {
-    const outdatedJournals = module.game.journal
-        ?.filter(e => !!e.getFlag(module.name, 'id') && !e.getFlag(module.name, 'snapshot')) ?? [];
-    const outdatedFolders = module.game.folders
-        ?.filter(folder => !!folder.getFlag(module.name, 'folderType')) ?? [];
+export default async function migrateV1(): Promise<void> {
+    const outdatedJournals = getGame().journal
+        ?.filter(e => !!e.getFlag(moduleConfig.name, 'id') && !e.getFlag(moduleConfig.name, 'snapshot')) ?? [];
+    const outdatedFolders = getGame().folders
+        ?.filter(folder => !!folder.getFlag(moduleConfig.name, 'folderType')) ?? [];
 
     if (outdatedFolders.length === 0 && outdatedJournals.length === 0) {
         return;
@@ -111,7 +113,7 @@ export default function migrateV1(module: KankaFoundry): void {
         content: getMessage('migration.dialog.text', {
             documentCount: outdatedJournals.length,
             folderCount: outdatedFolders.length,
-            campaignName: module.currentCampaign?.name,
+            campaignName: getCurrentCampaign()?.name,
             journalList: createEntryList(
                 getMessage('migration.dialog.listHeader.journals', { count: outdatedJournals.length }),
                 outdatedJournals,
@@ -126,7 +128,7 @@ export default function migrateV1(module: KankaFoundry): void {
                 icon: '<i class="fas fa-check"></i>',
                 label: getMessage('migration.dialog.action.yes'),
                 async callback() {
-                    await migrateAll(module);
+                    await migrateAll();
                     await dialog.close();
                 },
             },

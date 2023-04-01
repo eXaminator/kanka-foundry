@@ -1,4 +1,4 @@
-import kanka from '../kanka';
+import api from '../module/api';
 import { KankaApiEntityType, KankaApiId } from '../types/kanka';
 
 export default function createKankaUrl(
@@ -7,7 +7,7 @@ export default function createKankaUrl(
     id?: KankaApiId,
     locale?: string,
 ): string {
-    const url = new URL(kanka.baseUrl);
+    const url = new URL(api.baseUrl);
     const parts = [`${url.origin}/${locale || 'en'}/campaign/${String(campaignId)}`];
 
     if (type) {

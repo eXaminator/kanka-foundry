@@ -35,6 +35,8 @@ function createReference(
 describe('kankaFindReference()', () => {
     beforeAll(() => {
         mockedKankaIsAccessible.mockReturnValue(true);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         vitest.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);
