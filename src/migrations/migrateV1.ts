@@ -2,6 +2,7 @@ import type KankaFoundry from '../KankaFoundry';
 import api from '../module/api';
 import getMessage from '../module/getMessage';
 import { showInfo, showWarning } from '../module/notifications';
+import syncEntities from '../module/syncEntities';
 import { KankaApiEntity } from '../types/kanka';
 import createJournalLink from '../util/createJournalLink';
 
@@ -60,9 +61,9 @@ async function migrateAll(module: KankaFoundry): Promise<void> {
             await entry.unsetFlag(module.name, 'campaignId');
         }) ?? []);
 
-    const successCount = await module.journals.write(campaignId, updateEntities, entities);
+    const stats = await syncEntities(campaignId, updateEntities, entities);
 
-    showInfo('migration.success', { success: successCount, expected: updateEntities.length });
+    showInfo('migration.success', { success: stats.all.success, expected: stats.all.total });
 }
 
 function createEntryList(label: string, entries: JournalEntry[]): string {

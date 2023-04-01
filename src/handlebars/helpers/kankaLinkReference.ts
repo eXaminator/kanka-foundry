@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import kanka from '../../kanka';
 import getMessage from '../../module/getMessage';
+import { findEntryByEntityId } from '../../module/journalEntries';
 import { getSetting } from '../../module/settings';
 import Reference from '../../types/Reference';
 import createJournalLink from '../../util/createJournalLink';
@@ -17,7 +17,7 @@ export default function kankaLinkReference(
 
     if (!reference) return new Handlebars.SafeString(label);
 
-    const journalEntry = kanka.journals.findByEntityId(reference.entityId);
+    const journalEntry = findEntryByEntityId(reference.entityId);
 
     if (journalEntry?.visible) {
         return new Handlebars.SafeString(createJournalLink(journalEntry, label));

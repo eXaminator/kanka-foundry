@@ -1,6 +1,6 @@
-import kanka from '../../kanka';
+import { findEntryByEntityId } from '../../module/journalEntries';
 import { KankaApiEntityId } from '../../types/kanka';
 
 export default function kankaHasJournalEntry(entityId: KankaApiEntityId): boolean {
-    return Boolean(kanka.journals.findByEntityId(entityId));
+    return Boolean(findEntryByEntityId(entityId));
 }

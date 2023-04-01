@@ -4,20 +4,20 @@ function compile(template: string, context = {}): string {
     return Handlebars.compile(template)(context);
 }
 
-const expectedIconClasses = new Map<string, string>([
-    ['image/jpeg', 'fa-file-image'],
-    ['image/png', 'fa-file-image'],
-    ['image/gif', 'fa-file-image'],
-    ['image/webp', 'fa-file-image'],
-    ['audio/mpeg', 'fa-file-audio'],
-    ['audio/ogg', 'fa-file-audio'],
-    ['application/pdf', 'fa-file-pdf'],
-    ['application/msexcel', 'fa-file-excel'],
-    ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'fa-file-excel'],
-    ['text/html', 'fa-file'],
-    ['application/json', 'fa-file'],
-    ['anything/else', 'fa-file'],
-]);
+const expectedIconClasses = [
+    { mime: 'image/jpeg', class: 'fa-file-image' },
+    { mime: 'image/png', class: 'fa-file-image' },
+    { mime: 'image/gif', class: 'fa-file-image' },
+    { mime: 'image/webp', class: 'fa-file-image' },
+    { mime: 'audio/mpeg', class: 'fa-file-audio' },
+    { mime: 'audio/ogg', class: 'fa-file-audio' },
+    { mime: 'application/pdf', class: 'fa-file-pdf' },
+    { mime: 'application/msexcel', class: 'fa-file-excel' },
+    { mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', class: 'fa-file-excel' },
+    { mime: 'text/html', class: 'fa-file' },
+    { mime: 'application/json', class: 'fa-file' },
+    { mime: 'anything/else', class: 'fa-file' },
+];
 
 describe('kankaFileIcon()', () => {
     beforeAll(() => {
@@ -28,9 +28,9 @@ describe('kankaFileIcon()', () => {
         Handlebars.unregisterHelper('kankaFileIcon');
     });
 
-    expectedIconClasses.forEach((expectedCls, givenMime) => it(`returns ${expectedCls} icon for ${givenMime}`, () => {
-        const template = '{{ kankaFileIcon givenMime }}';
+    it.each(expectedIconClasses)('returns $class icon for $mime', ({ mime, class: cls }) => {
+        const template = '{{ kankaFileIcon mime }}';
 
-        expect(compile(template, { givenMime })).toEqual(`<i class="fas ${expectedCls}"></i>`);
-    }));
+        expect(compile(template, { mime })).toEqual(`<i class="fas ${String(cls)}"></i>`);
+    });
 });

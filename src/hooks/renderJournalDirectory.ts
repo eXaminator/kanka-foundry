@@ -7,8 +7,8 @@ import { getSetting } from '../module/settings';
 import { showError } from '../module/notifications';
 import getMessage from '../module/getMessage';
 import api from '../module/api';
-
-let button: JQuery<HTMLButtonElement> | undefined;
+import { findEntriesByType, getEntryFlag } from '../module/journalEntries';
+import getGame from '../module/getGame';
 
 const questStatus = {
     complete: '<i class="fas fa-check-circle kanka-quest-status -complete"></i>',
@@ -18,11 +18,11 @@ const questStatus = {
 function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
     if (!getSetting('questQuestStatusIcon')) return;
 
-    const questEntries = kanka.journals.findAllByType('quest');
+    const questEntries = findEntriesByType('quest');
     questEntries.forEach((entry) => {
         const li = html.find(`[data-document-id="${entry.id}"]`);
         const link = li.find('.document-name a');
-        const snapshot = kanka.journals.getFlag(entry, 'snapshot') as KankaApiQuest;
+        const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
 
         link.html(
             `${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`,
@@ -31,12 +31,12 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
 }
 
 function renderKankaButton(html: JQuery<HTMLDivElement>): void {
-    const isGm = !!(game as Game).user?.isGM;
+    const isGm = !!getGame().user?.isGM;
     if (!isGm) return;
 
     const browserApplication = new KankaBrowserApplication();
 
-    button = $(`
+    const button = $(`
         <button type="button" id="kanka">
             <img
                 src="${logo}" 
@@ -67,6 +67,7 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
         browserApplication.render(true, { focus: true });
     });
 
+    html.find('.directory-footer').find('#kanka').remove();
     html.find('.directory-footer').append(button);
 }
 
@@ -77,10 +78,4 @@ export default async function renderJournalDirectory(
     logInfo('renderJournalDirectory');
     renderQuestStatusIcons(html);
     renderKankaButton(html);
-}
-
-if (import.meta.hot) {
-    import.meta.hot.dispose(() => {
-        button?.remove();
-    });
 }

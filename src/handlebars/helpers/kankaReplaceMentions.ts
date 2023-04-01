@@ -1,4 +1,5 @@
 import kanka from '../../kanka';
+import { findEntryByEntityId } from '../../module/journalEntries';
 import { getSetting } from '../../module/settings';
 import createJournalLink from '../../util/createJournalLink';
 
@@ -12,7 +13,7 @@ export default function kankaReplaceMentions(text: string | null): Handlebars.Sa
         const $link = $(link);
         const entityId = Number($link.data('id'));
         const label = $link.html();
-        const journalEntry = kanka.journals.findByEntityId(entityId);
+        const journalEntry = findEntryByEntityId(entityId);
 
         if (journalEntry?.visible) {
             $link.replaceWith(createJournalLink(journalEntry, label));

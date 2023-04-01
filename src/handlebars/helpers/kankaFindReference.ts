@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import kanka from '../../kanka';
+import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../module/journalEntries';
 import { KankaApiAnyId, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import Reference from '../../types/Reference';
 import kankaIsAccessible from './kankaIsAccessible';
 
 function createReference(id: KankaApiAnyId, type?: KankaApiEntityType): Reference | undefined {
     const journal = type
-        ? kanka.journals.findByTypeAndId(type, id as KankaApiId)
-        : kanka.journals.findByEntityId(id as KankaApiEntityId);
-    const snapshot = kanka.journals.getFlag(journal, 'snapshot');
-    const snapshotType = type ?? kanka.journals.getFlag(journal, 'type');
+        ? findEntryByTypeAndChildId(type, id as KankaApiId)
+        : findEntryByEntityId(id as KankaApiEntityId);
+    const snapshot = journal ? getEntryFlag(journal, 'snapshot') : undefined;
+    const snapshotType = type ?? (journal ? getEntryFlag(journal, 'type') : undefined);
 
     if (!snapshot || !snapshotType) return undefined;
 
