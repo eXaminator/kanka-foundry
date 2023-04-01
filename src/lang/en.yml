@@ -21,9 +21,6 @@ KANKA:
 
     browser:
         error:
-            initializationError: |
-                The module wasn't initialized properly. This could be a configuration error or Kanka is having trouble
-                right now.
             provideAccessToken: You did not provide a valid Kanka access token or it has expired.
             selectCampaign: Please ensure that you have selected a campaign in the settings.
             actionError: An error occurred while performing the requested action.
@@ -139,11 +136,11 @@ KANKA:
             hint: Select the campaign from which to import entries.
             noToken: Please enter a valid access token
             noBaseUrl: Please enter a valid Kanka URL.
-            pleaseChoose: "-- Please choose a campaign --"
+            pleaseChoose: '-- Please choose a campaign --'
         locale:
             label: Content language
             hint: This setting allows you to set the language which will be used for labels if it should be different from your default Foundry language.
-            default: "-- Use default Foundry language --"
+            default: '-- Use default Foundry language --'
         importPrivate:
             label: Show private entities
             hint: If this is checked private entities will be shown in the import browser.

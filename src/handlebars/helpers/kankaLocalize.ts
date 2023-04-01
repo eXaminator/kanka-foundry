@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import getGame from '../../module/getGame';
+
 export default function kankaLocalize(...args: unknown[]): string {
     const options = args.pop() as Record<string, any>;
     const data = options.hash ?? {};
@@ -12,7 +14,7 @@ export default function kankaLocalize(...args: unknown[]): string {
 
     const key = ['KANKA', ...parts].join('.');
 
-    const localization = options.data?.root?.localization ?? (game as Game).i18n;
+    const localization = options.data?.root?.localization ?? getGame().i18n;
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return foundry.utils.isEmpty(data) ? localization.localize(key) : localization.format(String(key), data);

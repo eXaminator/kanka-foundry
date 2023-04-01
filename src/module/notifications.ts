@@ -1,13 +1,27 @@
 import getMessage from './getMessage';
 
-export function showInfo(...args: [...string[], Record<string, unknown>] | string[]): void {
-    ui.notifications?.info(getMessage(...args));
+// Wait for everything to be ready before showing a notification
+function notifyWhenAvailable(type: 'info' | 'warn' | 'error', options: Notifications.Options, ...args: Parameters<typeof getMessage>): void {
+    if (!ui?.notifications) {
+        setTimeout(() => notifyWhenAvailable(type, options, ...args), 250);
+        return;
+    }
+
+    try {
+        ui.notifications?.[type](getMessage(...args), options);
+    } catch {
+        setTimeout(() => notifyWhenAvailable(type, options, ...args), 250);
+    }
 }
 
-export function showWarning(...args: [...string[], Record<string, unknown>] | string[]): void {
-    ui.notifications?.warn(getMessage(...args));
+export function showInfo(...args: Parameters<typeof getMessage>): void {
+    notifyWhenAvailable('info', {}, ...args);
 }
 
-export function showError(...args: [...string[], Record<string, unknown>] | string[]): void {
-    ui.notifications?.error(getMessage(...args), { permanent: true });
+export function showWarning(...args: Parameters<typeof getMessage>): void {
+    notifyWhenAvailable('warn', {}, ...args);
+}
+
+export function showError(...args: Parameters<typeof getMessage>): void {
+    notifyWhenAvailable('error', { permanent: true }, ...args);
 }

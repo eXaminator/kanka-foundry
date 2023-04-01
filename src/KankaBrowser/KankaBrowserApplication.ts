@@ -1,6 +1,6 @@
-import kanka from '../kanka';
 import { logError, logInfo } from '../logger';
 import api from '../module/api';
+import { getCurrentCampaign } from '../module/currentCampaign';
 import getMessage from '../module/getMessage';
 import { findAllKankaEntries, findEntryByEntityId, getEntryFlag, hasOutdatedEntryByEntity } from '../module/journalEntries';
 import { showError } from '../module/notifications';
@@ -85,8 +85,10 @@ export default class KankaBrowserApplication extends Application {
     }
 
     protected get campaign(): KankaApiCampaign {
-        if (!kanka.currentCampaign) throw new Error('Campaign has not been loaded yet.');
-        return kanka.currentCampaign;
+        const campaign = getCurrentCampaign();
+
+        if (!campaign) throw new Error('Campaign has not been loaded yet.');
+        return campaign;
     }
 
     protected get deletedSnapshots(): KankaApiChildEntity[] {
@@ -97,7 +99,7 @@ export default class KankaBrowserApplication extends Application {
 
                 if (!snapshot) return [];
                 if (!this.#entities) return [];
-                if (campaignId !== kanka.currentCampaign?.id) return [];
+                if (campaignId !== this.campaign.id) return [];
                 if (this.#entities.some(e => e.id === snapshot.entity_id)) return [];
 
                 return [snapshot];
@@ -150,7 +152,7 @@ export default class KankaBrowserApplication extends Application {
             const { action, id: idString, type } = event.currentTarget?.dataset ?? {};
             const id = parseInt(idString, 10);
 
-            logInfo('click', { action, id }, kanka.currentCampaign);
+            logInfo('click', { action, id }, this.campaign);
 
             try {
                 switch (action) {

@@ -22,8 +22,6 @@ KANKA:
 
     browser:
         error:
-            initializationError: >
-                Das Modul wurde nicht korrekt initialisiert. Das kann an der Konfiguration oder Kanka selbst liegen.
             provideAccessToken: Du hast kein gültiges Kanka Zugriffs-Token konfiguriert oder es ist abgelaufen.
             selectCampaign: Bitte stelle sicher, dass du eine Kampagne in den Einstellungen ausgewählt hast.
             actionError: Bei der angeforderten Aktion ist ein Fehler aufgetreten.
@@ -136,13 +134,13 @@ KANKA:
             hint: Wähle die Kampagne, aus der Einträge importiert werden sollen.
             noToken: Bitte gib ein gültiges Zugriffs-Token ein.
             noBaseUrl: Bitte gib eine gültige Kanka URL ein.
-            pleaseChoose: "-- Kampagne auswählen --"
+            pleaseChoose: '-- Kampagne auswählen --'
         locale:
             label: Inhaltssprache
             hint: >
                 Diese Einstellung erlaubt es dir eine Sprache zu wählen, welche für die die Labels in importierten
                 Einträgen verwendet werden soll.
-            default: "-- Standard Foundry Sprache verwenden --"
+            default: '-- Standard Foundry Sprache verwenden --'
         importPrivate:
             label: Private Einträge anzeigen
             hint: Wenn dies selektiert ist, werden im Import-Fenster auch private Einträge zum Import angezeigt.

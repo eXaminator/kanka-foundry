@@ -1,7 +1,15 @@
+import moduleConfig from '../../public/module.json';
+import KankaJournalApplication from '../KankaJournal/KankaJournalApplication';
 import AccessToken from '../api/AccessToken';
-import kanka from '../kanka';
 import { logError } from '../logger';
+import migrateV1 from '../migrations/migrateV1';
+import migrateV2 from '../migrations/migrateV2';
+import migrateV3 from '../migrations/migrateV3';
+import migrateV4 from '../migrations/migrateV4';
 import api from '../module/api';
+import { setCurrentCampaign } from '../module/currentCampaign';
+import getGame from '../module/getGame';
+import localization from '../module/localization';
 import { showError } from '../module/notifications';
 import registerHandlebarsHelpers from '../module/registerHandlebarsHelper';
 import { getSetting, registerSettings } from '../module/settings';
@@ -41,29 +49,63 @@ function renderDebugElement(): void {
     });
 }
 
-export default async function init(): Promise<void> {
-    registerHandlebarsHelpers();
-    registerSettings({
-        baseUrl: value => api.switchBaseUrl(value ?? ''),
-        accessToken: value => setToken(value ?? ''),
-        campaign: value => value && kanka.loadCurrentCampaignById(parseInt(value, 10) || null),
-        importLanguage: value => kanka.setLanguage(value ?? 'en'),
-    });
-
-    // Debug output to show current rate limiting
-    if (import.meta.env.DEV) {
-        renderDebugElement();
+async function loadCurrentCampaignById(id: number | null): Promise<void> {
+    if (!api.isReady) {
+        return;
     }
 
-    api.switchBaseUrl(getSetting('baseUrl'));
-    setToken(getSetting('accessToken'));
-    await kanka.initialize();
+    if (id) {
+        setCurrentCampaign(await api.getCampaign(id));
+    } else {
+        setCurrentCampaign(undefined);
+    }
+}
+
+export default async function init(): Promise<void> {
+    try {
+        Journal.registerSheet(moduleConfig.name, KankaJournalApplication, {
+            makeDefault: false,
+            label: 'Kanka-Foundry Journal sheet',
+        });
+
+        registerHandlebarsHelpers();
+
+        registerSettings({
+            baseUrl: value => api.switchBaseUrl(value ?? ''),
+            accessToken: value => setToken(value ?? ''),
+            campaign: value => value && loadCurrentCampaignById(parseInt(value, 10) || null),
+            importLanguage: value => localization.setLanguage(value ?? getGame().i18n.lang),
+        });
+
+        // Debug output to show current rate limiting
+        if (import.meta.env.DEV) {
+            renderDebugElement();
+        }
+
+        api.switchBaseUrl(getSetting('baseUrl'));
+        setToken(getSetting('accessToken'));
+
+        // Async initialization processes start here. These need to be at the end, to ensure that everything
+        // important for FoundryVTT has been handled synchroniously, because the hook usually doesn'T handle
+        // async functions.
+        await loadCurrentCampaignById(parseInt(getSetting('campaign'), 10));
+
+        await localization.initialize();
+        await localization.setLanguage(getSetting('importLanguage') ?? getGame().i18n.lang);
+
+        await migrateV1();
+        await migrateV2();
+        await migrateV3();
+        await migrateV4();
+    } catch (error) {
+        logError(error);
+        showError('general.initializationError');
+    }
 }
 
 if (import.meta.hot) {
     import.meta.hot.dispose(async () => {
         $('.kanka-limit-debug').remove();
-        await kanka.dispose();
     });
 
     import.meta.hot.accept((newModule) => {

@@ -1,4 +1,4 @@
-import kanka from '../../kanka';
+import api from '../../module/api';
 import { findEntryByEntityId } from '../../module/journalEntries';
 import { getSetting } from '../../module/settings';
 import createJournalLink from '../../util/createJournalLink';
@@ -6,7 +6,7 @@ import createJournalLink from '../../util/createJournalLink';
 export default function kankaReplaceMentions(text: string | null): Handlebars.SafeString | null {
     if (!text) return null;
 
-    const url = new URL(kanka.baseUrl);
+    const url = new URL(api.baseUrl);
     const el = $(`<div>${text}</div>`);
 
     el.find(`a[data-id][href*="${url.hostname}"]`).each((_, link): void => {

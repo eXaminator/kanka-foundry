@@ -17,7 +17,7 @@ function getFolders(): Folders {
     return folders;
 }
 
-function getFlag(
+function getFolderFlag(
     entry: Folder | undefined,
     name: string,
 ): unknown {
@@ -54,7 +54,7 @@ export function findFolderByFlags(flags: Record<string, unknown>): Folder | unde
 
     return getFolders().find((folder) => {
         if (folder.type !== 'JournalEntry') return false;
-        return entries.every(([flag, value]) => getFlag(folder, flag) === value);
+        return entries.every(([flag, value]) => getFolderFlag(folder, flag) === value);
     });
 }
 
