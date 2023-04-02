@@ -18,6 +18,14 @@ type FlagTypes = {
     [key: string]: unknown,
 };
 
+type NullableFlagTypes = {
+    [Key in keyof FlagTypes]: FlagTypes[Key] | null
+};
+
+type FlagDataObject = {
+    [Key in keyof NullableFlagTypes as Key extends string ? `flags.${typeof moduleConfig.name}.${Key}` : never]: NullableFlagTypes[Key]
+};
+
 function getJournal(): Journal {
     const { journal } = getGame();
 
@@ -44,6 +52,16 @@ function getExpectedPermission(
 
     if (entity.is_private) return CONST.DOCUMENT_PERMISSION_LEVELS.NONE;
     return CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER;
+}
+
+function buildKankaFlags(flags: Partial<NullableFlagTypes>): Partial<FlagDataObject> {
+    const flagData: Partial<FlagDataObject> = {};
+
+    Object.entries(flags).forEach(([key, value]) => {
+        flagData[`flags.${moduleConfig.name}.${key}`] = value;
+    });
+
+    return flagData;
 }
 
 export function getEntryFlag<FlagName extends keyof FlagTypes>(
@@ -97,20 +115,24 @@ export async function createOrUpdateJournalEntry(
         content: entity.entry_parsed,
         // eslint-disable-next-line @typescript-eslint/naming-convention
         'flags.core.sheetClass': `${moduleConfig.name}.KankaJournalApplication`,
-        [`flags.${moduleConfig.name}.campaign`]: campaignId,
-        [`flags.${moduleConfig.name}.type`]: type,
-        [`flags.${moduleConfig.name}.id`]: entity.entity_id,
-        [`flags.${moduleConfig.name}.version`]: buildVersionString(entity),
-        [`flags.${moduleConfig.name}.snapshot`]: entity,
-        [`flags.${moduleConfig.name}.references`]: references.getRecord(),
+        ...buildKankaFlags({
+            campaign: campaignId,
+            type,
+            id: entity.entity_id,
+            version: buildVersionString(entity),
+            snapshot: entity,
+            references: references.getRecord(),
+        }),
     };
 
     let entry = findEntryByEntityId(entity.entity_id);
 
     if (entry) {
         await entry.update({
-            [`flags.${moduleConfig.name}.snapshot`]: null,
-            [`flags.${moduleConfig.name}.references`]: null,
+            ...buildKankaFlags({
+                snapshot: null,
+                references: null,
+            }),
             permission: { default: getExpectedPermission(entity, true) },
         });
         await entry.update(journalData);
