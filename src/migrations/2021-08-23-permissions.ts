@@ -1,4 +1,4 @@
-import { getSetting, setSetting } from '../module/settings';
+import { getSetting, setSetting } from '../foundry/settings';
 
 export default async function migrate(): Promise<void> {
     const permissionSetting = getSetting('automaticPermissions') as string;

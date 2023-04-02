@@ -4,11 +4,10 @@ import Reference from '../../types/Reference';
 import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
-import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../module/journalEntries';
+import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../foundry/journalEntries';
 
-vi.mock('../../kanka');
 vi.mock('./kankaIsAccessible');
-vi.mock('../../module/journalEntries');
+vi.mock('../../foundry/journalEntries');
 
 const mockedKankaIsAccessible = kankaIsAccessible as MockedFunction<typeof kankaIsAccessible>;
 

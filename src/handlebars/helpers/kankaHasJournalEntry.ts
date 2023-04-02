@@ -1,4 +1,4 @@
-import { findEntryByEntityId } from '../../module/journalEntries';
+import { findEntryByEntityId } from '../../foundry/journalEntries';
 import { KankaApiEntityId } from '../../types/kanka';
 
 export default function kankaHasJournalEntry(entityId: KankaApiEntityId): boolean {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../module/journalEntries';
+import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../foundry/journalEntries';
 import { KankaApiAnyId, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import Reference from '../../types/Reference';
 import kankaIsAccessible from './kankaIsAccessible';

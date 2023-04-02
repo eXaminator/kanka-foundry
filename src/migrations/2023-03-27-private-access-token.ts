@@ -1,5 +1,5 @@
-import { setSetting } from '../module/settings';
-import getGame from '../module/getGame';
+import { setSetting } from '../foundry/settings';
+import getGame from '../foundry/getGame';
 
 // Migrate global Kanka access key setting to local setting
 export default async function migrate(): Promise<void> {

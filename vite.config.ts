@@ -4,7 +4,7 @@ import hbsPlugin from './build/hbsPlugin';
 import translationPlugin from './build/translationPlugin';
 
 const config: UserConfig = {
-    root: resolve(__dirname, 'src/dev'),
+    root: resolve(__dirname, 'src/devServer'),
     publicDir: resolve(__dirname, 'public'),
     base: '/modules/kanka-foundry/',
     server: {
