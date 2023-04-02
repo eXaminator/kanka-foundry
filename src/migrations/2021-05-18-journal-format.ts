@@ -65,7 +65,7 @@ async function migrateAll(): Promise<void> {
 
     const stats = await syncEntities(campaignId, updateEntities, entities);
 
-    showInfo('migration.success', { success: stats.all.success, expected: stats.all.total });
+    showInfo('migration.success', { success: stats.getStats('all').success, expected: stats.getStats('all').total });
 }
 
 function createEntryList(label: string, entries: JournalEntry[]): string {

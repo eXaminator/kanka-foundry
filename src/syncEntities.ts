@@ -1,19 +1,10 @@
 /* eslint-disable no-await-in-loop, no-restricted-syntax */
-import { KankaApiEntity, KankaApiEntityType, KankaApiId } from './types/kanka';
-import { ProgressFn } from './types/progress';
-import { createOrUpdateJournalEntry } from './foundry/journalEntries';
 import loadChildEntitiesByEntitiesGroupedByType from './api/loadChildEntitiesByEntitiesGroupedByType';
 import loaders from './api/typeLoaders';
-
-type Stats = {
-    success: number;
-    error: number;
-    total: number;
-};
-
-type StatCollection = {
-    [key in KankaApiEntityType]?: Stats;
-} & { all: Stats };
+import { createOrUpdateJournalEntry } from './foundry/journalEntries';
+import { KankaApiEntity, KankaApiId } from './types/kanka';
+import { ProgressFn } from './types/progress';
+import StatCollection from './util/StatCollection';
 
 export default async function syncEntities(
     campaignId: KankaApiId,
@@ -22,26 +13,19 @@ export default async function syncEntities(
     onProgress?: ProgressFn,
 ): Promise<StatCollection> {
     const childrenByType = await loadChildEntitiesByEntitiesGroupedByType(campaignId, syncEntities, onProgress);
-    const stats: StatCollection = {
-        all: { success: 0, error: 0, total: syncEntities.length },
-    };
+    const stats = new StatCollection();
 
     for (const [type, children] of childrenByType) {
         const loader = loaders.get(type);
         if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
-        stats[type] = { success: 0, error: 0, total: children.length };
 
         for (const child of children) {
             try {
                 const references = await loader.createReferenceCollection(campaignId, child, entityLookup);
                 await createOrUpdateJournalEntry(campaignId, type, child, references);
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                stats[type]!.success += 1;
-                stats.all.success += 1;
+                stats.addSuccess(type);
             } catch {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                stats[type]!.error += 1;
-                stats.all.error += 1;
+                stats.addError(type);
             }
         }
     }
