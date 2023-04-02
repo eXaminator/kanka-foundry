@@ -1,10 +1,10 @@
 import moduleConfig from '../../public/module.json';
-import api from '../module/api';
-import { getCurrentCampaign } from '../module/currentCampaign';
-import getGame from '../module/getGame';
-import getMessage from '../module/getMessage';
-import { showInfo, showWarning } from '../module/notifications';
-import syncEntities from '../module/syncEntities';
+import api from '../api';
+import { getCurrentCampaign } from '../state/currentCampaign';
+import getGame from '../foundry/getGame';
+import getMessage from '../foundry/getMessage';
+import { showInfo, showWarning } from '../foundry/notifications';
+import syncEntities from '../syncEntities';
 import { KankaApiEntity } from '../types/kanka';
 import createJournalLink from '../util/createJournalLink';
 

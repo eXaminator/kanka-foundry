@@ -1,4 +1,4 @@
-import api from '../module/api';
+import api from '../api';
 import { KankaApiEntityType, KankaApiId } from '../types/kanka';
 
 export default function createKankaUrl(

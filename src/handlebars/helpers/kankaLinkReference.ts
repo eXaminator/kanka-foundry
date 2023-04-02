@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import getMessage from '../../module/getMessage';
-import { findEntryByEntityId } from '../../module/journalEntries';
-import { getSetting } from '../../module/settings';
+import getMessage from '../../foundry/getMessage';
+import { findEntryByEntityId } from '../../foundry/journalEntries';
+import { getSetting } from '../../foundry/settings';
 import Reference from '../../types/Reference';
 import createJournalLink from '../../util/createJournalLink';
 import createKankaLink from '../../util/createKankaLink';

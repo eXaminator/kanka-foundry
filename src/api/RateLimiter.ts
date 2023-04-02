@@ -1,4 +1,4 @@
-import { logInfo } from '../module/logger';
+import { logInfo } from '../util/logger';
 
 interface ChangeEvent {
     usedSlots: number;

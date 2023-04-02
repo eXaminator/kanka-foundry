@@ -2,7 +2,7 @@
 import { vi } from 'vitest';
 import RateLimiter from './RateLimiter';
 
-vi.mock('../module/logger');
+vi.mock('../util/logger');
 vi.useFakeTimers();
 
 async function fakeTime(time: number): Promise<void> {

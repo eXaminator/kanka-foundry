@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-import getGame from '../../module/getGame';
+import getGame from '../../foundry/getGame';
 
 export default function kankaLocalize(...args: unknown[]): string {
     const options = args.pop() as Record<string, any>;

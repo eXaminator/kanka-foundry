@@ -1,6 +1,6 @@
-import api from '../../module/api';
-import { findEntryByEntityId } from '../../module/journalEntries';
-import { getSetting } from '../../module/settings';
+import api from '../../api';
+import { findEntryByEntityId } from '../../foundry/journalEntries';
+import { getSetting } from '../../foundry/settings';
 import createJournalLink from '../../util/createJournalLink';
 
 export default function kankaReplaceMentions(text: string | null): Handlebars.SafeString | null {

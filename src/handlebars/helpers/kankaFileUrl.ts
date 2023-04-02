@@ -1,4 +1,4 @@
-import api from '../../module/api';
+import api from '../../api';
 
 export default function kankaFileUrl(url: string): string {
     if (url.startsWith('http')) {

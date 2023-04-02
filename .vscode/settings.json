@@ -1,0 +1,3 @@
+{
+    "vitest.commandLine": "npm run test:watch --"
+}
