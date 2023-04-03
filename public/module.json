@@ -16,8 +16,12 @@
             "ko-fi": "examinator"
         }
     ],
-    "esmodules": ["index.js"],
-    "styles": ["style.css"],
+    "esmodules": [
+        "index.js"
+    ],
+    "styles": [
+        "style.css"
+    ],
     "languages": [
         {
             "lang": "en",
@@ -33,6 +37,11 @@
             "lang": "it",
             "name": "Italiano",
             "path": "lang/it.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "lang/pt_BR.yml"
         }
     ],
     "compatibility": {
