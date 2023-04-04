@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/eXaminator/kanka-foundry/compare/3.1.2...3.1.3) (2023-04-04)
+
+
+### Bug Fixes
+
+* disable certain semantic-release features due to github error ([747866a](https://github.com/eXaminator/kanka-foundry/commit/747866a2750e505f643a8e77d448360f90d59ee9))
+
 ## [3.1.2](https://github.com/eXaminator/kanka-foundry/compare/3.1.1...3.1.2) (2023-04-04)
 
 
