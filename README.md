@@ -1,6 +1,6 @@
 ![Logo of Kanka-Foundry](./docs/assets/kanka-foundry-logo.png)
 
-![Supported Foundry Version](https://img.shields.io/badge/dynamic/json?label=Foundry&query=compatibleCoreVersion&url=https%3A%2F%2Fraw.githubusercontent.com%2FeXaminator%2Fkanka-foundry%2Fmain%2Fsrc%2Fmodule.json&style=for-the-badge&color=ff6400)
+![Supported Foundry Version](https://img.shields.io/badge/dynamic/json?label=Foundry&query=compatibility.verified&url=https%3A%2F%2Fraw.githubusercontent.com%2FeXaminator%2Fkanka-foundry%2Fmain%2Fpublic%2Fmodule.json&style=for-the-badge&color=ff6400)
 ![Downloads](https://img.shields.io/github/downloads/eXaminator/kanka-foundry/total?style=for-the-badge)
 [![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&style=for-the-badge&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fkanka-foundry&colorB=4aa94a)](https://forge-vtt.com/bazaar#package=kanka-foundry)
 [![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&style=for-the-badge&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fkanka-foundry%2Fshield%2Fendorsements)](https://www.foundryvtt-hub.com/package/kanka-foundry/)
