@@ -13,7 +13,7 @@
                             <span><i class="fas fa-lock"></i></span>
                         {{/if}}
                     {{/if}}
-                    <img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />
+                    {{#if this.child.image_thumb}}<img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />{{/if}}
                 </div>
                 {{#if this.is_template}}<i class="far fa-copy" title="{{ kankaLocalize 'browser' 'label' 'template' }}"></i>{{/if}}
                 <a href="{{ this.urls.view }}" target="_blank">{{ this.name }}</a>
@@ -25,7 +25,7 @@
                     {{ kankaLocalize 'browser' 'action' 'openJournal' }}
                 </button>
             {{/if}}
-            <button type="button" data-action="sync" data-id="{{ this.id }}" class="kanka-button">
+            <button type="button" data-action="update-single" data-id="{{ this.id }}" class="kanka-button">
                 {{#if (kankaHasJournalEntry this.id)}}
                     <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateSingle' }}
                 {{else}}

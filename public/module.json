@@ -41,10 +41,9 @@
         }
     ],
     "compatibility": {
-        "minimum": "10",
+        "minimum": "11",
         "verified": "11"
     },
-    "minimumCoreVersion": "10",
     "manifestPlusVersion": "1.2.0",
     "media": [
         {
@@ -78,6 +77,23 @@
             "caption": "The button that opens the dialog to import your Kanka entities"
         }
     ],
+    "documentTypes": {
+        "JournalEntryPage": {
+            "overview": {},
+            "character-profile": {},
+            "post": {},
+            "attributes": {},
+            "abilities": {},
+            "relations": {},
+            "assets": {},
+            "inventory": {},
+            "children": {},
+            "character-organisations": {},
+            "family-members": {},
+            "organisation-members": {},
+            "quest-elements": {}
+        }
+    },
     "bugs": "https://github.com/eXaminator/kanka-foundry/issues",
     "changelog": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/CHANGELOG.md",
     "license": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/LICENSE",

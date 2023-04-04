@@ -52,25 +52,25 @@ KANKA:
                 refresh: Atualizar
                 openInKanka: Abrir no Kanka
                 openLink: Abrir link
-            tabs:
+            pages:
                 story: Visão geral
+                entry: Entrada
                 attributes: Atributos
                 relations: Relações
                 inventory: Inventário
                 abilities: Habilidades
-                files: Recursos
+                assets: Recursos
             labels:
                 type: Tipo
                 location: Localização
                 character: Personagem
                 parent: Pertence a
                 unknownReference: Referência desconhecida
-                entry: Entrada
             value:
                 yes: Sim
                 no: Não
         character:
-            tabs:
+            pages:
                 organisations: Organizações
             labels:
                 title: Título
@@ -85,18 +85,18 @@ KANKA:
                 appearance: Aparência
                 personality: Personalidade
         ability:
-            tabs:
+            pages:
                 abilities: Habilidades
             labels:
                 charges: Cargas
         family:
-            tabs:
+            pages:
                 members: Membros
         journal:
             labels:
                 date: Data
         organisation:
-            tabs:
+            pages:
                 members: Membros
             labels:
                 member: Membro
@@ -105,7 +105,7 @@ KANKA:
                 date: Data
                 completed: Está completo
                 instigator: Instigador
-            tabs:
+            pages:
                 elements: Elementos
         event:
             labels:

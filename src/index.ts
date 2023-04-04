@@ -1,9 +1,20 @@
 import './foundry/registerHooks';
 import './index.scss';
+import localization from './state/localization';
 
 import.meta.glob('./lang/*.yml', { eager: true });
 
 if (import.meta.hot) {
+    import.meta.hot.accept(['./lang/en.yml', './lang/de.yml'], async ([en, de]) => {
+        if ((en && localization.lang === 'en') || (de && localization.lang === 'de')) {
+            await localization.initialize();
+
+            Object
+                .values(window.ui.windows as Record<number, Application>)
+                .forEach(app => app.render());
+        }
+    });
+
     import.meta.hot.on('update-hbs', async ({ file }) => {
         // eslint-disable-next-line no-console
         console.log('HMR: update-hbs', file);
@@ -17,8 +28,6 @@ if (import.meta.hot) {
 
         Object
             .values(window.ui.windows as Record<number, Application>)
-            .forEach(a => {
-                if (kankaTemplates.includes(a.template)) a.render(false);
-            });
+            .forEach(a => a.render(false));
     });
 }

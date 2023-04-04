@@ -12,4 +12,5 @@ export default interface Reference {
         view: string;
         api: string;
     };
+    link?: string;
 }

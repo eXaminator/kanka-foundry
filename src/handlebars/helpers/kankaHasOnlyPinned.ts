@@ -1,10 +1,7 @@
-import { KankaApiSimpleConstrainable, KankaApiVisibilityConstrainable, LegacyKankaApiVisibilityConstrainable } from '../../types/kanka';
+import { AnyConstrainable } from '../../types/kanka';
 import kankaFilterAccessible from './kankaFilterAccessible';
 
-type Constrainable =
-    KankaApiVisibilityConstrainable | LegacyKankaApiVisibilityConstrainable | KankaApiSimpleConstrainable;
-
-export default function kankaHasOnlyPinned<T extends Constrainable>(
+export default function kankaHasOnlyPinned<T extends AnyConstrainable>(
     array: T[],
     starProp: string,
     options: Handlebars.HelperOptions,

@@ -56,26 +56,39 @@ KANKA:
                 refresh: Refresh
                 openInKanka: Open in Kanka
                 openLink: Open link
-            tabs:
+            pages:
+                image: Image
                 story: Overview
+                entry: Entry
                 attributes: Attributes
                 relations: Relations
                 inventory: Inventory
                 abilities: Abilities
-                files: Assets
+                assets: Assets
             labels:
                 type: Type
                 location: Location
                 character: Character
                 parent: Belongs to
                 unknownReference: Unknown reference
-                entry: Entry
+                ability_name: Ability
+                ability_note: Note
+                asset_name: Asset
+                asset_size: Size
+                child_name: Child
+                child_type: Type
+                item_name: Item
+                item_description: Description
+                item_equipped: Equipped
+                relation_name: Object
+                relation_type: Relation
             value:
                 yes: Yes
                 no: No
 
         character:
-            tabs:
+            pages:
+                profile: Profile
                 organisations: Organisations
             labels:
                 title: Title
@@ -86,19 +99,28 @@ KANKA:
                 race: Race
                 family: Family
                 member: Member
+                organisation_name: Organisation
+                organisation_role: Role
+                organisation_membership: Membership status
+            value:
+                organisation_membership_active: Active
+                organisation_membership_inactive: Inactive
+                organisation_membership_unknown: Unknown
             traits:
                 appearance: Appearance
                 personality: Personality
 
         ability:
-            tabs:
+            pages:
                 abilities: Abilities
             labels:
                 charges: Charges
 
         family:
-            tabs:
+            pages:
                 members: Members
+            labels:
+                member_name: Member
 
         journal:
             labels:
@@ -109,18 +131,27 @@ KANKA:
                 date: Date
 
         organisation:
-            tabs:
+            pages:
                 members: Members
             labels:
-                member: Member
+                member_name: Member
+                member_role: Role
+                member_status: Membership status
+            value:
+                membership_active: Active
+                membership_inactive: Inactive
+                membership_unknown: Unknown
 
         quest:
-            tabs:
+            pages:
                 elements: Elements
             labels:
                 instigator: Instigator
                 date: Date
                 completed: Is completed
+                element_name: Element
+                element_role: Role
+                element_description: Description
     settings:
         baseUrl:
             label: Kanka URL
@@ -150,9 +181,9 @@ KANKA:
         disableExternalLinks:
             label: Remove external links
             hint: If this is checked all mention links to entries that were not imported to Foundry will be removed.
-        imageInText:
-            label: Include image in text
-            hint: Should the image be include next to the text in addition to the regular journal entry image?
+        mergeOverviewPages:
+            label: Merge overview pages
+            hint: This setting will treat the entity image, overview, entry and notes as if multi page view was active, even if single page view is otheriwse active.
         treeStructure:
             label: Create folder tree
             hint: Should Kankas tree structure be replicated via folders? The maximum depth is 3 folders.
@@ -215,3 +246,22 @@ KANKA:
         success: The Kanka-Foundry migration is done. Successfully migrated {success} of {expected} entries.
         nothingToDo: Kanka-Foundry could not find any entries to migrate. Please check that you have selected the correct campaign.
         migrated-v2: Your configuration was updated to the new API URL for Kanka 2.0.
+        journalPages:
+            progress: Migrate Kanka-Foundry entries
+            success: All imported Kanka entries have been migrated to new sheet format.
+
+TYPES:
+    JournalEntryPage:
+        kanka-foundry:
+            overview: Kanka Overview
+            post: Kanka Post
+            attributes: Kanka Attributes
+            abilities: Kanka Abilities
+            relations: Kanka Relations
+            assets: Kanka Assets
+            inventory: Kanka Inventory
+            children: Kanka Children
+            character-organisations: Kanka Character Organisations
+            family-members: Kanka Family Members
+            organisation-members: Kanka Organsation Members
+            quest-elements: Kanka Quest Elements

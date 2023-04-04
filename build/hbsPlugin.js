@@ -26,9 +26,7 @@ export default function hbsPlugin() {
         const matches = Array.from(content.matchAll(partialRegex));
         const partials = matches.map(([, , partialPath]) => getPartialPath(id, partialPath));
 
-        const partialImports = partials
-            .map((partial) => `import ${JSON.stringify(partial)};`)
-            .join('\n');
+        const partialImports = partials.map((partial) => `import ${JSON.stringify(partial)};`).join('\n');
 
         const parsedContent = matches.reduce((content, match) => {
             if (!match[2]) return content;

@@ -1,140 +1,306 @@
+:root {
+    --kanka-secret-color: #fc758920;
+    --kanka-secret-border-color: #5f1c266e;
+    --kanka-secret-icon-inversion: 100%;
+    --kanka-avatar-color: rgba(0, 0, 0, 0.1);
+}
+
+%secret-icon-base {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    vertical-align: middle;
+    
+    font-family: "Font Awesome 6 Pro";
+    content: "\f070";
+    font-weight: 900;
+    color: var(--color-ownership-none);
+}
+
+%secret-icon-center {
+    position: relative;
+    padding-right: 20px;
+    
+    &:after {
+        @extend %secret-icon-base;
+
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+%secret-icon-top {
+    position: relative;
+    padding-right: 20px;
+    
+    &:after {
+        @extend %secret-icon-base;
+
+        top: 2px;
+    }
+}
+
+%secret {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--color-ownership-none);
+        opacity: .05;
+        pointer-events: none;
+    }
+}
+
+%count-bubble {
+    display: inline-block;
+    margin-left: .5em;
+    margin-top: 2px;
+    border-radius: 50%;
+    background: var(--color-border-dark-tertiary);
+    color: var(--color-text-light-1);
+    width: var(--kanka-bubble-size);
+    height: var(--kanka-bubble-size);
+    line-height: var(--kanka-bubble-size);
+    font-size: calc(var(--kanka-bubble-size) * 0.7);
+
+    vertical-align: top;
+    text-align: center;
+    text-indent: 0;
+}
+
+@keyframes sync-icon-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .kanka-journal {
-    * {
-        user-select: text;
+    .header-button.kanka-sync {
+        i {
+            animation-name: sync-icon-spin;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            animation-play-state: paused;
+        }
+        
+        &.-loading i {
+            animation-play-state: running;
+        }
     }
 
-    img {
-        cursor: pointer;
+    .kanka-count {
+        --kanka-bubble-size: 15px;
+
+        @for $i from 0 through 99 {
+            &.kanka-count-#{$i} .page-title:after {
+                @extend %count-bubble;
+                content: '#{$i}';
+            }
+        }
+
+        &.kanka-count-limit .page-title:after {
+            @extend %count-bubble;
+            content: '99+';
+        }
     }
 
-    .write-action {
-        display: none;
+    $pageIcons: (
+        'kanka-foundry\\.overview': '\f005',
+        'kanka-foundry\\.post': '\f02d',
+        'kanka-foundry\\.assets': '\f15b',
+        'kanka-foundry\\.abilities': '\f06d',
+        'kanka-foundry\\.inventory': '\f81c',
+        'kanka-foundry\\.relations': '\f542',
+        'kanka-foundry\\.attributes': '\e1d2',
+        'kanka-foundry\\.children': '\f802',
+        'kanka-foundry\\.character-profile': '\f007',
+        'kanka-foundry\\.character-organisations': '\f0e8',
+        'kanka-foundry\\.family-members': '\f0c0',
+        'kanka-foundry\\.organisation-members': '\f0c0',
+        'kanka-foundry\\.quest-elements': '\f5d3',
+
+        'image': '\f1c5',
+        'pdf': '\f1c1',
+        'video': '\f03d',
+    );
+    
+    @each $name, $glyph in $pageIcons {
+        .directory-item.#{$name} {
+            .page-number {
+                font-size: 0;
+    
+                &:before {
+                    content: '#{$glyph}';
+                    font-size: var(--font-size-12);
+                    font-weight: 900;
+                    font-family: "Font Awesome 6 Pro";
+                    vertical-align: middle;
+                    color: var(--color-text-light-7);
+                }
+            }
+        }
     }
 
-    .editable .write-action {
-        display: inline-block;
-    }
-
-    .content-link {
-        background: #0002;
-        border: none;
-        padding-bottom: 0;
-        padding-top: 0;
-    }
-
-    h1 {
-        flex: none;
-    }
-
-    p,
-    details {
+    .journal-entry-pages .scrollable {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        align-content: flex-start;
+        flex-wrap: wrap;
         margin-bottom: 1em;
-        overflow: hidden;
-    }
-
-    .image-column {
-        float: left;
-        max-width: 40%;
-        min-width: min-content;
-        width: max-content;
-        z-index: 2;
-        position: relative;
-
-        margin: 0 0.5em 0.5em 0;
-
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-gap: 0.5em;
-
-        > img,
-        input {
-            justify-self: center;
-            max-width: 100%;
-        }
-
-        > div {
+        
+        .journal-entry-page {
             width: 100%;
+            flex: none;
         }
 
-        &:empty {
-            margin: 0;
+        .journal-entry-page.image:not(:only-child) {
+            max-width: 40%;
+            min-width: min-content;
+            width: max-content;
+            margin: 0 0.5em 0.5em 0;
+            vertical-align: top;
+            
+            figure {
+                margin-top: 0;
+
+                img {
+                    border: 1px solid var(--color-border-dark);
+                }
+            }
+        }
+
+        .journal-entry-page.image + .journal-entry-page.kanka-foundry\.overview {
+            flex: 1;
+            margin-top: 0;
         }
     }
 
-    dl.kanka-grid {
-        margin: 0 0 1em;
-        display: grid;
-        grid-template-columns: auto 1fr;
-
-        border-top: 1px solid rgba(0, 0, 0, 0.2);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-
-        &.-borderless {
-            border-top: none;
-            border-bottom: none;
+    table {
+        >*:not(thead) th {
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--color-text-light-highlight);
+            text-shadow: 1px 1px var(--color-shadow-dark);
+            border-bottom: 1px solid var(--color-border-dark);
         }
 
-        &:empty {
-            display: none;
+        thead td {
+            font-weight: bold;
         }
 
-        dt,
-        dd {
-            margin: 0;
-            padding: 0.3em;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-
-            &:last-of-type {
-                border-bottom: none;
-            }
+        td:first-child {
+            font-weight: bold;
+            padding-right: 1em;
         }
 
-        dt {
-            grid-column: 1;
+        td.center {
+            text-align: center;
+        }
 
-            &.section {
-                grid-column: 1 / span 2;
-                font-weight: bold;
-                font-size: 1em;
-                background: rgba(0, 0, 0, 0.2);
-            }
+        &.-secret {
+            @extend %secret;
 
-            &.-secret {
-                &,
-                & + dd {
-                    background: #fc758920;
-                }
-
-                & + dd {
-                    position: relative;
-
-                    &:before {
-                        background-image: url('../assets/silenced.svg');
-                        background-repeat: no-repeat;
-                        background-position: right 2px;
-                        background-size: 20px 20px;
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        opacity: 0.3;
-                        pointer-events: none;
-                    }
+            > tr:first-child, *:first-child tr:first-child {
+                td:last-child, th:last-child {
+                    @extend %secret-icon-center;
                 }
             }
         }
 
-        dd {
-            grid-column: 2;
-            padding-left: 1.5em;
+        tr.-secret {
+            td {
+                @extend %secret;
+            }
+            
+            td:last-of-type {
+                @extend %secret-icon-center;
+            }
+        }
 
-            &.path {
-                .delimiter {
-                    margin: 0 .5em;
+        td.thumb {
+            text-align: center;
+            padding: 5px 15px 5px 5px;
+            position: relative;
+            width: 0px; // Shrink as small as possible
+
+            > img, > .placeholder, >.label {
+                display: block;
+                min-width: 40px;
+                width: 40px;
+                height: 40px;
+            }
+
+            > img, > .placeholder {
+                box-shadow: 0 0 2px 3px var(--kanka-avatar-color);
+                background: var(--kanka-avatar-color);
+                border: none;
+            }
+
+            > img {
+                object-fit: cover;
+            }
+
+            > img + .placeholder {
+                display: none;
+            }
+
+            > i {
+                opacity: .5;
+                font-size: 40px;
+            }
+
+            > .label {
+                position: absolute;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
+                
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1;
+                pointer-events: none;
+
+                color: var(--color-text-light-highlight, #fff);
+                text-shadow: 1px 1px var(--color-shadow-dark);
+                font-size: 1.2em;
+
+                background: RGBA(0,0,0,0.5);
+            }
+
+            &.-rounded {
+                > img, > span {
+                    border-radius: 50%;
                 }
             }
+
+            &.-large {
+                > img, > .placeholder {
+                    width: auto;
+                    min-width: 80px;
+                    max-width: 100px;
+                    height: auto;
+                    max-height: 80px;
+                }
+            }
+        }
+    }
+
+    table.kanka-attributes {
+        margin: 0;
+
+        td:nth-child(2) {
+            white-space: pre-line;
         }
     }
 }

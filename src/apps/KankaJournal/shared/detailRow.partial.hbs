@@ -1,27 +1,33 @@
 {{~#if reference ~}}
     {{~#with (kankaFindReference value type) as | ref |~}}
-        <dt {{#if ../isSecret}}class="-secret"{{/if}}>
+    <tr {{#if ../isSecret}}class="-secret"{{/if}}>
+        <td>
             {{~#if ../rawLabel~}}
                 {{~../rawLabel~}}
             {{~else~}}
                 {{~ kankaLocalize 'journal' ../label ~}}
             {{~/if~}}
-        </dt>
-        <dd>{{{ kankaLinkReference ref }}}</dd>
+        </td>
+        <td>{{{ ref.link }}}</td>
+    </tr>
     {{~/with~}}
 {{~else~}}
     {{~#if value ~}}
-        <dt {{#if isSecret}}class="-secret"{{/if}}>
+    <tr {{#if isSecret}}class="-secret"{{/if}}>
+        <td>
             {{~#if rawLabel~}}
                 {{~rawLabel~}}
             {{~else~}}
                 {{~ kankaLocalize 'journal' label ~}}
             {{~/if~}}
-        </dt>
-        {{~#if localizeValue ~}}
-            <dd>{{ kankaLocalize 'journal' localizeValue value }}</dd>
-        {{~else~}}
-            <dd>{{ kankaNl2br value }}</dd>
-        {{~/if~}}
+        </td>
+        <td>
+            {{~#if localizeValue ~}}
+                {{ kankaLocalize 'journal' localizeValue value }}
+            {{~else~}}
+                {{{ value }}}
+            {{~/if~}}
+        </td>
+    </tr>
     {{~/if~}}
 {{~/if~}}

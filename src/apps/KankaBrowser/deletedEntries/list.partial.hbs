@@ -3,7 +3,7 @@
         <li class="kanka-action-row">
             <div>
                 <div class="kanka-avatar -small">
-                    <img src="{{ this.image_thumb }}" alt="{{this.name}}" />
+                    {{#if this.image_thumb}}<img src="{{ this.image_thumb }}" alt="{{this.name}}" />{{/if}}
                 </div>
                 {{ this.name }}
             </div>

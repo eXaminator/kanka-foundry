@@ -6,6 +6,7 @@ services:
         environment:
             TIMEZONE: Europe/Berlin
             FOUNDRY_WORLD: 'test'
+            FOUNDRY_HOT_RELOAD: true
         secrets:
             - source: config_json
               target: config.json

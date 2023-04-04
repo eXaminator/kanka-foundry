@@ -30,7 +30,7 @@ export default class KankaApi {
         // Kanka 1.x
         return {
             ...entity,
-            posts: (entity as KankaApiChildEntity).posts ?? (entity as KankaApiChildEntity).entity_notes,
+            posts: (entity as KankaApiChildEntity).posts ?? (entity as KankaApiChildEntity).posts,
         };
     }
 

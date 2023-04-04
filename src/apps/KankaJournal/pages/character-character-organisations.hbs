@@ -1,0 +1,41 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>{{ kankaLocalize "journal.character.labels.organisation_name" }}</td>
+                    <td>{{ kankaLocalize "journal.character.labels.organisation_role" }}</td>
+                    <td>{{ kankaLocalize "journal.character.labels.organisation_membership" }}</td>
+                </tr>
+            </thead>
+            {{#each (kankaFilterAccessible data.system.snapshot.list)}}
+                {{#with this as | rel | }}
+                    {{#with (kankaFindReference organisation_id 'organisation') as | ref | }}
+                        <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
+                            <td class="thumb -rounded">
+                                {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
+                                <span class="placeholder"></span>
+                            </td>
+                            <td>
+                                <span>{{{ ref.link }}}</span>
+                            </td>
+                            <td>
+                                {{{ rel.role }}}
+                            </td>
+                            <td>
+                                {{#if (eq rel.status_id 0) }}
+                                    {{ kankaLocalize "journal.character.value.organisation_membership_active" }}
+                                {{ else if (eq rel.status_id 0) }}
+                                    {{ kankaLocalize "journal.character.value.organisation_membership_inactive" }}
+                                {{ else }}
+                                    {{ kankaLocalize "journal.character.value.organisation_membership_unknown" }}
+                                {{/if}}
+                            </td>
+                        </tr>
+                    {{/with}}
+                {{/with}}
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

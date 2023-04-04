@@ -10,7 +10,7 @@ export type KankaSettings = {
     importLanguage: string;
     disableExternalMentionLinks: boolean;
     importPrivateEntities: boolean;
-    imageInText: boolean;
+    mergeOverviewPages: boolean;
     keepTreeStructure: boolean;
     browserView: 'grid' | 'list';
     automaticPermissions: 'never' | 'initial' | 'always';
@@ -118,10 +118,10 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
     );
 
     register(
-        'imageInText',
+        'mergeOverviewPages',
         {
-            name: getMessage('settings.imageInText.label'),
-            hint: getMessage('settings.imageInText.hint'),
+            name: getMessage('settings.mergeOverviewPages.label'),
+            hint: getMessage('settings.mergeOverviewPages.hint'),
             scope: 'world',
             config: true,
             type: Boolean,

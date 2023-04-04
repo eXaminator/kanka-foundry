@@ -1,0 +1,37 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>{{ kankaLocalize "journal.shared.labels.asset_name" }}</td>
+                    <td>{{ kankaLocalize "journal.shared.labels.asset_size" }}</td>
+                </tr>
+            </thead>
+            {{#each (kankaSortBy (kankaFilterAccessible data.system.snapshot.list) 'type_id')}}
+                <tr class="{{#if (kankaIsSecret this) }} -secret{{/if}}">
+                    {{#if this._file }}
+                        <!-- File -->
+                        {{#if (eqRegex this.metadata.type '^image/.*') }}
+                            <td class="thumb -large"><img src="{{this._url}}" alt="{{this.name}}" /></td>
+                        {{else}}
+                            <td class="thumb -large">{{ kankaFileIcon this.metadata.type }}</td>
+                        {{/if}}
+                            <td><a href="{{this._url}}" download><i class="fa-solid fa-download"></i> {{ this.name }}</a></td>
+                            <td>{{ kankaFileSize this.metadata.size }}</td>
+                    {{else if this._link}}
+                        <!-- Link -->
+                        <td class="thumb"><i class="fas {{ ifThen this.metadata.icon this.metadata.icon  "fa-link" }} fw"></i></td>
+                        <td><a href="{{ this.metadata.url }}" target="_blank"><i class="fa-solid fa-up-right-from-square"></i> {{ this.name }}</a></td>
+                        <td></td>
+                    {{else if this._alias}}
+                        <!-- Alias -->
+                        <td class="thumb"><i class="fas fa-solid fa-arrow-right"></i></td>
+                        <td>{{ this.name }}</a></td>
+                        <td></td>
+                    {{/if}}
+                </tr>
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

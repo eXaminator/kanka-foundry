@@ -56,26 +56,26 @@ KANKA:
                 refresh: Aggiorna
                 openInKanka: Apri su Kanka
                 openLink: Apri collegamento
-            tabs:
+            pages:
                 story: Panoramica
+                entry: Dato inserito
                 attributes: Attributi
                 relations: Relazioni
                 inventory: Inventario
                 abilities: Abilità
-                files: Assets
+                assets: Assets
             labels:
                 type: Tipo
                 location: Luogo
                 character: Personaggio
                 parent: Appartiene a
                 unknownReference: Riferimento sconosciuto
-                entry: Dato inserito
             value:
                 yes: Si
                 no: No
 
         character:
-            tabs:
+            pages:
                 organisations: Organizzazioni
             labels:
                 title: Titolo
@@ -91,13 +91,13 @@ KANKA:
                 personality: Personalità
 
         ability:
-            tabs:
+            pages:
                 abilities: Abilità
             labels:
                 charges: Cariche
 
         family:
-            tabs:
+            pages:
                 members: Membri
 
         journal:
@@ -109,13 +109,13 @@ KANKA:
                 date: Data
 
         organisation:
-            tabs:
+            pages:
                 members: Membri
             labels:
                 member: Membro
 
         quest:
-            tabs:
+            pages:
                 elements: Elementi
             labels:
                 instigator: Mandante

@@ -12,6 +12,13 @@ export default class ReferenceCollection {
         this.#entities = [...entities];
     }
 
+    static fromRecord(campaignId: number, record: Record<number, Reference>): ReferenceCollection {
+        const collection = new ReferenceCollection(campaignId, []);
+        collection.#record = record;
+
+        return collection;
+    }
+
     public async addById(id?: KankaApiId | null, type?: KankaApiEntityType | null): Promise<void> {
         if (!id || !type) return;
 
@@ -28,6 +35,10 @@ export default class ReferenceCollection {
 
     public findByEntityId(id: KankaApiEntityId): Reference | undefined {
         return this.#record[Number(id)];
+    }
+
+    public findByIdAndType(id: KankaApiId, type: KankaApiEntityType): Reference | undefined {
+        return Object.values(this.#record).find(ref => ref.id === id && ref.type === type);
     }
 
     public getRecord(): Record<number, Reference> {
