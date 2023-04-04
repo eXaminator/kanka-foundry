@@ -1,34 +1,42 @@
 /* eslint-disable no-await-in-loop, no-restricted-syntax */
-import loadChildEntitiesByEntitiesGroupedByType from './api/loadChildEntitiesByEntitiesGroupedByType';
 import loaders from './api/typeLoaders';
-import { createOrUpdateJournalEntry } from './foundry/journalEntries';
-import { KankaApiEntity, KankaApiId } from './types/kanka';
-import { ProgressFn } from './types/progress';
-import StatCollection from './util/StatCollection';
+import { createJournalEntry, updateJournalEntry } from './foundry/journalEntries';
+import { KankaApiEntity, KankaApiEntityType, KankaApiId } from './types/kanka';
 
-export default async function syncEntities(
+export async function createEntity(
     campaignId: KankaApiId,
-    syncEntities: Pick<KankaApiEntity, 'child_id' | 'type'>[],
-    entityLookup: KankaApiEntity[],
-    onProgress?: ProgressFn,
-): Promise<StatCollection> {
-    const childrenByType = await loadChildEntitiesByEntitiesGroupedByType(campaignId, syncEntities, onProgress);
-    const stats = new StatCollection();
+    type: KankaApiEntityType,
+    id: KankaApiId,
+    entityLookup: KankaApiEntity[] = [],
+): Promise<void> {
+    const loader = loaders.get(type);
+    if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
+    const entity = await loader.load(campaignId, id);
 
-    for (const [type, children] of childrenByType) {
-        const loader = loaders.get(type);
-        if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
+    const references = await loader.createReferenceCollection(campaignId, entity, entityLookup);
+    await createJournalEntry(campaignId, type, entity, references);
+}
 
-        for (const child of children) {
-            try {
-                const references = await loader.createReferenceCollection(campaignId, child, entityLookup);
-                await createOrUpdateJournalEntry(campaignId, type, child, references);
-                stats.addSuccess(type);
-            } catch {
-                stats.addError(type);
-            }
-        }
-    }
+export async function createEntities(
+    campaignId: KankaApiId,
+    type: KankaApiEntityType,
+    ids: KankaApiId[],
+    entityLookup: KankaApiEntity[] = [],
+): Promise<void> {
+    await Promise.all(ids.map(id => createEntity(campaignId, type, id, entityLookup)));
+}
 
-    return stats;
+export async function updateEntity(entry: JournalEntry, entityLookup: KankaApiEntity[] = []): Promise<void> {
+    const type = entry.getFlag('kanka-foundry', 'type');
+    const campaignId = entry.getFlag('kanka-foundry', 'campaign');
+    const snapshot = entry.getFlag('kanka-foundry', 'snapshot');
+
+    if (!type || !campaignId || !snapshot) throw new Error('Missing flags on journal entry');
+
+    const loader = loaders.get(type);
+    if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
+    const entity = await loader.load(campaignId, snapshot.id);
+
+    const references = await loader.createReferenceCollection(campaignId, entity, entityLookup);
+    await updateJournalEntry(entry, entity, references);
 }

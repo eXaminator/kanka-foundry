@@ -1,0 +1,56 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td colspan="2">{{ kankaLocalize "journal.shared.labels.item_name" }}</td>
+                    <td>{{ kankaLocalize "journal.shared.labels.item_description" }}</td>
+                </tr>
+            </thead>
+            {{#each (kankaGroupBy (kankaSortBy (kankaFilterAccessible data.system.snapshot.list) 'position') 'position')}}
+                {{#if @key}}<tr><th colspan="4">{{@key}}</th></tr>{{/if}}
+                {{#each this}}
+                    {{#with this as | item | }}
+                        {{#with (kankaFindReference item.item_id 'item') as | ref | }}
+                            <tr class="{{#if (kankaIsSecret item ref) }}-secret{{/if}}">
+                                <td class="thumb -rounded">
+                                    {{#if item.amount}}
+                                        <span class="label">{{ item.amount }}</span>
+                                    {{/if}}
+                                    <img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout"/>
+                                    <span class="placeholder"></span>
+                                </td>
+                                <td class="center">{{#if item.is_equipped}}<i class="fas fa-check" title="{{ kankaLocalize "journal.shared.labels.item_equipped" }}"></i>{{/if}}</td>
+                                <td>
+                                    {{{ ref.link }}}
+                                </td>
+                                <td>
+                                    {{{ item.description }}}
+                                </td>
+                            </tr>
+                        {{else}}
+                            {{#unless item.item_id}}
+                                <tr class="{{#if (kankaIsSecret item) }}-secret{{/if}}">
+                                    <td class="thumb -rounded">
+                                        {{#if item.amount}}
+                                        <span class="label">{{ item.amount }}</span>
+                                        {{/if}}
+                                        <span class="placeholder"></span>
+                                    </td>
+                                    <td class="center">{{#if item.is_equipped}}<i class="fas fa-check" title="{{ kankaLocalize "journal.shared.labels.item_equipped" }}"></i>{{/if}}</td>
+                                    <td>
+                                        {{{item.name}}}
+                                    </td>
+                                    <td>
+                                        {{{ item.description }}}
+                                    </td>
+                                </tr>
+                            {{/unless}}
+                        {{/with}}
+                    {{/with}}
+                {{/each}}
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

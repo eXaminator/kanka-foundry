@@ -3,7 +3,7 @@
         <li class="kanka-card">
             <div class="kanka-avatar">
                 {{#if this.has_custom_image}}
-                    <img src="{{ this.image_thumb }}" alt="{{this.name}}" />
+                    {{#if this.image_thumb}}<img src="{{ this.image_thumb }}" alt="{{this.name}}" />{{/if}}
                 {{/if}}
             </div>
 

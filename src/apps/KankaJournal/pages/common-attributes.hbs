@@ -1,0 +1,11 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table class="kanka-attributes">
+            {{~#with (kankaSortBy (kankaFilterAccessible data.system.snapshot.list) 'default_order') as | attribute |~}}
+                {{~#each attribute ~}}
+                    {{~>../shared/attributeEntry attribute=this~}}
+                {{~/each~}}
+            {{~/with~}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

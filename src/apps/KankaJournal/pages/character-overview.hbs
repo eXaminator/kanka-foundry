@@ -1,0 +1,20 @@
+{{#>../shared/overviewLayout}}
+    {{#*inline 'attributes'~}}
+        {{~>../shared/detailRow value=data.system.snapshot.title label='character.labels.title' }}
+        {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
+        {{~>../shared/detailRow value=data.system.snapshot.race_id type='race' label='character.labels.race' reference=true }}
+        {{~>../shared/detailRow value=data.system.snapshot.age label='character.labels.age' }}
+        {{~>../shared/detailRow value=data.system.snapshot.sex label='character.labels.sex' }}
+        {{~>../shared/detailRow value=data.system.snapshot.pronouns label='character.labels.pronouns' }}
+        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+        {{~>../shared/detailRow value=data.system.snapshot.is_dead label='character.labels.isDead' localizeValue='shared.value' }}
+        {{~>../shared/detailRow value=data.system.snapshot.family_id type='family' label='character.labels.family' reference=true }}
+
+        {{!-- Pinned Organisations --}}
+        {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.organisations.data) 'pin_id' 3) as | organisations |~}}
+            {{~#each organisations ~}}
+                {{~>../shared/detailRow value=organisation_id type='organisation' rawLabel=role reference=true isSecret=(kankaIsSecret this) }}
+            {{~/each~}}
+        {{~/with~}}
+    {{~/inline}}
+{{/../shared/overviewLayout}}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { afterAll, beforeAll, describe, it, expect } from 'vitest';
-import { KankaVisibility, LegacyKankaVisibility } from '../../types/kanka';
+import { KankaVisibility } from '../../types/kanka';
 import kankaIsSecret from './kankaIsSecret';
 
 function compile(template: string, context = {}): string {
@@ -35,22 +35,6 @@ describe('kankaIsSecret()', () => {
             const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
 
             expect(compile(template, { object: { visibility_id: visibility } })).toEqual('success');
-        });
-    });
-
-    [LegacyKankaVisibility.all, LegacyKankaVisibility.members].forEach((visibility) => {
-        it(`returns false if visibility is "${visibility}"`, () => {
-            const template = '{{#unless (kankaIsSecret object)}}success{{/unless}}';
-
-            expect(compile(template, { object: { visibility } })).toEqual('success');
-        });
-    });
-
-    [LegacyKankaVisibility.admin, LegacyKankaVisibility.adminSelf, LegacyKankaVisibility.self].forEach((visibility) => {
-        it(`returns true if visibility is "${visibility}"`, () => {
-            const template = '{{#if (kankaIsSecret object)}}success{{/if}}';
-
-            expect(compile(template, { object: { visibility } })).toEqual('success');
         });
     });
 

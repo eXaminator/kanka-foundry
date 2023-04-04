@@ -1,0 +1,32 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td>{{ kankaLocalize "journal.shared.labels.relation_type" }}</td>
+                    <td></td>
+                    <td>{{ kankaLocalize "journal.shared.labels.relation_name" }}</td>
+                </tr>
+            </thead>
+            {{#each (kankaFilterAccessible data.system.snapshot.list)}}
+                {{#with this as | rel | }}
+                    {{#with (kankaFindReference target_id) as | ref | }}
+                    <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
+                        <td>
+                            {{{ rel.relation }}}
+                        </td>
+                        <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}"{{/if}}>
+                            {{#if rel.attitude}}<span class="label">{{ rel.attitude }}</span>{{/if}}
+                            {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
+                            <span class="placeholder"></span>
+                        </td>
+                        <td>
+                            {{{ ref.link }}}
+                        </td>
+                    </tr>
+                    {{/with}}
+                {{/with}}
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

@@ -1,14 +1,15 @@
 import api from '../../api';
-import { getCurrentCampaign } from '../../state/currentCampaign';
-import { findAllKankaEntries, findEntryByEntityId, getEntryFlag, hasOutdatedEntryByEntity } from '../../foundry/journalEntries';
-import { KankaSettings, getSetting, setSetting } from '../../foundry/settings';
-import syncEntities from '../../syncEntities';
-import EntityType from '../../types/EntityType';
-import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiId } from '../../types/kanka';
-import { ProgressFn } from '../../types/progress';
 import getMessage from '../../foundry/getMessage';
-import { logError, logInfo } from '../../util/logger';
+import { findAllKankaEntries, findEntryByEntityId, getEntryFlag, hasOutdatedEntryByEntity } from '../../foundry/journalEntries';
 import { showError } from '../../foundry/notifications';
+import { KankaSettings, getSetting, setSetting } from '../../foundry/settings';
+import { getCurrentCampaign } from '../../state/currentCampaign';
+import { createEntities, createEntity, updateEntity } from '../../syncEntities';
+import EntityType from '../../types/EntityType';
+import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import { ProgressFn } from '../../types/progress';
+import groupBy from '../../util/groupBy';
+import { logError, logInfo } from '../../util/logger';
 import template from './KankaBrowserApplication.hbs';
 import './KankaBrowserApplication.scss';
 
@@ -152,7 +153,7 @@ export default class KankaBrowserApplication extends Application {
             const { action, id: idString, type } = event.currentTarget?.dataset ?? {};
             const id = parseInt(idString, 10);
 
-            logInfo('click', { action, id }, this.campaign);
+            logInfo('click', { action, id, type }, this.campaign);
 
             try {
                 switch (action) {
@@ -175,11 +176,17 @@ export default class KankaBrowserApplication extends Application {
                         break;
                     }
 
-                    case 'sync': {
-                        const entity = this.#entities?.find(e => e.id === id);
-                        if (!entity) return;
+                    case 'update-single': {
+                        const entry = findEntryByEntityId(id);
                         this.setLoadingState(event.currentTarget);
-                        await syncEntities(this.campaign.id, [entity], this.#entities ?? []);
+                        if (entry) {
+                            await updateEntity(entry, this.#entities);
+                        } else {
+                            const entity = this.#entities?.find(e => e.id === id);
+                            if (entity) {
+                                await createEntity(this.campaign.id, entity?.type, entity?.child_id, this.#entities);
+                            }
+                        }
                         this.render();
                         break;
                     }
@@ -191,8 +198,13 @@ export default class KankaBrowserApplication extends Application {
                             return !findEntryByEntityId(entity.id);
                         }) ?? [];
 
-                        const updateProgress = this.setLoadingState(event.currentTarget, true);
-                        await syncEntities(this.campaign.id, unlinkedEntities, this.#entities ?? [], updateProgress);
+                        this.setLoadingState(event.currentTarget);
+                        await createEntities(
+                            this.campaign.id,
+                            type,
+                            unlinkedEntities.map(e => e.child_id),
+                            this.#entities,
+                        );
                         this.render();
                         break;
                     }
@@ -201,23 +213,42 @@ export default class KankaBrowserApplication extends Application {
                         const unlinkedEntities = this.#entities
                             ?.filter(entity => !findEntryByEntityId(entity.id)) ?? [];
 
-                        const updateProgress = this.setLoadingState(event.currentTarget, true);
-                        await syncEntities(this.campaign.id, unlinkedEntities, this.#entities ?? [], updateProgress);
+                        this.setLoadingState(event.currentTarget);
+                        const entityMap = groupBy(unlinkedEntities, 'type');
+
+                        // eslint-disable-next-line no-restricted-syntax
+                        for (const syncType in entityMap) {
+                            if (Object.prototype.hasOwnProperty.call(entityMap, syncType)) {
+                                // eslint-disable-next-line no-await-in-loop
+                                await createEntities(
+                                    this.campaign.id,
+                                    syncType as KankaApiEntityType,
+                                    entityMap[syncType].map(e => e.child_id),
+                                    this.#entities,
+                                );
+                            }
+                        }
+
                         this.render();
                         break;
                     }
 
                     case 'update-outdated': {
-                        const outdatedEntities = this.#entities?.filter((entity) => {
-                            if (!hasOutdatedEntryByEntity(entity)) {
-                                return false;
-                            }
+                        const outdatedEntries = this.#entities
+                            ?.filter((entity) => {
+                                if (!hasOutdatedEntryByEntity(entity)) {
+                                    return false;
+                                }
 
-                            return !type || entity.type === type;
-                        }) ?? [];
+                                return !type || entity.type === type;
+                            })
+                            .map(entity => findEntryByEntityId(entity.id))
+                            .filter((entry): entry is JournalEntry => !!entry) ?? [];
 
-                        const updateProgress = this.setLoadingState(event.currentTarget, true);
-                        await syncEntities(this.campaign.id, outdatedEntities, this.#entities ?? [], updateProgress);
+                        this.setLoadingState(event.currentTarget);
+
+                        await Promise.all(outdatedEntries.map(entry => updateEntity(entry, this.#entities)));
+
                         this.render();
                         break;
                     }

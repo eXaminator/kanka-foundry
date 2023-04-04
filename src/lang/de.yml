@@ -16,7 +16,7 @@ KANKA:
         location: Orte
         note: Notizen
         organisation: Organisationen
-        race: Rassen
+        race: Spezies
         journal: Logbücher
         quest: Quests
 
@@ -59,26 +59,39 @@ KANKA:
                 refresh: Aktualisieren
                 openInKanka: In Kanka öffnen
                 openLink: Link öffnen
-            tabs:
+            pages:
+                image: Bild
                 story: Überblick
+                entry: Eintrag
                 attributes: Attribute
                 relations: Beziehungen
                 inventory: Inventar
                 abilities: Fähigkeiten
-                files: Anhänge
+                assets: Anhänge
             labels:
                 type: Typ
                 location: Ort
                 character: Charakter
                 parent: Gehört zu
                 unknownReference: Unbekannte Referenz
-                entry: Eintrag
+                ability_name: Fähigkeit
+                ability_note: Notiz
+                asset_name: Anhang
+                asset_size: Größe
+                child_name: Kind
+                child_type: Typ
+                item_name: Gegenstand
+                item_description: Beschreibung
+                item_equipped: Ausgerüstet
+                relation_name: Objekt
+                relation_type: Beziehung
             value:
                 yes: Ja
                 no: Nein
 
         character:
-            tabs:
+            pages:
+                profile: Profil
                 organisations: Organisationen
             labels:
                 title: Titel
@@ -89,17 +102,26 @@ KANKA:
                 race: Rasse
                 family: Familie
                 member: Mitglied
+                organisation_name: Organisation
+                organisation_role: Rolle
+                organisation_membership: Mitgliedsstatus
+            value:
+                organisation_membership_active: Aktiv
+                organisation_membership_inactive: Inaktiv
+                organisation_membership_unknown: Unbekannt
             traits:
                 appearance: Aussehen
                 personality: Persönlichkeit
         ability:
-            tabs:
+            pages:
                 abilities: Fähigkeiten
             labels:
                 charges: Ladungen
         family:
-            tabs:
+            pages:
                 members: Mitglieder
+            labels:
+                member_name: Mitglied
         journal:
             labels:
                 date: Datum
@@ -107,17 +129,27 @@ KANKA:
             labels:
                 date: Datum
         organisation:
-            tabs:
+            pages:
                 members: Mitglieder
             labels:
                 member: Mitglied
+                member_name: Mitglied
+                member_role: Rolle
+                member_status: Mitgliedsstatus
+            value:
+                membership_active: Aktiv
+                membership_inactive: Inaktiv
+                membership_unknown: Unbekannt
         quest:
-            tabs:
+            pages:
                 elements: Elemente
             labels:
                 instigator: Auslöser
                 date: Datum
                 completed: Abgeschlossen
+                element_name: Element
+                element_role: Rolle
+                element_description: Beschreibung
 
     settings:
         baseUrl:
@@ -152,9 +184,9 @@ KANKA:
             hint: >
                 Wenn diese Option ausgewählt wird, werden alle Links zu Referenzen und Erwähnungen entfernt, wenn der
                 verlinkte Eintrag nicht ebenfalls importiert wurde.
-        imageInText:
-            label: Bild neben Text anzeigen
-            hint: Soll das Bild des Eintrags neben dem Text angezeigt werden?
+        mergeOverviewPages:
+            label: Übersichtsseiten zusammenführen
+            hint: Wenn diese Einstellung aktiviert ist, werden die Bild-, Übersicht- und Eintragsseiten zu einer Seite zusammengeführt, als wäre der entsprechende Modus für den Eintrag aktiv, selbst wenn der Einzelseiten-Mdous aktiviert ist.
         treeStructure:
             label: Ordnerstruktur erstellen
             hint: >
@@ -230,3 +262,22 @@ KANKA:
         nothingToDo: >
             Kanka-Foundry konnte keine Einträge aktualisieren. Bitte prüfe, dass du die richtige Kampagne in denEinstellungen ausgewählt hast.
         migrated-v2: Deine Konfiguration wurde auf die neue API Url von Kanka 2.0 angepasst.
+        journalPages:
+            progress: Migriere Kanka-Foundry Einträge
+            success: Alle importierten Kanka-Einträge wurden auf das neue Format aktualisiert.
+
+TYPES:
+    JournalEntryPage:
+        kanka-foundry:
+            overview: Kanka Übersicht
+            post: Kanka Post
+            attributes: Kanka Attribute
+            abilities: Kanka Fähigkeiten
+            relations: Kanka Beziehungen
+            assets: Kanka Anhänge
+            inventory: Kanka Inventar
+            children: Kanka Kinder
+            character-organisations: Kanka Charakter Organisationen
+            family-members: Kanka Familienmitglieder
+            organisation-members: Kanka Organsationsmitglieder
+            quest-elements: Kanka Quest-Elemente

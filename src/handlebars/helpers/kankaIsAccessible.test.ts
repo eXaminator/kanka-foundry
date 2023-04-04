@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { afterAll, beforeAll, describe, it, expect } from 'vitest';
-import { KankaVisibility, LegacyKankaVisibility } from '../../types/kanka';
+import { KankaVisibility } from '../../types/kanka';
 import kankaIsAccessible from './kankaIsAccessible';
 
 function compile(template: string, context = {}): string {
@@ -41,28 +41,6 @@ describe('kankaIsAccessible()', () => {
             const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
 
             expect(compile(template, { object: { visibility_id: visibility }, owner: true })).toEqual('success');
-        });
-    });
-
-    [LegacyKankaVisibility.all, LegacyKankaVisibility.members].forEach((visibility) => {
-        it(`returns true if visibility is "${visibility}"`, () => {
-            const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
-
-            expect(compile(template, { object: { visibility } })).toEqual('success');
-        });
-    });
-
-    [LegacyKankaVisibility.admin, LegacyKankaVisibility.adminSelf, LegacyKankaVisibility.self].forEach((visibility) => {
-        it(`returns false if visibility is "${visibility}"`, () => {
-            const template = '{{#unless (kankaIsAccessible object)}}success{{/unless}}';
-
-            expect(compile(template, { object: { visibility } })).toEqual('success');
-        });
-
-        it(`returns true if visibility is "${visibility}" but user is owner`, () => {
-            const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
-
-            expect(compile(template, { object: { visibility }, owner: true })).toEqual('success');
         });
     });
 

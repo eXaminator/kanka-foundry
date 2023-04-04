@@ -1,125 +1,162 @@
-import logo from '../../assets/kanka.png';
-import getGame from '../../foundry/getGame';
+import getMessage from '../../foundry/getMessage';
 import { getEntryFlag } from '../../foundry/journalEntries';
-import localization from '../../state/localization';
+import { showError } from '../../foundry/notifications';
 import { getSetting } from '../../foundry/settings';
-import syncEntities from '../../syncEntities';
-import Reference from '../../types/Reference';
-import { KankaApiChildEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
-import { ProgressFn } from '../../types/progress';
-import template from './KankaJournalApplication.hbs';
+import localization from '../../state/localization';
+import { updateEntity } from '../../syncEntities';
 import './KankaJournalApplication.scss';
 
 type JournalSheetData = ReturnType<JournalSheet['getData']>;
 type SheetOptions = JournalSheetOptions & Record<string, unknown>;
 
 interface Data extends JournalSheetData {
-    kankaIsGm: boolean;
-    kankaEntity?: KankaApiChildEntity;
-    kankaEntityType?: KankaApiEntityType;
-    kankaReferences?: Record<number, Reference>;
-    kankaCampaignId?: KankaApiId;
-    kankaLogo: string;
-    settings: {
-        imageInText: boolean;
-    };
-    localization: Localization;
+    pages: JournalEntryPage[],
+    toc: JournalEntryPage[],
 }
 
 export default class KankaJournalApplication extends JournalSheet {
-    #lastRenderOptions?: SheetOptions = undefined;
+    #forceMode: number | undefined;
 
     static get defaultOptions(): SheetOptions {
         return {
             ...super.defaultOptions,
-            closeOnSubmit: false,
-            submitOnClose: false,
-            submitOnChange: false,
-            tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'details' }],
-            scrollY: ['.tab'],
-            classes: ['kanka', 'kanka-journal'],
+            editable: false,
+            classes: [...super.defaultOptions.classes ?? [], 'kanka-journal'],
         };
     }
 
-    get isKankaEntry(): boolean {
-        return Boolean(getEntryFlag(this.object, 'snapshot'));
+    get isEditable(): false {
+        return false;
     }
 
-    public getData(
-        options?: Partial<SheetOptions>,
-    ): Data | JournalSheetData {
-        if (!this.isKankaEntry) return super.getData(options);
+    private isPageInOverviewArea(index: number): boolean {
+        if (!getSetting('mergeOverviewPages')) return false;
+
+        const page = this._pages[index];
+        if (!page) return false;
+
+        if (page.type === 'image' && index === 0) return true;
+        if (['kanka-foundry.overview', 'kanka-foundry.post', 'kanka-foundry.character-profile'].includes(page.type)) return true;
+
+        return false;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    public _getPageData(): JournalEntryPage[] {
+        const pages = super._getPageData() as (JournalEntryPage & { name: string })[];
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        return pages.map(page => ({
+            ...page,
+            name: page.name.startsWith('KANKA.') ? localization.localize(page.name) : page.name,
+            editable: false,
+        }));
+    }
+
+    public getData(options?: Partial<SheetOptions>): Data | JournalSheetData {
+        const data = super.getData(options);
+
+        let { pages } = data;
+
+        if (this.mode === JournalSheet.VIEW_MODES.SINGLE) {
+            if (this.isPageInOverviewArea(this.pageIndex)) {
+                pages = data.toc.filter((page, index) => this.isPageInOverviewArea(index));
+            } else {
+                pages = [data.toc[this.pageIndex]];
+            }
+        }
 
         return {
-            ...super.getData(options),
-            kankaIsGm: getGame().user?.isGM ?? false,
-            kankaEntity: getEntryFlag(this.object, 'snapshot'),
-            kankaEntityType: getEntryFlag(this.object, 'type'),
-            kankaReferences: getEntryFlag(this.object, 'references'),
-            kankaCampaignId: getEntryFlag(this.object, 'campaign'),
-            kankaLogo: logo,
-            settings: {
-                imageInText: getSetting('imageInText'),
-            },
-            localization,
-        };
-    }
+            ...data,
+            pages,
+            toc: data.toc.map(page => {
+                const actualPage = this.object.pages.get(page._id);
+                const count = actualPage.isOwner ? page.system.totalCount : page.system.publicCount;
+                const tocCls = [page.tocClass];
+                if (count > 99) tocCls.push('kanka-count kanka-count-limit');
+                else if (count !== undefined && count !== null) tocCls.push(`kanka-count kanka-count-${count}`);
+                tocCls.push(`kanka-type-${page.system.type}`);
 
-    get template(): string {
-        if (!this.isKankaEntry) return super.template;
-
-        // Only replace the default text template, not the image template
-        if (super.template === 'templates/journal/sheet.html') return template;
-
-        return super.template;
-    }
-
-    async activateListeners(html: JQuery): Promise<void> {
-        super.activateListeners(html);
-        if (!this.isKankaEntry) return;
-
-        html.on('click', '[data-action]', async (event) => {
-            const { action } = event.currentTarget?.dataset ?? {};
-
-            if (!action) return;
-
-            if (action === 'refresh') {
-                const type = getEntryFlag(this.object, 'type');
-                const campaign = getEntryFlag(this.object, 'campaign');
-                const snapshot = getEntryFlag(this.object, 'snapshot');
-                this.setLoadingState(event.currentTarget);
-
-                if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
-
-                // eslint-disable-next-line @typescript-eslint/naming-convention
-                await syncEntities(campaign, [{ child_id: snapshot.id, type }], []);
-                this.rerender();
-            }
-        });
-    }
-
-    public rerender(): void {
-        if (!this.rendered) return;
-        this.render(false, this.#lastRenderOptions);
-    }
-
-    protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {
-        const $button = $(button);
-        $button.addClass('-loading');
-        $(this.element).find('[data-action]').prop('disabled', true);
-
-        if (determined) $button.addClass('-determined');
-        else $button.addClass('-undetermined');
-
-        return (current, max) => {
-            $button.addClass('-determined');
-            button.style.setProperty('--progress', `${Math.round((current / max) * 100)}%`);
+                return { ...page, tocClass: tocCls.join(' ') };
+            }),
         };
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    public _render(force?: boolean, options?: SheetOptions): Promise<void> {
-        this.#lastRenderOptions = options;
-        return super._render(force, options);
+    public _getHeaderButtons(): unknown[] {
+        return [
+            {
+                label: getMessage('journal.shared.action.openInKanka'),
+                icon: 'fas fa-up-right-from-square',
+                class: 'kanka-open',
+                onclick: () => {
+                    const snapshot = getEntryFlag(this.object, 'snapshot');
+                    if (snapshot?.urls.view) {
+                        window.open(snapshot.urls.view, '_blank');
+                    } else {
+                        showError('error.missingUrl');
+                    }
+                },
+            },
+            {
+                label: getMessage('journal.shared.action.refresh'),
+                icon: 'fas fa-rotate',
+                class: 'kanka-sync',
+                onclick: async (event) => {
+                    event.target.classList.add('-loading');
+                    try {
+                        const type = getEntryFlag(this.object, 'type');
+                        const campaign = getEntryFlag(this.object, 'campaign');
+                        const snapshot = getEntryFlag(this.object, 'snapshot');
+
+                        if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
+
+                        await updateEntity(this.object);
+
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
+                        // await syncEntities(campaign, [{ child_id: snapshot.id, type }], []);
+                    } finally {
+                        this.render();
+                        event.target.classList.remove('-loading');
+                    }
+                },
+            },
+            ...super._getHeaderButtons(),
+        ];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    _onPageScroll(entries, observer) {
+        if (this.isPageInOverviewArea(this.pageIndex)) {
+            this.#forceMode = JournalSheet.VIEW_MODES.MULTIPLE;
+            super._onPageScroll(entries, observer);
+            this.#forceMode = undefined;
+        } else {
+            super._onPageScroll(entries, observer);
+        }
+    }
+
+    async goToPage(pageId, anchor) {
+        const currentPageId = this._pages[this.pageIndex]?._id;
+        if (currentPageId === pageId) return super.goToPage(pageId, anchor);
+
+        const targetIndex = this._pages.findIndex(page => page._id === pageId);
+
+        if (this.isPageInOverviewArea(targetIndex)) {
+            await this._render(true, { pageId, anchor });
+
+            this.#forceMode = JournalSheet.VIEW_MODES.MULTIPLE;
+            super.goToPage(pageId, anchor);
+            this.#forceMode = undefined;
+        } else {
+            super.goToPage(pageId, anchor);
+        }
+
+        return null;
+    }
+
+    get mode(): number {
+        return this.#forceMode ?? super.mode;
     }
 }

@@ -33,9 +33,11 @@ manifest url: https://github.com/eXaminator/kanka-foundry/releases/latest/downlo
     -   Details depending on the type of entity (type, title, age, sex)
     -   Attributes, notes, relations, inventory, abilities
     -   The Details tab of each entity will also include pinned or starred attributes, notes and relations
--   Roughly integrate the permissions of Kanka into the permission system of Foundry VTT
-    -   Owners can see everything but secret elements are marked as such
-    -   Observers see everything that is not "secret"
+-   Roughly integrate the permissions of Kanka into the ownership system of Foundry VTT
+    -   Journal entries and pages can be hidden or made available to users with the normal ownership system of Foundry VTT
+    -   Journal entries and pages receive default ownership settings based on their content, permissions in Kanka and the module settings
+    -   **Owners** can see all information on a page but secret elements are visually marked
+    -   **Limited** and **Observers** can see everything on a page that is not "secret"
     -   Since Kanka has multiple permission management systems, this module just tries its best to show / hide the
         information as needed. Everything that is either marked as "private" or has a "visibility" of anything other than
         "members" or "all" will be handled as secret.
@@ -65,9 +67,10 @@ imported data.
 -   **Create folder tree**: Some entities in Kanka can be organized hierarchically. If this option is selected, the module
     will create folders to replicate this hierarchy. Foundry has a limit of 3 folders levels, thus everything on a lower
     level will be flattened to this 3rd level instead.
--   **Include image in text**: When importing an entity from Kanka it will use its main image as the journal entries image
-    in foundry. With this setting the image will additionally be displayed in the journal entry next to its meta data and
-    text.
+-   **Merge overview pages**: Since Version 4.0 this module bases its sheets on the new(ish) Foundry VTT sheets with pages.
+    By default FVTT will show each page separately unless you switch to "multi page mode", where all pages are displayed
+    beneath each other. This options adds a hybrid option, where the image, overview, entry text and posts are all displayed
+    as a single page (just like with the multi page mode), even when viewing the rest of the journal in single page mode.
 -   **Automatically set permissions**: When importing an entity, set the best default permission based on whether the
     entity is marked as private or public. This can be set to never sync the permissions, only sync them on the initial
     import or sync them for every import (and potentially override manually set default permissions).
@@ -81,10 +84,10 @@ imported data.
 
 ## Usage
 
-After installing and configuring the module, you will find a button with the Kanka icon next to the buttons to create
-new journal entries.
+After installing and configuring the module, you will find a button with the Kanka icon at the bottom of the Journal
+sidebar.
 
-<img width="40%" align="left" alt="Screenshot of the kanka button in the Foundry VTT user interface." src="./docs/assets/kanka-button.png" />
+<img width="30%" align="left" alt="Screenshot of the kanka button in the Foundry VTT user interface." src="./docs/assets/kanka-button.png" />
 
 Clicking this button will open an overview of all your Kanka entities based on their category. You can view the entities
 either as a list or in a grid view. Each entity has a button to link the entity. This will create a journal folder and

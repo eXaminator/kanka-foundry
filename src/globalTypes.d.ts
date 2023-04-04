@@ -2,8 +2,7 @@
 /* eslint-disable @typescript-eslint/naming-convention,max-classes-per-file,@typescript-eslint/no-explicit-any */
 
 declare module '*.hbs' {
-    const path: string;
-    export default path;
+    export = string;
 }
 
 type ConstructorOf<C> = { new(...args: any[]): C };

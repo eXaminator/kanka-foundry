@@ -1,42 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../foundry/journalEntries';
-import { KankaApiAnyId, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import { KankaApiAnyId, KankaApiEntityType } from '../../types/kanka';
 import Reference from '../../types/Reference';
 import kankaIsAccessible from './kankaIsAccessible';
-
-function createReference(id: KankaApiAnyId, type?: KankaApiEntityType): Reference | undefined {
-    const journal = type
-        ? findEntryByTypeAndChildId(type, id as KankaApiId)
-        : findEntryByEntityId(id as KankaApiEntityId);
-    const snapshot = journal ? getEntryFlag(journal, 'snapshot') : undefined;
-    const snapshotType = type ?? (journal ? getEntryFlag(journal, 'type') : undefined);
-
-    if (!snapshot || !snapshotType) return undefined;
-
-    return {
-        type: snapshotType,
-        id: snapshot.id,
-        entityId: snapshot.entity_id,
-        name: snapshot.name,
-        image: snapshot.has_custom_image ? snapshot.image_full : undefined,
-        thumb: snapshot.has_custom_image ? snapshot.image_thumb : undefined,
-        isPrivate: snapshot.is_private,
-        urls: snapshot.urls,
-    };
-}
-
-function getBestReference(
-    id: KankaApiAnyId,
-    type: KankaApiEntityType | undefined,
-    references: Record<number, Reference>,
-): Reference | undefined {
-    const newReference = createReference(id, type);
-    if (newReference) return newReference;
-
-    return Object
-        .values(references)
-        ?.find(ref => ((ref.type === type && ref.id === id) || (!type && ref.entityId === id)));
-}
 
 export default function kankaFindReference(
     id: KankaApiAnyId | undefined,
@@ -53,7 +17,11 @@ export default function kankaFindReference(
         type = undefined;
     }
 
-    const ref = getBestReference(id, type, options?.data?.root?.kankaReferences ?? options?.hash?.references ?? {});
+    // eslint-disable-next-line max-len
+    const refMap = (options?.data?.root?.data?.system?.references ?? options?.hash?.references ?? {}) as unknown as Record<string, Reference>;
+    const ref = Object
+        .values(refMap)
+        .find((ref) => ((ref.type === type && ref.id === id) || (!type && ref.entityId === id)));
 
     if (ref && kankaIsAccessible(ref, options)) {
         return ref;

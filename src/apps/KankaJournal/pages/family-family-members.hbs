@@ -1,0 +1,25 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>{{ kankaLocalize "journal.family.labels.member_name" }}</td>
+                </tr>
+            </thead>
+            {{#each data.system.snapshot.list }}
+                {{#with this as | member | }}
+                    <tr class="{{#if (kankaIsSecret member rel) }}-secret{{/if}}">
+                        <td class="thumb -rounded">
+                            {{#if member.thumb}}
+                                <img src="{{member.thumb}}" alt="{{member.name}}" class="nopopout">
+                            {{/if}}
+                            <span class="placeholder"></span>
+                        </td>
+                        <td>{{{ member.link }}}</td>
+                    </tr>
+                {{/with}}
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}

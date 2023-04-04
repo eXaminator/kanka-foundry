@@ -1,12 +1,13 @@
-import kankaIsSecret from './kankaIsSecret';
+import { AnyConstrainable } from '../../types/kanka';
+import isSecret from '../../util/isSecret';
 
 export default function kankaIsAccessible(
-    entity: unknown,
+    entity: AnyConstrainable,
     options: Handlebars.HelperOptions,
 ): boolean {
     if (options.data?.root?.owner) {
         return true;
     }
 
-    return !kankaIsSecret(entity, options);
+    return !isSecret(entity);
 }

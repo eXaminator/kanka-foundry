@@ -23,6 +23,7 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
         const li = html.find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
         const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
+        console.log('QUEST SNAPSHOT', snapshot, snapshot.is_completed ? questStatus.complete : questStatus.open);
 
         link.html(
             `${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`,

@@ -1,17 +1,19 @@
 {{~#if references.length ~}}
-    <dt>
-        {{~#if rawLabel~}}
-            {{~rawLabel~}}
-        {{~else~}}
-            {{~ kankaLocalize 'journal' label ~}}
-        {{~/if~}}
-    </dt>
-    <dd class="path">
-    {{~#each references as | referenceId |~}}
-        {{~kankaLinkReference (kankaFindReference referenceId ../type) ~}}
-        {{#unless @last}}
-            <span class="delimiter">{{#if ../delimiter}}{{../delimiter}}{{else}}»{{/if}}</span>
-        {{/unless}}
-    {{~/each~}}
-    </dd>
+    <tr {{#if ../isSecret}}class="-secret" {{/if}}>
+        <td>
+            {{~#if rawLabel~}}
+                {{~rawLabel~}}
+            {{~else~}}
+                {{~ kankaLocalize 'journal' label ~}}
+            {{~/if~}}
+        </td>
+        <td>
+            {{~#each references as | referenceId |~}}
+                {{~ kankaFindReference referenceId ../type ~}}
+                {{#unless @last}}
+                    <span class="delimiter">{{#if ../delimiter}}{{../delimiter}}{{else}}»{{/if}}</span>
+                {{/unless}}
+            {{~/each~}}
+        </td>
+    </tr>
 {{~/if~}}

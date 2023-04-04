@@ -1,59 +1,433 @@
-.kanka-browser .window-content {
-    > header, > .campaign-description, > .filter {
-        flex: none;
-    }
+.kanka-browser {
+    .kanka-button {
+        margin: 0 1px;
+        background: rgba(255, 255, 240, 0.8);
+        border: 1px solid #b5b3a4;
+        border-radius: 3px;
+        font-size: 14px;
+        line-height: 22px;
+        height: 24px;
+        padding: 1px 6px;
+        white-space: nowrap;
+        box-sizing: border-box;
 
-    .filter {
-        margin-bottom: 2em;
-    }
+        >i:last-child {
+            margin: 0;
+        }
 
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
-
-    .campaign-description {
-        .campaign-image {
-            width: 33%;
-            margin: 0 1em 1em 0;
-            float: left;
+        &:hover,
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px red;
         }
     }
 
-    form {
-        height: auto !important;
-    }
+    details.kanka-details {
+        &:not(.-static)>summary:before {
+            flex: none;
+            content: '➤';
+            transition: transform 0.3s;
+            margin-right: 0.2em;
+        }
 
-    details {
-        margin-bottom: 1em;
+        &.-static {
+            summary {
+                cursor: auto;
+                pointer-events: none;
+            }
+        }
+
+        &[open]>summary:before {
+            transform: rotate(90deg);
+        }
 
         summary {
-            padding-right: .3em;
+            font-size: 1.2em;
+            border-bottom: 1px solid #782e22;
+            margin-bottom: 0.3em;
+            padding: 0.3em 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            cursor: pointer;
+
+            >* {
+                flex: 1;
+            }
+
+            >.actions {
+                flex: none;
+                display: flex;
+
+                >button {
+                    @extend .kanka-button;
+                }
+            }
+
+            >i {
+                flex: none;
+                width: 1.5em;
+                text-align: center;
+                margin-right: 0.5em;
+            }
         }
     }
 
-    .kanka-entity-list {
-        list-style: none;
+    .kanka-action-row {
+        display: flex;
+        align-items: center;
+
+        >* {
+            flex: 1;
+        }
+
+        >.divider {
+            flex: none;
+            border-right: 1px solid #782e22;
+            align-self: stretch;
+            margin: 0.2rem 0.5rem;
+        }
+
+        >button {
+            @extend .kanka-button;
+
+            flex: none;
+            width: auto;
+            cursor: pointer;
+        }
+
+        >a {
+            @extend .kanka-button;
+
+            flex: none;
+
+            img {
+                border: none;
+                height: 20px !important;
+            }
+        }
+    }
+
+    .kanka-avatar {
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: 50%;
+        box-shadow: 0 0 2px 3px var(--kanka-highlight-color, rgba(0, 0, 0, 0.1));
+        background: rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        width: 46px;
+        height: 46px;
+        box-sizing: border-box;
+        position: relative;
+
+        &.-small {
+            width: 38px;
+            height: 38px;
+        }
+
+        >span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+
+            color: white;
+            font-size: 1.2em;
+        }
+
+        >img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border: none;
+
+            z-index: 0;
+        }
+
+        >span+img {
+            filter: brightness(80%);
+        }
+    }
+
+    ul.kanka-cards {
         margin: 0;
         padding: 0;
+        list-style: none;
 
-        > li {
-            padding: .3rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 5px;
+        // clear: both;
 
-            .kanka-avatar {
-                margin-right: 1rem;
+        &.-single {
+            grid-template-columns: 1fr;
+        }
+
+        >.section {
+            margin-top: 1.5em;
+            grid-column: 1 / -1;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .kanka-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: min-content 1fr min-content; // head, content, actions
+
+        border: 1px solid #00000030;
+        box-shadow: 2px 2px 6px -2px var(--highlight-color, #00000050);
+        border-radius: 5px;
+        padding: 5px;
+
+        background: #fff5;
+
+        &.-success {
+            background: #9efc7530;
+        }
+
+        &.-warn {
+            background: #fd693d30;
+        }
+
+        &.-secret {
+            background: #fc758910;
+
+            .kanka-card-header {
+                padding-right: 30px;
             }
 
-            &.-success {
-                background: #9efc7530;
+            &:after {
+                background-image: url('./assets/silenced.svg');
+                background-repeat: no-repeat;
+                background-position: top right;
+                background-size: 25px 25px;
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                opacity: 0.3;
+                pointer-events: none;
+            }
+        }
+
+        >.kanka-avatar {
+            grid-row: 1 / -1;
+            margin-right: 1em;
+        }
+
+        .kanka-card-header {
+            grid-column: 2;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 0 0 0.5rem;
+            padding: 0;
+
+            &>a {
+                color: inherit;
+                text-decoration: none;
+                background: transparent;
+                white-space: normal;
+                word-break: normal;
             }
 
-            &.-warn {
-                background: #fd693d30;
+            &>small {
+                font-size: 0.8em;
+            }
+        }
+
+        .kanka-card-content {
+            grid-column: 2;
+
+            &.-outdent {
+                margin: 0 -5px;
+            }
+        }
+
+        .kanka-card-actions {
+            grid-column: 2;
+            display: flex;
+            align-self: end;
+
+            >button {
+                @extend .kanka-button;
+                flex: 1;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+
+    .kanka-loading-indicator {
+        text-align: center;
+        padding: 2em 0;
+
+        .fa-spinner {
+            animation: kanka-spin 1.5s linear infinite;
+            font-size: 2em;
+        }
+
+        &.inline {
+            padding: 0;
+            display: inline;
+
+            .fa-spinner {
+                font-size: 1em;
+            }
+        }
+    }
+
+    @keyframes kanka-spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    nav.tabs {
+        flex: 0 0 32px;
+        line-height: 32px;
+        font-size: 16px;
+        border-bottom: 1px solid #000;
+        font-weight: bold;
+
+        // These styles ensure, that the row collapses if it contains no tabs
+        flex: 0 !important;
+        border-bottom: 0 !important;
+
+        > .item {
+            padding: 0 0.3em;
+            flex: 1;
+
+            border-left: 1px solid #0003;
+            border-bottom: 1px solid #000;
+            white-space: nowrap;
+
+            // Hide tab if it's the only one
+            &:first-child:last-child {
+                display: none;
             }
 
-            &:hover {
+            &:last-child {
+                border-right: 1px solid #0003;
+            }
+
+            &.active {
                 background: #0001;
+            }
+
+            > .counter {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                line-height: 1em;
+
+                border-radius: 1em;
+                background: #0002;
+                margin-left: 0.2em;
+                font-size: 0.8em;
+
+                vertical-align: super;
+            }
+        }
+
+        .tab-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+
+            &.-scrollable {
+                overflow: hidden;
+            }
+        }
+
+        .tab {
+            padding: 1em 0;
+
+            *:last-child {
+                margin-bottom: 0;
+            }
+
+            &.-scrollable {
+                overflow-y: auto;
+            }
+        }
+    }
+
+    .window-content {
+        > header, > .campaign-description, > .filter {
+            flex: none;
+        }
+
+        .filter {
+            margin-bottom: 2em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .campaign-description {
+            .campaign-image {
+                width: 33%;
+                margin: 0 1em 1em 0;
+                float: left;
+            }
+        }
+
+        form {
+            height: auto !important;
+        }
+
+        details {
+            margin-bottom: 1em;
+
+            summary {
+                padding-right: .3em;
+            }
+        }
+
+        .kanka-entity-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            > li {
+                padding: .3rem;
+
+                .kanka-avatar {
+                    margin-right: 1rem;
+                }
+
+                &.-success {
+                    background: #9efc7530;
+                }
+
+                &.-warn {
+                    background: #fd693d30;
+                }
+
+                &:hover {
+                    background: #0001;
+                }
             }
         }
     }

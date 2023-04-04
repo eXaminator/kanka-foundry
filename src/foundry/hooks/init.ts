@@ -9,6 +9,9 @@ import { logError } from '../../util/logger';
 import getGame from '../getGame';
 import { showError, showWarning } from '../notifications';
 import { getSetting, registerSettings } from '../settings';
+import PostPageSheet from '../../apps/KankaJournal/PostPageSheet';
+import KankaPageModel from '../../apps/KankaJournal/models/KankaPageModel';
+import DefaultPageSheet from '../../apps/KankaJournal/DefaultPageSheet';
 
 function setToken(token: string): void {
     if (!token) {
@@ -47,9 +50,33 @@ function renderDebugElement(): void {
 
 export default function init(): void {
     try {
-        Journal.registerSheet(moduleConfig.name, KankaJournalApplication, {
+        const pageTypes = Object.keys(moduleConfig.documentTypes.JournalEntryPage).map(type => `${moduleConfig.id}.${type}`);
+        const dataModelTypes = pageTypes.filter(type => ![`${moduleConfig.id}.post`].includes(type));
+
+        Object.assign(
+            CONFIG.JournalEntryPage.dataModels,
+            dataModelTypes.reduce<Record<string, unknown>>((config, type) => ({
+                ...config,
+                [type]: KankaPageModel,
+            }), {}),
+        );
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        DocumentSheetConfig.registerSheet(JournalEntry, moduleConfig.name, KankaJournalApplication, {
             makeDefault: false,
-            label: 'Kanka-Foundry Journal sheet',
+        });
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, PostPageSheet, {
+            types: [`${moduleConfig.id}.post`],
+            makeDefault: false,
+        });
+
+        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, DefaultPageSheet as any, {
+            types: pageTypes.filter(type => ![`${moduleConfig.id}.post`].includes(type)),
+            makeDefault: false,
         });
 
         registerHandlebarsHelpers();
@@ -58,7 +85,13 @@ export default function init(): void {
             baseUrl: value => api.switchBaseUrl(value ?? ''),
             accessToken: value => setToken(value ?? ''),
             campaign: value => value && setCurrentCampaignById(parseInt(value, 10) || null),
-            importLanguage: value => localization.setLanguage(value ?? getGame().i18n.lang),
+            importLanguage: async (value) => {
+                await localization.setLanguage(value ?? getGame().i18n.lang);
+                Object
+                    .values(window.ui.windows as Record<number, Application>)
+                    .filter(app => app instanceof KankaJournalApplication)
+                    .forEach(app => app.render());
+            },
         });
 
         // Debug output to show current rate limiting
@@ -82,11 +115,13 @@ if (import.meta.hot) {
     import.meta.hot.accept((newModule) => {
         if ((game as Game).ready) {
             newModule?.default();
-
             Object
                 .values(ui.windows)
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                .forEach((app: any) => app.render(false));
+                .filter((app: any) => app.constructor?.name === 'KankaJournalApplication')
+                .forEach(async (app: any) => {
+                    app.object._onSheetChange({ sheetOpen: true });
+                });
         }
     });
 }

@@ -1,0 +1,7 @@
+{{#>../shared/overviewLayout}}
+    {{#*inline 'attributes'~}}
+        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=" " }}
+    {{~/inline}}
+{{/../shared/overviewLayout}}

@@ -10,8 +10,10 @@ rules:
     class-methods-use-this: [off]
     no-underscore-dangle: [off]
     arrow-parens: [off]
+    '@typescript-eslint/explicit-function-return-type': [off]
+    '@typescript-eslint/restrict-template-expressions': [off]
 overrides:
-  - files: ["*.js"]
-    rules:
-        '@typescript-eslint/explicit-function-return-type': [off]
-        '@typescript-eslint/restrict-template-expressions': [off]
+    - files: ['*.js']
+      rules:
+          '@typescript-eslint/explicit-function-return-type': [off]
+          '@typescript-eslint/restrict-template-expressions': [off]

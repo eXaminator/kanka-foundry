@@ -1,0 +1,33 @@
+{{#>./layout}}
+    {{#*inline 'content'~}}
+        {{!-- <div class="kanka-overview-columns">
+            {{#if data.system.img }}
+            <div class="image-column">
+                <img src="{{ data.system.img }}" alt="{{ data.name }}" />
+            </div>
+            {{/if}} --}}
+
+            <table class="kanka-attributes">
+                {{!-- Type specific Attributes --}}
+                {{~#>attributes~}}{{~/attributes~}}
+
+                {{!-- Starred Relations --}}
+                {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.relations) 'is_star' true) as | starred |~}}
+                    {{~#each starred ~}}
+                        {{~>./detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
+                    {{~/each~}}
+                {{~/with~}}
+
+                {{!-- Starred Attributes --}}
+                {{~#with (kankaSortBy (kankaFilterBy (kankaFilterAccessible data.system.snapshot.attributes) 'is_star' true) 'default_order') as | starred |~}}
+                    {{~#each starred ~}}
+                        {{~>./attributeEntry attribute=this~}}
+                    {{~/each~}}
+                {{~/with~}}
+            </table>
+        {{!-- </div> --}}
+
+        {{~#>content~}}{{~/content~}}
+    {{~/inline}}
+{{/./layout}}
+

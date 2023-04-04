@@ -3,15 +3,15 @@ import {
     afterAll,
     beforeAll,
     describe,
-    it,
     expect,
+    it,
     vi,
 } from 'vitest';
+import { getEntryFlag } from '../../foundry/journalEntries';
 import Reference from '../../types/Reference';
 import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
-import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '../../foundry/journalEntries';
 
 vi.mock('./kankaIsAccessible');
 vi.mock('../../foundry/journalEntries');
@@ -61,7 +61,7 @@ describe('kankaFindReference()', () => {
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}{{/with}}';
 
-        expect(compile(template, { kankaReferences: references })).toEqual('1');
+        expect(compile(template, { data: { system: { references } } })).toEqual('1');
     });
 
     it('returns reference based on id and type from root context "kankaReferences"', () => {
@@ -71,7 +71,7 @@ describe('kankaFindReference()', () => {
 
         const template = '{{#with (kankaFindReference 1 "character")}}{{ id }}{{/with}}';
 
-        expect(compile(template, { kankaReferences: references })).toEqual('1');
+        expect(compile(template, { data: { system: { references } } })).toEqual('1');
     });
 
     it('returns reference based on id from given references', () => {
@@ -94,42 +94,6 @@ describe('kankaFindReference()', () => {
         expect(compile(template, { references })).toEqual('1');
     });
 
-    it('returns reference based on id created from existing journal entry with snapshot', () => {
-        const snapshot = {
-            id: 1,
-            entity_id: 4711,
-            name: 'Foobar',
-            has_custom_image: false,
-            is_private: false,
-        };
-
-        const journal = { id: 'foo-123', flags: { snapshot, type: 'character' }, getFlag: (_, name) => journal.flags[name] };
-        vi.mocked(findEntryByEntityId).mockReturnValue(journal as unknown as JournalEntry);
-
-        const template = '{{#with (kankaFindReference 4711)}}{{ id }}, {{ name }}{{/with}}';
-
-        expect(compile(template)).toEqual('1, Foobar');
-        expect(findEntryByEntityId).toHaveBeenCalledWith(4711);
-    });
-
-    it('returns reference based on id and type created from existing journal entry with snapshot', () => {
-        const snapshot = {
-            id: 1,
-            entity_id: 4711,
-            name: 'Foobar',
-            has_custom_image: false,
-            is_private: false,
-        };
-
-        const journal = { id: 'foo-123', flags: { snapshot, type: 'character' } };
-        vi.mocked(findEntryByTypeAndChildId).mockReturnValue(journal as unknown as JournalEntry);
-
-        const template = '{{#with (kankaFindReference 1 "character")}}{{ id }}, {{ name }}{{/with}}';
-
-        expect(compile(template)).toEqual('1, Foobar');
-        expect(findEntryByTypeAndChildId).toHaveBeenCalledWith('character', 1);
-    });
-
     it('returns undefined if undefined id was given', () => {
         const template = '{{#with (kankaFindReference noId)}}{{ id }}{{else}}success{{/with}}';
 
@@ -145,7 +109,7 @@ describe('kankaFindReference()', () => {
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}{{else}}success{{/with}}';
 
-        expect(compile(template, { kankaReferences: references })).toEqual('success');
+        expect(compile(template, { data: { system: { references } } })).toEqual('success');
     });
 
     it('returns undefined if no matching reference was found', () => {

@@ -1,0 +1,28 @@
+{{#>../shared/layout}}
+    {{#*inline 'content'~}}
+        <table>
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>{{ kankaLocalize "journal.shared.labels.ability_name" }}</td>
+                    <td>{{ kankaLocalize "journal.shared.labels.ability_note" }}</td>
+                </tr>
+            </thead>
+            {{#each (kankaSortBy (kankaFilterAccessible data.system.snapshot.list) 'position')}}
+                {{#with this as | ability | }}
+                    {{#with (kankaFindReference ability_id 'ability') as | ref | }}
+                        <tr class="{{#if (kankaIsSecret ability ref) }}-secret{{/if}}">
+                            <td class="thumb -rounded">
+                                {{#if ability.charges}}<span class="label">{{ability.charges}}</span>{{/if}}
+                                {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
+                                <span class="placeholder"></span>
+                            </td>
+                            <td>{{{ ref.link }}}</td>
+                            <td>{{{ ability.note }}}</td>
+                        </tr>
+                    {{/with}}
+                {{/with}}
+            {{/each}}
+        </table>
+    {{~/inline}}
+{{/../shared/layout}}
