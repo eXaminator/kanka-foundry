@@ -1,3 +1,11 @@
+## [3.1.2](https://github.com/eXaminator/kanka-foundry/compare/3.1.1...3.1.2) (2023-04-04)
+
+
+### Bug Fixes
+
+* fix incorrect display of secret personality and hidden appearance as well as inproper handling of image assets ([6b2a3c0](https://github.com/eXaminator/kanka-foundry/commit/6b2a3c0665fe070d790fd556acea9e9ff97f6834)), closes [#103](https://github.com/eXaminator/kanka-foundry/issues/103)
+* make access token a client setting to improve security ([c5112a8](https://github.com/eXaminator/kanka-foundry/commit/c5112a8c8dae8941c213f476923c4a60223a5a8e)), closes [#106](https://github.com/eXaminator/kanka-foundry/issues/106)
+
 ## [3.1.1](https://github.com/eXaminator/kanka-foundry/compare/3.1.0...3.1.1) (2022-11-05)
 
 
