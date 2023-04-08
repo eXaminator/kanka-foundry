@@ -1,1 +1,59 @@
-{}
+KANKA:
+    sidebar:
+        button: Importar de Kanka
+    entityType:
+        ability: Habilidades
+        character: Personagens
+        family: Famílias
+        item: Itens
+        event: Eventos
+        location: Localizações
+        note: Notas
+        organisation: Organizações
+        race: Raças
+        journal: Diários
+        quest: Missões
+    browser:
+        error:
+            provideAccessToken: Você não forneceu um token de acesso Kanka válido ou ele expirou.
+            selectCampaign: Verifique se você selecionou uma campanha nas configurações.
+            actionError: Ocorreu um erro ao executar a ação solicitada.
+            loadEntity: Ocorreu um erro ao carregar a lista de entidades de Kanka.
+            initializationError: "O módulo não foi inicializado corretamente. Isso pode ser um erro de configuração ou Kanka\
+                \ está tendo problemas\nagora mesmo.\n"
+            syncAll: Ocorreu um erro ao tentar sincronizar várias entidades. Algumas entidades não puderam ser sincronizadas.
+        action:
+            updateOutdated: Atualizar desatualizado
+            viewGrid: Ver como grade
+            viewList: Ver como lista
+            linkAll: Vincular tudo
+            openJournal: Abrir
+            updateSingle: Atualizar
+            linkSingle: Link
+            delete: Excluir
+            deleteAll: Excluir tudo
+        tabs:
+            import: Importar entidades
+            delete: Ver entidades excluídas
+        deleteTab:
+            header: Entidades excluídas
+            description: Essas entidades parecem ter sido excluídas no Kanka, mas ainda estão presentes no Foundry.
+        importTab:
+            header: entidades Kanka
+        filter:
+            label: Filtro
+        label:
+            template: Entidade modelo
+        title: Importação do diário Kanka
+    journal:
+        shared:
+            action:
+                refresh: Atualizar
+                openInKanka: Abrir no Kanka
+                openLink: Abrir link
+            tabs:
+                story: Visão geral
+                attributes: Atributos
+    general:
+        initializationError: "Ocorreu um erro ao inicializar o Kanka-Foundry. Isso pode ser devido a problemas com o Kanka-API\
+            \ ou\ncom suas configurações de token ou campanha.\n"
