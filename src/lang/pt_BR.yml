@@ -54,6 +54,84 @@ KANKA:
             tabs:
                 story: Visão geral
                 attributes: Atributos
+                relations: Relações
+                inventory: Inventário
+                abilities: Habilidades
+                files: Recursos
+            labels:
+                type: Tipo
+                location: Localização
+                character: Personagem
+                parent: Pertence a
+                unknownReference: Referência desconhecida
+                entry: Entrada
+            value:
+                yes: Sim
+                no: Não
+        character:
+            tabs:
+                organisations: Organizações
+            labels:
+                title: Título
+                sex: Sexo
+                age: Idade
+                isDead: Está morto
+                race: Raça
+                family: Família
+                member: Membro
+                pronouns: Pronomes
+            traits:
+                appearance: Aparência
+                personality: Personalidade
+        ability:
+            tabs:
+                abilities: Habilidades
+        family:
+            tabs:
+                members: Membros
+        journal:
+            labels:
+                date: Data
+        organisation:
+            tabs:
+                members: Membros
+            labels:
+                member: Membro
+        quest:
+            labels:
+                date: Data
+                completed: Está completo
+            tabs:
+                elements: Elementos
+        event:
+            labels:
+                date: Data
     general:
         initializationError: "Ocorreu um erro ao inicializar o Kanka-Foundry. Isso pode ser devido a problemas com o Kanka-API\
             \ ou\ncom suas configurações de token ou campanha.\n"
+    settings:
+        baseUrl:
+            label: URL do Kanka
+            hint: "Você pode inserir sua URL Kanka pessoal aqui, se tiver uma. Caso contrário, use https://kanka.io.\nLembre-se\
+                \ de que a instalação do Kanka precisa ter a mesma versão da API do Kanka oficial\npara ser compatível com\
+                \ este módulo.\n"
+        token:
+            label: Token de acesso pessoal Kanka
+            hint: Você pode recuperar um token de acesso em https://kanka.io/en/settings/api
+        campaign:
+            label: Campanha
+            hint: Selecione a campanha a partir da qual importará as entradas.
+            noToken: Insira um token de acesso válido
+            noBaseUrl: Por favor, digite uma URL Kanka válida.
+            pleaseChoose: -- Por favor, escolha uma campanha --
+        locale:
+            label: Idioma do conteúdo
+            default: -- Use o idioma padrão do Foundry --
+            hint: Esta configuração permite que você defina o idioma que será usado para rótulos se for diferente do idioma
+                padrão do Foundry.
+        importPrivate:
+            label: Mostrar entidades privadas
+            hint: Se esta opção estiver marcada, as entidades privadas serão mostradas no navegador de importação.
+        importTemplate:
+            label: Mostrar entidades de modelo
+            hint: Se esta opção estiver marcada, as entidades de modelo serão mostradas no navegador de importação.
