@@ -86,6 +86,8 @@ KANKA:
         ability:
             tabs:
                 abilities: Habilidades
+            labels:
+                charges: Cargas
         family:
             tabs:
                 members: Membros
@@ -101,6 +103,7 @@ KANKA:
             labels:
                 date: Data
                 completed: Está completo
+                instigator: Instigador
             tabs:
                 elements: Elementos
         event:
@@ -135,3 +138,63 @@ KANKA:
         importTemplate:
             label: Mostrar entidades de modelo
             hint: Se esta opção estiver marcada, as entidades de modelo serão mostradas no navegador de importação.
+        disableExternalLinks:
+            label: Remover links externos
+            hint: Se esta opção estiver marcada, todos os links de menção para entradas que não foram importadas para o Foundry
+                serão removidos.
+        automaticPermissions:
+            hint: Todos os jogadores obterão automaticamente permissões de observador para entidades recém-importadas.
+            label: Definir permissões automaticamente
+            values:
+                never: Nunca defina permissões
+                initial: Definir permissões na sincronização inicial
+                always: Definir permissões em cada atualização
+        questStatusIcon:
+            hint: "Exiba um ícone mostrando o status atual de conclusão de uma missão na frente de seu nome na lista de\n\
+                todas as entradas de diário.\n"
+            label: Ícone de status da missão
+        imageInText:
+            label: Incluir imagem no texto
+            hint: A imagem deve ser incluída ao lado do texto, além da imagem normal do lançamento do diário?
+        treeStructure:
+            label: Criar árvore de pastas
+            hint: A estrutura da árvore Kankas deve ser replicada por meio de pastas? A profundidade máxima é de 3 pastas.
+        error:
+            ErrorInvalidAccessToken: O token de acesso Kanka fornecido é inválido.
+            ErrorTokenExpired: Seu token de acesso Kanka expirou. Forneça um novo.
+            WarningTokenExpiration: Seu token de acesso Kanka expirará na próxima semana. Forneça um novo.
+            fetchError: Ocorreu um erro ao buscar dados de Kanka. Por favor, verifique suas configurações e tente novamente.
+    migration:
+        dialog:
+            listHeader:
+                folders: '<strong style="color: red;"><big>{count}</big></strong> pastas'
+                journals: '<strong style="color: red;"><big>{count}</big></strong> entradas de diário'
+            text: "<h1>Migração Kanka-Foundry</h1>\n<p>Você atualizou recentemente o módulo Kanka-Foundry de 1.x para esta\
+                \ versão atual. esta atualização\ntrouxe uma série de grandes mudanças em como o módulo importa e trata os\
+                \ dados do Kanka, a fim de permitir\npara uma experiência de usuário aprimorada e mais recursos.</p>\n<p>Você\
+                \ tem atualmente</p>\n{journalList}\n{folderList}\n<p>que foram criados pela Kanka-Foundry e precisam ser\
+                \ atualizados para funcionar corretamente e levar\nvantagem dos novos recursos. Uma mudança é que os lançamentos\
+                \ contábeis manuais importados de kanka não são mais\neditável. De qualquer forma, isso nunca foi realmente\
+                \ suportado, pois as alterações foram substituídas com a próxima importação e\nnão pôde ser sincronizado com\
+                \ Kanka.</p>\n<p>Se você alterou manualmente qualquer um dos lançamentos contábeis importados:</p>\n<p><big\
+                \ style=\\\"color: red;\\\"><strong>Faça backup de seus dados agora! A atualização substituirá todos os importados\n\
+                entradas de diário!</strong></big></p><p>Consulte os módulos\n<a href=\\\"https://github.com/eXaminator/kanka-foundry\\\
+                \" target=\\\"_blank\\\">repositório Github</a> para ver\ntodas as mudanças da nova versão. Se você quiser\
+                \ manter a versão antiga, terá que pular a migração\nagora, faça o downgrade manualmente para uma versão mais\
+                \ antiga (todas disponíveis no github) e bloqueie a versão do módulo no\ntela do gerenciador de pacotes (um\
+                \ novo recurso do Foundry 0.8.x).</p>\n<p> Deseja atualizar seus lançamentos contábeis manuais existentes\
+                \ para a nova versão? <strong>Isso iniciará um\nreimporte de Kanka para todas as entradas de diário importadas\
+                \ e sobrescreva as versões que você possui atualmente\nsincronizado.</strong> Isso pode levar alguns minutos,\
+                \ dependendo do tamanho de sua campanha Kanka e do\nquantidade de entradas sincronizadas. Você receberá uma\
+                \ notificação assim que terminar.</p>\n<h2>Mas eu já fiz essa migração!</h2>\n<p> Você pode ter sincronizado\
+                \ entradas de várias campanhas ou talvez tenha excluído uma entidade em Kanka\nmas não a entrada importada\
+                \ no Foundry. Esta migração apenas atualiza as entradas do\ncampanha atualmente selecionada ({campaignName}).\
+                \ Se você continuar recebendo esta mensagem, altere o selecionado\ncampanha nas configurações dos módulos\
+                \ e recarregue seu navegador para tentar novamente. Ou verifique cada entrada individualmente\npara ver se\
+                \ ainda existe em Kanka.</p>\n<p>Se você continuar tendo problemas, avise-me criando um problema no Github.</p>\n"
+            header: Migração Kanka-Foundry
+            action:
+                yes: Atualizar e substituir minhas entradas
+                no: Lembre-me novamente da próxima vez!
+        success: A migração Kanka-Foundry está concluída. {success} de entradas {expected} migradas com sucesso.
+        nothingToDo: A Kanka-Foundry não encontrou nenhuma entrada para migrar. Verifique se você selecionou a campanha correta.
