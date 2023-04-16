@@ -1,3 +1,10 @@
+## [3.1.5](https://github.com/eXaminator/kanka-foundry/compare/3.1.4...3.1.5) (2023-04-16)
+
+
+### Bug Fixes
+
+* fix broken module.json after adding barzil translations ([f1d7e9b](https://github.com/eXaminator/kanka-foundry/commit/f1d7e9b753683d7999db414720e6c03de7fa414b))
+
 ## [3.1.4](https://github.com/eXaminator/kanka-foundry/compare/3.1.3...3.1.4) (2023-04-16)
 
 
