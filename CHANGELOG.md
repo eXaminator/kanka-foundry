@@ -1,3 +1,12 @@
+## [3.1.4](https://github.com/eXaminator/kanka-foundry/compare/3.1.3...3.1.4) (2023-04-16)
+
+
+### Bug Fixes
+
+* add translations using Weblate (Portuguese (Brazil)) ([0aaaaf7](https://github.com/eXaminator/kanka-foundry/commit/0aaaaf759741edfe88fbb3e7a4f76cd6a0b87cd9))
+* add translations using Weblate (Portuguese (Brazil)) ([dc49525](https://github.com/eXaminator/kanka-foundry/commit/dc4952505255e236e2381038a7dee0abd044b7c5))
+* add translations using Weblate (Portuguese (Brazil)) ([d49856a](https://github.com/eXaminator/kanka-foundry/commit/d49856ac369c7ba3d9930bb1a4f9d05cb7fe0e5b))
+
 ## [3.1.3](https://github.com/eXaminator/kanka-foundry/compare/3.1.2...3.1.3) (2023-04-04)
 
 
