@@ -5,6 +5,13 @@
 
 * move loading of campaign futher back to prevent certain initializations from beeing blocked if it fails ([a52d96f](https://github.com/eXaminator/kanka-foundry/commit/a52d96f968a9ba2d288627d6634d8cfcbe2d06c0))
 
+## [3.1.6](https://github.com/eXaminator/kanka-foundry/compare/3.1.5...3.1.6) (2023-05-29)
+
+
+### Bug Fixes
+
+* move loading of campaign futher back to prevent certain initializations from beeing blocked if it fails ([a52d96f](https://github.com/eXaminator/kanka-foundry/commit/a52d96f968a9ba2d288627d6634d8cfcbe2d06c0))
+
 ## [3.1.5](https://github.com/eXaminator/kanka-foundry/compare/3.1.4...3.1.5) (2023-04-16)
 
 
