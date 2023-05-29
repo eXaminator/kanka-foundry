@@ -12,13 +12,3 @@ plugins:
             - files: [dist/module.json]
               from: '__VERSION__'
               to: '${nextRelease.version}'
-    - - '@semantic-release/exec'
-      - prepareCmd: apt-get update && apt-get install zip && cd ./dist && zip -r ../module.zip .
-    - - '@semantic-release/github'
-      - assets:
-            - path: dist/module.json
-              label: Module manifest
-            - path: module.zip
-              label: Module distribution
-        successComment: false
-        failTitle: false

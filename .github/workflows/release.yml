@@ -8,41 +8,74 @@ jobs:
         name: Release
         runs-on: ubuntu-latest
         steps:
-            -   name: Checkout
-                uses: actions/checkout@v2
-                with:
-                    fetch-depth: 0
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
 
-            -   name: Setup Node.js
-                uses: actions/setup-node@v1
-                with:
-                    node-version: 18
+            - name: Setup Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 18
 
-            -   name: Install dependencies
-                run: npm i
+            - name: Install dependencies
+              run: npm i
 
-            -   name: Checks
-                run: npm run check
+            - name: Checks
+              run: npm run check
 
-            -   name: Tests
-                run: npm run test
+            - name: Tests
+              run: npm run test
 
-            -   name: Build
-                run: npm run build
+            - name: Build
+              run: npm run build
 
-            -   name: Release
-                id: create-release
-                uses: docker://codfish/semantic-release-action:latest
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Release
+              id: semantic_release
+              uses: docker://codfish/semantic-release-action:latest
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            -   name: Deploy on FoundryVTT
-                if: steps.create-release.outputs.new-release-published == 'true'
-                uses: eXaminator/foundry-auto-release@1.1.5
-                with:
-                    manifest-path: dist/module.json
-                    package-id: ${{ secrets.FVTT_PACKAGE_ID }}
-                    fvtt-username: ${{ secrets.FVTT_USERNAME }}
-                    fvtt-password: ${{ secrets.FVTT_PASSWORD }}
+            - name: Create module zip
+              run: cd ./dist && zip -r ../module.zip .
 
+            - name: Create Github Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: ${{ steps.semantic_release.outputs.release-version }}
+                  release_name: ${{ steps.semantic_release.outputs.release-version }}
+                  body: ${{ steps.semantic_release.outputs.release-notes }}
+                  draft: false
+                  prerelease: false
 
+            - name: Upload module.json
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: dist/module.json
+                  asset_name: module.json
+                  asset_content_type: application/json
+
+            - name: Upload module.zip
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: module.zip
+                  asset_name: module.zip
+                  asset_content_type: application/zip
+
+            - name: Deploy on FoundryVTT
+              if: steps.semantic_release.outputs.new-release-published == 'true'
+              uses: eXaminator/foundry-auto-release@1.1.5
+              with:
+                  manifest-path: dist/module.json
+                  package-id: ${{ secrets.FVTT_PACKAGE_ID }}
+                  fvtt-username: ${{ secrets.FVTT_USERNAME }}
+                  fvtt-password: ${{ secrets.FVTT_PASSWORD }}
