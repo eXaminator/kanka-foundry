@@ -1,14 +1,13 @@
 import moduleConfig from '../../../public/module.json';
-import KankaJournalApplication from '../../apps/KankaJournal/KankaJournalApplication';
-import AccessToken from '../../api/AccessToken';
-import { logError } from '../../util/logger';
 import api from '../../api';
-import { setCurrentCampaign } from '../../state/currentCampaign';
-import executeMigrations from '../../executeMigrations';
-import getGame from '../getGame';
-import localization from '../../state/localization';
-import { showError } from '../notifications';
+import AccessToken from '../../api/AccessToken';
+import KankaJournalApplication from '../../apps/KankaJournal/KankaJournalApplication';
 import registerHandlebarsHelpers from '../../handlebars/registerHandlebarsHelper';
+import { setCurrentCampaignById } from '../../state/currentCampaign';
+import localization from '../../state/localization';
+import { logError } from '../../util/logger';
+import getGame from '../getGame';
+import { showError } from '../notifications';
 import { getSetting, registerSettings } from '../settings';
 
 function setToken(token: string): void {
@@ -46,19 +45,7 @@ function renderDebugElement(): void {
     });
 }
 
-async function loadCurrentCampaignById(id: number | null): Promise<void> {
-    if (!api.isReady) {
-        return;
-    }
-
-    if (id) {
-        setCurrentCampaign(await api.getCampaign(id));
-    } else {
-        setCurrentCampaign(undefined);
-    }
-}
-
-export default async function init(): Promise<void> {
+export default function init(): void {
     try {
         Journal.registerSheet(moduleConfig.name, KankaJournalApplication, {
             makeDefault: false,
@@ -70,7 +57,7 @@ export default async function init(): Promise<void> {
         registerSettings({
             baseUrl: value => api.switchBaseUrl(value ?? ''),
             accessToken: value => setToken(value ?? ''),
-            campaign: value => value && loadCurrentCampaignById(parseInt(value, 10) || null),
+            campaign: value => value && setCurrentCampaignById(parseInt(value, 10) || null),
             importLanguage: value => localization.setLanguage(value ?? getGame().i18n.lang),
         });
 
@@ -81,16 +68,6 @@ export default async function init(): Promise<void> {
 
         api.switchBaseUrl(getSetting('baseUrl'));
         setToken(getSetting('accessToken'));
-
-        // Async initialization processes start here. These need to be at the end, to ensure that everything
-        // important for FoundryVTT has been handled synchroniously, because the hook usually doesn'T handle
-        // async functions.
-        await loadCurrentCampaignById(parseInt(getSetting('campaign'), 10));
-
-        await localization.initialize();
-        await localization.setLanguage(getSetting('importLanguage') ?? getGame().i18n.lang);
-
-        await executeMigrations();
     } catch (error) {
         logError(error);
         showError('general.initializationError');
