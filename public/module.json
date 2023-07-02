@@ -42,7 +42,7 @@
     ],
     "compatibility": {
         "minimum": "10",
-        "verified": "10"
+        "verified": "11"
     },
     "minimumCoreVersion": "10",
     "manifestPlusVersion": "1.2.0",

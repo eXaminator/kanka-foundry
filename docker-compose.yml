@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     foundry:
-        image: 'felddy/foundryvtt:10'
+        image: 'felddy/foundryvtt:11'
         environment:
             TIMEZONE: Europe/Berlin
             FOUNDRY_WORLD: 'test'
