@@ -1,3 +1,10 @@
+## [3.1.7](https://github.com/eXaminator/kanka-foundry/compare/3.1.6...3.1.7) (2023-07-02)
+
+
+### Bug Fixes
+
+* add official support for foundry v11 ([61a62aa](https://github.com/eXaminator/kanka-foundry/commit/61a62aa1c4d85d97cb2eca2051b1a2d9ab8ef1d0))
+
 ## [3.1.6](https://github.com/eXaminator/kanka-foundry/compare/3.1.5...3.1.6) (2023-05-29)
 
 
