@@ -73,7 +73,7 @@ jobs:
 
             - name: Deploy on FoundryVTT
               if: steps.semantic_release.outputs.new-release-published == 'true'
-              uses: docker://examinator/foundry-auto-release:latest
+              uses: eXaminator/foundry-auto-release@1.1.12
               with:
                   manifest-path: dist/module.json
                   package-id: ${{ secrets.FVTT_PACKAGE_ID }}
