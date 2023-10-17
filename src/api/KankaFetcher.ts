@@ -78,8 +78,9 @@ export default class KankaFetcher {
             result = `${result}/`;
         }
 
-        if (!result.endsWith('api/1.0/')) {
-            result = `${result}api/1.0/`;
+        // Self-hosted people on the old schema will still have api/1.0, but Kanka's api is now on its own subdomain
+        if (!result.endsWith('1.0/')) {
+            result = `${result}1.0/`;
         }
 
         if (!result.startsWith('http')) {

@@ -23,7 +23,7 @@ import RateLimiter from './RateLimiter';
 export default class KankaApi {
     #fetcher: KankaFetcher;
 
-    public constructor(baseUrl = 'https://kanka.io/api/1.0') {
+    public constructor(baseUrl = 'https://api.kanka.io/1.0') {
         this.#fetcher = new KankaFetcher(baseUrl);
     }
 
@@ -170,7 +170,7 @@ export default class KankaApi {
     public async getAllLocations(campaignId: KankaApiId): Promise<KankaApiLocation[]> {
         return this.fetchFullListWithAncestors(
             `campaigns/${Number(campaignId)}/locations?related=1`,
-            'parent_location_id',
+            'location_id',
         );
     }
 
