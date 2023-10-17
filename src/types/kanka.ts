@@ -328,7 +328,7 @@ export interface KankaApiJournal extends KankaApiChildEntity {
 export interface KankaApiLocation extends KankaApiChildEntity {
     ancestors: KankaApiEntityId[];
     children: KankaApiChild[];
-    parent_location_id: KankaApiId | null;
+    location_id: KankaApiId | null;
     type: string | null;
 }
 

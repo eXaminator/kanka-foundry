@@ -16,7 +16,7 @@ export default class LocationTypeLoader extends AbstractTypeLoader<KankaApiLocat
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.parent_location_id, 'location'),
+            collection.addById(entity.location_id, 'location'),
             ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
             ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
