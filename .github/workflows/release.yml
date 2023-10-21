@@ -18,6 +18,12 @@ jobs:
               with:
                   node-version: 18
 
+            - name: Get foundry code
+              env:
+                  FOUNDRY_USERNAME: ${{ secrets.FVTT_USERNAME }}
+                  FOUNDRY_PASSWORD: ${{ secrets.FVTT_PASSWORD }}
+              run: ./sync-foundry-code.sh
+
             - name: Install dependencies
               run: npm i
 
@@ -32,14 +38,16 @@ jobs:
 
             - name: Release
               id: semantic_release
-              uses: docker://codfish/semantic-release-action:latest
+              uses: codfish/semantic-release-action@v2
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Create module zip
+              if: steps.semantic_release.outputs.new-release-published == 'true'
               run: cd ./dist && zip -r ../module.zip .
 
             - name: Create Github Release
+              if: steps.semantic_release.outputs.new-release-published == 'true'
               id: create_release
               uses: actions/create-release@v1
               env:
@@ -52,6 +60,7 @@ jobs:
                   prerelease: false
 
             - name: Upload module.json
+              if: steps.semantic_release.outputs.new-release-published == 'true'
               uses: actions/upload-release-asset@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,6 +71,7 @@ jobs:
                   asset_content_type: application/json
 
             - name: Upload module.zip
+              if: steps.semantic_release.outputs.new-release-published == 'true'
               uses: actions/upload-release-asset@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
