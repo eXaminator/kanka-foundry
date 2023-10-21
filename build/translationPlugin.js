@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import flat from 'flat';
+import { flatten } from 'flat';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import yaml from 'js-yaml';
 import { dirname, join, relative } from 'path';
@@ -27,7 +27,7 @@ export default function translationPlugin() {
             const outputPath = join(config.build.outDir, outputRelativePath);
 
             const content = readFileSync(id, 'utf8');
-            const json = flat(
+            const json = flatten(
                 yaml.load(content, {
                     schema: yaml.JSON_SCHEMA,
                     filename: id,

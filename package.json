@@ -4,6 +4,7 @@
     "version": "3.1.7",
     "description": "",
     "repository": "https://github.com/eXaminator/kanka-foundry",
+    "type": "module",
     "scripts": {
         "build": "vite build",
         "start": "NODE_ENV=development vite",
@@ -19,30 +20,28 @@
     "author": "Steven Weingärtner",
     "license": "MIT",
     "devDependencies": {
-        "@google/semantic-release-replace-plugin": "^1.1.0",
         "@semantic-release/changelog": "^6.0.0",
         "@semantic-release/exec": "^6.0.1",
         "@semantic-release/git": "^10.0.0",
         "@types/jquery": "^3.5.16",
         "@types/node": "^18.8.3",
-        "@typescript-eslint/eslint-plugin": "^5.1.0",
-        "@typescript-eslint/parser": "^5.1.0",
-        "c8": "^7.11.3",
+        "@vitest/coverage-c8": "^0.33.0",
         "eslint": "^8.0.1",
         "eslint-config-brainbits-typescript": "^4.0.0-beta.4",
         "eslint-plugin-babel": "^5.3.1",
         "eslint-plugin-import": "^2.25.2",
         "eslint-plugin-promise": "^6.0.0",
-        "flat": "^5.0.2",
+        "flat": "^6.0.1",
         "handlebars": "^4.7.7",
         "js-yaml": "^4.1.0",
         "mockdate": "^3.0.5",
         "sass": "^1.52.1",
-        "semantic-release": "^21.0.0",
+        "semantic-release": "^22.0.5",
+        "semantic-release-replace-plugin": "^1.2.7",
         "ts-node": "^10.3.0",
         "typescript": "^5.0.2",
         "vite": "^4.2.1",
-        "vitest": "^0.31.1"
+        "vitest": "^0.34.6"
     },
     "dependencies": {
         "jwt-decode": "^3.1.2"
