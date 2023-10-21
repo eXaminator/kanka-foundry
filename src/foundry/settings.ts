@@ -32,10 +32,10 @@ type OnChangeMap<K extends keyof KankaSettings = keyof KankaSettings> = {
 
 async function register<T extends keyof KankaSettings>(
     setting: T,
-    data: ClientSettings.PartialSettingConfig<KankaSettings[T]>,
+    data: { type: typeof String | typeof Number | typeof Boolean } & Record<string, unknown>,
     onChangeMap: OnChangeMap,
 ): Promise<void> {
-    getGame().settings.register<string, string, KankaSettings[T]>(moduleConfig.name, setting, {
+    getGame().settings.register(moduleConfig.name, setting, {
         ...data,
         onChange: (value) => {
             onChangeMap[setting]?.((data.type?.(value) as KankaSettings[T]) ?? undefined);

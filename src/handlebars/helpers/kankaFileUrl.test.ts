@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import kankaFileUrl from './kankaFileUrl';
 
 function compile(template: string, context = {}): string {

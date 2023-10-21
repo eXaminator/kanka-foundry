@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { MockedFunction, vi } from 'vitest';
+import {
+    afterAll,
+    beforeAll,
+    describe,
+    it,
+    expect,
+    vi,
+} from 'vitest';
 import Reference from '../../types/Reference';
 import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
@@ -8,8 +15,6 @@ import { findEntryByEntityId, findEntryByTypeAndChildId, getEntryFlag } from '..
 
 vi.mock('./kankaIsAccessible');
 vi.mock('../../foundry/journalEntries');
-
-const mockedKankaIsAccessible = kankaIsAccessible as MockedFunction<typeof kankaIsAccessible>;
 
 function compile(template: string, context = {}): string {
     return Handlebars.compile(template)(context);
@@ -33,10 +38,10 @@ function createReference(
 
 describe('kankaFindReference()', () => {
     beforeAll(() => {
-        mockedKankaIsAccessible.mockReturnValue(true);
+        vi.mocked(kankaIsAccessible).mockReturnValue(true);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        vitest.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
+        vi.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);
     });
@@ -95,7 +100,7 @@ describe('kankaFindReference()', () => {
         };
 
         const journal = { id: 'foo-123', flags: { snapshot, type: 'character' }, getFlag: (_, name) => journal.flags[name] };
-        vitest.mocked(findEntryByEntityId).mockReturnValue(journal as unknown as JournalEntry);
+        vi.mocked(findEntryByEntityId).mockReturnValue(journal as unknown as JournalEntry);
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}, {{ name }}{{/with}}';
 
@@ -113,7 +118,7 @@ describe('kankaFindReference()', () => {
         };
 
         const journal = { id: 'foo-123', flags: { snapshot, type: 'character' } };
-        vitest.mocked(findEntryByTypeAndChildId).mockReturnValue(journal as unknown as JournalEntry);
+        vi.mocked(findEntryByTypeAndChildId).mockReturnValue(journal as unknown as JournalEntry);
 
         const template = '{{#with (kankaFindReference 1 "character")}}{{ id }}, {{ name }}{{/with}}';
 
@@ -132,7 +137,7 @@ describe('kankaFindReference()', () => {
             createReference(1, 4711),
         ];
 
-        mockedKankaIsAccessible.mockReturnValue(false);
+        vi.mocked(kankaIsAccessible).mockReturnValue(false);
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}{{else}}success{{/with}}';
 

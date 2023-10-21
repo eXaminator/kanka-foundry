@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import { KankaVisibility, LegacyKankaVisibility } from '../../types/kanka';
 import kankaIsAccessible from './kankaIsAccessible';
 

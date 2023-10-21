@@ -2,11 +2,7 @@
     "compilerOptions": {
         "target": "es2020",
         "module": "es2020",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "es2020",
-        ],
+        "lib": ["dom", "dom.iterable", "es2020"],
         "strictNullChecks": true,
         "strict": true,
         "resolveJsonModule": true,
@@ -15,8 +11,8 @@
         "noImplicitAny": false,
         "isolatedModules": true,
         "skipLibCheck": true,
-        "types": [
-            "vitest/globals"
-        ]
-    }
+        "allowJs": true,
+        "noEmit": true
+    },
+    "include": ["src/**/*", "foundry-code/common/**/*", "foundry-code/client/**/*"]
 }

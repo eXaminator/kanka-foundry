@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import kankaNl2br from './kankaNl2br';
 
 function compile(template: string, context = {}): string {

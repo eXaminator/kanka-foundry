@@ -68,7 +68,7 @@ export default class RateLimiter {
 
         return new Promise((resolve) => {
             const run = (): void => {
-                const timeout = setTimeout(() => this.freeSlot(timeout), this.#timeframe * 1000);
+                const timeout: NodeJS.Timeout = setTimeout(() => this.freeSlot(timeout), this.#timeframe * 1000);
                 this.#slots.push(timeout);
                 this.callListeners();
 

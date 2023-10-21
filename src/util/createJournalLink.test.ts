@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import createJournalLink from './createJournalLink';
 
 function createEntry(id: string, name: string): JournalEntry {

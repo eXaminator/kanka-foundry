@@ -2,7 +2,7 @@
 import * as Handlebars from 'handlebars';
 import { vi } from 'vitest';
 
-global.getProperty = function getProperty(object, key) {
+globalThis.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
     let target = object;
     // eslint-disable-next-line no-restricted-syntax
@@ -14,11 +14,11 @@ global.getProperty = function getProperty(object, key) {
     return target;
 };
 
-global.Handlebars = Handlebars;
+globalThis.Handlebars = Handlebars;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-global.TextEditor = class TextEditor {
+globalThis.TextEditor = class TextEditor {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     static enrichHTML(text): string {
         return text;

@@ -20,7 +20,7 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
 
     const questEntries = findEntriesByType('quest');
     questEntries.forEach((entry) => {
-        const li = html.find(`[data-document-id="${entry.id}"]`);
+        const li = html.find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
         const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
 

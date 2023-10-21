@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import eqRegex from './eqRegex';
 
 function compile(template: string, context = {}): string {

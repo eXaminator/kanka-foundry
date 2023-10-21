@@ -8,15 +8,15 @@ if (import.meta.hot) {
         // eslint-disable-next-line no-console
         console.log('HMR: update-hbs', file);
         const kankaTemplates = Object
-            .keys(_templateCache)
+            .keys(window._templateCache)
             .filter(key => key.includes('kanka-foundry'));
 
-        kankaTemplates.forEach((key) => { delete _templateCache[key]; });
+        kankaTemplates.forEach((key) => { delete window._templateCache[key]; });
 
         await loadTemplates(kankaTemplates);
 
         Object
-            .values(ui.windows)
+            .values(window.ui.windows as Record<number, Application>)
             .forEach(a => {
                 if (kankaTemplates.includes(a.template)) a.render(false);
             });

@@ -89,7 +89,7 @@ function createFolderList(label: string, folders: Folder[]): string {
             }
 
             return path
-                .map((folder, idx) => (idx === path.length - 1 ? `<strong>${folder.name}</strong>` : folder.name))
+                .map((folder, idx) => (idx === path.length - 1 ? `<strong>${folder.name as string}</strong>` : folder.name))
                 .join(' › ');
         })
         .map(path => `<li>${path}</li>`)

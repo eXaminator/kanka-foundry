@@ -85,7 +85,8 @@ if (import.meta.hot) {
 
             Object
                 .values(ui.windows)
-                .forEach(app => app.render(false));
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                .forEach((app: any) => app.render(false));
         }
     });
 }

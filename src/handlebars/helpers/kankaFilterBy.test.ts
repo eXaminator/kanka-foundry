@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import kankaFilterBy from './kankaFilterBy';
 
 function compile(template: string, context = {}): string {

@@ -18,6 +18,9 @@ type FlagTypes = {
     [key: string]: unknown,
 };
 
+type OwnershipKeys = keyof typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS;
+type Ownership = typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS[OwnershipKeys];
+
 type NullableFlagTypes = {
     [Key in keyof FlagTypes]: FlagTypes[Key] | null
 };
@@ -44,14 +47,14 @@ function buildVersionString(entity: { updated_at: string }): string {
 function getExpectedPermission(
     entity: KankaApiChildEntity,
     isUpdate: boolean,
-): foundry.CONST.DOCUMENT_PERMISSION_LEVELS | undefined {
+): Ownership | undefined {
     const setting = getSetting('automaticPermissions');
 
     if (setting === 'never') return undefined;
     if (setting === 'initial' && isUpdate) return undefined;
 
-    if (entity.is_private) return CONST.DOCUMENT_PERMISSION_LEVELS.NONE;
-    return CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER;
+    if (entity.is_private) return CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE;
+    return foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER;
 }
 
 function buildKankaFlags(flags: Partial<NullableFlagTypes>): Partial<FlagDataObject> {

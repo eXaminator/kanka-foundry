@@ -1,5 +1,5 @@
 /* eslint-disable promise/no-callback-in-promise,promise/catch-or-return */
-import { vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import RateLimiter from './RateLimiter';
 
 vi.mock('../util/logger');

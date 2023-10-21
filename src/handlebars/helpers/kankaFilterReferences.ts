@@ -13,7 +13,7 @@ export default function kankaFilterReferences(
         if (!kankaIsAccessible(entity, options)) return false;
         if (!idProperty) return true;
 
-        const id = idProperty === 'this' ? entity : getProperty(entity, idProperty);
+        const id = idProperty === 'this' ? entity : globalThis.getProperty(entity, idProperty);
         if (options.hash?.optionalReference && !id) return true;
 
         const reference = kankaFindReference(id, type, options);

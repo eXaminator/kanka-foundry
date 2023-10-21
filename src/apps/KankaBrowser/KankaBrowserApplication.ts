@@ -107,7 +107,7 @@ export default class KankaBrowserApplication extends Application {
     }
 
     public getData(): TemplateData {
-        const typeConfig = {};
+        const typeConfig: Record<string, { icon: string, isOpen: boolean }> = {};
 
         Object
             .entries(entityTypes)
@@ -373,7 +373,8 @@ if (import.meta.hot) {
     import.meta.hot.dispose(() => {
         const app = Object
             .values(ui.windows)
-            .find(a => a.constructor === KankaBrowserApplication);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .find((a: any): a is KankaBrowserApplication => a.constructor === KankaBrowserApplication);
 
         if (app) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

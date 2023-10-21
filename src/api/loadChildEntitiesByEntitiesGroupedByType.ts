@@ -24,8 +24,11 @@ async function loadChildrenByEntities(campaignId: KankaApiId, entities: Entity[]
     return (await loader.loadAll(campaignId)).filter(child => ids.includes(child.id));
 }
 
-function createEntityMapper(campaignId: KankaApiId, makeProgress: (amount: number) => void) {
-    return async ([type, typeEntities]): Promise<[KankaApiEntityType, KankaApiChildEntity[]]> => {
+function createEntityMapper(
+    campaignId: KankaApiId,
+    makeProgress: (amount: number) => void,
+): (data: [KankaApiEntityType, Entity[]]) => Promise<[KankaApiEntityType, KankaApiChildEntity[]]> {
+    return async ([type, typeEntities]) => {
         try {
             const children = await loadChildrenByEntities(campaignId, typeEntities);
             makeProgress(children.length);

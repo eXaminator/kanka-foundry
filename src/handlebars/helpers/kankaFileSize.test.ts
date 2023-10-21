@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it, expect } from 'vitest';
 import kankaFileSize from './kankaFileSize';
 
 // No other choice then using an actual formatter for the tests, else tests might fail

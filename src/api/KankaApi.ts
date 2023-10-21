@@ -292,7 +292,7 @@ export default class KankaApi {
         const query = (new URL(`https://${path}`)).searchParams.toString();
 
         while (url) {
-            const fullUrl = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;
+            const fullUrl: string = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;
             // eslint-disable-next-line no-await-in-loop
             const result = await this.#fetcher.fetch<KankaApiListResult<T>>(fullUrl);
             data.push(...result.data);

@@ -10,7 +10,10 @@ import { ProgressFn } from '../../types/progress';
 import template from './KankaJournalApplication.hbs';
 import './KankaJournalApplication.scss';
 
-interface Data extends JournalSheet.Data {
+type JournalSheetData = ReturnType<JournalSheet['getData']>;
+type SheetOptions = JournalSheetOptions & Record<string, unknown>;
+
+interface Data extends JournalSheetData {
     kankaIsGm: boolean;
     kankaEntity?: KankaApiChildEntity;
     kankaEntityType?: KankaApiEntityType;
@@ -23,12 +26,10 @@ interface Data extends JournalSheet.Data {
     localization: Localization;
 }
 
-type RenderOptions = Application.RenderOptions<JournalSheetOptions>;
-
 export default class KankaJournalApplication extends JournalSheet {
-    #lastRenderOptions?: RenderOptions = undefined;
+    #lastRenderOptions?: SheetOptions = undefined;
 
-    static get defaultOptions(): JournalSheetOptions {
+    static get defaultOptions(): SheetOptions {
         return {
             ...super.defaultOptions,
             closeOnSubmit: false,
@@ -45,8 +46,8 @@ export default class KankaJournalApplication extends JournalSheet {
     }
 
     public getData(
-        options?: Partial<JournalSheetOptions>,
-    ): Promise<JournalSheet.Data | Data> | JournalSheet.Data | Data {
+        options?: Partial<SheetOptions>,
+    ): Data | JournalSheetData {
         if (!this.isKankaEntry) return super.getData(options);
 
         return {
@@ -117,21 +118,7 @@ export default class KankaJournalApplication extends JournalSheet {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected _inferDefaultMode(): JournalSheet.SheetMode | null {
-        return 'text';
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected async _onSwapMode(event: Event, mode: JournalSheet.SheetMode): Promise<void> {
-        await super._onSwapMode(event, mode);
-
-        if (mode === 'text') {
-            this.setPosition({ width: KankaJournalApplication.defaultOptions.width as number });
-        }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    protected _render(force?: boolean, options?: RenderOptions): Promise<void> {
+    public _render(force?: boolean, options?: SheetOptions): Promise<void> {
         this.#lastRenderOptions = options;
         return super._render(force, options);
     }
