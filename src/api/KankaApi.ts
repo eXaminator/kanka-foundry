@@ -170,6 +170,7 @@ export default class KankaApi {
     public async getAllLocations(campaignId: KankaApiId): Promise<KankaApiLocation[]> {
         return this.fetchFullListWithAncestors(
             `campaigns/${Number(campaignId)}/locations?related=1`,
+            'location_id',
             'parent_location_id',
         );
     }
@@ -302,7 +303,11 @@ export default class KankaApi {
         return data;
     }
 
-    private async fetchFullListWithAncestors<T>(path: string, parentProperty: keyof T): Promise<T[]> {
+    private async fetchFullListWithAncestors<T>(
+        path: string,
+        parentProperty: keyof T,
+        fallbackProperty?: keyof T,
+    ): Promise<T[]> {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const entities = await this.fetchFullList<T>(path) as any[];
 
@@ -310,9 +315,9 @@ export default class KankaApi {
             // eslint-disable-next-line no-param-reassign
             entity.ancestors = [];
             let current = entity;
-            while (current[parentProperty]) {
+            while (current[parentProperty] ?? current[fallbackProperty]) {
                 // eslint-disable-next-line no-loop-func
-                const parent = entities.find(e => e.id === current[parentProperty]);
+                const parent = entities.find(e => e.id === (current[parentProperty] ?? current[fallbackProperty]));
                 if (!parent) break;
                 entity.ancestors.unshift(parent.entity_id);
                 current = parent;
@@ -320,7 +325,7 @@ export default class KankaApi {
 
             // eslint-disable-next-line no-param-reassign
             entity.children = entities
-                .filter(e => e[parentProperty] === entity.id)
+                .filter(e => entity.id === (e[parentProperty] ?? e[fallbackProperty]))
                 .map(e => ({
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     entity_id: e.entity_id,

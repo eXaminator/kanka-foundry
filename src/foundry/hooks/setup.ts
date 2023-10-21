@@ -12,8 +12,8 @@ export default async function setup(): Promise<void> {
         await localization.setLanguage(getSetting('importLanguage') ?? getGame().i18n.lang);
 
         if (getGame().user?.isGM) {
-            await setCurrentCampaignById(parseInt(getSetting('campaign'), 10));
             await executeMigrations();
+            await setCurrentCampaignById(parseInt(getSetting('campaign'), 10));
         }
     } catch (error) {
         logError(error);

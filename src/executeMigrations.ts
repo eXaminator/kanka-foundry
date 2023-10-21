@@ -3,7 +3,7 @@
 type MigrateFn = () => Promise<void>;
 
 const migrationModules = import.meta.glob<true, '', { default: MigrateFn }>(
-    '../migrations/*.ts',
+    './migrations/*.ts',
     { eager: true },
 );
 

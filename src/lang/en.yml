@@ -214,3 +214,4 @@ KANKA:
                 no: Remind me again next time!
         success: The Kanka-Foundry migration is done. Successfully migrated {success} of {expected} entries.
         nothingToDo: Kanka-Foundry could not find any entries to migrate. Please check that you have selected the correct campaign.
+        migrated-v2: Your configuration was updated to the new API URL for Kanka 2.0.

@@ -229,3 +229,4 @@ KANKA:
             aktualisiert.
         nothingToDo: >
             Kanka-Foundry konnte keine Einträge aktualisieren. Bitte prüfe, dass du die richtige Kampagne in denEinstellungen ausgewählt hast.
+        migrated-v2: Deine Konfiguration wurde auf die neue API Url von Kanka 2.0 angepasst.

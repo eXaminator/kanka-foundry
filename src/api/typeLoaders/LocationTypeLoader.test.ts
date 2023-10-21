@@ -198,6 +198,29 @@ describe('LocationTypeLoader', () => {
 
         it('includes parent from the lookup array', async () => {
             const expectedResult = createLocation({
+                location_id: 2002,
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'location'),
+                createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new LocationTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: {
+                    id: 2002,
+                    entityId: 1002,
+                    type: 'location',
+                },
+            });
+        });
+
+        it('includes parent from the lookup array with legacy parent_location_id', async () => {
+            const expectedResult = createLocation({
                 parent_location_id: 2002,
             });
 
