@@ -1,3 +1,10 @@
+## [3.1.8](https://github.com/eXaminator/kanka-foundry/compare/3.1.7...3.1.8) (2023-10-21)
+
+
+### Bug Fixes
+
+* add forward compatibility with Kanka 2.0 ([4ca2c15](https://github.com/eXaminator/kanka-foundry/commit/4ca2c15529405e8f50d076419d01a4f96748883f))
+
 ## [3.1.7](https://github.com/eXaminator/kanka-foundry/compare/3.1.6...3.1.7) (2023-07-02)
 
 
