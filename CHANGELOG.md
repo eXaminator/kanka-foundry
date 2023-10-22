@@ -1,3 +1,10 @@
+## [3.1.9](https://github.com/eXaminator/kanka-foundry/compare/3.1.8...3.1.9) (2023-10-22)
+
+
+### Bug Fixes
+
+* move certain setup code and migrations to the ready hook ([43a3ecd](https://github.com/eXaminator/kanka-foundry/commit/43a3ecde3cdec98392ee671448015b5170bdaf88))
+
 ## [3.1.8](https://github.com/eXaminator/kanka-foundry/compare/3.1.7...3.1.8) (2023-10-21)
 
 
