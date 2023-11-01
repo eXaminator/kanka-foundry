@@ -1,3 +1,10 @@
+## [3.1.10](https://github.com/eXaminator/kanka-foundry/compare/3.1.9...3.1.10) (2023-11-01)
+
+
+### Bug Fixes
+
+* fix URL verification for Kanka 2.0 ([af1e1da](https://github.com/eXaminator/kanka-foundry/commit/af1e1da1a502475b8e4b6b443107746fe36b761a))
+
 ## [3.1.9](https://github.com/eXaminator/kanka-foundry/compare/3.1.8...3.1.9) (2023-10-22)
 
 
