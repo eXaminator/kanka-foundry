@@ -1,3 +1,10 @@
+## [3.1.11](https://github.com/eXaminator/kanka-foundry/compare/3.1.10...3.1.11) (2023-11-01)
+
+
+### Bug Fixes
+
+* allow usage of old entity_notes field alonsgide of new posts field. ([ecbea95](https://github.com/eXaminator/kanka-foundry/commit/ecbea95b73792bb71ba17522e8016a9ca4e3bbe6))
+
 ## [3.1.10](https://github.com/eXaminator/kanka-foundry/compare/3.1.9...3.1.10) (2023-11-01)
 
 
