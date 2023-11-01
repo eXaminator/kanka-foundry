@@ -2,8 +2,10 @@ import {
     KankaApiAbility,
     KankaApiCampaign,
     KankaApiCharacter,
+    KankaApiChildEntity,
     KankaApiEntity,
-    KankaApiEntityId, KankaApiEvent,
+    KankaApiEntityId,
+    KankaApiEvent,
     KankaApiFamily,
     KankaApiId,
     KankaApiItem,
@@ -22,6 +24,15 @@ import RateLimiter from './RateLimiter';
 
 export default class KankaApi {
     #fetcher: KankaFetcher;
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    private ensureBackwardsCompatibility<T>(entity: T): T {
+        // Kanka 1.x
+        return {
+            ...entity,
+            posts: (entity as KankaApiChildEntity).posts ?? (entity as KankaApiChildEntity).entity_notes,
+        };
+    }
 
     public constructor(baseUrl = 'https://kanka.io/api/1.0') {
         this.#fetcher = new KankaFetcher(baseUrl);
@@ -67,7 +78,7 @@ export default class KankaApi {
     public async getCharacter(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiCharacter> {
         type Result = KankaApiResult<KankaApiCharacter>;
         const result = await this.#fetcher.fetch<Result>(`campaigns/${String(campaignId)}/characters/${String(id)}?related=1`);
-        return result.data;
+        return this.ensureBackwardsCompatibility(result.data);
     }
 
     public async getAllCharacters(campaignId: KankaApiId): Promise<KankaApiCharacter[]> {
@@ -296,7 +307,7 @@ export default class KankaApi {
             const fullUrl: string = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;
             // eslint-disable-next-line no-await-in-loop
             const result = await this.#fetcher.fetch<KankaApiListResult<T>>(fullUrl);
-            data.push(...result.data);
+            data.push(...result.data.map(entity => this.ensureBackwardsCompatibility(entity)));
             url = result.links.next;
         }
 

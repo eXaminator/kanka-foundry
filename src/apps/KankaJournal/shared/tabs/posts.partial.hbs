@@ -1,4 +1,4 @@
-{{#each (kankaSortBy (kankaFilterAccessible entity.entity_notes) 'position' )}}
+{{#each (kankaSortBy (kankaFilterAccessible entity.posts) 'position' )}}
     {{#if (lt this.position 0)}}
         <details
             class="kanka-details kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}"
@@ -17,7 +17,7 @@
     <div class="kanka-card-content">{{ kankaReplaceMentions entity.entry_parsed }}</div>
 </details>
 
-{{#each (kankaSortBy (kankaFilterAccessible entity.entity_notes) 'position' )}}
+{{#each (kankaSortBy (kankaFilterAccessible entity.posts) 'position' )}}
     {{#if (gte this.position 0)}}
         <details
             class="kanka-details kanka-card {{#if (kankaIsSecret this) }}-secret{{/if}}"

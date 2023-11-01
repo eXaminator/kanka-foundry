@@ -133,7 +133,7 @@ export interface KankaApiInventory extends LegacyKankaApiVisibilityConstrainable
     position?: string;
 }
 
-export interface KankaApiEntityNote extends LegacyKankaApiVisibilityConstrainable {
+export interface KankaApiEntityPost extends LegacyKankaApiVisibilityConstrainable {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     entry: string;
@@ -231,7 +231,11 @@ export interface KankaApiRelated {
     attributes: KankaApiAttribute[];
     relations: KankaApiRelation[];
     inventory: KankaApiInventory[];
-    entity_notes: KankaApiEntityNote[];
+    /**
+     * @deprecated
+     */
+    entity_notes: KankaApiEntityPost[];
+    posts: KankaApiEntityPost[];
     entity_abilities: KankaApiAbilityLink[];
     entity_events: KankaApiEntityEvent[];
     entity_assets: KankaApiEntityAsset[];
