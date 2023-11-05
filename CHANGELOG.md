@@ -1,3 +1,10 @@
+## [3.1.12](https://github.com/eXaminator/kanka-foundry/compare/3.1.11...3.1.12) (2023-11-05)
+
+
+### Bug Fixes
+
+* use correct links to kanka entities ([a930f95](https://github.com/eXaminator/kanka-foundry/commit/a930f95a24bb5912a2c53c978965550d7496fe00)), closes [#120](https://github.com/eXaminator/kanka-foundry/issues/120)
+
 ## [3.1.11](https://github.com/eXaminator/kanka-foundry/compare/3.1.10...3.1.11) (2023-11-01)
 
 
