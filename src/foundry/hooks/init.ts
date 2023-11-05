@@ -7,7 +7,7 @@ import { setCurrentCampaignById } from '../../state/currentCampaign';
 import localization from '../../state/localization';
 import { logError } from '../../util/logger';
 import getGame from '../getGame';
-import { showError } from '../notifications';
+import { showError, showWarning } from '../notifications';
 import { getSetting, registerSettings } from '../settings';
 
 function setToken(token: string): void {
@@ -25,9 +25,9 @@ function setToken(token: string): void {
             return;
         }
 
+        // Token is less than a week from expiration
         if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) {
-            // One week
-            showError('settings.error.WarningTokenExpiration');
+            showWarning('settings.error.WarningTokenExpiration');
         }
 
         api.switchUser(accessToken);
