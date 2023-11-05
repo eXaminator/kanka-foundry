@@ -78,6 +78,10 @@ export interface KankaApiChildEntity extends
     name: string;
     entry: string;
     entry_parsed: string;
+    urls: {
+        view: string;
+        api: string,
+    };
 }
 
 export interface KankaApiResult<T> {
@@ -254,6 +258,10 @@ export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBla
     campaign_id: KankaApiId;
     child: KankaApiEntityImageData;
     is_template: boolean;
+    urls: {
+        view: string;
+        api: string;
+    }
 }
 
 export interface KankaApiCharacterTrait {

@@ -125,12 +125,12 @@ KANKA:
         baseUrl:
             label: Kanka URL
             hint: |
-                Puoi inserire qui il tuo Kanka URL personale se ne hai uno. In alternativa usa https://kanka.io.
+                Puoi inserire qui il tuo Kanka URL personale se ne hai uno. In alternativa usa https://app.kanka.io.
                 Per favore ricorda che la tua installazione di Kanka necessita la stessa versione API dell'ufficiale Kanka
                 per essere compatibile con questo modulo.
         token:
             label: Token di accesso personale a Kanka
-            hint: Puoi recuperare il tuo token di accesso da https://kanka.io/en/settings/api
+            hint: Puoi recuperare il tuo token di accesso da https://app.kanka.io/settings/api
         campaign:
             label: Campagna
             hint: Seleziona la campagna dalla quale vuoi importare le voci.

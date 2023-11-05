@@ -34,7 +34,7 @@ export default class KankaApi {
         };
     }
 
-    public constructor(baseUrl = 'https://kanka.io/api/1.0') {
+    public constructor(baseUrl = 'https://api.kanka.io/1.0') {
         this.#fetcher = new KankaFetcher(baseUrl);
     }
 

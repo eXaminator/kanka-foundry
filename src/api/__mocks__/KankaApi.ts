@@ -32,5 +32,5 @@ export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
     getAllEvents: vi.fn(),
     getEntity: vi.fn(),
     getAllEntities: vi.fn(),
-    baseUrl: 'kanka.io',
+    baseUrl: 'https://api.kanka.io/1.0',
 }));

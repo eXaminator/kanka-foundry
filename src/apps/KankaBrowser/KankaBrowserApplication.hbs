@@ -1,7 +1,7 @@
 <div class="flexcol">
     <header>
         <h1 class="kanka-action-row">
-            <span>{{#kankaLinkEntity }}{{ campaign.name }}{{/kankaLinkEntity}}</span>
+            <span><a href="{{campaign.urls.view}}" target="_blank">{{campaign.name}}</a></span>
             <button type="button" data-action="view-grid" title="{{ kankaLocalize 'browser' 'action' 'viewGrid' }}">
                 <i class="fas fa-th-large"></i>
             </button>
@@ -28,7 +28,7 @@
             {{#if campaign.entry }}
                 <section class="campaign-description">
                     {{#if campaign.image }}
-                        <img src="{{ kankaFileUrl campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+                        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
                     {{/if}}
                     {{{ campaign.entry }}}
                 </section>
@@ -59,7 +59,7 @@
                                 <summary class="action-row">
                                     <i class="fas {{ typeConfig.icon }}"></i>
                                     <div>
-                                        {{#kankaLinkEntity type }}{{ kankaLocalize 'entityType' type }}{{/kankaLinkEntity}}
+                                        <a href="{{../../campaign.urls.view}}/{{kankaReplace type "y$" "ie"}}s" target="_blank">{{ kankaLocalize 'entityType' type }}</a>
                                     </div>
                                     <div class="actions">
                                         <button type="button" data-action="link-type" data-type="{{ type }}">

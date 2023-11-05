@@ -19,7 +19,8 @@ KANKA:
             selectCampaign: Verifique se você selecionou uma campanha nas configurações.
             actionError: Ocorreu um erro ao executar a ação solicitada.
             loadEntity: Ocorreu um erro ao carregar a lista de entidades de Kanka.
-            initializationError: "O módulo não foi inicializado corretamente. Isso pode ser um erro de configuração ou Kanka\
+            initializationError:
+                "O módulo não foi inicializado corretamente. Isso pode ser um erro de configuração ou Kanka\
                 \ está tendo problemas\nagora mesmo.\n"
             syncAll: Ocorreu um erro ao tentar sincronizar várias entidades. Algumas entidades não puderam ser sincronizadas.
         action:
@@ -110,17 +111,19 @@ KANKA:
             labels:
                 date: Data
     general:
-        initializationError: "Ocorreu um erro ao inicializar o Kanka-Foundry. Isso pode ser devido a problemas com o Kanka-API\
+        initializationError:
+            "Ocorreu um erro ao inicializar o Kanka-Foundry. Isso pode ser devido a problemas com o Kanka-API\
             \ ou\ncom suas configurações de token ou campanha.\n"
     settings:
         baseUrl:
             label: URL do Kanka
-            hint: "Você pode inserir sua URL Kanka pessoal aqui, se tiver uma. Caso contrário, use https://kanka.io.\nLembre-se\
+            hint:
+                "Você pode inserir sua URL Kanka pessoal aqui, se tiver uma. Caso contrário, use https://api.kanka.io.\nLembre-se\
                 \ de que a instalação do Kanka precisa ter a mesma versão da API do Kanka oficial\npara ser compatível com\
                 \ este módulo.\n"
         token:
             label: Token de acesso pessoal Kanka
-            hint: Você pode recuperar um token de acesso em https://kanka.io/en/settings/api
+            hint: Você pode recuperar um token de acesso em https://app.kanka.io/settings/api
         campaign:
             label: Campanha
             hint: Selecione a campanha a partir da qual importará as entradas.
@@ -130,7 +133,8 @@ KANKA:
         locale:
             label: Idioma do conteúdo
             default: -- Use o idioma padrão do Foundry --
-            hint: Esta configuração permite que você defina o idioma que será usado para rótulos se for diferente do idioma
+            hint:
+                Esta configuração permite que você defina o idioma que será usado para rótulos se for diferente do idioma
                 padrão do Foundry.
         importPrivate:
             label: Mostrar entidades privadas
@@ -140,7 +144,8 @@ KANKA:
             hint: Se esta opção estiver marcada, as entidades de modelo serão mostradas no navegador de importação.
         disableExternalLinks:
             label: Remover links externos
-            hint: Se esta opção estiver marcada, todos os links de menção para entradas que não foram importadas para o Foundry
+            hint:
+                Se esta opção estiver marcada, todos os links de menção para entradas que não foram importadas para o Foundry
                 serão removidos.
         automaticPermissions:
             hint: Todos os jogadores obterão automaticamente permissões de observador para entidades recém-importadas.
@@ -150,7 +155,8 @@ KANKA:
                 initial: Definir permissões na sincronização inicial
                 always: Definir permissões em cada atualização
         questStatusIcon:
-            hint: "Exiba um ícone mostrando o status atual de conclusão de uma missão na frente de seu nome na lista de\n\
+            hint:
+                "Exiba um ícone mostrando o status atual de conclusão de uma missão na frente de seu nome na lista de\n\
                 todas as entradas de diário.\n"
             label: Ícone de status da missão
         imageInText:
@@ -169,7 +175,8 @@ KANKA:
             listHeader:
                 folders: '<strong style="color: red;"><big>{count}</big></strong> pastas'
                 journals: '<strong style="color: red;"><big>{count}</big></strong> entradas de diário'
-            text: "<h1>Migração Kanka-Foundry</h1>\n<p>Você atualizou recentemente o módulo Kanka-Foundry de 1.x para esta\
+            text:
+                "<h1>Migração Kanka-Foundry</h1>\n<p>Você atualizou recentemente o módulo Kanka-Foundry de 1.x para esta\
                 \ versão atual. esta atualização\ntrouxe uma série de grandes mudanças em como o módulo importa e trata os\
                 \ dados do Kanka, a fim de permitir\npara uma experiência de usuário aprimorada e mais recursos.</p>\n<p>Você\
                 \ tem atualmente</p>\n{journalList}\n{folderList}\n<p>que foram criados pela Kanka-Foundry e precisam ser\

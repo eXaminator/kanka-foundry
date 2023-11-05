@@ -8,4 +8,8 @@ export default interface Reference {
     image: string | undefined;
     thumb: string | undefined;
     isPrivate: boolean;
+    urls: {
+        view: string;
+        api: string;
+    };
 }

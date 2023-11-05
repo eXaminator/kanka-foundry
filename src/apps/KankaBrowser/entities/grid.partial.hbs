@@ -13,13 +13,13 @@
                     {{/if}}
                 {{/if}}
                 {{#if this.child.has_custom_image}}
-                    <img src="{{ kankaFileUrl this.child.image_thumb }}" alt="{{this.name}}" />
+                    <img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />
                 {{/if}}
             </div>
 
             <h2 class="kanka-card-header">
                 {{#if this.is_template}}<i class="far fa-copy" title="{{ kankaLocalize 'browser' 'label' 'template' }}"></i>{{/if}}
-                {{#kankaLinkEntity this.type this.child_id }}{{ this.name }}{{/kankaLinkEntity}}
+                <a href="{{ this.urls.view }}" target="_blank">{{ this.name }}</a>
             </h2>
 
             <div class="kanka-card-actions">

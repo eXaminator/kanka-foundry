@@ -124,11 +124,11 @@ KANKA:
             label: Kanka URL
             hint: |
                 Gib hier die Adresse zu deiner eigenen Kanka Installation an falls du eine hast. 
-                Sonst benutze https://kanka.io. Bitte beachte, dass deine Kanka-Installation die gleiche API-Version haben
+                Sonst benutze https://api.kanka.io. Bitte beachte, dass deine Kanka-Installation die gleiche API-Version haben
                 muss die die offizielle Kanka-Seite um mit diesem Modul kompatibel zu sein.
         token:
             label: Kanka Persönliches Zugriffs-Token
-            hint: Du kannst ein Token auf https://kanka.io/de/settings/api erstellen
+            hint: Du kannst ein Token auf https://app.kanka.io/settings/api erstellen
         campaign:
             label: Kampagne
             hint: Wähle die Kampagne, aus der Einträge importiert werden sollen.

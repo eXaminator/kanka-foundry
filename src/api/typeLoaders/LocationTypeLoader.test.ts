@@ -42,6 +42,10 @@ function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: Kan
         child: {
             has_custom_image: false,
         },
+        urls: {
+            view: 'http://app.kanka.com/w/4711/entities/1234',
+            api: 'http://api.kanka.com/campaign/4711/locations/1234',
+        },
     };
 }
 

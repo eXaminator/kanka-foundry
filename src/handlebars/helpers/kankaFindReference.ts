@@ -21,6 +21,7 @@ function createReference(id: KankaApiAnyId, type?: KankaApiEntityType): Referenc
         image: snapshot.has_custom_image ? snapshot.image_full : undefined,
         thumb: snapshot.has_custom_image ? snapshot.image_thumb : undefined,
         isPrivate: snapshot.is_private,
+        urls: snapshot.urls,
     };
 }
 

@@ -54,7 +54,7 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             scope: 'world',
             config: true,
             type: String,
-            default: 'https://kanka.io',
+            default: 'https://api.kanka.io',
         },
         onChangeMap,
     );

@@ -13,10 +13,10 @@
                             <span><i class="fas fa-lock"></i></span>
                         {{/if}}
                     {{/if}}
-                    <img src="{{ kankaFileUrl this.child.image_thumb }}" alt="{{this.name}}" />
+                    <img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />
                 </div>
                 {{#if this.is_template}}<i class="far fa-copy" title="{{ kankaLocalize 'browser' 'label' 'template' }}"></i>{{/if}}
-                {{#kankaLinkEntity this.type this.child_id }}{{ this.name }}{{/kankaLinkEntity}}
+                <a href="{{ this.urls.view }}" target="_blank">{{ this.name }}</a>
 
             </div>
             {{#if (kankaHasJournalEntry this.id)}}

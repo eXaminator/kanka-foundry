@@ -45,6 +45,7 @@ export default class ReferenceCollection {
             image: entity.child.has_custom_image ? entity.child.image_full : undefined,
             thumb: entity.child.has_custom_image ? entity.child.image_thumb : undefined,
             isPrivate: entity.is_private,
+            urls: entity.urls,
         };
     }
 

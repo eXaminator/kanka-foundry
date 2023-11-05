@@ -2,14 +2,14 @@
     <h1 class="kanka-action-row">
         <span>{{kankaEntity.name}}</span>
         {{#if kankaIsGm}}
-            {{#kankaLinkEntity kankaEntityType kankaEntity.id }}
+            <a href="{{ kankaEntity.urls.view }}" target="_blank">
                 <img
                     src="{{kankaLogo}}"
                     alt="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
                     title="{{ kankaLocalize 'journal' 'shared' 'action' 'openInKanka' }}"
                     class="nopopout"
                 />
-            {{/kankaLinkEntity}}
+            </a>
             <button data-action="refresh" class="kanka-button write-action">
                 <i class="fas fa-sync"></i> {{ kankaLocalize 'journal' 'shared' 'action' 'refresh' }}
             </button>
@@ -72,7 +72,7 @@
             <div class="image-column">
                 {{~#if kankaEntity.image_full ~}}
                     {{~#if settings.imageInText~}}
-                        <img src="{{kankaFileUrl kankaEntity.image_full}}" alt="{{name}}" />
+                        <img src="{{ kankaEntity.image_full}}" alt="{{name}}" />
                     {{~/if~}}
                 {{~/if~}}
 

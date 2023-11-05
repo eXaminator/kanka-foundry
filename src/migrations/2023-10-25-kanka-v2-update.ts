@@ -16,20 +16,9 @@ export default async function migrate(): Promise<void> {
         return;
     }
 
-    try {
-        // Test if the old URL is still available...
-        const response = await fetch('https://kanka.io/api/1.0/campaigns');
-
-        // We expect a 401 since we didn't pass in any token, if we get anything else we assume the
-        // old URL is no longer available
-        if (response.status !== 401) throw new Error();
-        logInfo('Nothing to do!');
-    } catch {
-        // ...if not, we update the config
-        logInfo('Update the baseUrl config...');
-        await setSetting('baseUrl', 'https://api.kanka.io');
-        showInfo('migration.migrated-v2');
-    }
+    logInfo('Update the baseUrl config...');
+    await setSetting('baseUrl', 'https://api.kanka.io');
+    showInfo('migration.migrated-v2');
 
     logInfo('V2 migration done!');
 }

@@ -33,6 +33,10 @@ function createReference(
         isPrivate: false,
         thumb: undefined,
         image: undefined,
+        urls: {
+            view: 'http://app.kanka.com/w/4711/entities/1234',
+            api: 'http://api.kanka.com/campaign/4711/characters/1234',
+        },
     };
 }
 
