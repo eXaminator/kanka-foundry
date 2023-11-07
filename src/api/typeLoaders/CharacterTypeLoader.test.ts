@@ -22,6 +22,7 @@ function createCharacter(data: Partial<KankaApiCharacter> = {}): KankaApiCharact
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ...data,
     } as KankaApiCharacter;
 }

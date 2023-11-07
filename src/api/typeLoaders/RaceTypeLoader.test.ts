@@ -20,6 +20,7 @@ function createRace(data: Partial<KankaApiRace> = {}): KankaApiRace {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ancestors: [],
         children: [],
         locations: [],

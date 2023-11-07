@@ -20,6 +20,7 @@ function createLocation(data: Partial<KankaApiLocation> = {}): KankaApiLocation 
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ancestors: [],
         children: [],
         ...data,

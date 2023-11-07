@@ -68,6 +68,7 @@ KANKA:
                 inventory: Inventar
                 abilities: Fähigkeiten
                 assets: Anhänge
+                events: Erinnerungen
             labels:
                 type: Typ
                 location: Ort
@@ -88,6 +89,7 @@ KANKA:
             value:
                 yes: Ja
                 no: Nein
+                days: '{value} Tage'
 
         character:
             pages:
@@ -277,6 +279,7 @@ TYPES:
             assets: Kanka Anhänge
             inventory: Kanka Inventar
             children: Kanka Kinder
+            events: Kanka Erinnerungen
             character-organisations: Kanka Charakter Organisationen
             family-members: Kanka Familienmitglieder
             organisation-members: Kanka Organsationsmitglieder

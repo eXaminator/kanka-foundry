@@ -23,6 +23,7 @@ function createFamily(data: Partial<KankaApiFamily> = {}): KankaApiFamily {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ...data,
     } as KankaApiFamily;
 }
