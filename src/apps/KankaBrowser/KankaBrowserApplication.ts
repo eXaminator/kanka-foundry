@@ -38,6 +38,9 @@ const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
     [EntityType.character]: {
         icon: 'fa-user',
     },
+    [EntityType.creature]: {
+        icon: 'fa-deer',
+    },
     [EntityType.event]: {
         icon: 'fa-bolt',
     },
@@ -331,6 +334,7 @@ export default class KankaBrowserApplication extends Application {
             [
                 'ability',
                 'character',
+                'creature',
                 'location',
                 'race',
                 'organisation',

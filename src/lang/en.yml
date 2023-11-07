@@ -9,6 +9,7 @@ KANKA:
     entityType:
         ability: Abilities
         character: Characters
+        creature: Creatures
         family: Families
         item: Items
         event: Events

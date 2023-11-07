@@ -10,6 +10,8 @@ export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
     getCampaign: vi.fn(),
     getCharacter: vi.fn(),
     getAllCharacters: vi.fn(),
+    getCreature: vi.fn(),
+    getAllCreatures: vi.fn(),
     getAbility: vi.fn(),
     getAllAbilities: vi.fn(),
     getFamily: vi.fn(),
