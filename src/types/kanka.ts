@@ -5,6 +5,7 @@ export type KankaApiEntityId = number | { __type: 'KankaApiEntityId' };
 export type KankaApiAnyId = KankaApiId | KankaApiEntityId;
 export type KankaApiEntityType =
     'character'
+    | 'creature'
     | 'location'
     | 'family'
     | 'ability'
@@ -301,6 +302,13 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
     is_personality_pinned: boolean;
     is_appearance_pinned: boolean;
     organisations: { data: KankaApiCharacterOrganisationLink[] };
+}
+
+export interface KankaApiCreature extends KankaApiChildEntityWithChildren {
+    ancestors: KankaApiEntityId[];
+    creature_id: KankaApiId | null;
+    locations: KankaApiId[];
+    type: string | null;
 }
 
 export interface KankaApiAbility extends KankaApiChildEntityWithChildren {

@@ -3,6 +3,7 @@ import {
     KankaApiCampaign,
     KankaApiCharacter,
     KankaApiChildEntity,
+    KankaApiCreature,
     KankaApiEntity,
     KankaApiEntityId,
     KankaApiEvent,
@@ -84,6 +85,26 @@ export default class KankaApi {
     public async getAllCharacters(campaignId: KankaApiId): Promise<KankaApiCharacter[]> {
         return this.fetchFullList<KankaApiCharacter>(
             `campaigns/${Number(campaignId)}/characters?related=1`,
+        );
+    }
+
+    public async getCreature(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiCreature> {
+        const list = await this.getAllCreatures(campaignId);
+        const entity = list.find(entity => entity.id === id);
+        if (!entity) throw new Error(`Could not find creature with ID '${String(id)}'`);
+        return entity;
+        /*
+        type Result = KankaApiResult<KankaApiCreature>;
+        const result = await this.#fetcher
+            .fetch<Result>(`campaigns/${String(campaignId)}/creatures/${String(id)}?related=1`);
+        return result.data;
+         */
+    }
+
+    public async getAllCreatures(campaignId: KankaApiId): Promise<KankaApiCreature[]> {
+        return this.fetchFullListWithAncestors<KankaApiCreature>(
+            `campaigns/${Number(campaignId)}/creatures?related=1`,
+            'creature_id',
         );
     }
 

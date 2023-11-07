@@ -1,6 +1,7 @@
 enum EntityType {
     ability = 'ability',
     campaign = 'campaign',
+    creature = 'creature',
     character = 'character',
     event = 'event',
     family = 'family',
