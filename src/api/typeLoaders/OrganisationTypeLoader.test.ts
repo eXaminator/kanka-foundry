@@ -24,6 +24,7 @@ function createOrganisation(data: Partial<KankaApiOrganisation> = {}): KankaApiO
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ...data,
     } as KankaApiOrganisation;
 }

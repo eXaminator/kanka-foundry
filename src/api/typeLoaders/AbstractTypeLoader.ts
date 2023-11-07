@@ -13,6 +13,7 @@ export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity =
             ...entity.relations.map(relation => collection.addByEntityId(relation.target_id)),
             ...entity.inventory.map(item => collection.addById(item.item_id, 'item')),
             ...entity.entity_abilities.map(ability => collection.addById(ability.ability_id, 'ability')),
+            ...entity.entity_events.map(event => collection.addById(event.calendar_id, 'calendar')),
         ]);
 
         return collection;

@@ -20,6 +20,7 @@ function createNote(data: Partial<KankaApiNote> = {}): KankaApiNote {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ancestors: [],
         children: [],
         ...data,

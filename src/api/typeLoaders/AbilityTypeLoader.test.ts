@@ -23,6 +23,7 @@ function createAbility(data: Partial<KankaApiAbility> = {}): KankaApiAbility {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ...data,
     } as KankaApiAbility;
 }

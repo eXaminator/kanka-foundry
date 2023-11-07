@@ -21,6 +21,7 @@ function createQuest(data: Partial<KankaApiQuest> = {}): KankaApiQuest {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ancestors: [],
         children: [],
         elements: [],

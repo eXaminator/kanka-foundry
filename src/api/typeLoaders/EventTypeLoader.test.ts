@@ -20,6 +20,7 @@ function createEvent(data: Partial<KankaApiEvent> = {}): KankaApiEvent {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ...data,
     } as KankaApiEvent;
 }

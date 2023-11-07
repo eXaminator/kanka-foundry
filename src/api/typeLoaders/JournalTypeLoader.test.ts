@@ -20,6 +20,7 @@ function createJournal(data: Partial<KankaApiJournal> = {}): KankaApiJournal {
         relations: [],
         inventory: [],
         entity_abilities: [],
+        entity_events: [],
         ancestors: [],
         children: [],
         ...data,

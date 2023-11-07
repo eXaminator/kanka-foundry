@@ -372,6 +372,7 @@ function createAllPages(
         createPage('attributes', 'KANKA.journal.shared.pages.attributes', mergeModel(model, entity.attributes), journal),
         createPage('abilities', 'KANKA.journal.shared.pages.abilities', mergeModel(model, entity.entity_abilities), journal),
         createPage('inventory', 'KANKA.journal.shared.pages.inventory', mergeModel(model, entity.inventory), journal),
+        createPage('events', 'KANKA.journal.shared.pages.events', mergeModel(model, entity.entity_events), journal),
 
         createPage('children', `KANKA.entityType.${type}`, mergeModel(model, (entity as KankaApiChildEntityWithChildren).children?.map(child => ({ ref: references.findByEntityId(child.entity_id), type: child.type }))), journal),
     ].filter(page => !!page);
