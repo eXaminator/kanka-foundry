@@ -3,7 +3,6 @@ import api from '../../api';
 import AccessToken from '../../api/AccessToken';
 import KankaJournalApplication from '../../apps/KankaJournal/KankaJournalApplication';
 import registerHandlebarsHelpers from '../../handlebars/registerHandlebarsHelper';
-import { setCurrentCampaignById } from '../../state/currentCampaign';
 import localization from '../../state/localization';
 import { logError } from '../../util/logger';
 import getGame from '../getGame';
@@ -84,7 +83,6 @@ export default function init(): void {
         registerSettings({
             baseUrl: value => api.switchBaseUrl(value ?? ''),
             accessToken: value => setToken(value ?? ''),
-            campaign: value => value && setCurrentCampaignById(parseInt(value, 10) || null),
             importLanguage: async (value) => {
                 await localization.setLanguage(value ?? getGame().i18n.lang);
                 Object

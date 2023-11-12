@@ -46,7 +46,9 @@ KANKA:
         importTab:
             header: Kanka entities
         filter:
-            label: Filter
+            label: Search
+        campaign:
+            label: Campaign
         label:
             template: Template entity
         title: Kanka Journal Import
@@ -206,7 +208,6 @@ KANKA:
             ErrorInvalidAccessToken: The given Kanka access token is invalid.
             ErrorTokenExpired: Your Kanka access token is expired. Please provide a new one.
             WarningTokenExpiration: Your Kanka access token is going to expire withing the next week. Please provide a new one.
-            fetchError: There was an error fetching data from Kanka. Please check your settings and try again.
     migration:
         dialog:
             header: Kanka-Foundry migration

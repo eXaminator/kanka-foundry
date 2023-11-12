@@ -169,7 +169,6 @@ KANKA:
             ErrorInvalidAccessToken: O token de acesso Kanka fornecido é inválido.
             ErrorTokenExpired: Seu token de acesso Kanka expirou. Forneça um novo.
             WarningTokenExpiration: Seu token de acesso Kanka expirará na próxima semana. Forneça um novo.
-            fetchError: Ocorreu um erro ao buscar dados de Kanka. Por favor, verifique suas configurações e tente novamente.
     migration:
         dialog:
             listHeader:

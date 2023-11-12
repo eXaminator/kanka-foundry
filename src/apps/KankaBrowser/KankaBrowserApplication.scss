@@ -166,7 +166,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         grid-gap: 5px;
-        // clear: both;
 
         &.-single {
             grid-template-columns: 1fr;
@@ -194,10 +193,6 @@
         padding: 5px;
 
         background: #fff5;
-
-        &.-success {
-            background: #9efc7530;
-        }
 
         &.-warn {
             background: #fd693d30;
@@ -272,31 +267,6 @@
                     margin-left: 0;
                 }
             }
-        }
-    }
-
-    .kanka-loading-indicator {
-        text-align: center;
-        padding: 2em 0;
-
-        .fa-spinner {
-            animation: kanka-spin 1.5s linear infinite;
-            font-size: 2em;
-        }
-
-        &.inline {
-            padding: 0;
-            display: inline;
-
-            .fa-spinner {
-                font-size: 1em;
-            }
-        }
-    }
-
-    @keyframes kanka-spin {
-        100% {
-            transform: rotate(360deg);
         }
     }
 
@@ -415,10 +385,6 @@
 
                 .kanka-avatar {
                     margin-right: 1rem;
-                }
-
-                &.-success {
-                    background: #9efc7530;
                 }
 
                 &.-warn {

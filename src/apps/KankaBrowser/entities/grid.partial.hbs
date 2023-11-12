@@ -1,7 +1,7 @@
 <ul class="kanka-cards">
     {{#each (kankaSortBy entities 'name')}}
         <li
-            class="kanka-card {{#if (kankaHasJournalEntry this.id)}}-success{{/if}} {{#if (kankaIsEntityOutdated this)}}-warn{{/if}}"
+            class="kanka-card {{#if (kankaIsEntityOutdated this)}}-warn{{/if}}"
             data-filter-text="{{ kankaToLowerCase this.name }}"
         >
             <div class="kanka-avatar">

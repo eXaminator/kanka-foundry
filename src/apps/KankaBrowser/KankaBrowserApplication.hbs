@@ -1,7 +1,7 @@
 <div class="flexcol">
     <header>
         <h1 class="kanka-action-row">
-            <span><a href="{{campaign.urls.view}}" target="_blank">{{campaign.name}}</a></span>
+            <span>{{ kankaLocalize 'browser' 'importTab' 'header' }}</span>
             <button type="button" data-action="view-grid" title="{{ kankaLocalize 'browser' 'action' 'viewGrid' }}">
                 <i class="fas fa-th-large"></i>
             </button>
@@ -25,25 +25,15 @@
 
     <section class="tab-container">
         <div class="tab" data-tab="import" data-group="primary-tabs">
-            {{#if campaign.entry }}
-                <section class="campaign-description">
-                    {{#if campaign.image }}
-                        <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
-                    {{/if}}
-                    {{{ campaign.entry }}}
-                </section>
-            {{/if}}
-
-            <h2 class="kanka-action-row" style="clear: both;">
-                <span>{{ kankaLocalize 'browser' 'importTab' 'header' }}</span>
-                <button type="button" data-action="link-all" {{#unless data}}disabled{{/unless}}>
-                    <i class="fas fa-link fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'linkAll' }}
-                </button>
-                <button type="button" data-action="update-outdated" {{#unless data}}disabled{{/unless}}>
-                    <i class="fas fa-sync fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
-                </button>
-            </h2>
             <form class="filter">
+                <div class="form-group">
+                    <label>{{ kankaLocalize 'browser' 'campaign' 'label' }}</label>
+                    <div class="form-fields">
+                        <select name="campaigns">
+                            {{selectOptions campaigns selected=campaign.id}}
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label>{{ kankaLocalize 'browser' 'filter' 'label' }}</label>
                     <div class="form-fields">
@@ -51,8 +41,29 @@
                     </div>
                 </div>
             </form>
-            <div class="kanka-entity-list">
-                {{#if data}}
+
+
+            {{#if campaign }}
+                <h2 class="kanka-action-row">
+                    <span><a href="{{campaign.urls.view}}" target="_blank">{{campaign.name}}</a></span>
+                    <button type="button" data-action="link-all" {{#unless data}}disabled{{/unless}}>
+                        <i class="fas fa-link fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'linkAll' }}
+                    </button>
+                    <button type="button" data-action="update-outdated" {{#unless data}}disabled{{/unless}}>
+                        <i class="fas fa-sync fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'updateOutdated' }}
+                    </button>
+                </h2>
+                {{#if campaign.entry }}
+                    <section class="campaign-description">
+                        {{#if campaign.image }}
+                            <img src="{{ campaign.image_full }}" alt="{{ campaign.name }}" class="campaign-image" />
+                        {{/if}}
+                        {{{ campaign.entry }}}
+                    </section>
+                {{/if}}
+            {{/if}}
+            {{#if data}}
+                <div class="kanka-entity-list" style="clear: both;">
                     {{#each (kankaGroupBy (kankaSortBy data 'type' 'name') 'type') as |entities type|}}
                         {{#with (lookup ../typeConfig type) as |typeConfig|}}
                             <details class="kanka-details" data-type="{{ type }}" {{#if typeConfig.isOpen}}open{{/if}}>
@@ -80,11 +91,9 @@
                             </details>
                         {{/with}}
                     {{/each}}
-                {{else}}
-                    <div class="kanka-loading-indicator"><i class="fas fa-spinner"></i></div>
-                {{/if}}
+                </div>
             </div>
-        </div>
+        {{/if}}
         <div class="tab" data-tab="deleted" data-group="primary-tabs">
             <h2 class="kanka-action-row" style="clear: both;">
                 <span>{{ kankaLocalize 'browser' 'deleteTab' 'header' }}</span>

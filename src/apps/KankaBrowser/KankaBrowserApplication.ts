@@ -3,10 +3,9 @@ import getMessage from '../../foundry/getMessage';
 import { findAllKankaEntries, findEntryByEntityId, getEntryFlag, hasOutdatedEntryByEntity } from '../../foundry/journalEntries';
 import { showError } from '../../foundry/notifications';
 import { KankaSettings, getSetting, setSetting } from '../../foundry/settings';
-import { getCurrentCampaign } from '../../state/currentCampaign';
 import { createEntities, createEntity, updateEntity } from '../../syncEntities';
 import EntityType from '../../types/EntityType';
-import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiEntityType } from '../../types/kanka';
 import { ProgressFn } from '../../types/progress';
 import groupBy from '../../util/groupBy';
 import { logError, logInfo } from '../../util/logger';
@@ -19,8 +18,8 @@ interface EntityTypeConfig {
 }
 
 interface TemplateData {
+    campaigns?: Record<string, string>[];
     campaign?: KankaApiCampaign;
-    kankaCampaignId?: KankaApiId;
     data?: KankaApiEntity[];
     typeConfig: Record<string, EntityTypeConfig>,
     currentFilter: string;
@@ -72,6 +71,8 @@ const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
 
 export default class KankaBrowserApplication extends Application {
     #currentFilter = '';
+    #campaign: KankaApiCampaign | undefined;
+    #campaigns: KankaApiCampaign[] | undefined;
     #entities: KankaApiEntity[] | undefined;
 
     static get defaultOptions(): ApplicationOptions {
@@ -88,13 +89,6 @@ export default class KankaBrowserApplication extends Application {
         };
     }
 
-    protected get campaign(): KankaApiCampaign {
-        const campaign = getCurrentCampaign();
-
-        if (!campaign) throw new Error('Campaign has not been loaded yet.');
-        return campaign;
-    }
-
     protected get deletedSnapshots(): KankaApiChildEntity[] {
         return findAllKankaEntries()
             .flatMap((entry) => {
@@ -103,7 +97,7 @@ export default class KankaBrowserApplication extends Application {
 
                 if (!snapshot) return [];
                 if (!this.#entities) return [];
-                if (campaignId !== this.campaign.id) return [];
+                if (campaignId !== this.#campaign?.id) return [];
                 if (this.#entities.some(e => e.id === snapshot.entity_id)) return [];
 
                 return [snapshot];
@@ -124,8 +118,9 @@ export default class KankaBrowserApplication extends Application {
 
         return {
             ...super.getData(),
-            campaign: this.campaign,
-            kankaCampaignId: this.campaign.id,
+            campaign: this.#campaign ?? { id: 0 },
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            campaigns: (this.#campaigns ?? []).reduce((choices, { id, name }) => ({ ...choices, [String(id)]: name }), { 0: '-- Please choose --' }),
             currentFilter: this.#currentFilter,
             typeConfig,
             data: this.#entities,
@@ -152,11 +147,21 @@ export default class KankaBrowserApplication extends Application {
             this.filterList(filter);
         });
 
+        html.on('input', '[name="campaigns"]', async (event) => {
+            const campaignId = event.target.value === '0' ? '' : event.target.value;
+            await setSetting('campaign', campaignId);
+            this.#campaign = undefined;
+            this.#entities = undefined;
+            this.render();
+        });
+
         html.on('click', 'button[data-action]', async (event) => {
+            if (!this.#campaign) return;
+
             const { action, id: idString, type } = event.currentTarget?.dataset ?? {};
             const id = parseInt(idString, 10);
 
-            logInfo('click', { action, id, type }, this.campaign);
+            logInfo('click', { action, id, type }, this.#campaign);
 
             try {
                 switch (action) {
@@ -187,7 +192,7 @@ export default class KankaBrowserApplication extends Application {
                         } else {
                             const entity = this.#entities?.find(e => e.id === id);
                             if (entity) {
-                                await createEntity(this.campaign.id, entity?.type, entity?.child_id, this.#entities);
+                                await createEntity(this.#campaign.id, entity?.type, entity?.child_id, this.#entities);
                             }
                         }
                         this.render();
@@ -203,7 +208,7 @@ export default class KankaBrowserApplication extends Application {
 
                         this.setLoadingState(event.currentTarget);
                         await createEntities(
-                            this.campaign.id,
+                            this.#campaign.id,
                             type,
                             unlinkedEntities.map(e => e.child_id),
                             this.#entities,
@@ -224,7 +229,7 @@ export default class KankaBrowserApplication extends Application {
                             if (Object.prototype.hasOwnProperty.call(entityMap, syncType)) {
                                 // eslint-disable-next-line no-await-in-loop
                                 await createEntities(
-                                    this.campaign.id,
+                                    this.#campaign.id,
                                     syncType as KankaApiEntityType,
                                     entityMap[syncType].map(e => e.child_id),
                                     this.#entities,
@@ -329,8 +334,10 @@ export default class KankaBrowserApplication extends Application {
     }
 
     protected async loadEntities(): Promise<void> {
+        if (!this.#campaign) return;
+
         const entities = await api.getAllEntities(
-            this.campaign.id,
+            this.#campaign.id,
             [
                 'ability',
                 'character',
@@ -364,6 +371,32 @@ export default class KankaBrowserApplication extends Application {
 
     // eslint-disable-next-line
     protected async _render(force?: boolean, options?: any): Promise<void> {
+        if (!this.#campaign && getSetting('campaign')) {
+            try {
+                const campaignId = parseInt(getSetting('campaign'), 10);
+                this.#campaign = await api.getCampaign(campaignId);
+            } catch (error) {
+                showError('browser.error.loadEntity');
+                logError(error);
+                await this.close();
+                return;
+            }
+        }
+
+        if (!this.#campaigns) {
+            this.#campaigns = undefined;
+            requestAnimationFrame(async () => {
+                try {
+                    this.#campaigns = await api.getAllCampaigns();
+                    this.render();
+                } catch (error) {
+                    showError('browser.error.loadEntity');
+                    logError(error);
+                    await this.close();
+                }
+            });
+        }
+
         if (!this.#entities) {
             this.#entities = undefined;
             requestAnimationFrame(async () => {
@@ -378,6 +411,12 @@ export default class KankaBrowserApplication extends Application {
         }
 
         await super._render(force, options);
+    }
+
+    public async close(options?: any) {
+        await super.close(options);
+        this.#entities = undefined;
+        this.#campaigns = undefined;
     }
 
     protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {

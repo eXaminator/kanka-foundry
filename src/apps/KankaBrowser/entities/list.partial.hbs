@@ -1,7 +1,7 @@
 <ul class="kanka-entity-list">
     {{#each (kankaSortBy entities 'name')}}
         <li
-            class="kanka-action-row {{#if (kankaHasJournalEntry this.id)}}-success{{/if}} {{#if (kankaIsEntityOutdated this)}}-warn{{/if}}"
+            class="kanka-action-row {{#if (kankaIsEntityOutdated this)}}-warn{{/if}}"
             data-filter-text="{{ kankaToLowerCase this.name }}"
         >
             <div>

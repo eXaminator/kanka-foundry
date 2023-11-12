@@ -2,11 +2,10 @@ import KankaBrowserApplication from '../../apps/KankaBrowser/KankaBrowserApplica
 import logo from '../../assets/kanka.png';
 import { logInfo } from '../../util/logger';
 import api from '../../api';
-import { getCurrentCampaign } from '../../state/currentCampaign';
 import getGame from '../getGame';
 import getMessage from '../getMessage';
 import { findEntriesByType, getEntryFlag } from '../journalEntries';
-import { showError } from '../notifications';
+import { showError, showWarning } from '../notifications';
 import { getSetting } from '../settings';
 import { KankaApiQuest } from '../../types/kanka';
 
@@ -23,7 +22,6 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
         const li = html.find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
         const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
-        console.log('QUEST SNAPSHOT', snapshot, snapshot.is_completed ? questStatus.complete : questStatus.open);
 
         link.html(
             `${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`,
@@ -50,14 +48,20 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
     button.on('click', async () => {
         if (!isGm) return;
 
-        if (!api.isReady) {
+        const accessToken = api.getToken();
+
+        if (!api.isReady || !accessToken) {
             showError('browser.error.provideAccessToken');
             return;
         }
 
-        if (!getCurrentCampaign()) {
-            showError('browser.error.selectCampaign');
+        if (accessToken.isExpired()) {
+            showError('settings.error.ErrorTokenExpired');
             return;
+        }
+
+        if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) { // One week
+            showWarning('settings.error.WarningTokenExpiration');
         }
 
         browserApplication.render(true, { focus: true });

@@ -78,12 +78,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             name: getMessage('settings.campaign.label'),
             hint: getMessage('settings.campaign.hint'),
             scope: 'world',
-            config: true,
+            config: false,
             type: String,
             default: '',
-            choices: {
-                '': '', // eslint-disable-line @typescript-eslint/naming-convention
-            },
         },
         onChangeMap,
     );

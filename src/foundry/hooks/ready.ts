@@ -1,5 +1,4 @@
 import executeMigrations from '../../executeMigrations';
-import { setCurrentCampaignById } from '../../state/currentCampaign';
 import localization from '../../state/localization';
 import { logError } from '../../util/logger';
 import getGame from '../getGame';
@@ -13,7 +12,6 @@ export default async function setup(): Promise<void> {
 
         if (getGame().user?.isGM) {
             await executeMigrations();
-            await setCurrentCampaignById(parseInt(getSetting('campaign'), 10));
         }
     } catch (error) {
         logError(error);

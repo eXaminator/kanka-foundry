@@ -46,6 +46,10 @@ export default class KankaApi {
         this.#fetcher.token = token;
     }
 
+    public getToken(): AccessToken | undefined {
+        return this.#fetcher.token;
+    }
+
     public switchBaseUrl(baseUrl: string): void {
         this.#fetcher.base = baseUrl;
     }

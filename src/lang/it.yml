@@ -171,7 +171,6 @@ KANKA:
             ErrorInvalidAccessToken: Il token di accesso a Kanka non è valido.
             ErrorTokenExpired: Il tuo token di accesso a Kanka è scaduto. Inseriscine uno nuovo.
             WarningTokenExpiration: Il tuo token di accesso a Kanka scadrà entro la prossima settimana. Inseriscine uno nuovo.
-            fetchError: Si è verificato un errore nell'acquisizione dei dati da Kanka. Controllare le impostazioni e riprovare.
     migration:
         dialog:
             header: Migrazione Kanka-Foundry

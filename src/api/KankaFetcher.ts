@@ -29,6 +29,10 @@ export default class KankaFetcher {
         this.#token = token;
     }
 
+    public get token(): AccessToken | undefined {
+        return this.#token;
+    }
+
     public set base(base: string) {
         this.#base = this.normalizeUrl(base);
         this.#limiter.reset();
