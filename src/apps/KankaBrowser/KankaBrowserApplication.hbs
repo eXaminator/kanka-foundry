@@ -45,7 +45,11 @@
 
             {{#if campaign }}
                 <h2 class="kanka-action-row">
-                    <span><a href="{{campaign.urls.view}}" target="_blank">{{campaign.name}}</a></span>
+                    <span>{{campaign.name}}</span>
+                    <button type="button" data-action="open-in-kanka">
+                        <i class="das fa-solid fa-up-right-from-square"></i>
+                        Kanka
+                    </button>
                     <button type="button" data-action="link-all" {{#unless data}}disabled{{/unless}}>
                         <i class="fas fa-link fa-fw"></i> {{ kankaLocalize 'browser' 'action' 'linkAll' }}
                     </button>
@@ -70,9 +74,13 @@
                                 <summary class="action-row">
                                     <i class="fas {{ typeConfig.icon }}"></i>
                                     <div>
-                                        <a href="{{../../campaign.urls.view}}/{{kankaReplace type "y$" "ie"}}s" target="_blank">{{ kankaLocalize 'entityType' type }}</a>
+                                        {{ kankaLocalize 'entityType' type }}
                                     </div>
                                     <div class="actions">
+                                        <button type="button" data-action="open-in-kanka" data-type="{{ type }}">
+                                            <i class="das fa-solid fa-up-right-from-square"></i>
+                                            Kanka
+                                        </button>
                                         <button type="button" data-action="link-type" data-type="{{ type }}">
                                             <i class="fas fa-link fa-fw"></i>
                                             {{ kankaLocalize 'browser' 'action' 'linkAll' }}

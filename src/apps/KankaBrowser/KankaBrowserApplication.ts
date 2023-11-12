@@ -184,6 +184,26 @@ export default class KankaBrowserApplication extends Application {
                         break;
                     }
 
+                    case 'open-in-kanka': {
+                        if (!this.#campaign) return;
+
+                        let url = this.#campaign.urls.view;
+                        if (id) {
+                            const entity = this.#entities?.find(e => e.id === id);
+                            url = entity?.urls.view ?? '';
+                        } else if (type) {
+                            url = `${url}/${type.replace(/y$/, 'ie')}s`;
+                        }
+
+                        if (url) {
+                            window.open(url, '_blank');
+                        } else {
+                            logError('Could not find a matching Kanka URL', { type, url });
+                        }
+
+                        break;
+                    }
+
                     case 'update-single': {
                         const entry = findEntryByEntityId(id);
                         this.setLoadingState(event.currentTarget);
