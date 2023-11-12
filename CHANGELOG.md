@@ -5,6 +5,25 @@
 
 * fix URL normalizing for self hosted kanka instances ([52c0ae3](https://github.com/eXaminator/kanka-foundry/commit/52c0ae33b08fa30cfd805b2060570b2a40c08902)), closes [#123](https://github.com/eXaminator/kanka-foundry/issues/123)
 
+# [4.0.0-rc.1](https://github.com/eXaminator/kanka-foundry/compare/3.1.12...4.0.0-rc.1) (2023-11-12)
+
+
+### Features
+
+* add linked and total entity count to Kanka Browser application for each type ([749dd1e](https://github.com/eXaminator/kanka-foundry/commit/749dd1e34a658f2413555870bc594b6d0c30c169))
+* add reminders for all types of entities ([9efeed0](https://github.com/eXaminator/kanka-foundry/commit/9efeed0138b2fba3de1600ed03544612584d42f5))
+* add support for creatures ([eebb6dc](https://github.com/eXaminator/kanka-foundry/commit/eebb6dc0b71e113fb19769b8914061166ea97434)), closes [#110](https://github.com/eXaminator/kanka-foundry/issues/110)
+* move campaign selection into kanka browser application ([7a3008e](https://github.com/eXaminator/kanka-foundry/commit/7a3008eb07c40adc4ee117452dd8366add25a639))
+* move links to Kanka pages in Browser Application to its own button ([991f050](https://github.com/eXaminator/kanka-foundry/commit/991f0501414ba86ae52a614409f01ebb5e2d64a9))
+* remove backwards compatibility with older Kanka API versions ([5ea5036](https://github.com/eXaminator/kanka-foundry/commit/5ea50368bccc3bfd94f429d9a9636483f4674106))
+* rework sheets to use Foundries default sheet styles ([b175153](https://github.com/eXaminator/kanka-foundry/commit/b1751534e442cc0eaacb060aeb24e9f2f58e4121))
+
+
+### BREAKING CHANGES
+
+* If you have a self hosted version of kanka make sure to update to the latest version.
+* This fully changes how sheets work in this module. The module now also depends on V11.
+
 ## [3.1.12](https://github.com/eXaminator/kanka-foundry/compare/3.1.11...3.1.12) (2023-11-05)
 
 
