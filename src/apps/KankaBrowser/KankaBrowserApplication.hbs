@@ -42,7 +42,6 @@
                 </div>
             </form>
 
-
             {{#if campaign }}
                 <h2 class="kanka-action-row">
                     <span>{{campaign.name}}</span>
@@ -68,13 +67,13 @@
             {{/if}}
             {{#if data}}
                 <div class="kanka-entity-list" style="clear: both;">
-                    {{#each (kankaGroupBy (kankaSortBy data 'type' 'name') 'type') as |entities type|}}
+                    {{#each entities as |metaData type|}}
                         {{#with (lookup ../typeConfig type) as |typeConfig|}}
                             <details class="kanka-details" data-type="{{ type }}" {{#if typeConfig.isOpen}}open{{/if}}>
                                 <summary class="action-row">
                                     <i class="fas {{ typeConfig.icon }}"></i>
                                     <div>
-                                        {{ kankaLocalize 'entityType' type }}
+                                        {{ kankaLocalize 'entityType' type }} ({{metaData.countLinked}} / {{metaData.count}})
                                     </div>
                                     <div class="actions">
                                         <button type="button" data-action="open-in-kanka" data-type="{{ type }}">
@@ -92,9 +91,9 @@
                                     </div>
                                 </summary>
                                 {{#if (kankaIsOneOf ../../settings.view 'grid')}}
-                                    {{>./entities/grid entities=entities}}
+                                    {{>./entities/grid entities=metaData.entities}}
                                 {{else}}
-                                    {{>./entities/list entities=entities}}
+                                    {{>./entities/list entities=metaData.entities}}
                                 {{/if}}
                             </details>
                         {{/with}}
