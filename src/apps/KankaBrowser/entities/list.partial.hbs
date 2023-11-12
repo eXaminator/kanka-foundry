@@ -16,9 +16,13 @@
                     {{#if this.child.image_thumb}}<img src="{{ this.child.image_thumb }}" alt="{{this.name}}" />{{/if}}
                 </div>
                 {{#if this.is_template}}<i class="far fa-copy" title="{{ kankaLocalize 'browser' 'label' 'template' }}"></i>{{/if}}
-                <a href="{{ this.urls.view }}" target="_blank">{{ this.name }}</a>
+                {{ this.name }}
 
             </div>
+            <button type="button" data-action="open-in-kanka" data-id="{{ this.id }}">
+                <i class="das fa-solid fa-up-right-from-square"></i>
+                Kanka
+            </button>
             {{#if (kankaHasJournalEntry this.id)}}
                 <button type="button" data-action="open" data-id="{{ this.id }}" class="kanka-button">
                     <i class="fas fa-book-open"></i>

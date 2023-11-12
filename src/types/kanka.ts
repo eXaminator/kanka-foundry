@@ -235,6 +235,10 @@ export interface KankaApiCampaign extends KankaApiEntityImageData {
     name: string;
     entry: string
     locale: string;
+    urls: {
+        view: string;
+        api: string;
+    };
 }
 
 export interface KankaApiRelated {
