@@ -30,6 +30,12 @@ interface TemplateData {
     },
 }
 
+type TypeMetaData = {
+    count: number,
+    countLinked: number,
+    entities: KankaApiEntity[]
+};
+
 const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
     [EntityType.ability]: {
         icon: 'fa-fire',
@@ -116,6 +122,20 @@ export default class KankaBrowserApplication extends Application {
                 };
             });
 
+        const groupedEntities = groupBy(this.#entities ?? [], 'type');
+        const groupedEntitiesWithMetaData: Record<string, TypeMetaData> = {};
+
+        Array
+            .from(groupedEntities.entries())
+            .sort(([a], [b]) => a[0].localeCompare(b[0]))
+            .forEach(([type, entities]) => {
+                groupedEntitiesWithMetaData[type] = {
+                    entities,
+                    count: entities.length,
+                    countLinked: entities.filter(e => !!findEntryByEntityId(e.id)).length,
+                };
+            });
+
         return {
             ...super.getData(),
             campaign: this.#campaign ?? { id: 0 },
@@ -123,6 +143,7 @@ export default class KankaBrowserApplication extends Application {
             campaigns: (this.#campaigns ?? []).reduce((choices, { id, name }) => ({ ...choices, [String(id)]: name }), { 0: '-- Please choose --' }),
             currentFilter: this.#currentFilter,
             typeConfig,
+            entities: groupedEntitiesWithMetaData,
             data: this.#entities,
             deletedEntries: this.deletedSnapshots,
             settings: {
