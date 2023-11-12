@@ -454,7 +454,7 @@ export default class KankaBrowserApplication extends Application {
         await super._render(force, options);
     }
 
-    public async close(options?: any) {
+    public async close(options?: unknown) {
         await super.close(options);
         this.#entities = undefined;
         this.#campaigns = undefined;

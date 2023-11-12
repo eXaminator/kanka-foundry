@@ -73,6 +73,7 @@ export default function init(): void {
             makeDefault: false,
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, DefaultPageSheet as any, {
             types: pageTypes.filter(type => ![`${moduleConfig.id}.post`].includes(type)),
             makeDefault: false,
@@ -117,6 +118,7 @@ if (import.meta.hot) {
                 .values(ui.windows)
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .filter((app: any) => app.constructor?.name === 'KankaJournalApplication')
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .forEach(async (app: any) => {
                     app.object._onSheetChange({ sheetOpen: true });
                 });
