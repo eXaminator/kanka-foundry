@@ -49,7 +49,9 @@ KANKA:
         importTab:
             header: Kanka Einträge
         filter:
-            label: Filter
+            label: Suche
+        campaign:
+            label: Kampagne
         label:
             template: Vorlage
         title: Kanka Journal Import
@@ -212,8 +214,6 @@ KANKA:
             ErrorTokenExpired: Dein Kanka Zugriffs-Token ist abgelaufen. Bitte hinterlege ein neues.
             WarningTokenExpiration: >
                 Dein Kanka Zugriffs-Token wird in weniger als einer Woche ablaufen. Bitte hinterlege ein neues.
-            fetchError: >
-                Es gab einen Fehler beim Abrufen der Daten von Kanka. Bitte überprüfe deine Einstellungen und probiere es erneut.
     migration:
         dialog:
             header: Kanka-Foundry Migration

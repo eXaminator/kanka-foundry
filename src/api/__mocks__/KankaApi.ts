@@ -5,6 +5,7 @@ export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
     isReady: true,
     reset: vi.fn(),
     switchUser: vi.fn(),
+    getToken: vi.fn(),
     switchBaseUrl: vi.fn(),
     getAllCampaigns: vi.fn(),
     getCampaign: vi.fn(),

@@ -56,9 +56,6 @@ imported data.
     entities for you. You can create a new \*Personal Access Token\*\* by logging into Kanka and going to the following URL:
     https://kanka.io/en/settings/api. Access Tokens are usually valid for 1 year before you need to create a new one.
     This module should warn you starting a week before it expires.
--   **Campaign**: After entering a valid Access Token you should receive a list of all Kanka campaigns you have access
-    to. You must select the campaign you would like to import data from. You can always change the campaign later to import
-    entities from another campaign without loosing what you have already imported.
 -   **Content language**: By default all labels within journal entries will use the same language you are using foundry
     in. But if you have written your Kanka entries in another language, it may seem strange to have mixed languages within
     the entries. Therefore you can change the language in which to display journal entries with this setting. Keep in mind

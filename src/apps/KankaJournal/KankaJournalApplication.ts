@@ -113,9 +113,6 @@ export default class KankaJournalApplication extends JournalSheet {
                         if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
 
                         await updateEntity(this.object);
-
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        // await syncEntities(campaign, [{ child_id: snapshot.id, type }], []);
                     } finally {
                         this.render();
                         event.target.classList.remove('-loading');
