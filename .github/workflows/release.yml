@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - main
+            - rc
 jobs:
     release:
         name: Release
@@ -57,7 +58,7 @@ jobs:
                   release_name: ${{ steps.semantic_release.outputs.release-version }}
                   body: ${{ steps.semantic_release.outputs.release-notes }}
                   draft: false
-                  prerelease: false
+                  prerelease: ${{ steps.semantic_release.outputs.type == 'prerelease' }}
 
             - name: Upload module.json
               if: steps.semantic_release.outputs.new-release-published == 'true'
@@ -82,7 +83,7 @@ jobs:
                   asset_content_type: application/zip
 
             - name: Deploy on FoundryVTT
-              if: steps.semantic_release.outputs.new-release-published == 'true'
+              if: steps.semantic_release.outputs.new-release-published == 'true' && steps.semantic_release.outputs.type != 'prerelease'
               uses: eXaminator/foundry-auto-release@1.1.12
               with:
                   manifest-path: dist/module.json
