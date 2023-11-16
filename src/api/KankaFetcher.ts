@@ -71,6 +71,7 @@ export default class KankaFetcher {
         return response.json();
     }
 
+    // https://kanka.foobar.com
     private normalizeUrl(url: string): string {
         let result = url.trim();
 
@@ -78,12 +79,12 @@ export default class KankaFetcher {
             result = `${result}/`;
         }
 
-        if (!result.endsWith('1.0/')) {
-            result = `${result}1.0/`;
-        }
-
         if (!result.startsWith('https://api.kanka.io/') && !result.endsWith('api/1.0/')) {
             result = `${result}api/1.0/`;
+        }
+
+        if (!result.endsWith('1.0/')) {
+            result = `${result}1.0/`;
         }
 
         if (!result.startsWith('http')) {
