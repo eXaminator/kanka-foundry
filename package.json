@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "kanka-foundry",
-    "version": "3.1.12",
+    "version": "3.1.13",
     "description": "",
     "repository": "https://github.com/eXaminator/kanka-foundry",
     "type": "module",

@@ -1,3 +1,10 @@
+## [3.1.13](https://github.com/eXaminator/kanka-foundry/compare/3.1.12...3.1.13) (2023-11-16)
+
+
+### Bug Fixes
+
+* fix URL normalizing for self hosted kanka instances ([52c0ae3](https://github.com/eXaminator/kanka-foundry/commit/52c0ae33b08fa30cfd805b2060570b2a40c08902)), closes [#123](https://github.com/eXaminator/kanka-foundry/issues/123)
+
 ## [3.1.12](https://github.com/eXaminator/kanka-foundry/compare/3.1.11...3.1.12) (2023-11-05)
 
 
