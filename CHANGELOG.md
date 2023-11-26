@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/eXaminator/kanka-foundry/compare/4.0.2...4.0.3) (2023-11-26)
+
+
+### Bug Fixes
+
+* fix line breaks for parent field on overview page ([804962a](https://github.com/eXaminator/kanka-foundry/commit/804962ae7963105b4f958b326b4cb9a74f364023))
+
 ## [4.0.2](https://github.com/eXaminator/kanka-foundry/compare/4.0.1...4.0.2) (2023-11-26)
 
 
