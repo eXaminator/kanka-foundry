@@ -1,3 +1,11 @@
+## [4.0.2](https://github.com/eXaminator/kanka-foundry/compare/4.0.1...4.0.2) (2023-11-26)
+
+
+### Bug Fixes
+
+* fix display of parent entity ([f56419e](https://github.com/eXaminator/kanka-foundry/commit/f56419e462286a2ac8de3f49644fb71ff3eb2ecc))
+* improve styling of attributes table ([0efd12d](https://github.com/eXaminator/kanka-foundry/commit/0efd12db16bcd4d0aabb9c0791575eefa873a94f))
+
 ## [4.0.1](https://github.com/eXaminator/kanka-foundry/compare/4.0.0...4.0.1) (2023-11-26)
 
 
