@@ -69,9 +69,22 @@ function getOwnership(
     if (setting === 'never' && (!forPage || currentOwnership)) return currentOwnership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
     if (setting === 'initial' && currentOwnership) return currentOwnership;
 
-    const allPrivate = entities.every(entity => isEntityPrivate(entity));
+    // This is a page based on the root entity (because it has attributes),
+    // so we can inherit the permissions from the journal entry
+    if (forPage && entities.every(entity => Boolean((entity as any).attributes))) {
+        return {
+            ...currentOwnership ?? {},
+            default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT,
+        };
+    }
 
-    if (allPrivate) return { ...currentOwnership ?? {}, default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
+    if (entities.every(entity => isEntityPrivate(entity))) {
+        return {
+            ...currentOwnership ?? {},
+            default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
+        };
+    }
+
     return forPage
         ? { ...currentOwnership ?? {}, default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT }
         : { ...currentOwnership ?? {}, default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER };
@@ -215,7 +228,10 @@ function createImagePage(
     if (!entity.has_custom_image) return null;
 
     const existingPage = journal?.pages.getName(name);
-    const ownership = getOwnership([entity], existingPage?.ownership);
+    const ownership = getOwnership(
+        [entity],
+        existingPage?.ownership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT },
+    );
 
     return {
         type: 'image',
