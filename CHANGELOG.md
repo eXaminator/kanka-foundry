@@ -1,3 +1,10 @@
+## [4.0.4](https://github.com/eXaminator/kanka-foundry/compare/4.0.3...4.0.4) (2023-11-26)
+
+
+### Bug Fixes
+
+* improve handling of page ownership when syncing an entity ([1d157a7](https://github.com/eXaminator/kanka-foundry/commit/1d157a755f54bbf494d2d513e7c19daacaa0bf3d))
+
 ## [4.0.3](https://github.com/eXaminator/kanka-foundry/compare/4.0.2...4.0.3) (2023-11-26)
 
 
