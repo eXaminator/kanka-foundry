@@ -157,6 +157,7 @@ function createPage(
         title: { show, level },
         system: { ...model, ...counts },
         ownership: getOwnership(entities, existingPage?.ownership),
+        flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
     };
 }
 
@@ -201,6 +202,7 @@ function createCharacterProfilePage(
             },
         },
         ownership,
+        flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
     };
 }
 
@@ -239,6 +241,7 @@ function createPostPage(
         title: { show, level },
         text: { content },
         ownership,
+        flags: { core: { sheetClass: 'kanka-foundry.PostPageSheet' } },
     };
 }
 
@@ -260,6 +263,7 @@ function createAssetFilePages(
                     src: asset._url,
                     image: { caption: asset.name },
                     ownership,
+                    flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
                 };
             }
 
@@ -270,6 +274,7 @@ function createAssetFilePages(
                     title: { show, level },
                     src: asset._url,
                     ownership,
+                    flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
                 };
             }
 
@@ -281,6 +286,7 @@ function createAssetFilePages(
                     src: asset._url,
                     video: { controls: true, autoplay: false, loop: false },
                     ownership,
+                    flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
                 };
             }
 
@@ -292,6 +298,7 @@ function createAssetFilePages(
                     src: asset.metadata.url,
                     video: { controls: true, autoplay: false, loop: false },
                     ownership,
+                    flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
                 };
             }
 
