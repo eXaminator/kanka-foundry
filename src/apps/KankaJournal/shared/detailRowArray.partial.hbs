@@ -11,9 +11,9 @@
             {{~#each references as | referenceId |~}}
                 {{~#with (kankaFindReference referenceId ../type) as | ref |~}}
                     {{~ref.name~}}
-                    {{#unless @last}}
+                    {{~#unless @last~}}
                         <span class="delimiter">{{#if ../delimiter}}{{../delimiter}}{{else}}»{{/if}}</span>
-                    {{/unless}}
+                    {{~/unless~}}
                 {{~/with~}}
             {{~/each~}}
         </td>
