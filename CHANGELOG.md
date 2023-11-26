@@ -1,3 +1,10 @@
+## [4.0.1](https://github.com/eXaminator/kanka-foundry/compare/4.0.0...4.0.1) (2023-11-26)
+
+
+### Bug Fixes
+
+* set proper default sheets for kanka journal pages ([46f26a4](https://github.com/eXaminator/kanka-foundry/commit/46f26a48a30227e22bc64f94abb21658a3ed6962))
+
 # [4.0.0](https://github.com/eXaminator/kanka-foundry/compare/3.1.13...4.0.0) (2023-11-26)
 
 
