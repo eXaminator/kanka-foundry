@@ -1,3 +1,10 @@
+## [4.0.5](https://github.com/eXaminator/kanka-foundry/compare/4.0.4...4.0.5) (2024-01-01)
+
+
+### Bug Fixes
+
+* fix member relations for family entities ([88d5727](https://github.com/eXaminator/kanka-foundry/commit/88d572780392412367dc155eae6637e0778463e8))
+
 ## [4.0.4](https://github.com/eXaminator/kanka-foundry/compare/4.0.3...4.0.4) (2023-11-26)
 
 
