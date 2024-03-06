@@ -33,7 +33,7 @@
                         {{ kankaLocalize 'browser' 'action' 'openJournal' }}
                     </button>
                 {{/if}}
-                <button type="button" data-action="sync" data-id="{{ this.id }}">
+                <button type="button" data-action="update-single" data-id="{{ this.id }}">
                     {{#if (kankaHasJournalEntry this.id)}}
                         <i class="fas fa-sync"></i> {{ kankaLocalize 'browser' 'action' 'updateSingle' }}
                     {{else}}
