@@ -1,3 +1,10 @@
+## [4.0.6](https://github.com/eXaminator/kanka-foundry/compare/4.0.5...4.0.6) (2024-03-08)
+
+
+### Bug Fixes
+
+* fix sync of single entries in grid view ([88ec4e6](https://github.com/eXaminator/kanka-foundry/commit/88ec4e6ce6b27b1cd2a9ff3b0d4ea3d023ee667c))
+
 ## [4.0.5](https://github.com/eXaminator/kanka-foundry/compare/4.0.4...4.0.5) (2024-01-01)
 
 
