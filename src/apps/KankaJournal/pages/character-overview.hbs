@@ -13,7 +13,7 @@
         {{!-- Pinned Organisations --}}
         {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.organisations.data) 'pin_id' 3) as | organisations |~}}
             {{~#each organisations ~}}
-                {{~>../shared/detailRow value=organisation_id type='organisation' rawLabel=role reference=true isSecret=(kankaIsSecret this) }}
+                {{~>../shared/detailRow value=organisation_id type='organisation' rawLabel=role label='character.labels.organisation_name' reference=true isSecret=(kankaIsSecret this) }}
             {{~/each~}}
         {{~/with~}}
     {{~/inline}}
