@@ -54,6 +54,8 @@ KANKA:
         title: Kanka Journal Import
 
     journal:
+        error:
+            sync: An error occurred while syncing the journal entry. Please check if the entry still exists in Kanka.
         shared:
             action:
                 refresh: Refresh

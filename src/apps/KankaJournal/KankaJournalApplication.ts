@@ -1,9 +1,12 @@
+import api from '../../api';
+import getGame from '../../foundry/getGame';
 import getMessage from '../../foundry/getMessage';
 import { getEntryFlag } from '../../foundry/journalEntries';
 import { showError } from '../../foundry/notifications';
 import { getSetting } from '../../foundry/settings';
 import localization from '../../state/localization';
 import { updateEntity } from '../../syncEntities';
+import { logError } from '../../util/logger';
 import './KankaJournalApplication.scss';
 
 type JournalSheetData = ReturnType<JournalSheet['getData']>;
@@ -85,6 +88,9 @@ export default class KankaJournalApplication extends JournalSheet {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public _getHeaderButtons(): unknown[] {
+        const accessToken = api.getToken();
+        const allowSync = getGame().user?.isGM && api.isReady && accessToken && !accessToken.isExpired();
+
         return [
             {
                 label: getMessage('journal.shared.action.openInKanka'),
@@ -99,7 +105,7 @@ export default class KankaJournalApplication extends JournalSheet {
                     }
                 },
             },
-            {
+            allowSync ? {
                 label: getMessage('journal.shared.action.refresh'),
                 icon: 'fas fa-rotate',
                 class: 'kanka-sync',
@@ -113,12 +119,15 @@ export default class KankaJournalApplication extends JournalSheet {
                         if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
 
                         await updateEntity(this.object);
+                    } catch (error) {
+                        showError('journal.error.sync');
+                        logError(error);
                     } finally {
                         this.render();
                         event.target.classList.remove('-loading');
                     }
                 },
-            },
+            } : undefined,
             ...super._getHeaderButtons(),
         ];
     }

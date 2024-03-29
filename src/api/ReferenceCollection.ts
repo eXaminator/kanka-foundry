@@ -72,7 +72,8 @@ export default class ReferenceCollection {
 
         try {
             if (!type) {
-                return await api.getEntity(this.#campaignId, id as KankaApiEntityId);
+                this.#entities.push(await api.getEntity(this.#campaignId, id as KankaApiEntityId));
+                return this.findEntityInCollection(id);
             }
 
             const list = await api.getAllEntities(this.#campaignId, [type]);

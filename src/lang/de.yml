@@ -57,6 +57,8 @@ KANKA:
         title: Kanka Journal Import
 
     journal:
+        error:
+            sync: Beim Synchronisieren des Eintrags ist ein Fehler aufgetreten. Bitte überprüfe, ob der Eintrag in Kanka noch existiert.
         shared:
             action:
                 refresh: Aktualisieren
