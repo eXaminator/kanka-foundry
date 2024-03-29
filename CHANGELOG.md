@@ -1,3 +1,10 @@
+## [4.0.8](https://github.com/eXaminator/kanka-foundry/compare/4.0.7...4.0.8) (2024-03-29)
+
+
+### Bug Fixes
+
+* fix the label of pinned members in organisation overview ([a4579b2](https://github.com/eXaminator/kanka-foundry/commit/a4579b2f9a91d1fa1f10975ca732e1be9414764e))
+
 ## [4.0.7](https://github.com/eXaminator/kanka-foundry/compare/4.0.6...4.0.7) (2024-03-29)
 
 
