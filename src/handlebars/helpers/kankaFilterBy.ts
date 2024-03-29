@@ -6,7 +6,7 @@ function getFilterFn<T extends Record<string, unknown>>(property: string, expect
 
         if (isRegex) {
             const regex = new RegExp(value);
-            return (a: T) => regex.test(globalThis.getProperty(a, property) as string);
+            return (a: T) => regex.test(String(globalThis.getProperty(a, property)));
         }
     }
 

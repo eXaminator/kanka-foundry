@@ -4,10 +4,8 @@
         {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
         {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
 
-        {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.members) 'pin_id' 'regex:2|3') as | starred |~}}
-            {{~#each starred ~}}
-                {{~>../shared/detailRow value=character_id type='character' rawLabel=role label='organisation.labels.member' reference=true isSecret=(kankaIsSecret this) }}
-            {{~/each~}}
-        {{~/with~}}
+        {{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.members) 'pin_id' 'regex:^(2|3)$') as | starred | ~}}
+            {{~>../shared/detailRow value=character_id type='character' rawLabel=role label='organisation.labels.member' reference=true isSecret=(kankaIsSecret this) }}
+        {{~/each~}}
     {{~/inline}}
 {{/../shared/overviewLayout}}

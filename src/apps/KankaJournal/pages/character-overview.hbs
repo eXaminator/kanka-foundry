@@ -11,10 +11,8 @@
         {{~>../shared/detailRow value=data.system.snapshot.family_id type='family' label='character.labels.family' reference=true }}
 
         {{!-- Pinned Organisations --}}
-        {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.organisations.data) 'pin_id' 3) as | organisations |~}}
-            {{~#each organisations ~}}
-                {{~>../shared/detailRow value=organisation_id type='organisation' rawLabel=role label='character.labels.organisation_name' reference=true isSecret=(kankaIsSecret this) }}
-            {{~/each~}}
-        {{~/with~}}
+        {{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.organisations.data) 'pin_id' 'regex:^(1|3)$') as | organisations | ~}}
+            {{~>../shared/detailRow value=organisation_id type='organisation' rawLabel=role label='character.labels.organisation_name' reference=true isSecret=(kankaIsSecret this) }}
+        {{~/each~}}
     {{~/inline}}
 {{/../shared/overviewLayout}}
