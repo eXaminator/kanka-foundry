@@ -7,6 +7,15 @@
 * properly handle pinned organisations without a role on character overview pages ([1cf7371](https://github.com/eXaminator/kanka-foundry/commit/1cf7371c609d34a7c1fb8ea4b00c46fd84ce81be))
 * show organisations that with onesided pins on character overview ([d839ef5](https://github.com/eXaminator/kanka-foundry/commit/d839ef5e9294152d2a3e3c3d1625bbc592998163))
 
+## [4.0.7](https://github.com/eXaminator/kanka-foundry/compare/4.0.6...4.0.7) (2024-03-29)
+
+
+### Bug Fixes
+
+* improve error handling when trying to sync a deleted kanka entry ([4249e36](https://github.com/eXaminator/kanka-foundry/commit/4249e367d94c7a68708098ae3265633e11154968))
+* properly handle pinned organisations without a role on character overview pages ([1cf7371](https://github.com/eXaminator/kanka-foundry/commit/1cf7371c609d34a7c1fb8ea4b00c46fd84ce81be))
+* show organisations that with onesided pins on character overview ([d839ef5](https://github.com/eXaminator/kanka-foundry/commit/d839ef5e9294152d2a3e3c3d1625bbc592998163))
+
 ## [4.0.6](https://github.com/eXaminator/kanka-foundry/compare/4.0.5...4.0.6) (2024-03-08)
 
 
