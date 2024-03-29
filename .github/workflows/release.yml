@@ -82,11 +82,27 @@ jobs:
                   asset_name: module.zip
                   asset_content_type: application/zip
 
+            - name: Read module.json
+              id: module
+              if: steps.semantic_release.outputs.new-release-published == 'true' && !contains(steps.semantic_release.outputs.release-version, '-rc.')
+              run: |
+                  echo 'module<<ENDOFMODULE' >> $GITHUB_OUTPUT
+                  cat dist/module.json >> $GITHUB_OUTPUT
+                  echo 'ENDOFMODULE' >> $GITHUB_OUTPUT
             - name: Deploy on FoundryVTT
               if: steps.semantic_release.outputs.new-release-published == 'true' && !contains(steps.semantic_release.outputs.release-version, '-rc.')
-              uses: eXaminator/foundry-auto-release@1.1.12
+              uses: fjogeleit/http-request-action@v1
               with:
-                  manifest-path: dist/module.json
-                  package-id: ${{ secrets.FVTT_PACKAGE_ID }}
-                  fvtt-username: ${{ secrets.FVTT_USERNAME }}
-                  fvtt-password: ${{ secrets.FVTT_PASSWORD }}
+                  url: 'https://api.foundryvtt.com/_api/packages/release_version'
+                  method: 'POST'
+                  customHeaders: '{"Authorization": "${{secrets.FVTT_RELEASE_TOKEN}}"}'
+                  data: |
+                      {
+                        "id": "${{ fromJSON(steps.module.outputs.module).id }}",
+                        "release": {
+                          "version": "${{ fromJSON(steps.module.outputs.module).version }}",
+                          "manifest": "${{ fromJSON(steps.module.outputs.module).manifest }}",
+                          "notes": "${{ fromJSON(steps.module.outputs.module).url }}/releases/tag/${{ fromJSON(steps.module.outputs.module).version }}",
+                          "compatibility": ${{ toJSON(fromJSON(steps.module.outputs.module).compatibility) }}
+                        }
+                      }
