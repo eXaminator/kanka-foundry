@@ -17,7 +17,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 18
+                  node-version: 20
 
             - name: Get foundry code
               env:
@@ -96,6 +96,7 @@ jobs:
                   url: 'https://api.foundryvtt.com/_api/packages/release_version'
                   method: 'POST'
                   customHeaders: '{"Authorization": "${{secrets.FVTT_RELEASE_TOKEN}}"}'
+                  preventFailureOnNoResponse: 'true'
                   data: |
                       {
                         "id": "${{ fromJSON(steps.module.outputs.module).id }}",
