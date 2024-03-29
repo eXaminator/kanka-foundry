@@ -1,9 +1,9 @@
+import { defineConfig } from 'vitest/config';
 import { resolve } from 'path';
-import type { UserConfig } from 'vite';
 import hbsPlugin from './build/hbsPlugin';
 import translationPlugin from './build/translationPlugin';
 
-const config: UserConfig = {
+export default defineConfig({
     root: resolve(__dirname, 'src/devServer'),
     publicDir: resolve(__dirname, 'public'),
     base: '/modules/kanka-foundry/',
@@ -36,8 +36,24 @@ const config: UserConfig = {
     },
     plugins: [
         hbsPlugin(),
-        translationPlugin('./src/lang', './dist/lang'),
+        translationPlugin(),
     ],
-};
-
-export default config;
+    test: {
+        clearMocks: true,
+        setupFiles: ['./src/setupTests.ts'],
+        root: resolve(__dirname, 'src'),
+        globals: true,
+        coverage: {
+            all: true,
+            exclude: [
+                'types/**',
+                'index.ts',
+                'kanka.ts',
+                '**/*.d.ts',
+                '**/*.test.ts',
+                '**/__mocks__/**',
+                'dev/**',
+            ],
+        },
+    },
+});

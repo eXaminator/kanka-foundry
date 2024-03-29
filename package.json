@@ -24,8 +24,8 @@
         "@semantic-release/exec": "^6.0.1",
         "@semantic-release/git": "^10.0.0",
         "@types/jquery": "^3.5.16",
-        "@types/node": "^18.8.3",
-        "@vitest/coverage-c8": "^0.33.0",
+        "@types/node": "^20.11.30",
+        "@vitest/coverage-v8": "^1.4.0",
         "eslint": "^8.0.1",
         "eslint-config-brainbits-typescript": "^4.0.0-beta.4",
         "eslint-plugin-babel": "^5.3.1",
@@ -36,14 +36,14 @@
         "js-yaml": "^4.1.0",
         "mockdate": "^3.0.5",
         "sass": "^1.52.1",
-        "semantic-release": "^22.0.5",
+        "semantic-release": "^23.0.6",
         "semantic-release-replace-plugin": "^1.2.7",
         "ts-node": "^10.3.0",
         "typescript": "^5.0.2",
-        "vite": "^4.2.1",
-        "vitest": "^0.34.6"
+        "vite": "^5.2.7",
+        "vitest": "^1.4.0"
     },
     "dependencies": {
-        "jwt-decode": "^3.1.2"
+        "jwt-decode": "^4.0.0"
     }
 }

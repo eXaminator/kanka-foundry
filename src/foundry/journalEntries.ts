@@ -5,15 +5,16 @@ import {
     AnyConstrainable,
     KankaApiCharacter,
     KankaApiChildEntity,
-    KankaApiId,
+    KankaApiChildEntityWithChildren,
     KankaApiEntity,
     KankaApiEntityAsset,
     KankaApiEntityId,
     KankaApiEntityType,
     KankaApiFamily,
+    KankaApiId,
     KankaApiOrganisation,
     KankaApiQuest,
-    KankaApiChildEntityWithChildren,
+    KankaApiRelated,
 } from '../types/kanka';
 import groupBy from '../util/groupBy';
 import isEntityPrivate from '../util/isEntityPrivate';
@@ -71,7 +72,7 @@ function getOwnership(
 
     // This is a page based on the root entity (because it has attributes),
     // so we can inherit the permissions from the journal entry
-    if (forPage && entities.every(entity => Boolean((entity as any).attributes))) {
+    if (forPage && entities.every(entity => Boolean((entity as unknown as KankaApiRelated).attributes))) {
         return {
             ...currentOwnership ?? {},
             default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT,

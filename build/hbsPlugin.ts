@@ -1,16 +1,18 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { join, relative, dirname } from 'path';
+import { dirname, join, relative } from 'path';
+import { PluginContext } from 'rollup';
+import { Plugin } from 'vite';
 
 function getPartialPath(parent, partial) {
     const parentPath = dirname(parent);
     return join(parentPath, `${partial}.partial.hbs`);
 }
 
-export default function hbsPlugin() {
+export default function hbsPlugin(): Plugin {
     let config;
     let server;
 
-    async function load(id) {
+    function load(this: PluginContext | void, id: string) {
         if (!id.endsWith('.hbs')) {
             return null;
         }
@@ -42,7 +44,7 @@ export default function hbsPlugin() {
             mkdirSync(dirname(outputPath), { recursive: true });
             writeFileSync(outputPath, parsedContent);
         } else {
-            this.emitFile({
+            this?.emitFile({
                 type: 'asset',
                 fileName: outputRelativePath,
                 source: parsedContent,
@@ -70,11 +72,13 @@ export default function hbsPlugin() {
         async handleHotUpdate({ server, file, modules }) {
             // Send event to frontend which can then remove the file from the cache and rerender open apps
             if (!file.endsWith('.hbs')) {
-                return null;
+                return;
             }
 
             const promises = modules.map(async (module) => {
-                await load(module.id);
+                if (!module.id || !module.file) return;
+
+                load(module.id);
 
                 const inputBasePath = dirname(config.build.lib.entry);
                 const inputRelativePath = relative(inputBasePath, module.file);

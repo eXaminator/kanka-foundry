@@ -1,10 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { flatten } from 'flat';
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { dirname, join, relative } from 'path';
+import { Plugin } from 'vite';
 
-export default function translationPlugin() {
+export default function translationPlugin(): Plugin {
     let config;
     let server;
 

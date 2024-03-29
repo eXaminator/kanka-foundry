@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "es2020",
         "module": "es2020",
-        "lib": ["dom", "dom.iterable", "es2020"],
+        "lib": ["dom", "dom.iterable", "ES2021"],
         "strictNullChecks": true,
         "strict": true,
         "resolveJsonModule": true,
@@ -14,7 +14,7 @@
         "allowJs": true,
         "noEmit": true
     },
-    "include": ["src/**/*", "foundry-code/common/**/*", "foundry-code/client/**/*"],
+    "include": ["src/**/*", "build/**/*", "foundry-code/common/**/*", "foundry-code/client/**/*"],
     "exclude": [
         "foundry-code/client/pixi/placeables/token.js",
         "foundry-code/client/pixi/core/interaction/mouse-handler.js"

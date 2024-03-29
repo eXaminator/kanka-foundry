@@ -1,4 +1,4 @@
-import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 export default class AccessToken {
     #token: string;
