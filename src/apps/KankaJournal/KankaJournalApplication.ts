@@ -90,22 +90,24 @@ export default class KankaJournalApplication extends JournalSheet {
     public _getHeaderButtons(): unknown[] {
         const accessToken = api.getToken();
         const allowSync = getGame().user?.isGM && api.isReady && accessToken && !accessToken.isExpired();
+        const buttons = super._getHeaderButtons();
 
-        return [
-            {
-                label: getMessage('journal.shared.action.openInKanka'),
-                icon: 'fas fa-up-right-from-square',
-                class: 'kanka-open',
-                onclick: () => {
-                    const snapshot = getEntryFlag(this.object, 'snapshot');
-                    if (snapshot?.urls.view) {
-                        window.open(snapshot.urls.view, '_blank');
-                    } else {
-                        showError('error.missingUrl');
-                    }
-                },
+        buttons.unshift({
+            label: getMessage('journal.shared.action.openInKanka'),
+            icon: 'fas fa-up-right-from-square',
+            class: 'kanka-open',
+            onclick: () => {
+                const snapshot = getEntryFlag(this.object, 'snapshot');
+                if (snapshot?.urls.view) {
+                    window.open(snapshot.urls.view, '_blank');
+                } else {
+                    showError('error.missingUrl');
+                }
             },
-            allowSync ? {
+        });
+
+        if (allowSync) {
+            buttons.unshift({
                 label: getMessage('journal.shared.action.refresh'),
                 icon: 'fas fa-rotate',
                 class: 'kanka-sync',
@@ -127,9 +129,10 @@ export default class KankaJournalApplication extends JournalSheet {
                         event.target.classList.remove('-loading');
                     }
                 },
-            } : undefined,
-            ...super._getHeaderButtons(),
-        ];
+            });
+        }
+
+        return buttons;
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
