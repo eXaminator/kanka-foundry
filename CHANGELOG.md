@@ -1,3 +1,10 @@
+## [4.0.9](https://github.com/eXaminator/kanka-foundry/compare/4.0.8...4.0.9) (2024-04-03)
+
+
+### Bug Fixes
+
+* fix issue where close button of journal entries wouldn't work for players ([56bebd7](https://github.com/eXaminator/kanka-foundry/commit/56bebd7a813ec6610b0b4b7cc4f8a5696f93a547)), closes [#130](https://github.com/eXaminator/kanka-foundry/issues/130)
+
 ## [4.0.8](https://github.com/eXaminator/kanka-foundry/compare/4.0.7...4.0.8) (2024-03-29)
 
 
