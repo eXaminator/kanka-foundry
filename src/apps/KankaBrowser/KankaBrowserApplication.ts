@@ -262,20 +262,19 @@ export default class KankaBrowserApplication extends Application {
                         const unlinkedEntities = this.#entities
                             ?.filter(entity => !findEntryByEntityId(entity.id)) ?? [];
 
+
                         this.setLoadingState(event.currentTarget);
                         const entityMap = groupBy(unlinkedEntities, 'type');
 
                         // eslint-disable-next-line no-restricted-syntax
-                        for (const syncType in entityMap) {
-                            if (Object.prototype.hasOwnProperty.call(entityMap, syncType)) {
-                                // eslint-disable-next-line no-await-in-loop
-                                await createEntities(
-                                    this.#campaign.id,
-                                    syncType as KankaApiEntityType,
-                                    entityMap[syncType].map(e => e.child_id),
-                                    this.#entities,
-                                );
-                            }
+                        for (const [syncType, entities] of entityMap) {
+                            // eslint-disable-next-line no-await-in-loop
+                            await createEntities(
+                                this.#campaign.id,
+                                syncType,
+                                entities.map(e => e.child_id),
+                                this.#entities,
+                            );
                         }
 
                         this.render();
