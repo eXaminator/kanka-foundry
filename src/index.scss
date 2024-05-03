@@ -13,6 +13,25 @@
     z-index: 9999;
 }
 
+@keyframes loader {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.-loading {
+    i:first-of-type {
+        animation: loader 1s steps(8, end) infinite;
+
+        &::before {
+            content: '\f110';
+        }
+    }
+}
+
 button#kanka {
     flex: 0 0 32px;
 
