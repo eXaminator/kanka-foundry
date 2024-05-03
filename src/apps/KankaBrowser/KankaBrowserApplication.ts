@@ -419,8 +419,6 @@ export default class KankaBrowserApplication extends Application {
             } catch (error) {
                 showError('browser.error.loadEntity');
                 logError(error);
-                await this.close();
-                return;
             }
         }
 
