@@ -8,7 +8,7 @@ async function handleEntity(
     loader: AbstractTypeLoader,
     entity: KankaApiChildEntity,
     campaignId: KankaApiId,
-    entityLookup: KankaApiEntity[] = [],
+    entityLookup?: KankaApiEntity[],
 ) {
     const references = await loader.createReferenceCollection(campaignId, entity, entityLookup);
     await createJournalEntry(campaignId, loader.getType(), entity, references);
@@ -18,9 +18,8 @@ export async function createEntity(
     campaignId: KankaApiId,
     type: KankaApiEntityType,
     id: KankaApiId,
-    entityLookup: KankaApiEntity[] = [],
+    entityLookup?: KankaApiEntity[],
 ): Promise<void> {
-    console.log('CREATE ENTITY', campaignId, type, id);
     const loader = loaders.get(type);
     if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
     const entity = await loader.load(campaignId, id);
@@ -32,9 +31,9 @@ export async function createEntities(
     campaignId: KankaApiId,
     type: KankaApiEntityType,
     ids: KankaApiId[],
-    entityLookup: KankaApiEntity[] = [],
+    entityLookup?: KankaApiEntity[],
 ): Promise<void> {
-    const numberOfEntities = entityLookup.filter(entity => entity.type === type).length;
+    const numberOfEntities = entityLookup?.filter(entity => entity.type === type).length ?? 0;
     const expectedNumberRequests = Math.ceil(numberOfEntities / 45);
 
     // Check whether fetching all entities of the type would be more efficient than fetching them individually
@@ -54,7 +53,7 @@ export async function createEntities(
     }
 }
 
-export async function updateEntity(entry: JournalEntry, entityLookup: KankaApiEntity[] = []): Promise<void> {
+export async function updateEntity(entry: JournalEntry, entityLookup?: KankaApiEntity[]): Promise<void> {
     const type = entry.getFlag('kanka-foundry', 'type');
     const campaignId = entry.getFlag('kanka-foundry', 'campaign');
     const snapshot = entry.getFlag('kanka-foundry', 'snapshot');
