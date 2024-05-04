@@ -1,3 +1,19 @@
+## [4.0.10](https://github.com/eXaminator/kanka-foundry/compare/4.0.9...4.0.10) (2024-05-04)
+
+
+### Bug Fixes
+
+* add proper loading indicator for sync buttons in kanka browser ([e17be0a](https://github.com/eXaminator/kanka-foundry/commit/e17be0a34d8ae98ff248bdeba5081109b7967ccd)), closes [#132](https://github.com/eXaminator/kanka-foundry/issues/132)
+* correctly update entity count in KankaBrowser when deleting folders ([28cd4ac](https://github.com/eXaminator/kanka-foundry/commit/28cd4acb7de4d4a8666feec892ee1b3ba75bd308))
+* fix spacing of delimiter when displaying ancestry path for entities ([3e8803c](https://github.com/eXaminator/kanka-foundry/commit/3e8803ccd4cd1d377c5381c0c58b8eb999a20466))
+* fix the global "Link all" button for campaigns ([da3d877](https://github.com/eXaminator/kanka-foundry/commit/da3d8777854f9069e61d5475078fd84e288d6805))
+* improve error handling if an invalid campaign was selected in KankaBrowser ([00602d3](https://github.com/eXaminator/kanka-foundry/commit/00602d3ab74d10e23da0685e8735a08a7c58d85f))
+* improve handling of query parameters when pagination ([cc90242](https://github.com/eXaminator/kanka-foundry/commit/cc902428081452e4abfa9d21b718d6e0cd7b5f8e))
+* reduce amount of requests for entities with references that no longer exist in Kanka ([ee221eb](https://github.com/eXaminator/kanka-foundry/commit/ee221eb7ccadd26e06523d965f91552fd6bb145e))
+* reduce number of requests when loading entities in KankaBrowser ([6f7d298](https://github.com/eXaminator/kanka-foundry/commit/6f7d298a7c3985f9873a92b8bb0b2640f0852159))
+* reduce the number of requests when syncing multiple entities at once ([7fd554e](https://github.com/eXaminator/kanka-foundry/commit/7fd554e5b860b9d58dca7cf4f4163eb29ee517cc))
+* use kanka properties to resolve entity parents and children to reduce number of requests ([22a73f0](https://github.com/eXaminator/kanka-foundry/commit/22a73f02d47394067c474152264d8e3d77d4b16f))
+
 ## [4.0.9](https://github.com/eXaminator/kanka-foundry/compare/4.0.8...4.0.9) (2024-04-03)
 
 
