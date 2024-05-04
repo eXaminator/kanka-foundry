@@ -316,14 +316,19 @@ export default class KankaApi {
     private async fetchFullList<T>(path: string): Promise<T[]> {
         const data: T[] = [];
         let url: string | null = path;
-        const query = (new URL(`https://${path}`)).searchParams.toString();
+        const query = (new URL(`https://${path}`)).searchParams;
 
         while (url) {
-            const fullUrl: string = url.includes('?') ? `${url}&${query}` : `${url}?${query}`;
             // eslint-disable-next-line no-await-in-loop
-            const result = await this.#fetcher.fetch<KankaApiListResult<T>>(fullUrl);
+            const result = await this.#fetcher.fetch<KankaApiListResult<T>>(url);
             data.push(...result.data);
-            url = result.links.next;
+            if (!result.links.next) break;
+
+            const nextPage = new URL(result.links.next);
+            [...query.entries()].forEach(([key, value]) => {
+                nextPage.searchParams.append(key, value);
+            });
+            url = nextPage.href;
         }
 
         return data;
