@@ -2,7 +2,6 @@ import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { PluginContext } from 'rollup';
 import { Plugin } from 'vite';
-
 function getPartialPath(parent, partial) {
     const parentPath = dirname(parent);
     return join(parentPath, `${partial}.partial.hbs`);
@@ -16,7 +15,6 @@ export default function hbsPlugin(): Plugin {
         if (!id.endsWith('.hbs')) {
             return null;
         }
-
         const inputBasePath = dirname(config.build.lib.entry);
         const inputRelativePath = relative(inputBasePath, id);
         const outputRelativePath = join('templates', inputRelativePath);
@@ -28,7 +26,11 @@ export default function hbsPlugin(): Plugin {
         const matches = Array.from(content.matchAll(partialRegex));
         const partials = matches.map(([, , partialPath]) => getPartialPath(id, partialPath));
 
-        const partialImports = partials.map((partial) => `import ${JSON.stringify(partial)};`).join('\n');
+        const partialImports = partials
+            .map(path => relative(dirname(id), path))
+            .map(path => (path.startsWith('.') ? path : `./${path}`))
+            .map(path => `import ${JSON.stringify(path)};`)
+            .join('\n');
 
         const parsedContent = matches.reduce((content, match) => {
             if (!match[2]) return content;
@@ -72,7 +74,7 @@ export default function hbsPlugin(): Plugin {
         async handleHotUpdate({ server, file, modules }) {
             // Send event to frontend which can then remove the file from the cache and rerender open apps
             if (!file.endsWith('.hbs')) {
-                return;
+                return undefined;
             }
 
             const promises = modules.map(async (module) => {
@@ -82,12 +84,11 @@ export default function hbsPlugin(): Plugin {
 
                 const inputBasePath = dirname(config.build.lib.entry);
                 const inputRelativePath = relative(inputBasePath, module.file);
-                const url = join(config.base, 'templates', inputRelativePath).replace(/^\//, '');
-
-                server.ws.send({
+                const file = join(config.base, 'templates', inputRelativePath).replace(/^\//, '');
+                server.hot.send({
                     type: 'custom',
-                    event: 'update-hbs',
-                    data: { file: url },
+                    event: 'kanka:update-hbs',
+                    data: { file },
                 });
             });
             await Promise.all(promises);

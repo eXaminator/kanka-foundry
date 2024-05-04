@@ -15,7 +15,7 @@ if (import.meta.hot) {
         }
     });
 
-    import.meta.hot.on('update-hbs', async ({ file }) => {
+    import.meta.hot.on('kanka:update-hbs', async ({ file }) => {
         // eslint-disable-next-line no-console
         console.log('HMR: update-hbs', file);
         const kankaTemplates = Object
