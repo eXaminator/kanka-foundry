@@ -21,7 +21,7 @@ function createLocation(data: Partial<KankaApiLocation> = {}): KankaApiLocation 
         inventory: [],
         entity_abilities: [],
         entity_events: [],
-        ancestors: [],
+        parents: [],
         children: [],
         ...data,
     } as KankaApiLocation;
@@ -155,9 +155,9 @@ describe('LocationTypeLoader', () => {
             });
         });
 
-        it('includes ancestors from the lookup array', async () => {
+        it('includes parents from the lookup array', async () => {
             const expectedResult = createLocation({
-                ancestors: [1002],
+                parents: [2002],
             });
 
             const entities = [
@@ -180,7 +180,7 @@ describe('LocationTypeLoader', () => {
 
         it('includes children from the lookup array', async () => {
             const expectedResult = createLocation({
-                children: [{ entity_id: 1002 }],
+                children: [2002],
             });
 
             const entities = [

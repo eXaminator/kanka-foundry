@@ -83,222 +83,124 @@ export default class KankaApi {
     }
 
     public async getCreature(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiCreature> {
-        const list = await this.getAllCreatures(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find creature with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiCreature>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/creatures/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllCreatures(campaignId: KankaApiId): Promise<KankaApiCreature[]> {
-        return this.fetchFullListWithAncestors<KankaApiCreature>(
-            `campaigns/${Number(campaignId)}/creatures?related=1`,
-            'creature_id',
-        );
+        return this.fetchFullList<KankaApiCreature>(`campaigns/${Number(campaignId)}/creatures?related=1`);
     }
 
     public async getAbility(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiAbility> {
-        const list = await this.getAllAbilities(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find ability with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiAbility>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/abilities/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllAbilities(campaignId: KankaApiId): Promise<KankaApiAbility[]> {
-        return this.fetchFullListWithAncestors<KankaApiAbility>(
-            `campaigns/${Number(campaignId)}/abilities?related=1`,
-            'ability_id',
-        );
+        return this.fetchFullList<KankaApiAbility>(`campaigns/${Number(campaignId)}/abilities?related=1`);
     }
 
     public async getFamily(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiFamily> {
-        const list = await this.getAllFamilies(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find family with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiFamily>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/families/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllFamilies(campaignId: KankaApiId): Promise<KankaApiFamily[]> {
-        return this.fetchFullListWithAncestors<KankaApiFamily>(
-            `campaigns/${Number(campaignId)}/families?related=1`,
-            'family_id',
-        );
+        return this.fetchFullList<KankaApiFamily>(`campaigns/${Number(campaignId)}/families?related=1`);
     }
 
     public async getItem(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiItem> {
-        const list = await this.getAllItems(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find item with ID '${String(id)}'`);
-        return entity;
-        /* type Result = KankaApiResult<KankaApiItem>;
+        type Result = KankaApiResult<KankaApiItem>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/items/${String(id)}?related=1`);
-        return result.data; */
+        return result.data;
     }
 
     public async getAllItems(campaignId: KankaApiId): Promise<KankaApiItem[]> {
-        return this.fetchFullListWithAncestors<KankaApiItem>(
-            `campaigns/${Number(campaignId)}/items?related=1`,
-            'item_id',
-        );
+        return this.fetchFullList<KankaApiItem>(`campaigns/${Number(campaignId)}/items?related=1`);
     }
 
     public async getJournal(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiJournal> {
-        const list = await this.getAllJournals(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find journal with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiJournal>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/journals/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllJournals(campaignId: KankaApiId): Promise<KankaApiJournal[]> {
-        return this.fetchFullListWithAncestors<KankaApiJournal>(
-            `campaigns/${Number(campaignId)}/journals?related=1`,
-            'journal_id',
-        );
+        return this.fetchFullList<KankaApiJournal>(`campaigns/${Number(campaignId)}/journals?related=1`);
     }
 
     public async getLocation(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiLocation> {
-        const list = await this.getAllLocations(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find location with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiLocation>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/locations/${String(id)}?related=1`);
         return result.data;
-        */
     }
 
     public async getAllLocations(campaignId: KankaApiId): Promise<KankaApiLocation[]> {
-        return this.fetchFullListWithAncestors(
-            `campaigns/${Number(campaignId)}/locations?related=1`,
-            'location_id',
-            'parent_location_id',
-        );
+        return this.fetchFullList(`campaigns/${Number(campaignId)}/locations?related=1`);
     }
 
     public async getNote(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiNote> {
-        const list = await this.getAllNotes(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find note with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiNote>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/notes/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllNotes(campaignId: KankaApiId): Promise<KankaApiNote[]> {
-        return this.fetchFullListWithAncestors<KankaApiNote>(
-            `campaigns/${Number(campaignId)}/notes?related=1`,
-            'note_id',
-        );
+        return this.fetchFullList<KankaApiNote>(`campaigns/${Number(campaignId)}/notes?related=1`);
     }
 
     public async getOrganisation(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiOrganisation> {
-        const list = await this.getAllOrganisations(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find organisation with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiOrganisation>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/organisations/${String(id)}?related=1`);
         return result.data;
-         */
     }
 
     public async getAllOrganisations(campaignId: KankaApiId): Promise<KankaApiOrganisation[]> {
-        return this.fetchFullListWithAncestors<KankaApiOrganisation>(
-            `campaigns/${Number(campaignId)}/organisations?related=1`,
-            'organisation_id',
-        );
+        return this.fetchFullList<KankaApiOrganisation>(`campaigns/${Number(campaignId)}/organisations?related=1`);
     }
 
     public async getQuest(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiQuest> {
-        const list = await this.getAllQuests(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find quest with ID '${String(id)}'`);
-        return entity;
-        /*
-         type Result = KankaApiResult<KankaApiOrganisation>;
-         const result = await this.#fetcher
+        type Result = KankaApiResult<KankaApiQuest>;
+        const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/quests/${String(id)}?related=1`);
-         return result.data;
-         */
+        return result.data;
     }
 
     public async getAllQuests(campaignId: KankaApiId): Promise<KankaApiQuest[]> {
-        return this.fetchFullListWithAncestors<KankaApiQuest>(
-            `campaigns/${Number(campaignId)}/quests?related=1`,
-            'quest_id',
-        );
+        return this.fetchFullList<KankaApiQuest>(`campaigns/${Number(campaignId)}/quests?related=1`);
     }
 
     public async getRace(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiRace> {
-        const list = await this.getAllRaces(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find race with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiRace>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/races/${String(id)}?related=1`);
         return result.data;
-        */
     }
 
     public async getAllRaces(campaignId: KankaApiId): Promise<KankaApiRace[]> {
-        return this.fetchFullListWithAncestors<KankaApiRace>(
-            `campaigns/${Number(campaignId)}/races?related=1`,
-            'race_id',
-        );
+        return this.fetchFullList<KankaApiRace>(`campaigns/${Number(campaignId)}/races?related=1`);
     }
 
     public async getEvent(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiEvent> {
-        const list = await this.getAllEvents(campaignId);
-        const entity = list.find(entity => entity.id === id);
-        if (!entity) throw new Error(`Could not find event with ID '${String(id)}'`);
-        return entity;
-        /*
         type Result = KankaApiResult<KankaApiEvent>;
         const result = await this.#fetcher
             .fetch<Result>(`campaigns/${String(campaignId)}/events/${String(id)}?related=1`);
         return result.data;
-        */
     }
 
     public async getAllEvents(campaignId: KankaApiId): Promise<KankaApiEvent[]> {
-        return this.fetchFullListWithAncestors<KankaApiEvent>(
-            `campaigns/${Number(campaignId)}/events?related=1`,
-            'event_id',
-        );
+        return this.fetchFullList<KankaApiEvent>(`campaigns/${Number(campaignId)}/events?related=1`);
     }
 
     public async getEntity(campaignId: KankaApiId, id: KankaApiEntityId): Promise<KankaApiEntity> {
@@ -332,38 +234,5 @@ export default class KankaApi {
         }
 
         return data;
-    }
-
-    private async fetchFullListWithAncestors<T>(
-        path: string,
-        parentProperty: keyof T,
-        fallbackProperty?: keyof T,
-    ): Promise<T[]> {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const entities = await this.fetchFullList<T>(path) as any[];
-
-        entities.forEach((entity) => {
-            // eslint-disable-next-line no-param-reassign
-            entity.ancestors = [];
-            let current = entity;
-            while (current[parentProperty] ?? current[fallbackProperty]) {
-                // eslint-disable-next-line no-loop-func
-                const parent = entities.find(e => e.id === (current[parentProperty] ?? current[fallbackProperty]));
-                if (!parent) break;
-                entity.ancestors.unshift(parent.entity_id);
-                current = parent;
-            }
-
-            // eslint-disable-next-line no-param-reassign
-            entity.children = entities
-                .filter(e => entity.id === (e[parentProperty] ?? e[fallbackProperty]))
-                .map(e => ({
-                    // eslint-disable-next-line @typescript-eslint/naming-convention
-                    entity_id: e.entity_id,
-                    type: e.type,
-                }));
-        });
-
-        return entities;
     }
 }

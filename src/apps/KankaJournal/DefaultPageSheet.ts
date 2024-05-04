@@ -24,6 +24,10 @@ export default class DefaultPageSheet extends JournalPageSheet {
             secrets: this.object.isOwner,
         });
 
+        if (data.data.system.snapshot.parents) {
+            data.data.system.snapshot.parents.reverse();
+        }
+
         return data;
     }
 

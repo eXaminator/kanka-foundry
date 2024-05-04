@@ -17,9 +17,7 @@ export default class FamilyTypeLoader extends AbstractTypeLoader<KankaApiFamily>
 
         await Promise.all([
             collection.addById(entity.family_id, 'family'),
-            ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
             ...entity.members.map(member => collection.addById(member, 'character')),
-            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;
