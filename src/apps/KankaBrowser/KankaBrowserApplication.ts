@@ -5,7 +5,7 @@ import { showError } from '../../foundry/notifications';
 import { KankaSettings, getSetting, setSetting } from '../../foundry/settings';
 import { createEntities, createEntity, updateEntity } from '../../syncEntities';
 import EntityType from '../../types/EntityType';
-import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity, KankaApiEntityType } from '../../types/kanka';
+import { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity } from '../../types/kanka';
 import { ProgressFn } from '../../types/progress';
 import groupBy from '../../util/groupBy';
 import { logError, logInfo } from '../../util/logger';
@@ -80,6 +80,8 @@ export default class KankaBrowserApplication extends Application {
     #campaign: KankaApiCampaign | undefined;
     #campaigns: KankaApiCampaign[] | undefined;
     #entities: KankaApiEntity[] | undefined;
+    #isLoadingEntities = false;
+    #isLoadingCampaigns = false;
 
     static get defaultOptions(): ApplicationOptions {
         return {
@@ -262,7 +264,6 @@ export default class KankaBrowserApplication extends Application {
                         const unlinkedEntities = this.#entities
                             ?.filter(entity => !findEntryByEntityId(entity.id)) ?? [];
 
-
                         this.setLoadingState(event.currentTarget);
                         const entityMap = groupBy(unlinkedEntities, 'type');
 
@@ -421,8 +422,9 @@ export default class KankaBrowserApplication extends Application {
             }
         }
 
-        if (!this.#campaigns) {
+        if (!this.#campaigns && !this.#isLoadingCampaigns) {
             this.#campaigns = undefined;
+            this.#isLoadingCampaigns = true;
             requestAnimationFrame(async () => {
                 try {
                     this.#campaigns = await api.getAllCampaigns();
@@ -431,12 +433,15 @@ export default class KankaBrowserApplication extends Application {
                     showError('browser.error.loadEntity');
                     logError(error);
                     await this.close();
+                } finally {
+                    this.#isLoadingCampaigns = false;
                 }
             });
         }
 
-        if (!this.#entities) {
+        if (!this.#entities && !this.#isLoadingEntities) {
             this.#entities = undefined;
+            this.#isLoadingEntities = true;
             requestAnimationFrame(async () => {
                 try {
                     await this.loadEntities();
@@ -444,6 +449,8 @@ export default class KankaBrowserApplication extends Application {
                     showError('browser.error.loadEntity');
                     logError(error);
                     await this.close();
+                } finally {
+                    this.#isLoadingEntities = false;
                 }
             });
         }
