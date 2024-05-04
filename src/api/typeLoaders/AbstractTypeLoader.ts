@@ -5,7 +5,7 @@ export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity =
     public async createReferenceCollection(
         campaignId: KankaApiId,
         entity: T,
-        lookup: KankaApiEntity[] = [],
+        lookup?: KankaApiEntity[],
     ): Promise<ReferenceCollection> {
         const collection = new ReferenceCollection(campaignId, lookup);
         const { parents = [], children = [] } = (entity as unknown as KankaApiChildEntityWithChildren);

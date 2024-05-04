@@ -4,12 +4,14 @@ import { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, Ka
 
 export default class ReferenceCollection {
     #campaignId: KankaApiId;
+    #useLookup = false;
     #entities: KankaApiEntity[];
     #record: Record<number, Reference> = {};
 
-    constructor(campaignId: KankaApiId, entities: KankaApiEntity[]) {
+    constructor(campaignId: KankaApiId, entities?: KankaApiEntity[]) {
         this.#campaignId = campaignId;
-        this.#entities = [...entities];
+        this.#useLookup = Boolean(entities?.length);
+        this.#entities = [...entities ?? []];
     }
 
     static fromRecord(campaignId: number, record: Record<number, Reference>): ReferenceCollection {
@@ -66,7 +68,7 @@ export default class ReferenceCollection {
     ): Promise<KankaApiEntity | undefined> {
         const entity = this.findEntityInCollection(id, type);
 
-        if (entity) {
+        if (entity || this.#useLookup) {
             return entity;
         }
 
