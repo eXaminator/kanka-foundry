@@ -7,11 +7,13 @@ import ready from './hooks/ready';
 const refreshInit = hmrWrapHook('init', () => init, 'once');
 const refreshReady = hmrWrapHook('ready', () => ready, 'once');
 const refreshRenderJournalDirectory = hmrWrapHook('renderJournalDirectory', () => renderJournalDirectory, 'on');
-const refreshDeleteJournalSheet = hmrWrapHook('deleteJournalEntry', () => deleteJournalEntry, 'on');
+const refreshDeleteJournalEntry = hmrWrapHook('deleteJournalEntry', () => deleteJournalEntry, 'on');
+const refreshDeleteFolder = hmrWrapHook('deleteJournalEntry', () => deleteJournalEntry, 'on');
 
 if (import.meta.hot) {
     import.meta.hot.accept('./hooks/init', refreshInit);
     import.meta.hot.accept('./hooks/ready', refreshReady);
     import.meta.hot.accept('./hooks/renderJournalDirectory', refreshRenderJournalDirectory);
-    import.meta.hot.accept('./hooks/deleteJournalEntry', refreshDeleteJournalSheet);
+    import.meta.hot.accept('./hooks/deleteJournalEntry', refreshDeleteJournalEntry);
+    import.meta.hot.accept('./hooks/deleteJournalEntry', refreshDeleteFolder);
 }
