@@ -187,6 +187,10 @@
         }
     }
 
+    .delimiter {
+        margin: 0 .5em;
+    }
+
     table {
         >*:not(thead) th {
             background: rgba(0, 0, 0, 0.5);
