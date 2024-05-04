@@ -251,13 +251,9 @@ export interface KankaApiRelated {
     entity_assets: KankaApiEntityAsset[];
 }
 
-export interface KankaApiChild {
-    entity_id: KankaApiEntityId;
-    type?: string;
-}
-
 export interface KankaApiChildEntityWithChildren extends KankaApiChildEntity {
-    children: KankaApiChild[];
+    children: KankaApiId[];
+    parents: KankaApiId[];
 }
 
 export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBlamable {
@@ -309,14 +305,12 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
 }
 
 export interface KankaApiCreature extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     creature_id: KankaApiId | null;
     locations: KankaApiId[];
     type: string | null;
 }
 
 export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     ability_id: KankaApiId | null;
     type: string | null;
     charges: string | null;
@@ -324,14 +318,12 @@ export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     family_id: KankaApiId | null;
     type: string | null;
     members: KankaApiId[];
 }
 
 export interface KankaApiItem extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     item_id: KankaApiId | null;
     location_id: KankaApiId | null;
     character_id: KankaApiId | null;
@@ -341,7 +333,6 @@ export interface KankaApiItem extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     journal_id: KankaApiId | null;
     location_id: KankaApiId | null;
     character_id: KankaApiId | null;
@@ -354,7 +345,6 @@ export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     /**
      * @deprecated Use location_id instead
      */
@@ -364,13 +354,11 @@ export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiNote extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     note_id: KankaApiId | null;
     type: string | null;
 }
 
 export interface KankaApiOrganisation extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     organisation_id: KankaApiId | null;
     location_id: KankaApiId | null;
     type: string | null;
@@ -387,7 +375,6 @@ export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
 }
 
 export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     quest_id: KankaApiId | null;
     character_id: KankaApiId | null;
     type: string | null;
@@ -402,7 +389,6 @@ export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiRace extends KankaApiChildEntityWithChildren {
-    ancestors: KankaApiEntityId[];
     locations: KankaApiId[];
     race_id: KankaApiId | null;
     type: string | null;

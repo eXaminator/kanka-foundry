@@ -18,7 +18,7 @@ vi.mock('../../api/KankaApi');
 function createFamily(data: Partial<KankaApiFamily> = {}): KankaApiFamily {
     return {
         members: [],
-        ancestors: [],
+        parents: [],
         children: [],
         relations: [],
         inventory: [],
@@ -179,9 +179,9 @@ describe('FamilyTypeLoader', () => {
             });
         });
 
-        it('includes ancestors from the lookup array', async () => {
+        it('includes parents from the lookup array', async () => {
             const expectedResult = createFamily({
-                ancestors: [1002],
+                parents: [2002],
             });
 
             const entities = [
@@ -204,7 +204,7 @@ describe('FamilyTypeLoader', () => {
 
         it('includes children from the lookup array', async () => {
             const expectedResult = createFamily({
-                children: [{ entity_id: 1002 }],
+                children: [2002],
             });
 
             const entities = [

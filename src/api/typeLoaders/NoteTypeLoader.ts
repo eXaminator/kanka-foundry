@@ -17,8 +17,6 @@ export default class NoteTypeLoader extends AbstractTypeLoader<KankaApiNote> {
 
         await Promise.all([
             collection.addById(entity.note_id, 'note'),
-            ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
-            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

@@ -19,8 +19,6 @@ export default class JournalTypeLoader extends AbstractTypeLoader<KankaApiJourna
             collection.addById(entity.journal_id, 'journal'),
             collection.addById(entity.location_id, 'location'),
             collection.addById(entity.character_id, 'character'),
-            ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
-            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

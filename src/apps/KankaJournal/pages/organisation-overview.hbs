@@ -1,7 +1,7 @@
 {{#>../shared/overviewLayout}}
     {{#*inline 'attributes'~}}
         {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='organisation' label='shared.labels.parent' }}
         {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
 
         {{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.members) 'pin_id' 'regex:^(2|3)$') as | starred | ~}}

@@ -18,8 +18,6 @@ export default class CreatureTypeLoader extends AbstractTypeLoader<KankaApiCreat
         await Promise.all([
             collection.addById(entity.creature_id, 'creature'),
             ...entity.locations.map(location => collection.addById(location, 'location')),
-            ...entity.ancestors.map(ancestor => collection.addByEntityId(ancestor)),
-            ...entity.children.map(child => collection.addByEntityId(child.entity_id)),
         ]);
 
         return collection;

@@ -348,7 +348,7 @@ function unzip<T>(array: T[], splitter: (item: T, index: number) => boolean): [T
 function createAllPages(
     campaignId: KankaApiId,
     type: KankaApiEntityType,
-    entity: KankaApiChildEntity & { ancestors?: number[] },
+    entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
     journal?: JournalEntry,
 ) {
@@ -398,14 +398,14 @@ function createAllPages(
         createPage('inventory', 'KANKA.journal.shared.pages.inventory', mergeModel(model, entity.inventory), journal),
         createPage('events', 'KANKA.journal.shared.pages.events', mergeModel(model, entity.entity_events), journal),
 
-        createPage('children', `KANKA.entityType.${type}`, mergeModel(model, (entity as KankaApiChildEntityWithChildren).children?.map(child => ({ ref: references.findByEntityId(child.entity_id), type: child.type }))), journal),
+        createPage('children', `KANKA.entityType.${type}`, mergeModel(model, (entity as KankaApiChildEntityWithChildren).children?.map(child => ({ ref: references.findByIdAndType(child, type), type }))), journal),
     ].filter(page => !!page);
 }
 
 export async function createJournalEntry(
     campaignId: KankaApiId,
     type: KankaApiEntityType,
-    entity: KankaApiChildEntity & { ancestors?: number[] },
+    entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
 ): Promise<JournalEntry> {
     const journalData = {
@@ -423,8 +423,9 @@ export async function createJournalEntry(
         }),
     };
 
-    const path = entity?.ancestors
-        ?.map(id => references.findByEntityId(id))
+    const path = [...(entity as KankaApiChildEntityWithChildren)?.parents ?? []]
+        .reverse()
+        .map(id => references.findByIdAndType(id, type))
         .filter((ref): ref is Reference => !!ref) ?? [];
     const folder = await ensureFolderPath(type, path);
 
@@ -437,7 +438,7 @@ export async function createJournalEntry(
 
 export async function updateJournalEntry(
     entry: JournalEntry,
-    entity: KankaApiChildEntity & { ancestors?: number[] },
+    entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
 ): Promise<JournalEntry> {
     const campaignId = getEntryFlag(entry, 'campaign');

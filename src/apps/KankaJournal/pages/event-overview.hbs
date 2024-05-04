@@ -1,7 +1,7 @@
 {{#>../shared/overviewLayout}}
     {{#*inline 'attributes'~}}
         {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='event' label='shared.labels.parent' }}
         {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
         {{~>../shared/detailRow value=data.system.snapshot.date label='event.labels.date' }}
     {{~/inline}}

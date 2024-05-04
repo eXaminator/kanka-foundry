@@ -21,7 +21,7 @@ function createItem(data: Partial<KankaApiItem> = {}): KankaApiItem {
         inventory: [],
         entity_abilities: [],
         entity_events: [],
-        ancestors: [],
+        parents: [],
         children: [],
         ...data,
     } as KankaApiItem;
@@ -201,9 +201,9 @@ describe('ItemTypeLoader', () => {
             });
         });
 
-        it('includes ancestors from the lookup array', async () => {
+        it('includes parents from the lookup array', async () => {
             const expectedResult = createItem({
-                ancestors: [1002],
+                parents: [2002],
             });
 
             const entities = [
@@ -226,7 +226,7 @@ describe('ItemTypeLoader', () => {
 
         it('includes children from the lookup array', async () => {
             const expectedResult = createItem({
-                children: [{ entity_id: 1002 }],
+                children: [2002],
             });
 
             const entities = [

@@ -1,6 +1,6 @@
 {{#>../shared/overviewLayout}}
     {{#*inline 'attributes'~}}
         {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='note' label='shared.labels.parent' }}
     {{~/inline}}
 {{/../shared/overviewLayout}}

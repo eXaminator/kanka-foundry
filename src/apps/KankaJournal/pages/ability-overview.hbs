@@ -1,7 +1,7 @@
 {{#>../shared/overviewLayout}}
     {{#*inline 'attributes'~}}
         {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.ancestors label='shared.labels.parent' }}
+        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='ability' label='shared.labels.parent' }}
         {{~>../shared/detailRow value=data.system.snapshot.charges label='ability.labels.charges' }}
     {{~/inline}}
 {{/../shared/overviewLayout}}

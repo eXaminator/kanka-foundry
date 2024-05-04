@@ -21,7 +21,7 @@ function createCreature(data: Partial<KankaApiCreature> = {}): KankaApiCreature 
         inventory: [],
         entity_abilities: [],
         entity_events: [],
-        ancestors: [],
+        parents: [],
         children: [],
         locations: [],
         ...data,
@@ -156,9 +156,9 @@ describe('CreatureTypeLoader', () => {
             });
         });
 
-        it('includes ancestors from the lookup array', async () => {
+        it('includes parents from the lookup array', async () => {
             const expectedResult = createCreature({
-                ancestors: [1002],
+                parents: [2002],
             });
 
             const entities = [
@@ -181,7 +181,7 @@ describe('CreatureTypeLoader', () => {
 
         it('includes children from the lookup array', async () => {
             const expectedResult = createCreature({
-                children: [{ entity_id: 1002 }],
+                children: [2002],
             });
 
             const entities = [

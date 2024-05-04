@@ -22,7 +22,7 @@ function createQuest(data: Partial<KankaApiQuest> = {}): KankaApiQuest {
         inventory: [],
         entity_abilities: [],
         entity_events: [],
-        ancestors: [],
+        parents: [],
         children: [],
         elements: [],
         ...data,
@@ -157,9 +157,9 @@ describe('QuestTypeLoader', () => {
             });
         });
 
-        it('includes ancestors from the lookup array', async () => {
+        it('includes parents from the lookup array', async () => {
             const expectedResult = createQuest({
-                ancestors: [1002],
+                parents: [2002],
             });
 
             const entities = [
@@ -182,7 +182,7 @@ describe('QuestTypeLoader', () => {
 
         it('includes children from the lookup array', async () => {
             const expectedResult = createQuest({
-                children: [{ entity_id: 1002 }],
+                children: [2002],
             });
 
             const entities = [
