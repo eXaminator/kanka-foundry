@@ -4,7 +4,7 @@ import hbsPlugin from './build/hbsPlugin';
 import translationPlugin from './build/translationPlugin';
 
 export default defineConfig({
-    root: resolve(__dirname, 'src/devServer'),
+    root: resolve(__dirname, 'src'),
     publicDir: resolve(__dirname, 'public'),
     base: '/modules/kanka-foundry/',
     server: {
@@ -12,7 +12,7 @@ export default defineConfig({
         open: false,
         proxy: {
             '^(?!/modules/kanka-foundry)': 'http://localhost:30000/',
-            '^/modules/kanka-foundry/lang': 'http://localhost:30000/',
+            '^/modules/kanka-foundry/lang/.+\.json': 'http://localhost:30000/',
             '^/modules/kanka-foundry/templates': 'http://localhost:30000/',
             '/socket.io': {
                 target: 'ws://localhost:30000',
