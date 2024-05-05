@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import localization from '../../state/localization';
 
 export default function kankaLocalize(...args: unknown[]): string {
@@ -13,7 +12,6 @@ export default function kankaLocalize(...args: unknown[]): string {
 
     const key = ['KANKA', ...parts].join('.');
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     return foundry.utils.isEmpty(data) ? localization.localize(key) : localization.format(String(key), data);
 }

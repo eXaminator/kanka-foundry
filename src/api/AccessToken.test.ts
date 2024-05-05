@@ -1,10 +1,11 @@
 import MockDate from 'mockdate';
-import { afterEach, describe, it, expect } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import AccessToken from './AccessToken';
 
 describe('AccessToken', () => {
     const expiration = 1516239222;
-    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkyMjJ9.rorjwxWeni_tuACgYONiK7OCJ7Lov54Cj1duKO3dmWE';
+    const jwt =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkyMjJ9.rorjwxWeni_tuACgYONiK7OCJ7Lov54Cj1duKO3dmWE';
 
     afterEach(() => {
         MockDate.reset();
@@ -44,7 +45,7 @@ describe('AccessToken', () => {
 
     describe('isExpiredWithin()', () => {
         it('returns true if current date is after expiration date', () => {
-            MockDate.set((expiration * 1000) + 1);
+            MockDate.set(expiration * 1000 + 1);
 
             const token = new AccessToken(jwt);
 
@@ -52,7 +53,7 @@ describe('AccessToken', () => {
         });
 
         it('returns true if current date is exactly equal to expiration date', () => {
-            MockDate.set((expiration * 1000));
+            MockDate.set(expiration * 1000);
 
             const token = new AccessToken(jwt);
 
@@ -60,7 +61,7 @@ describe('AccessToken', () => {
         });
 
         it('returns true if current date is before expiration date but within timeframe', () => {
-            MockDate.set((expiration * 1000) - 500);
+            MockDate.set(expiration * 1000 - 500);
 
             const token = new AccessToken(jwt);
 
@@ -68,7 +69,7 @@ describe('AccessToken', () => {
         });
 
         it('returns false if current date is before expiration date and timeframe', () => {
-            MockDate.set((expiration * 1000));
+            MockDate.set(expiration * 1000);
 
             const token = new AccessToken(jwt);
 
@@ -76,7 +77,7 @@ describe('AccessToken', () => {
         });
 
         it('returns false if current date is before expiration date and timeframe', () => {
-            MockDate.set((expiration * 1000) - 1001);
+            MockDate.set(expiration * 1000 - 1001);
 
             const token = new AccessToken(jwt);
 

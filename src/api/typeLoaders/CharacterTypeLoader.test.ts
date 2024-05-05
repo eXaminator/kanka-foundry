@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { describe, it, expect, vi } from 'vitest';
-import {
+import { describe, expect, it, vi } from 'vitest';
+import api from '..';
+import type {
     KankaApiAbilityLink,
     KankaApiCharacter,
     KankaApiCharacterOrganisationLink,
@@ -11,7 +11,6 @@ import {
     KankaApiInventory,
     KankaApiRelation,
 } from '../../types/kanka';
-import api from '..';
 import CharacterTypeLoader from './CharacterTypeLoader';
 
 vi.mock('../../api/KankaApi');

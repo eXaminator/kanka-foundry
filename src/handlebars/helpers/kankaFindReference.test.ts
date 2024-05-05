@@ -1,15 +1,7 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import {
-    afterAll,
-    beforeAll,
-    describe,
-    expect,
-    it,
-    vi,
-} from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { getEntryFlag } from '../../foundry/journalEntries';
-import Reference from '../../types/Reference';
-import { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import type Reference from '../../types/Reference';
+import type { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
 
@@ -43,8 +35,6 @@ function createReference(
 describe('kankaFindReference()', () => {
     beforeAll(() => {
         vi.mocked(kankaIsAccessible).mockReturnValue(true);
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         vi.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);
@@ -55,9 +45,7 @@ describe('kankaFindReference()', () => {
     });
 
     it('returns reference based on id from root context "kankaReferences"', () => {
-        const references: Reference[] = [
-            createReference(1, 4711),
-        ];
+        const references: Reference[] = [createReference(1, 4711)];
 
         const template = '{{#with (kankaFindReference 4711)}}{{ id }}{{/with}}';
 
@@ -65,9 +53,7 @@ describe('kankaFindReference()', () => {
     });
 
     it('returns reference based on id and type from root context "kankaReferences"', () => {
-        const references: Reference[] = [
-            createReference(1, 4711, 'character'),
-        ];
+        const references: Reference[] = [createReference(1, 4711, 'character')];
 
         const template = '{{#with (kankaFindReference 1 "character")}}{{ id }}{{/with}}';
 
@@ -75,9 +61,7 @@ describe('kankaFindReference()', () => {
     });
 
     it('returns reference based on id from given references', () => {
-        const references: Reference[] = [
-            createReference(1, 4711),
-        ];
+        const references: Reference[] = [createReference(1, 4711)];
 
         const template = '{{#with (kankaFindReference 4711 references=references)}}{{ id }}{{/with}}';
 
@@ -85,9 +69,7 @@ describe('kankaFindReference()', () => {
     });
 
     it('returns reference based on id and type from given references', () => {
-        const references: Reference[] = [
-            createReference(1, 4711, 'character'),
-        ];
+        const references: Reference[] = [createReference(1, 4711, 'character')];
 
         const template = '{{#with (kankaFindReference 1 "character" references=references)}}{{ id }}{{/with}}';
 
@@ -101,9 +83,7 @@ describe('kankaFindReference()', () => {
     });
 
     it('returns undefined if reference is not accessible for user', () => {
-        const references: Reference[] = [
-            createReference(1, 4711),
-        ];
+        const references: Reference[] = [createReference(1, 4711)];
 
         vi.mocked(kankaIsAccessible).mockReturnValue(false);
 

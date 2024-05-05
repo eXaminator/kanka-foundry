@@ -62,9 +62,13 @@ export default class RateLimiter {
     }
 
     public slot(): Promise<void> {
-        // eslint-disable-next-line no-plusplus
         const id = ++this.#requestCounter;
-        logInfo('RateLimiter - run', { id, slots: this.#slots.length, queue: this.#queue.length, currentRemaining: this.remaining });
+        logInfo('RateLimiter - run', {
+            id,
+            slots: this.#slots.length,
+            queue: this.#queue.length,
+            currentRemaining: this.remaining,
+        });
 
         return new Promise((resolve) => {
             const run = (): void => {
@@ -110,6 +114,8 @@ export default class RateLimiter {
             queue: this.#queue.length,
         };
 
-        this.#changeListeners.forEach(cb => cb({ ...event }));
+        for (const cb of this.#changeListeners) {
+            cb({ ...event });
+        }
     }
 }

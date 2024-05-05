@@ -9,7 +9,7 @@ export default function hmrWrapHook<T extends CallbackFn>(
 ): () => void {
     function eventHandler(...args: Parameters<T>): void {
         cachedArguments.set(hook, args);
-        return getCb()(...args);
+        getCb()(...args);
     }
 
     Hooks[type](hook, eventHandler);

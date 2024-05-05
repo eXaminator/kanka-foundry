@@ -1,5 +1,5 @@
 import localization from '../../state/localization';
-import Reference from '../../types/Reference';
+import type Reference from '../../types/Reference';
 import getImprovedReference from '../../util/getImprovedReference';
 import replaceRecursiveMentions from '../../util/replaceMentions';
 
@@ -13,11 +13,13 @@ export default class DefaultPageSheet extends JournalPageSheet {
         const data = super.getData(options);
         data.data.name = data.data.name.startsWith('KANKA.') ? localization.localize(data.data.name) : data.data.name;
 
-        await Promise.all(Object
-            .keys((data.data.system?.references ?? {}) as Record<string, Reference & { link: Handlebars.SafeString }>)
-            .map(async (id) => {
+        await Promise.all(
+            Object.keys(
+                (data.data.system?.references ?? {}) as Record<string, Reference & { link: Handlebars.SafeString }>,
+            ).map(async (id) => {
                 data.data.system.references[id] = await getImprovedReference(data.data.system?.references[id]);
-            }));
+            }),
+        );
 
         data.data.system.snapshot = await replaceRecursiveMentions(data.data.system?.snapshot, {
             relativeTo: this.object,
@@ -34,7 +36,8 @@ export default class DefaultPageSheet extends JournalPageSheet {
     get template(): string {
         const entityType = this.object.system.type ?? 'common';
         const pageType = this.object.type.split('.')[1];
-        const template = templates[`./pages/${entityType}-${pageType}.hbs`] ?? templates[`./pages/common-${pageType}.hbs`];
+        const template =
+            templates[`./pages/${entityType}-${pageType}.hbs`] ?? templates[`./pages/common-${pageType}.hbs`];
 
         return template?.default ?? `./pages/${entityType}-${pageType}.hbs`;
     }

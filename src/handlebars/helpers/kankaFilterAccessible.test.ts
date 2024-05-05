@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { afterAll, beforeAll, describe, it, expect } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { KankaVisibility } from '../../types/kanka';
 import kankaFilterAccessible from './kankaFilterAccessible';
 
@@ -9,7 +8,10 @@ function compile(template: string, context = {}): string {
 
 describe('kankaFilterAccessible()', () => {
     beforeAll(() => {
-        Handlebars.registerHelper('kankaFilterAccessible', kankaFilterAccessible as unknown as Handlebars.HelperDelegate);
+        Handlebars.registerHelper(
+            'kankaFilterAccessible',
+            kankaFilterAccessible as unknown as Handlebars.HelperDelegate,
+        );
     });
 
     afterAll(() => {

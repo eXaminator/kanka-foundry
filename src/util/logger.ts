@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import moduleConfig from '../../public/module.json';
 
 export function logInfo(...args: unknown[]): void {

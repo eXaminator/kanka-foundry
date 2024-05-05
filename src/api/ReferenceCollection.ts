@@ -1,6 +1,6 @@
 import api from '.';
-import Reference from '../types/Reference';
-import { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
+import type Reference from '../types/Reference';
+import type { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
 
 export default class ReferenceCollection {
     #campaignId: KankaApiId;
@@ -11,7 +11,7 @@ export default class ReferenceCollection {
     constructor(campaignId: KankaApiId, entities?: KankaApiEntity[]) {
         this.#campaignId = campaignId;
         this.#useLookup = Boolean(entities?.length);
-        this.#entities = [...entities ?? []];
+        this.#entities = [...(entities ?? [])];
     }
 
     static fromRecord(campaignId: number, record: Record<number, Reference>): ReferenceCollection {
@@ -40,7 +40,7 @@ export default class ReferenceCollection {
     }
 
     public findByIdAndType(id: KankaApiId, type: KankaApiEntityType): Reference | undefined {
-        return Object.values(this.#record).find(ref => ref.id === id && ref.type === type);
+        return Object.values(this.#record).find((ref) => ref.id === id && ref.type === type);
     }
 
     public getRecord(): Record<number, Reference> {
@@ -91,7 +91,8 @@ export default class ReferenceCollection {
         id?: KankaApiAnyId | null,
         type?: KankaApiEntityType | null,
     ): KankaApiEntity | undefined {
-        return this.#entities
-            .find(entity => (!type && entity.id === id) || (entity.type === type && entity.child_id === id));
+        return this.#entities.find(
+            (entity) => (!type && entity.id === id) || (entity.type === type && entity.child_id === id),
+        );
     }
 }

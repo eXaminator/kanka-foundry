@@ -1,8 +1,8 @@
-import getGame from './getGame';
 import moduleConfig from '../../public/module.json';
+import type Reference from '../types/Reference';
+import type { KankaApiEntityType } from '../types/kanka';
+import getGame from './getGame';
 import getMessage from './getMessage';
-import { KankaApiEntityType } from '../types/kanka';
-import Reference from '../types/Reference';
 import { getSetting } from './settings';
 
 const MAX_FOLDER_DEPTH = 3;
@@ -17,10 +17,7 @@ function getFolders(): Folders {
     return folders;
 }
 
-function getFolderFlag(
-    entry: Folder | undefined,
-    name: string,
-): unknown {
+function getFolderFlag(entry: Folder | undefined, name: string): unknown {
     if (!entry) return undefined;
 
     return entry.getFlag(moduleConfig.name, name as never);
@@ -33,11 +30,9 @@ async function createFolder(
 ): Promise<Folder | undefined> {
     const data: Record<`flags.${string}.${string}`, unknown> = {};
 
-    Object
-        .entries(flags)
-        .forEach(([flag, value]) => {
-            data[`flags.${moduleConfig.name}.${flag}`] = value;
-        });
+    for (const [flag, value] of Object.entries(flags)) {
+        data[`flags.${moduleConfig.name}.${flag}`] = value;
+    }
 
     return Folder.create({
         name,
@@ -76,17 +71,13 @@ export async function ensureTypeFolder(type: KankaApiEntityType): Promise<Folder
     });
 }
 
-export async function ensureFolderPath(
-    type: KankaApiEntityType,
-    path: Reference[],
-): Promise<Folder | undefined> {
+export async function ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder | undefined> {
     let parent = await ensureTypeFolder(type);
 
     if (!getSetting('keepTreeStructure')) return parent;
 
     for (let i = 0; i < Math.min(path.length, MAX_FOLDER_DEPTH - 1); i += 1) {
         const { name, entityId } = path[i];
-        // eslint-disable-next-line no-await-in-loop
         parent = await ensureFolderByFlags(name, parent, { entityId });
     }
 

@@ -44,7 +44,7 @@ async function register<T extends keyof KankaSettings>(
 }
 
 export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> {
-    const languages = moduleConfig.languages.reduce((map, { lang, name }) => ({ ...map, [lang]: name }), {}) ?? {};
+    const languages = moduleConfig.languages.reduce((map, { lang, name }) => { map[lang] = name; return map; }, {}) ?? {};
 
     register(
         'baseUrl',
@@ -208,9 +208,12 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
         onChangeMap,
     );
 
-    Object.values(EntityType)
-        .filter((type) => type !== EntityType.campaign)
-        .forEach((type: EntityType) => register(
+    for (const type of Object.values(EntityType)) {
+        if (type === EntityType.campaign) {
+            continue;
+        }
+
+        register(
             `collapseType_${type}`,
             {
                 scope: 'client',
@@ -219,12 +222,13 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
                 default: false,
             },
             onChangeMap,
-        ));
+        );
+    }
 
     return async () => {
-        const promises = Object
-            .entries(onChangeMap)
-            .map(([setting, onChange]) => onChange(getSetting(setting as keyof KankaSettings) as unknown as undefined));
+        const promises = Object.entries(onChangeMap).map(([setting, onChange]) =>
+            onChange(getSetting(setting as keyof KankaSettings) as unknown as undefined),
+        );
 
         await Promise.all(promises);
     };
@@ -232,8 +236,11 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
 
 if (import.meta.hot) {
     import.meta.hot.dispose(() => {
-        Array.from<string>(getGame().settings.settings.keys())
-            .filter((key: string) => key.startsWith(moduleConfig.name))
-            .forEach((key) => getGame().settings.settings.delete(key));
+        for (const key of getGame().settings.settings.keys()) {
+            if (!key.startsWith(moduleConfig.name)) {
+                continue;
+            }
+            getGame().settings.settings.delete(key);
+        }
     });
 }

@@ -1,7 +1,7 @@
 import getMessage from '../foundry/getMessage';
 import { findEntryByEntityId } from '../foundry/journalEntries';
 import { getSetting } from '../foundry/settings';
-import Reference from '../types/Reference';
+import type Reference from '../types/Reference';
 
 export default async function createReferenceLink(reference: Reference): Promise<string> {
     const label = reference.name || getMessage('journal.shared.labels.unknownReference');

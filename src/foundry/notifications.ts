@@ -1,7 +1,11 @@
 import getMessage from './getMessage';
 
 // Wait for everything to be ready before showing a notification
-function notifyWhenAvailable(type: 'info' | 'warn' | 'error', options: NotifyOptions, ...args: Parameters<typeof getMessage>): void {
+function notifyWhenAvailable(
+    type: 'info' | 'warn' | 'error',
+    options: NotifyOptions,
+    ...args: Parameters<typeof getMessage>
+): void {
     if (!ui?.notifications) {
         setTimeout(() => notifyWhenAvailable(type, options, ...args), 250);
         return;

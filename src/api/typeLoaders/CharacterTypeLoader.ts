@@ -1,5 +1,5 @@
 import api from '..';
-import { KankaApiCharacter, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import type { KankaApiCharacter, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -19,7 +19,7 @@ export default class CharacterTypeLoader extends AbstractTypeLoader<KankaApiChar
             collection.addById(entity.location_id, 'location'),
             collection.addById(entity.race_id, 'race'),
             collection.addById(entity.family_id, 'family'),
-            ...entity.organisations.data.map(org => collection.addById(org.organisation_id, 'organisation')),
+            ...entity.organisations.data.map((org) => collection.addById(org.organisation_id, 'organisation')),
         ]);
 
         return collection;

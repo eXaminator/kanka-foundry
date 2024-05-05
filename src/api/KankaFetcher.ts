@@ -1,5 +1,5 @@
-import { KankaApiResult } from '../types/kanka';
-import AccessToken from './AccessToken';
+import type { KankaApiResult } from '../types/kanka';
+import type AccessToken from './AccessToken';
 import RateLimiter from './RateLimiter';
 
 const freeLimit = 30;
@@ -51,22 +51,19 @@ export default class KankaFetcher {
 
         const url = path.startsWith('http') ? path : `${this.#base}${path}`;
 
-        const response = await fetch(
-            url,
-            {
-                mode: 'cors',
-                headers: {
-                    Authorization: `Bearer ${this.#token.toString()}`,
-                    'Content-type': 'application/json', // eslint-disable-line @typescript-eslint/naming-convention
-                },
+        const response = await fetch(url, {
+            mode: 'cors',
+            headers: {
+                Authorization: `Bearer ${this.#token.toString()}`,
+                'Content-type': 'application/json',
             },
-        );
+        });
 
         const limit = response.headers.get('X-RateLimit-Limit');
         const limitRemaining = response.headers.get('X-RateLimit-Remaining');
 
-        if (limit) this.#limiter.limit = parseInt(limit, 10);
-        if (limitRemaining) this.#limiter.remaining = parseInt(limitRemaining, 10);
+        if (limit) this.#limiter.limit = Number.parseInt(limit, 10);
+        if (limitRemaining) this.#limiter.remaining = Number.parseInt(limitRemaining, 10);
 
         if (!response.ok) {
             throw new Error(`Kanka request error: ${response.statusText} (${response.status})`);

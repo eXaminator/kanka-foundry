@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { afterAll, beforeAll, describe, it, expect } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { KankaVisibility } from '../../types/kanka';
 import kankaIsAccessible from './kankaIsAccessible';
 
@@ -22,15 +21,15 @@ describe('kankaIsAccessible()', () => {
         expect(compile(template, { object: { foo: 'bar' } })).toEqual('success');
     });
 
-    [KankaVisibility.all, KankaVisibility.members].forEach((visibility) => {
+    for (const visibility of [KankaVisibility.all, KankaVisibility.members]) {
         it(`returns true if visibility_id is ${visibility}`, () => {
             const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';
 
             expect(compile(template, { object: { visibility_id: visibility } })).toEqual('success');
         });
-    });
+    }
 
-    [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self].forEach((visibility) => {
+    for (const visibility of [KankaVisibility.admin, KankaVisibility.adminSelf, KankaVisibility.self]) {
         it(`returns false if visibility_id is ${visibility}`, () => {
             const template = '{{#unless (kankaIsAccessible object)}}success{{/unless}}';
 
@@ -42,7 +41,7 @@ describe('kankaIsAccessible()', () => {
 
             expect(compile(template, { object: { visibility_id: visibility }, owner: true })).toEqual('success');
         });
-    });
+    }
 
     it('returns true if is_private is false', () => {
         const template = '{{#if (kankaIsAccessible object)}}success{{/if}}';

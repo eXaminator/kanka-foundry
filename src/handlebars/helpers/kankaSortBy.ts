@@ -5,5 +5,5 @@ export default function kankaSortBy<T extends Record<string, unknown>>(
     ...fields: [...string[], Handlebars.HelperOptions]
 ): T[] {
     fields.pop(); // Remove options object
-    return [...data].sort(sortBy(...fields as string[]));
+    return [...data].sort(sortBy(...(fields as string[])));
 }

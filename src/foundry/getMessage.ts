@@ -1,8 +1,6 @@
 import getGame from './getGame';
 
-export default function getMessage(
-    ...args: [...string[], Record<string, unknown>] | string[]
-): string {
+export default function getMessage(...args: [...string[], Record<string, unknown>] | string[]): string {
     const values = args.slice(-1)[0];
     const keys = args.slice(0, -1);
 

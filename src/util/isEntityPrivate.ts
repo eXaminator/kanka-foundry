@@ -1,5 +1,10 @@
-import Reference from '../types/Reference';
-import { AnyConstrainable, KankaApiSimpleConstrainable, KankaApiVisibilityConstrainable, KankaVisibility } from '../types/kanka';
+import type Reference from '../types/Reference';
+import {
+    type AnyConstrainable,
+    type KankaApiSimpleConstrainable,
+    type KankaApiVisibilityConstrainable,
+    KankaVisibility,
+} from '../types/kanka';
 
 function hasVisibility(entity: unknown): entity is KankaApiVisibilityConstrainable {
     return (entity as KankaApiVisibilityConstrainable)?.visibility_id !== undefined;

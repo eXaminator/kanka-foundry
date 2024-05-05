@@ -1,5 +1,5 @@
 import api from '..';
-import { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiNote } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiNote } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -15,9 +15,7 @@ export default class NoteTypeLoader extends AbstractTypeLoader<KankaApiNote> {
     ): Promise<ReferenceCollection> {
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
-        await Promise.all([
-            collection.addById(entity.note_id, 'note'),
-        ]);
+        await Promise.all([collection.addById(entity.note_id, 'note')]);
 
         return collection;
     }
