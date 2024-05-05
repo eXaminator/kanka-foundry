@@ -1,6 +1,5 @@
 import KankaApi from './KankaApi';
 
-// eslint-disable-next-line import/no-mutable-exports
 let api = new KankaApi();
 
 export default api;

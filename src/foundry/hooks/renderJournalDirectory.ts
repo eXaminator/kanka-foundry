@@ -1,13 +1,13 @@
+import api from '../../api';
 import KankaBrowserApplication from '../../apps/KankaBrowser/KankaBrowserApplication';
 import logo from '../../assets/kanka.png';
+import type { KankaApiQuest } from '../../types/kanka';
 import { logInfo } from '../../util/logger';
-import api from '../../api';
 import getGame from '../getGame';
 import getMessage from '../getMessage';
 import { findEntriesByType, getEntryFlag } from '../journalEntries';
 import { showError, showWarning } from '../notifications';
 import { getSetting } from '../settings';
-import { KankaApiQuest } from '../../types/kanka';
 
 const questStatus = {
     complete: '<i class="fas fa-check-circle kanka-quest-status -complete"></i>',
@@ -18,15 +18,13 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
     if (!getSetting('questQuestStatusIcon')) return;
 
     const questEntries = findEntriesByType('quest');
-    questEntries.forEach((entry) => {
+    for (const entry of questEntries) {
         const li = html.find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
         const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
 
-        link.html(
-            `${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`,
-        );
-    });
+        link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
+    }
 }
 
 function renderKankaButton(html: JQuery<HTMLDivElement>): void {
@@ -60,7 +58,8 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
             return;
         }
 
-        if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) { // One week
+        if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) {
+            // One week
             showWarning('settings.error.WarningTokenExpiration');
         }
 

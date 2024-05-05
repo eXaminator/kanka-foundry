@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 export type KankaApiId = number | { __type: 'KankaApiId' };
 export type KankaApiEntityId = number | { __type: 'KankaApiEntityId' };
 export type KankaApiAnyId = KankaApiId | KankaApiEntityId;
 export type KankaApiEntityType =
-    'character'
+    | 'character'
     | 'creature'
     | 'location'
     | 'family'
@@ -65,11 +63,11 @@ export interface KankaApiBlamable {
     updated_by: number;
 }
 
-export interface KankaApiChildEntity extends
-    KankaApiRelated,
-    KankaApiSimpleConstrainable,
-    KankaApiBlamable,
-    KankaApiEntityImageData {
+export interface KankaApiChildEntity
+    extends KankaApiRelated,
+        KankaApiSimpleConstrainable,
+        KankaApiBlamable,
+        KankaApiEntityImageData {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     name: string;
@@ -90,7 +88,7 @@ export interface KankaApiListResult<T> extends KankaApiResult<T[]> {
         first: string;
         last: string;
         prev: string | null;
-        next: string | null
+        next: string | null;
     };
     meta: {
         current_page: number;
@@ -141,8 +139,8 @@ export interface KankaApiEntityPost extends KankaApiVisibilityConstrainable {
     entry_parsed: string;
     is_private: boolean;
     name: string;
-    position: number | null,
-    settings: { collapsed: '0' | '1' } | null,
+    position: number | null;
+    settings: { collapsed: '0' | '1' } | null;
 }
 
 export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, KankaApiBlamable {
@@ -167,7 +165,7 @@ export interface KankaApiAbilityLink extends KankaApiVisibilityConstrainable {
     charges: number | null;
     ability_id: KankaApiId;
     note: string | null;
-    position: number,
+    position: number;
 }
 
 export enum KankaApiAssetType {
@@ -176,10 +174,10 @@ export enum KankaApiAssetType {
     alias = 3,
 }
 
-interface KankaApiEntityBaseAsset extends
-    KankaApiBlamable,
-    KankaApiVisibilityConstrainable,
-    KankaApiSimpleConstrainable {
+interface KankaApiEntityBaseAsset
+    extends KankaApiBlamable,
+        KankaApiVisibilityConstrainable,
+        KankaApiSimpleConstrainable {
     entity_id: KankaApiEntityId;
     id: KankaApiId;
     name: string;
@@ -233,7 +231,7 @@ export interface KankaApiEntityFile extends KankaApiBlamable, KankaApiVisibility
 export interface KankaApiCampaign extends KankaApiEntityImageData {
     id: KankaApiId;
     name: string;
-    entry: string
+    entry: string;
     locale: string;
     urls: {
         view: string;

@@ -1,4 +1,4 @@
-import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { type JwtPayload, jwtDecode } from 'jwt-decode';
 
 export default class AccessToken {
     #token: string;
@@ -11,7 +11,7 @@ export default class AccessToken {
 
     private get remainingTime(): number {
         const { exp = 0 } = this.#payload;
-        return Math.max(exp - (Date.now() / 1000), 0);
+        return Math.max(exp - Date.now() / 1000, 0);
     }
 
     public isExpired(): boolean {

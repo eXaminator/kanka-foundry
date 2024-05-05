@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import kankaSortBy from './kankaSortBy';
 
 describe('kankaSortBy()', () => {

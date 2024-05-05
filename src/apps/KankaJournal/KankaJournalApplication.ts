@@ -13,8 +13,8 @@ type JournalSheetData = ReturnType<JournalSheet['getData']>;
 type SheetOptions = JournalSheetOptions & Record<string, unknown>;
 
 interface Data extends JournalSheetData {
-    pages: JournalEntryPage[],
-    toc: JournalEntryPage[],
+    pages: JournalEntryPage[];
+    toc: JournalEntryPage[];
 }
 
 export default class KankaJournalApplication extends JournalSheet {
@@ -24,7 +24,7 @@ export default class KankaJournalApplication extends JournalSheet {
         return {
             ...super.defaultOptions,
             editable: false,
-            classes: [...super.defaultOptions.classes ?? [], 'kanka-journal'],
+            classes: [...(super.defaultOptions.classes ?? []), 'kanka-journal'],
         };
     }
 
@@ -39,18 +39,17 @@ export default class KankaJournalApplication extends JournalSheet {
         if (!page) return false;
 
         if (page.type === 'image' && index === 0) return true;
-        if (['kanka-foundry.overview', 'kanka-foundry.post', 'kanka-foundry.character-profile'].includes(page.type)) return true;
+        if (['kanka-foundry.overview', 'kanka-foundry.post', 'kanka-foundry.character-profile'].includes(page.type))
+            return true;
 
         return false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _getPageData(): JournalEntryPage[] {
         const pages = super._getPageData() as (JournalEntryPage & { name: string })[];
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
-        return pages.map(page => ({
+        return pages.map((page) => ({
             ...page,
             name: page.name.startsWith('KANKA.') ? localization.localize(page.name) : page.name,
             editable: false,
@@ -73,7 +72,7 @@ export default class KankaJournalApplication extends JournalSheet {
         return {
             ...data,
             pages,
-            toc: data.toc.map(page => {
+            toc: data.toc.map((page) => {
                 const actualPage = this.object.pages.get(page._id);
                 const count = actualPage.isOwner ? page.system.totalCount : page.system.publicCount;
                 const tocCls = [page.tocClass];
@@ -86,7 +85,6 @@ export default class KankaJournalApplication extends JournalSheet {
         };
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _getHeaderButtons(): unknown[] {
         const accessToken = api.getToken();
         const allowSync = getGame().user?.isGM && api.isReady && accessToken && !accessToken.isExpired();
@@ -135,7 +133,6 @@ export default class KankaJournalApplication extends JournalSheet {
         return buttons;
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     _onPageScroll(entries, observer) {
         if (this.isPageInOverviewArea(this.pageIndex)) {
             this.#forceMode = JournalSheet.VIEW_MODES.MULTIPLE;
@@ -150,7 +147,7 @@ export default class KankaJournalApplication extends JournalSheet {
         const currentPageId = this._pages[this.pageIndex]?._id;
         if (currentPageId === pageId) return super.goToPage(pageId, anchor);
 
-        const targetIndex = this._pages.findIndex(page => page._id === pageId);
+        const targetIndex = this._pages.findIndex((page) => page._id === pageId);
 
         if (this.isPageInOverviewArea(targetIndex)) {
             await this._render(true, { pageId, anchor });

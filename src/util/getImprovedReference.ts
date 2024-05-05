@@ -1,5 +1,5 @@
 import { findEntryByEntityId, getEntryFlag } from '../foundry/journalEntries';
-import Reference from '../types/Reference';
+import type Reference from '../types/Reference';
 import createReferenceLink from './createReferenceLink';
 
 export default async function getImprovedReference(reference: Reference): Promise<Reference> {
@@ -24,6 +24,6 @@ export default async function getImprovedReference(reference: Reference): Promis
         urls: snapshot?.urls ?? reference.urls,
         image,
         thumb,
-        link: reference.link ?? await createReferenceLink(reference),
+        link: reference.link ?? (await createReferenceLink(reference)),
     };
 }

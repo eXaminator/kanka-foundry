@@ -1,8 +1,8 @@
 import deleteJournalEntry from './hooks/deleteJournalEntry';
 import hmrWrapHook from './hooks/hmrWrapHook';
 import init from './hooks/init';
-import renderJournalDirectory from './hooks/renderJournalDirectory';
 import ready from './hooks/ready';
+import renderJournalDirectory from './hooks/renderJournalDirectory';
 
 const refreshInit = hmrWrapHook('init', () => init, 'once');
 const refreshReady = hmrWrapHook('ready', () => ready, 'once');

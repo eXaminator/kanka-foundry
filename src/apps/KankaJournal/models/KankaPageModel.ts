@@ -19,5 +19,5 @@ export default class KankaPageModel extends foundry.abstract.TypeDataModel {
         };
     }
 
-    prepareDerivedData(): void { }
+    prepareDerivedData(): void {}
 }

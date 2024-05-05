@@ -1,11 +1,10 @@
 /// <reference types="vite/client" />
-/* eslint-disable @typescript-eslint/naming-convention,max-classes-per-file,@typescript-eslint/no-explicit-any */
 
 declare module '*.hbs' {
     export = string;
 }
 
-type ConstructorOf<C> = { new(...args: any[]): C };
+type ConstructorOf<C> = { new (...args: any[]): C };
 
 declare class Folder {
     static [key: string]: any;
@@ -30,6 +29,6 @@ interface User {
 }
 
 interface Window {
-    _templateCache: Record<string, () => string>,
-    getProperty<T = unknown, K = keyof T>(object: T, key: K | string): K extends keyof T ? T[K] : unknown,
+    _templateCache: Record<string, () => string>;
+    getProperty<T = unknown, K = keyof T>(object: T, key: K | string): K extends keyof T ? T[K] : unknown;
 }

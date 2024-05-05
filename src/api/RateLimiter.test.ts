@@ -1,5 +1,4 @@
-/* eslint-disable promise/no-callback-in-promise,promise/catch-or-return */
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import RateLimiter from './RateLimiter';
 
 vi.mock('../util/logger');
@@ -156,7 +155,9 @@ describe('RateLimiter', () => {
         it('throws an exception if a negative value is set', () => {
             const limiter = new RateLimiter(10, 2);
 
-            expect(() => { limiter.remaining = -1; }).toThrow(Error);
+            expect(() => {
+                limiter.remaining = -1;
+            }).toThrow(Error);
         });
 
         it('does nothing if the new remaining value is larger than the old one', () => {
@@ -197,7 +198,9 @@ describe('RateLimiter', () => {
         it('throws an exception if a negative value is set', () => {
             const limiter = new RateLimiter(10, 2);
 
-            expect(() => { limiter.limit = -1; }).toThrow(Error);
+            expect(() => {
+                limiter.limit = -1;
+            }).toThrow(Error);
         });
 
         it('calls change listeners', () => {

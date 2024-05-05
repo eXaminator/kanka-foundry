@@ -1,12 +1,14 @@
-import { setSetting } from '../foundry/settings';
 import getGame from '../foundry/getGame';
-import { logInfo } from '../util/logger';
 import { showInfo } from '../foundry/notifications';
+import { setSetting } from '../foundry/settings';
+import { logInfo } from '../util/logger';
 
 // Migrate to new Kanka-URL if the new one is available
 export default async function migrate(): Promise<void> {
     const game = getGame();
-    const baseUrlSetting = game.settings.storage.get('world')?.find(setting => setting.key === 'kanka-foundry.baseUrl');
+    const baseUrlSetting = game.settings.storage
+        .get('world')
+        ?.find((setting) => setting.key === 'kanka-foundry.baseUrl');
     const baseUrl = baseUrlSetting?.value ?? 'https://kanka.io';
 
     logInfo('Check for v2 migration...', { baseUrl });

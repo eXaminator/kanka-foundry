@@ -1,8 +1,7 @@
-/* eslint-disable no-await-in-loop, no-restricted-syntax */
 import loaders from './api/typeLoaders';
+import type AbstractTypeLoader from './api/typeLoaders/AbstractTypeLoader';
 import { createJournalEntry, updateJournalEntry } from './foundry/journalEntries';
-import { KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from './types/kanka';
-import AbstractTypeLoader from './api/typeLoaders/AbstractTypeLoader';
+import type { KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from './types/kanka';
 
 async function handleEntity(
     loader: AbstractTypeLoader,
@@ -33,7 +32,7 @@ export async function createEntities(
     ids: KankaApiId[],
     entityLookup?: KankaApiEntity[],
 ): Promise<void> {
-    const numberOfEntities = entityLookup?.filter(entity => entity.type === type).length ?? 0;
+    const numberOfEntities = entityLookup?.filter((entity) => entity.type === type).length ?? 0;
     const expectedNumberRequests = Math.ceil(numberOfEntities / 45);
 
     // Check whether fetching all entities of the type would be more efficient than fetching them individually
@@ -42,14 +41,14 @@ export async function createEntities(
         if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
 
         const entities = await loader.loadAll(campaignId);
-        entities.filter(entity => ids.includes(entity.id));
+        entities.filter((entity) => ids.includes(entity.id));
 
         for (const entity of entities) {
             // Make sure to handle them in sequence to avoid duplicate folders being created
             await handleEntity(loader, entity, campaignId, entityLookup);
         }
     } else {
-        await Promise.all(ids.map(id => createEntity(campaignId, type, id, entityLookup)));
+        await Promise.all(ids.map((id) => createEntity(campaignId, type, id, entityLookup)));
     }
 }
 

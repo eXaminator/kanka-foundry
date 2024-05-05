@@ -31,8 +31,10 @@ function isObject(obj: unknown): obj is Record<string, unknown> {
 
 export default async function replaceRecursiveMentions<T>(input: T, enrichOptions: EnrichOptions = {}): Promise<T> {
     if (typeof input === 'string') {
-        return await TextEditor
-            .enrichHTML(replaceMentions(input), { ...enrichOptions, links: false }) as unknown as Promise<T>;
+        return (await TextEditor.enrichHTML(replaceMentions(input), {
+            ...enrichOptions,
+            links: false,
+        })) as unknown as Promise<T>;
     }
 
     if (Array.isArray(input)) {
@@ -41,12 +43,11 @@ export default async function replaceRecursiveMentions<T>(input: T, enrichOption
 
     if (isObject(input)) {
         const newObject: Record<string, unknown> = {};
-        await Promise.all(Object
-            .keys(input)
-            .map(async (key) => {
-                // eslint-disable-next-line no-param-reassign
+        await Promise.all(
+            Object.keys(input).map(async (key) => {
                 newObject[key] = await replaceRecursiveMentions(input?.[key], enrichOptions);
-            }));
+            }),
+        );
 
         return newObject as T;
     }

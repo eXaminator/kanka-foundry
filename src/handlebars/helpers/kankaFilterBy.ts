@@ -22,5 +22,5 @@ export default function kankaFilterBy<T extends Record<string, unknown>>(
     if (typeof property === 'object') return data;
 
     const filterFn = getFilterFn(property, expected);
-    return data.filter(a => (invert === true ? !filterFn(a) : filterFn(a)));
+    return data.filter((a) => (invert === true ? !filterFn(a) : filterFn(a)));
 }

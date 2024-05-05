@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { describe, it, expect, vi } from 'vitest';
-import {
+import { describe, expect, it, vi } from 'vitest';
+import api from '..';
+import type {
     KankaApiAbilityLink,
     KankaApiEntity,
     KankaApiEntityId,
@@ -10,7 +10,6 @@ import {
     KankaApiJournal,
     KankaApiRelation,
 } from '../../types/kanka';
-import api from '..';
 import JournalTypeLoader from './JournalTypeLoader';
 
 vi.mock('../../api/KankaApi');

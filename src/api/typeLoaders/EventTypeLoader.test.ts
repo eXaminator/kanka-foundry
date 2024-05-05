@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-import { describe, it, expect, vi } from 'vitest';
-import {
+import { describe, expect, it, vi } from 'vitest';
+import api from '..';
+import type {
     KankaApiAbilityLink,
     KankaApiEntity,
     KankaApiEntityId,
@@ -10,7 +10,6 @@ import {
     KankaApiInventory,
     KankaApiRelation,
 } from '../../types/kanka';
-import api from '..';
 import EventTypeLoader from './EventTypeLoader';
 
 vi.mock('../../api/KankaApi');
@@ -181,10 +180,7 @@ describe('EventTypeLoader', () => {
                 event_id: 2002,
             });
 
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'event'),
-            ];
+            const entities = [createEntity(1001, 2001, 'location'), createEntity(1002, 2002, 'event')];
 
             const loader = new EventTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);

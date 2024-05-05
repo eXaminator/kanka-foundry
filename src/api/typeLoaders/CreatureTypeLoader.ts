@@ -1,5 +1,5 @@
 import api from '..';
-import { KankaApiCreature, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import type { KankaApiCreature, KankaApiEntity, KankaApiEntityType, KankaApiId } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
@@ -17,7 +17,7 @@ export default class CreatureTypeLoader extends AbstractTypeLoader<KankaApiCreat
 
         await Promise.all([
             collection.addById(entity.creature_id, 'creature'),
-            ...entity.locations.map(location => collection.addById(location, 'location')),
+            ...entity.locations.map((location) => collection.addById(location, 'location')),
         ]);
 
         return collection;
