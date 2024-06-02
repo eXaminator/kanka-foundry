@@ -1,3 +1,10 @@
+## [4.0.11](https://github.com/eXaminator/kanka-foundry/compare/4.0.10...4.0.11) (2024-06-02)
+
+
+### Bug Fixes
+
+* add official support for Foundry V12 ([7ed9fcd](https://github.com/eXaminator/kanka-foundry/commit/7ed9fcd7fb41b8c88dc1fd916306773fd0f8f0f3))
+
 ## [4.0.10](https://github.com/eXaminator/kanka-foundry/compare/4.0.9...4.0.10) (2024-05-04)
 
 
