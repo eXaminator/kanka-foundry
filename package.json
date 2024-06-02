@@ -8,7 +8,6 @@
     "scripts": {
         "build": "vite build",
         "start": "NODE_ENV=development vite",
-        "update:types": "npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types",
         "check": "npm run check:types; npm run check:lint",
         "check:types": "tsc --noEmit",
         "check:lint": "biome lint src",

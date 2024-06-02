@@ -143,23 +143,23 @@ export default class KankaJournalApplication extends JournalSheet {
         }
     }
 
-    async goToPage(pageId, anchor) {
+    goToPage(pageId: string, anchor?: string) {
         const currentPageId = this._pages[this.pageIndex]?._id;
         if (currentPageId === pageId) return super.goToPage(pageId, anchor);
 
         const targetIndex = this._pages.findIndex((page) => page._id === pageId);
 
         if (this.isPageInOverviewArea(targetIndex)) {
-            await this._render(true, { pageId, anchor });
-
-            this.#forceMode = JournalSheet.VIEW_MODES.MULTIPLE;
-            super.goToPage(pageId, anchor);
-            this.#forceMode = undefined;
+            this._render(true, { pageId, anchor }).then(() => {
+                this.#forceMode = JournalSheet.VIEW_MODES.MULTIPLE;
+                super.goToPage(pageId, anchor);
+                this.#forceMode = undefined;
+            });
         } else {
             super.goToPage(pageId, anchor);
         }
 
-        return null;
+        return;
     }
 
     get mode(): number {

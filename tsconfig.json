@@ -14,9 +14,16 @@
         "allowJs": true,
         "noEmit": true
     },
-    "include": ["src/**/*", "build/**/*", "foundry-code/common/**/*", "foundry-code/client/**/*"],
+    "include": [
+        "src/**/*",
+        "build/**/*",
+        "foundry-code/common/**/*",
+        "foundry-code/client/**/*",
+        "foundry-code/client-esm/**/*"
+    ],
     "exclude": [
         "foundry-code/client/pixi/placeables/token.js",
-        "foundry-code/client/pixi/core/interaction/mouse-handler.js"
+        "foundry-code/client/pixi/core/interaction/mouse-handler.js",
+        "foundry-code/client/pixi/extensions/graphics.js"
     ]
 }

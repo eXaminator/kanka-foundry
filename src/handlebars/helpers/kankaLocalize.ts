@@ -12,6 +12,5 @@ export default function kankaLocalize(...args: unknown[]): string {
 
     const key = ['KANKA', ...parts].join('.');
 
-    // @ts-expect-error
     return foundry.utils.isEmpty(data) ? localization.localize(key) : localization.format(String(key), data);
 }
