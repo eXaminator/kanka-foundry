@@ -1,37 +1,37 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        <table>
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>{{ kankaLocalize "journal.organisation.labels.member_name" }}</td>
-                    <td>{{ kankaLocalize "journal.organisation.labels.member_role" }}</td>
-                    <td>{{ kankaLocalize "journal.organisation.labels.member_status" }}</td>
-                </tr>
-            </thead>
-            {{#each data.system.snapshot.list }}
-                {{#with this as | rel | }}
-                    {{#with (kankaFindReference rel.character_id 'character') as | character | }}
-                        <tr class="{{#if (kankaIsSecret rel character) }}-secret{{/if}}">
-                            <td class="thumb -rounded">
-                                {{#if character.thumb}}<img src="{{character.thumb}}" alt="{{character.name}}" class="nopopout">{{/if}}
-                                <span class="placeholder"></span>
-                            </td>
-                            <td>{{{ character.link }}}</td>
-                            <td>{{ rel.role }}</td>
-                            <td>
-                                {{#if (eq rel.status_id 0) }}
-                                {{ kankaLocalize "journal.organisation.value.membership_active" }}
-                                {{ else if (eq rel.status_id 0) }}
-                                {{ kankaLocalize "journal.organisation.value.membership_inactive" }}
-                                {{ else }}
-                                {{ kankaLocalize "journal.organisation.value.membership_unknown" }}
-                                {{/if}}
-                            </td>
-                        </tr>
-                    {{/with}}
-                {{/with}}
-            {{/each}}
-        </table>
-    {{~/inline}}
+{{#*inline 'content'~}}
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td>{{ kankaLocalize "journal.organisation.labels.member_name" }}</td>
+            <td>{{ kankaLocalize "journal.organisation.labels.member_role" }}</td>
+            <td>{{ kankaLocalize "journal.organisation.labels.member_status" }}</td>
+        </tr>
+    </thead>
+    {{#each data.system.snapshot.list }}
+    {{#with this as | rel | }}
+    {{#with (kankaFindReference rel.character_id 'character') as | character | }}
+    <tr class="{{#if (kankaIsSecret rel character) }}-secret{{/if}}">
+        <td class="thumb -rounded">
+            {{#if character.thumb}}<img src="{{character.thumb}}" alt="{{character.name}}" class="nopopout">{{/if}}
+            <span class="placeholder"></span>
+        </td>
+        <td>{{{ character.link }}}</td>
+        <td>{{ rel.role }}</td>
+        <td>
+            {{#if (eq rel.status_id 0) }}
+            {{ kankaLocalize "journal.organisation.value.membership_active" }}
+            {{ else if (eq rel.status_id 1) }}
+            {{ kankaLocalize "journal.organisation.value.membership_inactive" }}
+            {{ else }}
+            {{ kankaLocalize "journal.organisation.value.membership_unknown" }}
+            {{/if}}
+        </td>
+    </tr>
+    {{/with}}
+    {{/with}}
+    {{/each}}
+</table>
+{{~/inline}}
 {{/../shared/layout}}
