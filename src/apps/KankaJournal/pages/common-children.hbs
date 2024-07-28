@@ -1,29 +1,25 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        <table>
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>{{ kankaLocalize "journal.shared.labels.child_name" }}</td>
-                    <td>{{ kankaLocalize "journal.shared.labels.child_type" }}</td>
-                </tr>
-            </thead>
-            {{#each (kankaFilterReferences data.system.snapshot.list 'ref.entityId') as |child|}}
-                {{#with (kankaFindReference child.ref.entityId) as | ref | }}
-                    <tr class="{{#if (kankaIsSecret child.ref) }}-secret{{/if}}">
-                        <td class="thumb -rounded">
-                            {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
-                            <span class="placeholder"></span>
-                        </td>
-                        <td>
-                            {{{ ref.link }}}
-                        </td>
-                        <td>
-                            {{{ child.type }}}
-                        </td>
-                    </tr>
-                {{/with}}
-            {{/each}}
-        </table>
-    {{~/inline}}
+{{#*inline 'content'~}}
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td>{{ kankaLocalize "journal.shared.labels.child_name" }}</td>
+        </tr>
+    </thead>
+    {{#each data.system.snapshot.list }}
+    {{#with (kankaFindReference this @root.data.system.type) as | ref | }}
+    <tr class="{{#if (kankaIsSecret ref) }}-secret{{/if}}">
+        <td class="thumb -rounded">
+            {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
+            <span class="placeholder"></span>
+        </td>
+        <td>
+            {{{ ref.link }}}
+        </td>
+    </tr>
+    {{/with}}
+    {{/each}}
+</table>
+{{~/inline}}
 {{/../shared/layout}}

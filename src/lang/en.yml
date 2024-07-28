@@ -255,6 +255,9 @@ KANKA:
         journalPages:
             progress: Migrate Kanka-Foundry entries
             success: All imported Kanka entries have been migrated to new sheet format.
+        started: Kanka-Foundry is running some migrations, please wait until they are done.
+        finished: All Kanka-Foundry migrations were completed successfully.
+        failed: "The Kanka-Foundry migrations ran in to some issues: {error}"
 
 TYPES:
     JournalEntryPage:

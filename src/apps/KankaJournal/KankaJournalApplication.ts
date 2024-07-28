@@ -74,6 +74,7 @@ export default class KankaJournalApplication extends JournalSheet {
             pages,
             toc: data.toc.map((page) => {
                 const actualPage = this.object.pages.get(page._id);
+
                 const count = actualPage.isOwner ? page.system.totalCount : page.system.publicCount;
                 const tocCls = [page.tocClass];
                 if (count > 99) tocCls.push('kanka-count kanka-count-limit');

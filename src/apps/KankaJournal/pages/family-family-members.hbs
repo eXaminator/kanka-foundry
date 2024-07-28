@@ -1,27 +1,27 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        <table>
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>{{ kankaLocalize "journal.family.labels.member_name" }}</td>
-                </tr>
-            </thead>
-            {{#each data.system.snapshot.list }}
-                {{#with this as | rel | }}
-                    {{#with (kankaFindReference rel.entityId) as | member | }}
-                        <tr class="{{#if (kankaIsSecret rel rel) }}-secret{{/if}}">
-                            <td class="thumb -rounded">
-                                {{#if rel.thumb}}
-                                    <img src="{{rel.thumb}}" alt="{{rel.name}}" class="nopopout">
-                                {{/if}}
-                                <span class="placeholder"></span>
-                            </td>
-                            <td>{{{ member.link }}}</td>
-                        </tr>
-                    {{/with}}
-                {{/with}}
-            {{/each}}
-        </table>
-    {{~/inline}}
+{{#*inline 'content'~}}
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td>{{ kankaLocalize "journal.family.labels.member_name" }}</td>
+        </tr>
+    </thead>
+    {{#each data.system.snapshot.list }}
+    {{#with this as | memberId | }}
+    {{#with (kankaFindReference memberId 'character') as | member | }}
+    <tr class="{{#if (kankaIsSecret rel member) }}-secret{{/if}}">
+        <td class="thumb -rounded">
+            {{#if rel.thumb}}
+            <img src="{{rel.thumb}}" alt="{{rel.name}}" class="nopopout">
+            {{/if}}
+            <span class="placeholder"></span>
+        </td>
+        <td>{{{ member.link }}}</td>
+    </tr>
+    {{/with}}
+    {{/with}}
+    {{/each}}
+</table>
+{{~/inline}}
 {{/../shared/layout}}

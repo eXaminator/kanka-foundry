@@ -1,4 +1,5 @@
 import moduleConfig from '../../public/module.json';
+import { getLatestMigrationVersion } from '../executeMigrations';
 import EntityType from '../types/EntityType';
 import getGame from './getGame';
 import getMessage from './getMessage';
@@ -16,6 +17,7 @@ export type KankaSettings = {
     automaticPermissions: 'never' | 'initial' | 'always';
     importTemplateEntities: boolean;
     questQuestStatusIcon: boolean;
+    migrationVersion: string,
 } & Record<`collapseType_${keyof typeof EntityType}`, boolean>;
 
 export function getSetting<T extends keyof KankaSettings>(setting: T): KankaSettings[T] {
@@ -45,6 +47,16 @@ async function register<T extends keyof KankaSettings>(
 
 export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> {
     const languages = moduleConfig.languages.reduce((map, { lang, name }) => { map[lang] = name; return map; }, {}) ?? {};
+
+    register(
+        'migrationVersion',
+        {
+            config: false,
+            type: String,
+            default: getLatestMigrationVersion(),
+        },
+        onChangeMap,
+    );
 
     register(
         'baseUrl',

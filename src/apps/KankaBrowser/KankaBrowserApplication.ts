@@ -376,6 +376,7 @@ export default class KankaBrowserApplication extends Application {
 
         const entities = await api.getAllEntities(this.#campaign.id, [
             'ability',
+            'calendar',
             'character',
             'creature',
             'location',
