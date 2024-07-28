@@ -14,19 +14,4 @@ if (import.meta.hot) {
             }
         }
     });
-
-    import.meta.hot.on('kanka:update-hbs', async ({ file }) => {
-        console.log('HMR: update-hbs', file);
-        const kankaTemplates = Object.keys(window._templateCache).filter((key) => key.includes('kanka-foundry'));
-
-        for (const key of kankaTemplates) {
-            delete window._templateCache[key];
-        }
-
-        await loadTemplates(kankaTemplates);
-
-        for (const app of Object.values(window.ui.windows as Record<number, Application>)) {
-            app.render();
-        }
-    });
 }
