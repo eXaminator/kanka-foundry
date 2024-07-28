@@ -1,41 +1,45 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        <table>
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>{{ kankaLocalize "journal.quest.labels.element_name" }}</td>
-                    <td>{{ kankaLocalize "journal.quest.labels.element_role" }} / {{ kankaLocalize "journal.quest.labels.element_description" }}</td>
-                </tr>
-            </thead>
-            {{#each data.system.snapshot.list }}
-                {{#with this as | rel | }}
-                    {{#with (kankaFindReference rel.entity_id) as | element | }}
-                        <tr class="{{#if (kankaIsSecret rel element) }}-secret{{/if}}">
-                            <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}"{{/if}}>
-                                {{#if element.thumb}}
-                                    <img src="{{element.thumb}}" alt="{{element.name}}" class="nopopout" />
-                                {{/if}}
-                                <span class="placeholder"></span>
-                            </td>
-                            <td>{{{ element.link }}}</td>
-                            <td>
-                                {{#if rel.role}}<strong>{{ rel.role }}</strong><br/>{{/if}}
-                                {{{ rel.description_parsed }}}
-                            </td>
-                        </tr>
-                    {{else}}
-                        <tr class="{{#if (kankaIsSecret rel) }}-secret{{/if}}">
-                            <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}"{{/if}}><span class="placeholder"></span></td>
-                            <td>{{ rel.name }}</td>
-                            <td>
-                                {{#if rel.role}}{{ rel.role }}<br/>{{/if}}
-                                {{{ rel.description_parsed }}}
-                            </td>
-                        </tr>
-                    {{/with}}
-                {{/with}}
-            {{/each}}
-        </table>
-    {{~/inline}}
+{{#*inline 'content'~}}
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td>{{ kankaLocalize "journal.quest.labels.element_name" }}</td>
+            <td>{{ kankaLocalize "journal.quest.labels.element_role" }} / {{ kankaLocalize
+                "journal.quest.labels.element_description" }}</td>
+        </tr>
+    </thead>
+    {{#each (kankaFilterAccessible data.system.snapshot.list) }}
+    {{#with this as | rel | }}
+    {{#if rel.entity_id}}
+    {{#with (kankaFindReference rel.entity_id) as | ref | }}
+    <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
+        <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}" {{/if}}>
+            {{#if ref.thumb}}
+            <img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />
+            {{/if}}
+            <span class="placeholder"></span>
+        </td>
+        <td>{{{ ref.link }}}</td>
+        <td>
+            {{#if rel.role}}<strong>{{ rel.role }}</strong><br />{{/if}}
+            {{{ rel.description_parsed }}}
+        </td>
+    </tr>
+    {{/with}}
+    {{else}}
+    <tr class="{{#if (kankaIsSecret rel) }}-secret{{/if}}">
+        <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}" {{/if}}><span
+                class="placeholder"></span></td>
+        <td>{{ rel.name }}</td>
+        <td>
+            {{#if rel.role}}{{ rel.role }}<br />{{/if}}
+            {{{ rel.description_parsed }}}
+        </td>
+    </tr>
+    {{/if}}
+    {{/with}}
+    {{/each}}
+</table>
+{{~/inline}}
 {{/../shared/layout}}

@@ -1,43 +1,43 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        <table>
-            <thead>
-                <tr>
-                    <td></td>
-                    <td>Calendar</td>
-                    <td>Date</td>
-                    <td class="center">Event Length</td>
-                    <td>Comment</td>
-                    <td class="center">Recurring</td>
-                </tr>
-            </thead>
-            {{#each (kankaFilterAccessible data.system.snapshot.list)}}
-                {{#with this as | rel | }}
-                    {{#with (kankaFindReference rel.calendar_id 'calendar') as | ref | }}
-                    <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
-                        <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}" {{/if}}>
-                            {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
-                            <span class="placeholder"></span>
-                        </td>
-                        <td>
-                            {{ ref.name }}
-                        </td>
-                        <td>
-                            {{ rel.date }}
-                        </td>
-                        <td class="center">
-                            {{ kankaLocalize 'journal.shared.value.days' value=rel.length }}
-                        </td>
-                        <td>
-                            {{ rel.comment }}
-                        </td>
-                        <td class="center">
-                            {{#if rel.is_recurring}}<i class="fa-solid fa-rotate-right"></i>{{/if}}
-                        </td>
-                    </tr>
-                    {{/with}}
-                {{/with}}
-            {{/each}}
-        </table>
-    {{~/inline}}
+{{#*inline 'content'~}}
+<table>
+    <thead>
+        <tr>
+            <td></td>
+            <td>Calendar</td>
+            <td>Date</td>
+            <td class="center">Event Length</td>
+            <td>Comment</td>
+            <td class="center">Recurring</td>
+        </tr>
+    </thead>
+    {{#each (kankaFilterAccessible data.system.snapshot.list)}}
+    {{#with this as | rel | }}
+    {{#with (kankaFindReference rel.calendar_id 'calendar') as | ref | }}
+    <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
+        <td class="thumb -rounded" {{#if rel.colour}}style="--kanka-avatar-color: {{ rel.colour }}" {{/if}}>
+            {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}
+            <span class="placeholder"></span>
+        </td>
+        <td>
+            {{ ref.name }}
+        </td>
+        <td>
+            {{ rel.date }}
+        </td>
+        <td class="center">
+            {{ kankaLocalize 'journal.shared.value.days' value=rel.length }}
+        </td>
+        <td>
+            {{ rel.comment }}
+        </td>
+        <td class="center">
+            {{#if rel.is_recurring}}<i class="fa-solid fa-rotate-right"></i>{{/if}}
+        </td>
+    </tr>
+    {{/with}}
+    {{/with}}
+    {{/each}}
+</table>
+{{~/inline}}
 {{/../shared/layout}}

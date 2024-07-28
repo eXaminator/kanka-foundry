@@ -36,7 +36,8 @@ async function createFolder(
 
     return Folder.create({
         name,
-        parent: parent?.id ?? null,
+        parent: parent?.id ?? null, // TODO: Remove after v11 support is removed
+        folder: parent?.id ?? null,
         type: 'JournalEntry',
         ...data,
     });

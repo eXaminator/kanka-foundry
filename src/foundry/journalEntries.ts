@@ -3,23 +3,17 @@ import type ReferenceCollection from '../api/ReferenceCollection';
 import type Reference from '../types/Reference';
 import type {
     AnyConstrainable,
-    KankaApiCharacter,
     KankaApiChildEntity,
     KankaApiChildEntityWithChildren,
     KankaApiEntity,
-    KankaApiEntityAsset,
     KankaApiEntityId,
     KankaApiEntityType,
-    KankaApiFamily,
     KankaApiId,
-    KankaApiOrganisation,
-    KankaApiQuest,
-    KankaApiRelated,
 } from '../types/kanka';
-import groupBy from '../util/groupBy';
-import isEntityPrivate from '../util/isEntityPrivate';
+import isSecret from '../util/isSecret';
 import getGame from './getGame';
 import { ensureFolderPath } from './journalFolders';
+import PageFactory from './PageFactory';
 import { getSetting } from './settings';
 
 const CURRENT_JOURNAL_VERSION = '000002';
@@ -64,33 +58,21 @@ function buildVersionString(entity: { updated_at: string }): string {
 function getOwnership(
     entities: AnyConstrainable[],
     currentOwnership?: Record<string, Ownership>,
-    forPage = true,
 ): Record<string, Ownership> | undefined {
     const setting = getSetting('automaticPermissions');
 
-    if (setting === 'never' && (!forPage || currentOwnership))
+    if (setting === 'never' && currentOwnership)
         return currentOwnership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
     if (setting === 'initial' && currentOwnership) return currentOwnership;
 
-    // This is a page based on the root entity (because it has attributes),
-    // so we can inherit the permissions from the journal entry
-    if (forPage && entities.every((entity) => Boolean((entity as unknown as KankaApiRelated).attributes))) {
-        return {
-            ...(currentOwnership ?? {}),
-            default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT,
-        };
-    }
-
-    if (entities.every((entity) => isEntityPrivate(entity))) {
+    if (entities.every((entity) => isSecret(entity))) {
         return {
             ...(currentOwnership ?? {}),
             default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE,
         };
     }
 
-    return forPage
-        ? { ...(currentOwnership ?? {}), default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT }
-        : { ...(currentOwnership ?? {}), default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER };
+    return { ...(currentOwnership ?? {}), default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER };
 }
 
 function buildKankaFlags(flags: Partial<NullableFlagTypes>): Partial<FlagDataObject> {
@@ -140,206 +122,6 @@ export function hasOutdatedEntryByEntity(entity: KankaApiEntity): boolean {
     return buildVersionString(entity) > currentVersion;
 }
 
-function createPage(
-    type: string,
-    name: string,
-    model: { snapshot: any },
-    journal?: JournalEntry,
-    { show = true, level = 1 } = {},
-) {
-    const entities = (Array.isArray(model.snapshot?.list) ? model.snapshot.list : [model.snapshot]).filter((e) => !!e);
-
-    if (!entities.length) {
-        return null;
-    }
-
-    const existingPage = journal?.pages.getName(name);
-
-    let counts: { publicCount?: number; totalCount?: number } = {};
-
-    if (model.snapshot?.list) {
-        counts = {
-            publicCount: entities.filter((e) => !isEntityPrivate(e)).length,
-            totalCount: entities.length,
-        };
-    }
-
-    return {
-        type: `${moduleConfig.name}.${type}`,
-        name,
-        title: { show, level },
-        system: { ...model, ...counts },
-        ownership: getOwnership(entities, existingPage?.ownership),
-        flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-    };
-}
-
-function createCharacterProfilePage(
-    name: string,
-    model: { snapshot: unknown },
-    journal?: JournalEntry,
-    { show = false, level = 2 } = {},
-) {
-    const character = model.snapshot as KankaApiCharacter;
-
-    if (!character.traits) {
-        return null;
-    }
-
-    const groupedTraits = groupBy(character.traits, 'section');
-    const appearance = groupedTraits.get('appearance') ?? [];
-    const personality = groupedTraits.get('personality') ?? [];
-    const existingPage = journal?.pages.getName(name);
-
-    if (appearance.length === 0 && personality.length === 0) {
-        return null;
-    }
-
-    const ownership = getOwnership(
-        [
-            ...appearance.map(() => ({ is_private: false })),
-            ...personality.map(() => ({ is_private: !character.is_personality_visible })),
-        ],
-        existingPage?.ownership,
-    );
-
-    return {
-        type: `${moduleConfig.name}.character-profile`,
-        name,
-        title: { show, level },
-        system: {
-            ...model,
-            snapshot: {
-                appearance,
-                personality,
-                isPersonalityVisible: character.is_personality_visible,
-            },
-        },
-        ownership,
-        flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-    };
-}
-
-function createImagePage(
-    name: string,
-    entity: KankaApiChildEntity,
-    journal?: JournalEntry,
-    { show = false, level = 1 } = {},
-) {
-    if (!entity.has_custom_image) return null;
-
-    const existingPage = journal?.pages.getName(name);
-    const ownership = getOwnership(
-        [entity],
-        existingPage?.ownership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.INHERIT },
-    );
-
-    return {
-        type: 'image',
-        name,
-        title: { show, level },
-        src: entity.image_full,
-        image: { caption: null },
-        ownership,
-    };
-}
-
-function createPostPage(
-    name: string,
-    content: string | null | undefined,
-    ownership?: Record<string, Ownership>,
-    { show = true, level = 2 } = {},
-) {
-    if (!content) return null;
-
-    return {
-        type: `${moduleConfig.name}.post`,
-        name,
-        title: { show, level },
-        text: { content },
-        ownership,
-        flags: { core: { sheetClass: 'kanka-foundry.PostPageSheet' } },
-    };
-}
-
-function createAssetFilePages(assets: KankaApiEntityAsset[], journal?: JournalEntry, { show = false, level = 2 } = {}) {
-    return assets.map((asset) => {
-        const existingPage = journal?.pages.getName(asset.name);
-        const ownership = getOwnership([asset], existingPage?.ownership);
-
-        if (asset._file && /^image\/.*/.test(asset.metadata.type)) {
-            return {
-                type: 'image',
-                name: asset.name,
-                title: { show, level },
-                src: asset._url,
-                image: { caption: asset.name },
-                ownership,
-                flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-            };
-        }
-
-        if (asset._file && asset.metadata.type === 'application/pdf') {
-            return {
-                type: 'pdf',
-                name: asset.name,
-                title: { show, level },
-                src: asset._url,
-                ownership,
-                flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-            };
-        }
-
-        if (asset._file && /^audio\/.*/.test(asset.metadata.type)) {
-            return {
-                type: 'video',
-                name: asset.name,
-                title: { show, level },
-                src: asset._url,
-                video: { controls: true, autoplay: false, loop: false },
-                ownership,
-                flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-            };
-        }
-
-        if (asset._link && /^https:\/\/(www\.)?youtube\.com/.test(asset.metadata.url)) {
-            return {
-                type: 'video',
-                name: asset.name,
-                title: { show, level },
-                src: asset.metadata.url,
-                video: { controls: true, autoplay: false, loop: false },
-                ownership,
-                flags: { core: { sheetClass: 'kanka-foundry.DefaultPageSheet' } },
-            };
-        }
-
-        return null;
-    });
-}
-
-function mergeModel(base: Record<string, unknown>, snapshot: unknown) {
-    return {
-        ...base,
-        snapshot: Array.isArray(snapshot) ? { list: snapshot } : snapshot,
-    };
-}
-
-function unzip<T>(array: T[], splitter: (item: T, index: number) => boolean): [T[], T[]] {
-    return array.reduce<[T[], T[]]>(
-        (entries, entry, index) => {
-            if (splitter(entry, index)) {
-                entries[0].push(entry);
-            } else {
-                entries[1].push(entry);
-            }
-
-            return entries;
-        },
-        [[], []],
-    );
-}
-
 function createAllPages(
     campaignId: KankaApiId,
     type: KankaApiEntityType,
@@ -347,105 +129,31 @@ function createAllPages(
     references: ReferenceCollection,
     journal?: JournalEntry,
 ) {
-    const model = {
-        type,
+    const pageFactory = new PageFactory(
         campaignId,
-        kankaId: entity.id,
-        kankaEntityId: entity.entity_id,
-        name: entity.name,
-        img: entity.has_custom_image ? entity.image_full : undefined,
-        version: buildVersionString(entity),
-        references: references.getRecord(),
-    };
-
-    const [prePosts, postPosts] = unzip(
-        entity.posts.sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
-        (post, index) => (post.position ?? index) < 0,
+        type,
+        entity,
+        references,
+        journal,
     );
 
     return [
-        createImagePage('KANKA.journal.shared.pages.image', entity, journal),
-        createPage('overview', 'KANKA.journal.shared.pages.story', mergeModel(model, entity), journal, { show: false }),
-        createCharacterProfilePage('KANKA.journal.character.pages.profile', mergeModel(model, entity), journal),
-        ...prePosts.map((note) =>
-            createPostPage(
-                note.name,
-                note.entry_parsed,
-                getOwnership([note], journal?.pages.getName(note.name)?.ownership),
-            ),
-        ),
-        createPostPage('KANKA.journal.shared.pages.entry', entity.entry_parsed),
-        ...postPosts.map((note) =>
-            createPostPage(
-                note.name,
-                note.entry_parsed,
-                getOwnership([note], journal?.pages.getName(note.name)?.ownership),
-            ),
-        ),
-        createPage('relations', 'KANKA.journal.shared.pages.relations', mergeModel(model, entity.relations), journal),
-
-        createPage(
-            'character-organisations',
-            'KANKA.journal.character.pages.organisations',
-            mergeModel(model, (entity as KankaApiCharacter).organisations?.data),
-            journal,
-        ),
-
-        type === 'family'
-            ? createPage(
-                'family-members',
-                'KANKA.journal.family.pages.members',
-                mergeModel(
-                    model,
-                    (entity as KankaApiFamily).members?.map((id) => references.findByIdAndType(id, 'character')),
-                ),
-                journal,
-            )
-            : null,
-        type === 'organisation'
-            ? createPage(
-                'organisation-members',
-                'KANKA.journal.organisation.pages.members',
-                mergeModel(model, (entity as KankaApiOrganisation).members),
-                journal,
-            )
-            : null,
-        createPage(
-            'quest-elements',
-            'KANKA.journal.quest.pages.elements',
-            mergeModel(model, (entity as KankaApiQuest).elements),
-            journal,
-        ),
-
-        createPage('assets', 'KANKA.journal.shared.pages.assets', mergeModel(model, entity.entity_assets), journal),
-        ...createAssetFilePages(entity.entity_assets, journal),
-        createPage(
-            'attributes',
-            'KANKA.journal.shared.pages.attributes',
-            mergeModel(model, entity.attributes),
-            journal,
-        ),
-        createPage(
-            'abilities',
-            'KANKA.journal.shared.pages.abilities',
-            mergeModel(model, entity.entity_abilities),
-            journal,
-        ),
-        createPage('inventory', 'KANKA.journal.shared.pages.inventory', mergeModel(model, entity.inventory), journal),
-        createPage('events', 'KANKA.journal.shared.pages.events', mergeModel(model, entity.entity_events), journal),
-
-        createPage(
-            'children',
-            `KANKA.entityType.${type}`,
-            mergeModel(
-                model,
-                (entity as KankaApiChildEntityWithChildren).children?.map((child) => ({
-                    ref: references.findByIdAndType(child, type),
-                    type,
-                })),
-            ),
-            journal,
-        ),
+        pageFactory.createEntityImagePage(),
+        pageFactory.createOverviewPage(),
+        pageFactory.createCharacterProfilePage(),
+        ...pageFactory.createPostPages(),
+        pageFactory.createRelationsPage(),
+        pageFactory.createCharacterOrganisationsPage(),
+        pageFactory.createFamilyMembersPage(),
+        pageFactory.createOrganisationMembersPage(),
+        pageFactory.createQuestElementsPage(),
+        pageFactory.createAssetsPage(),
+        ...pageFactory.createAssetFilePages(),
+        pageFactory.createAttributesPage(),
+        pageFactory.createAbilitiesPage(),
+        pageFactory.createInventoryPage(),
+        pageFactory.createEventsPage(),
+        pageFactory.createChildrenPage(),
     ].filter((page) => !!page);
 }
 
@@ -474,11 +182,13 @@ export async function createJournalEntry(
             .reverse()
             .map((id) => references.findByIdAndType(id, type))
             .filter((ref): ref is Reference => !!ref) ?? [];
+
     const folder = await ensureFolderPath(type, path);
+
 
     return (await JournalEntry.create({
         ...journalData,
-        ownership: getOwnership([entity], undefined, false),
+        ownership: getOwnership([entity], undefined),
         folder: folder?.id,
     })) as JournalEntry;
 }
@@ -508,7 +218,7 @@ export async function updateJournalEntry(
     await entry.deleteEmbeddedDocuments('JournalEntryPage', [], { deleteAll: true });
     await entry.update({
         ...journalData,
-        ownership: getOwnership([entity], entry.ownership, false),
+        ownership: getOwnership([entity], entry.ownership),
     });
 
     return entry;

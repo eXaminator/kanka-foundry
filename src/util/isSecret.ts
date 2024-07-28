@@ -18,7 +18,7 @@ function isReference(entity: unknown): entity is Reference {
     return (entity as Reference)?.isPrivate !== undefined;
 }
 
-export default function isSecret(...entities: AnyConstrainable[]): boolean {
+export default function isSecret(...entities: unknown[]): boolean {
     return entities.some((entity) => {
         if (hasVisibility(entity)) {
             return ![KankaVisibility.all, KankaVisibility.members].includes(entity.visibility_id);

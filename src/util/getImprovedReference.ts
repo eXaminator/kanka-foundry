@@ -1,6 +1,7 @@
 import { findEntryByEntityId, getEntryFlag } from '../foundry/journalEntries';
 import type Reference from '../types/Reference';
 import createReferenceLink from './createReferenceLink';
+import isSecret from './isSecret';
 
 export default async function getImprovedReference(reference: Reference): Promise<Reference> {
     const journal = findEntryByEntityId(reference.entityId);
@@ -20,7 +21,7 @@ export default async function getImprovedReference(reference: Reference): Promis
         id: snapshot?.id ?? reference.id,
         entityId: snapshot?.entity_id ?? reference.entityId,
         name: snapshot?.name ?? reference.name,
-        isPrivate: snapshot?.is_private ?? reference.isPrivate,
+        isPrivate: isSecret(snapshot, reference),
         urls: snapshot?.urls ?? reference.urls,
         image,
         thumb,

@@ -1,5 +1,6 @@
 import type Reference from '../../types/Reference';
 import type { KankaApiAnyId, KankaApiEntityType } from '../../types/kanka';
+import resolveReference from '../../util/resolveReference';
 import kankaIsAccessible from './kankaIsAccessible';
 
 export default function kankaFindReference(
@@ -20,9 +21,8 @@ export default function kankaFindReference(
     const refMap = (options?.data?.root?.data?.system?.references ??
         options?.hash?.references ??
         {}) as unknown as Record<string, Reference>;
-    const ref = Object.values(refMap).find(
-        (ref) => (ref.type === type && ref.id === id) || (!type && ref.entityId === id),
-    );
+
+    const ref = resolveReference(id, type, refMap);
 
     if (ref && kankaIsAccessible(ref, options)) {
         return ref;

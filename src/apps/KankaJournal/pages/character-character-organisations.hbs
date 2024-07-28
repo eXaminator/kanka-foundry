@@ -11,7 +11,7 @@
     </thead>
     {{#each (kankaFilterAccessible data.system.snapshot.list)}}
     {{#with this as | rel | }}
-    {{#with (kankaFindReference organisation_id 'organisation') as | ref | }}
+    {{#with (kankaFindReference rel.organisation_id 'organisation') as | ref | }}
     <tr class="{{#if (kankaIsSecret rel ref) }}-secret{{/if}}">
         <td class="thumb -rounded">
             {{#if ref.thumb}}<img src="{{ref.thumb}}" alt="{{ref.name}}" class="nopopout" />{{/if}}

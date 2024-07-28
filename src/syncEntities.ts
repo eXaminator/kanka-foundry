@@ -48,7 +48,10 @@ export async function createEntities(
             await handleEntity(loader, entity, campaignId, entityLookup);
         }
     } else {
-        await Promise.all(ids.map((id) => createEntity(campaignId, type, id, entityLookup)));
+        for (const id of ids) {
+            // Make sure to handle them in sequence to avoid duplicate folders being created
+            await createEntity(campaignId, type, id, entityLookup);
+        }
     }
 }
 
