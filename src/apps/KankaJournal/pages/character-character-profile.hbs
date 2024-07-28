@@ -1,29 +1,29 @@
 {{#>../shared/layout}}
-    {{#*inline 'content'~}}
-        {{~#if data.system.snapshot.appearance.length ~}}
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">{{kankaLocalize 'journal.character.traits.appearance'}}</th>
-                    </tr>
-                </thead>
-                {{~#each (kankaSortBy data.system.snapshot.appearance 'default_order')~}}
-                    {{~>../shared/detailRow value=entry rawLabel=name }}
-                {{~/each~}}
-            </table>
-        {{~/if~}}
-        
-        {{~#if (and data.system.snapshot.personality.length (or data.system.snapshot.isPersonalityVisible owner)) ~}}
-            <table class="{{#unless data.system.snapshot.isPersonalityVisible }}-secret{{/unless}}">
-                <thead>
-                    <tr>
-                        <th colspan="2">{{kankaLocalize 'journal.character.traits.personality'}}</th>
-                    </tr>
-                </thead>
-                {{~#each (kankaSortBy data.system.snapshot.personality 'default_order')~}}
-                    {{~>../shared/detailRow value=entry rawLabel=name }}
-                {{~/each~}}
-            </table>
-        {{~/if~}}
-    {{~/inline}}
+{{#*inline 'content'~}}
+{{~#if data.system.snapshot.appearance.length ~}}
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">{{kankaLocalize 'journal.character.traits.appearance'}}</th>
+        </tr>
+    </thead>
+    {{~#each (kankaSortBy data.system.snapshot.appearance 'default_order')~}}
+    {{~>../shared/detailRow value=entry rawLabel=name }}
+    {{~/each~}}
+</table>
+{{~/if~}}
+
+{{~#if (and data.system.snapshot.personality.length (or data.system.snapshot.isPersonalityVisible owner)) ~}}
+<table class="{{#unless data.system.snapshot.isPersonalityVisible }}-secret{{/unless}}">
+    <thead>
+        <tr>
+            <th colspan="2">{{kankaLocalize 'journal.character.traits.personality'}}</th>
+        </tr>
+    </thead>
+    {{~#each (kankaSortBy data.system.snapshot.personality 'default_order')~}}
+    {{~>../shared/detailRow value=entry_parsed rawLabel=name }}
+    {{~/each~}}
+</table>
+{{~/if~}}
+{{~/inline}}
 {{/../shared/layout}}
