@@ -1,21 +1,25 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join, relative } from 'path';
-import { PluginContext } from 'rollup';
-import { Plugin } from 'vite';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
+import type { PluginContext } from 'rollup';
+import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite';
+
 function getPartialPath(parent, partial) {
     const parentPath = dirname(parent);
     return join(parentPath, `${partial}.partial.hbs`);
 }
 
 export default function hbsPlugin(): Plugin {
-    let config;
-    let server;
+    let config: ResolvedConfig;
+    let server: ViteDevServer;
 
-    function load(this: PluginContext | void, id: string) {
-        if (!id.endsWith('.hbs')) {
+    function load(this: PluginContext | null, id: string) {
+        const lib = config.build.lib || null;
+
+        if (!id.endsWith('.hbs') || typeof lib?.entry !== 'string') {
             return null;
         }
-        const inputBasePath = dirname(config.build.lib.entry);
+
+        const inputBasePath = dirname(lib.entry);
         const inputRelativePath = relative(inputBasePath, id);
         const outputRelativePath = join('templates', inputRelativePath);
         const outputPath = join(config.build.outDir, outputRelativePath);
@@ -80,16 +84,7 @@ export default function hbsPlugin(): Plugin {
             const promises = modules.map(async (module) => {
                 if (!module.id || !module.file) return;
 
-                load(module.id);
-
-                const inputBasePath = dirname(config.build.lib.entry);
-                const inputRelativePath = relative(inputBasePath, module.file);
-                const file = join(config.base, 'templates', inputRelativePath).replace(/^\//, '');
-                server.hot.send({
-                    type: 'custom',
-                    event: 'kanka:update-hbs',
-                    data: { file },
-                });
+                load.call(null, module.id);
             });
             await Promise.all(promises);
 

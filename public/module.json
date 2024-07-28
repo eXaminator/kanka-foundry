@@ -16,8 +16,12 @@
             "ko-fi": "examinator"
         }
     ],
-    "esmodules": ["index.js"],
-    "styles": ["style.css"],
+    "esmodules": [
+        "index.js"
+    ],
+    "styles": [
+        "style.css"
+    ],
     "languages": [
         {
             "lang": "en",
@@ -100,6 +104,14 @@
     "license": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/LICENSE",
     "readme": "https://raw.githubusercontent.com/eXaminator/kanka-foundry/__VERSION__/README.md",
     "flags": {
-        "allowBugReporter": true
+        "allowBugReporter": true,
+        "hotReload": {
+            "extensions": [
+                "hbs"
+            ],
+            "paths": [
+                "templates"
+            ]
+        }
     }
 }
