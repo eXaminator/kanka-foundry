@@ -1,3 +1,13 @@
+## [4.0.12](https://github.com/eXaminator/kanka-foundry/compare/4.0.11...4.0.12) (2024-07-29)
+
+
+### Bug Fixes
+
+* fix styling for some tables ([9a530a1](https://github.com/eXaminator/kanka-foundry/commit/9a530a1fc51bf98c2511530b3e8be95ce7818a8f))
+* hide informations from players that should not be visible to them ([c31e443](https://github.com/eXaminator/kanka-foundry/commit/c31e44349f0d18cebf1a582c5e488d6a27bdff08)), closes [#136](https://github.com/eXaminator/kanka-foundry/issues/136)
+* show correct membership status for organisation members ([893503a](https://github.com/eXaminator/kanka-foundry/commit/893503a524508efcac87fcf3cff699713a389f8a))
+* use parsed entry for personality and appearance traits to allow links to other entities ([78771db](https://github.com/eXaminator/kanka-foundry/commit/78771db5e8216569a08f1b53d31d75371d35e667)), closes [#131](https://github.com/eXaminator/kanka-foundry/issues/131)
+
 ## [4.0.11](https://github.com/eXaminator/kanka-foundry/compare/4.0.10...4.0.11) (2024-06-02)
 
 
