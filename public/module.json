@@ -107,10 +107,12 @@
         "allowBugReporter": true,
         "hotReload": {
             "extensions": [
-                "hbs"
+                "hbs",
+                "json"
             ],
             "paths": [
-                "templates"
+                "templates",
+                "lang"
             ]
         }
     }
