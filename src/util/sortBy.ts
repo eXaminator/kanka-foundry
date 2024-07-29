@@ -2,6 +2,7 @@ export default function sortBy<T extends Record<string, unknown>>(...fields: str
     return (a: T, b: T) =>
         fields
             .map((field) => {
+                // TODO: Change to foundry.utils.getProperty() once V11 is no longer supported
                 const propA = globalThis.getProperty(a, field);
                 const propB = globalThis.getProperty(b, field);
 
