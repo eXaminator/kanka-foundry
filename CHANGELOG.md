@@ -1,3 +1,10 @@
+## [4.0.13](https://github.com/eXaminator/kanka-foundry/compare/4.0.12...4.0.13) (2024-07-29)
+
+
+### Bug Fixes
+
+* fix error in module.json that prevented finalizing the last release ([d125ce2](https://github.com/eXaminator/kanka-foundry/commit/d125ce21d30c9e3506e0c905fd277b1b1ae57aa9))
+
 ## [4.0.12](https://github.com/eXaminator/kanka-foundry/compare/4.0.11...4.0.12) (2024-07-29)
 
 
