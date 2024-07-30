@@ -53,7 +53,7 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
         {
             config: false,
             type: String,
-            default: getLatestMigrationVersion(),
+            default: '',
         },
         onChangeMap,
     );

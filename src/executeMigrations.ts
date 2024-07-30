@@ -1,6 +1,8 @@
 import { showError, showInfo } from "./foundry/notifications";
 import { getSetting, setSetting } from "./foundry/settings";
 import getMessage from './foundry/getMessage';
+import getGame from "./foundry/getGame";
+import { logInfo } from "./util/logger";
 
 type MigrateFn = () => Promise<void>;
 
@@ -12,35 +14,33 @@ function getMigrationVersionFromModuleName(moduleName: string) {
 }
 
 export default async function executeMigrations(): Promise<void> {
+    // Handle initial migration version. If there are no kanka journal entries yet, we set the latest migration as executed.
+    // If there already are some, we set a specific version as already executed as it is the last one that existed before the
+    // migrationVersion setting was introduced. If there already is a valid migrationVersion setting, we do nothing.
+    if (!getSetting('migrationVersion')) {
+        const hasJournalEntries = Array.from(getGame().journal.values()).some((e: any) => e.getFlag('kanka-foundry', 'id'));
+        console.log('Kanka', hasJournalEntries)
+        if (hasJournalEntries) {
+            await setSetting('migrationVersion', '2024-07-28');
+        } else {
+            await setSetting('migrationVersion', getLatestMigrationVersion());
+        }
+    }
+
     const currentMigrationVersion = getSetting('migrationVersion');
     const newestMigrationVersion = getLatestMigrationVersion();
 
-    const relevantMigrations = sortedMigrationModuleNames
-        .filter(key => {
-            const version = getMigrationVersionFromModuleName(key);
-            const isSpecialCase = [version, currentMigrationVersion, newestMigrationVersion].every(v => v === '2024-07-29');
-            return version > currentMigrationVersion || isSpecialCase;
-        });
-
+    const relevantMigrations = sortedMigrationModuleNames.filter(key => getMigrationVersionFromModuleName(key) > currentMigrationVersion);
     if (relevantMigrations.length === 0) return;
 
     try {
         showInfo('migration.started');
 
         for (const key of relevantMigrations) {
+            logInfo(`Executing migration ${key}`);
             const version = getMigrationVersionFromModuleName(key);
-            // Add special case for migration 2024-07-29 because it was the first migration at which the migrationVersion setting was introduced
-            // This special case checks whether this migration is set as last executed (which might be due to the default value of the setting)
-            // but it needs to be executed at least once. To make sure it is executed only once, the saved recent setting will be set to one day later.
-            const isSpecialCase = version === currentMigrationVersion;
-
             await migrationModules[key].default();
-
-            if (isSpecialCase) {
-                await setSetting('migrationVersion', '2024-07-30');
-            } else {
-                await setSetting('migrationVersion', version);
-            }
+            await setSetting('migrationVersion', version);
         }
 
         showInfo('migration.finished');
