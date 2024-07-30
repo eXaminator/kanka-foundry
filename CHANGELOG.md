@@ -1,3 +1,10 @@
+## [4.0.14](https://github.com/eXaminator/kanka-foundry/compare/4.0.13...4.0.14) (2024-07-30)
+
+
+### Bug Fixes
+
+* add migration to handle old personality traits that are missing the entry_parsed field ([28b1600](https://github.com/eXaminator/kanka-foundry/commit/28b1600527d5a23282257fbc7d7d05e496a79037))
+
 ## [4.0.13](https://github.com/eXaminator/kanka-foundry/compare/4.0.12...4.0.13) (2024-07-29)
 
 
