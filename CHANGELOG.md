@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/eXaminator/kanka-foundry/compare/4.1.0...4.1.1) (2024-08-11)
+
+
+### Bug Fixes
+
+* add missing founded date for locations ([01fd51b](https://github.com/eXaminator/kanka-foundry/commit/01fd51be0edcb2329020a1dfa3b9abe4f5dbe0b9))
+
 # [4.1.0](https://github.com/eXaminator/kanka-foundry/compare/4.0.15...4.1.0) (2024-08-11)
 
 
