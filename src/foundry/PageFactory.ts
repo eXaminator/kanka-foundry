@@ -171,7 +171,7 @@ export default class PageFactory {
         );
     }
 
-    private createPostPage(name: string, content: string | null | undefined) {
+    private createPostPage(name: string, content: string | null | undefined, isSecret: boolean) {
         if (!content) {
             return null;
         }
@@ -180,7 +180,7 @@ export default class PageFactory {
             'post',
             name,
             this.entity,
-            undefined,
+            { publicCount: isSecret ? 0 : 1 },
             { show: true, level: 2 },
             { text: { content } },
             'kanka-foundry.PostPageSheet',
@@ -199,11 +199,11 @@ export default class PageFactory {
 
         return [
             ...prePosts.map((note) =>
-                this.createPostPage(note.name, note.entry_parsed)
+                this.createPostPage(note.name, note.entry_parsed, isSecret(note))
             ),
-            this.createPostPage('KANKA.journal.shared.pages.entry', this.entity.entry_parsed),
+            this.createPostPage('KANKA.journal.shared.pages.entry', this.entity.entry_parsed, false),
             ...postPosts.map((note) =>
-                this.createPostPage(note.name, note.entry_parsed)
+                this.createPostPage(note.name, note.entry_parsed, isSecret(note))
             ),
         ];
     }
