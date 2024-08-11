@@ -1,3 +1,15 @@
+# [4.1.0](https://github.com/eXaminator/kanka-foundry/compare/4.0.15...4.1.0) (2024-08-11)
+
+
+### Bug Fixes
+
+* fix init hook hot reloading for development environment ([b42bfd4](https://github.com/eXaminator/kanka-foundry/commit/b42bfd4e3be06fbb6a124d4d0a7f5be2983395bc))
+
+
+### Features
+
+* add birthday and day of death to character overview ([29da8f4](https://github.com/eXaminator/kanka-foundry/commit/29da8f4e860136a0ca1ee53f2d5fef38dadd8595)), closes [#99](https://github.com/eXaminator/kanka-foundry/issues/99)
+
 ## [4.0.15](https://github.com/eXaminator/kanka-foundry/compare/4.0.14...4.0.15) (2024-08-11)
 
 
