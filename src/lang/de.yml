@@ -105,6 +105,8 @@ KANKA:
                 sex: Geschlecht
                 pronouns: Pronomen
                 age: Alter
+                birthday: Geburtstag
+                deathday: Todestag
                 isDead: Verstorben
                 race: Rasse
                 family: Familie
