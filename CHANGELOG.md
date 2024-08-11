@@ -1,3 +1,10 @@
+## [4.0.15](https://github.com/eXaminator/kanka-foundry/compare/4.0.14...4.0.15) (2024-08-11)
+
+
+### Bug Fixes
+
+* properly set ownership for private posts on entities ([9bbbdea](https://github.com/eXaminator/kanka-foundry/commit/9bbbdea5e7b8cfa89a7d7f6ade1562a2f0495da2)), closes [#139](https://github.com/eXaminator/kanka-foundry/issues/139)
+
 ## [4.0.14](https://github.com/eXaminator/kanka-foundry/compare/4.0.13...4.0.14) (2024-07-30)
 
 
