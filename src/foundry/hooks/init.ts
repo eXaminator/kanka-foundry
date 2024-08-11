@@ -113,9 +113,9 @@ if (import.meta.hot) {
     import.meta.hot.accept((newModule) => {
         if ((game as Game).ready) {
             newModule?.default();
-            for (const app of ui.windows) {
-                if (app.constructor?.name === 'KankaJournalApplication') {
-                    app.object._onSheetChange({ sheetOpen: true });
+            for (const app of Object.values(ui.windows)) {
+                if ((app as any).constructor?.name === 'KankaJournalApplication') {
+                    (app as any).object._onSheetChange({ sheetOpen: true });
                 }
             }
         }
