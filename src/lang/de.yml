@@ -159,6 +159,9 @@ KANKA:
                 element_name: Element
                 element_role: Rolle
                 element_description: Beschreibung
+        location:
+            labels:
+                founded: Gegründet
 
     settings:
         baseUrl:

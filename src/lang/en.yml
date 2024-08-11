@@ -161,6 +161,11 @@ KANKA:
                 element_name: Element
                 element_role: Role
                 element_description: Description
+
+        location:
+            labels:
+                founded: Founded
+                
     settings:
         baseUrl:
             label: Kanka URL
