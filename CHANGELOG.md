@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/eXaminator/kanka-foundry/compare/4.1.1...4.1.2) (2024-08-13)
+
+
+### Bug Fixes
+
+* add missing founded date for organisations ([efcea45](https://github.com/eXaminator/kanka-foundry/commit/efcea45d92a9fafb8b90f0e66ab08695c7d5076c))
+
 ## [4.1.1](https://github.com/eXaminator/kanka-foundry/compare/4.1.0...4.1.1) (2024-08-11)
 
 
