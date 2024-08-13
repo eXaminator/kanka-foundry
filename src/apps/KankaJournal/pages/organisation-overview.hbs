@@ -1,11 +1,18 @@
 {{#>../shared/overviewLayout}}
-    {{#*inline 'attributes'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='organisation' label='shared.labels.parent' }}
-        {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
+{{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type='organisation' label='shared.labels.parent' }}
+{{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location'
+reference=true }}
 
-        {{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.members) 'pin_id' 'regex:^(2|3)$') as | starred | ~}}
-            {{~>../shared/detailRow value=character_id type='character' rawLabel=role label='organisation.labels.member_name' reference=true isSecret=(kankaIsSecret this) }}
-        {{~/each~}}
-    {{~/inline}}
+{{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.entity_events) 'type_id' 5) 0) }}
+{{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
+{{/with}}
+
+{{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.members) 'pin_id' 'regex:^(2|3)$') as | starred |
+~}}
+{{~>../shared/detailRow value=character_id type='character' rawLabel=role label='organisation.labels.member_name'
+reference=true isSecret=(kankaIsSecret this) }}
+{{~/each~}}
+{{~/inline}}
 {{/../shared/overviewLayout}}

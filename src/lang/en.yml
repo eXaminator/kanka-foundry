@@ -146,6 +146,7 @@ KANKA:
                 member_name: Member
                 member_role: Role
                 member_status: Membership status
+                founded: Founded
             value:
                 membership_active: Active
                 membership_inactive: Inactive
