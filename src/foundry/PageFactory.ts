@@ -188,10 +188,6 @@ export default class PageFactory {
     }
 
     createPostPages() {
-        if (!this.entity.posts.length) {
-            return [];
-        }
-
         const [prePosts, postPosts] = unzip(
             this.entity.posts.sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
             (post, index) => (post.position ?? index) < 0,
