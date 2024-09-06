@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/eXaminator/kanka-foundry/compare/4.1.2...4.1.3) (2024-09-06)
+
+
+### Bug Fixes
+
+* don't omit entity entry if it has no other posts ([48aa1f7](https://github.com/eXaminator/kanka-foundry/commit/48aa1f78550725efb38a9a0489bd0d89cbc2f063)), closes [#141](https://github.com/eXaminator/kanka-foundry/issues/141)
+
 ## [4.1.2](https://github.com/eXaminator/kanka-foundry/compare/4.1.1...4.1.2) (2024-08-13)
 
 
