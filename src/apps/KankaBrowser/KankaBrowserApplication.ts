@@ -270,12 +270,16 @@ export default class KankaBrowserApplication extends Application {
                         const entityMap = groupBy(unlinkedEntities, 'type');
 
                         for (const [syncType, entities] of entityMap) {
-                            await createEntities(
-                                this.#campaign.id,
-                                syncType,
-                                entities.map((e) => e.child_id),
-                                this.#entities,
-                            );
+                            try {
+                                await createEntities(
+                                    this.#campaign.id,
+                                    syncType,
+                                    entities.map((e) => e.child_id),
+                                    this.#entities,
+                                );
+                            } catch (error) {
+                                console.warn(`Failed to sync entities of type ${syncType}: `, error);
+                            }
                         }
 
                         this.render();
