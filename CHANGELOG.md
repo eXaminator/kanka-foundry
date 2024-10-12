@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/eXaminator/kanka-foundry/compare/4.1.3...4.1.4) (2024-10-12)
+
+
+### Bug Fixes
+
+* don't crash on calendars when linking all entities at once ([eeba233](https://github.com/eXaminator/kanka-foundry/commit/eeba23303b7496f26fb88b639e0466d14826a1c1)), closes [#142](https://github.com/eXaminator/kanka-foundry/issues/142)
+
 ## [4.1.3](https://github.com/eXaminator/kanka-foundry/compare/4.1.2...4.1.3) (2024-09-06)
 
 
