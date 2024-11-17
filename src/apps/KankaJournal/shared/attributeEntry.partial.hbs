@@ -1,21 +1,19 @@
 <tr {{#if (kankaIsSecret attribute) }}class="-secret" {{/if}}>
     {{#if (kankaIsOneOf attribute.type 'section' )}}
-        <th colspan="2">{{ attribute.name }}</th>
+    <th colspan="2">{{ attribute.name }}</th>
     {{else}}
-        <td>{{ attribute.name }}</td>
-        {{#if (kankaIsOneOf attribute.type 'checkbox')}}
-            <td>
-                {{#if (kankaToInt attribute.value)}}
-                    {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}
-                {{else}}
-                    {{ kankaLocalize 'journal' 'shared' 'value' 'no' }}
-                {{/if}}
-            </td>
+    <td>{{ attribute.name }}</td>
+    {{#if (kankaIsOneOf attribute.type 'checkbox')}}
+    <td>
+        {{#if (kankaToInt attribute.value)}}
+        {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}
+        {{else}}
+        {{ kankaLocalize 'journal' 'shared' 'value' 'no' }}
         {{/if}}
-
-        {{#if (kankaIsOneOf attribute.type 'text' 'number' '' null)}}
-            <td>{{{ attribute.parsed }}}</td>
-        {{/if}}
+    </td>
+    {{else}}
+    <td>{{{ attribute.parsed }}}</td>
+    {{/if}}
     {{/if}}
 
 </tr>
