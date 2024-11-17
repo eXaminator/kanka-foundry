@@ -1,3 +1,10 @@
+## [4.1.5](https://github.com/eXaminator/kanka-foundry/compare/4.1.4...4.1.5) (2024-11-17)
+
+
+### Bug Fixes
+
+* add a fallback mechanism for new or changed types of entity attributes ([d2c2e0d](https://github.com/eXaminator/kanka-foundry/commit/d2c2e0d35bbad1fbfe1f75516cf36c150382a574)), closes [#144](https://github.com/eXaminator/kanka-foundry/issues/144)
+
 ## [4.1.4](https://github.com/eXaminator/kanka-foundry/compare/4.1.3...4.1.4) (2024-10-12)
 
 
