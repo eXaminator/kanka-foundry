@@ -1,7 +1,7 @@
 import loaders from './api/typeLoaders';
 import type AbstractTypeLoader from './api/typeLoaders/AbstractTypeLoader';
 import { createJournalEntry, updateJournalEntry } from './foundry/journalEntries';
-import type { KankaApiChildEntity, KankaApiEntity, KankaApiEntityType, KankaApiId } from './types/kanka';
+import type { KankaApiChildEntity, KankaApiEntity, KankaApiModuleType, KankaApiId } from './types/kanka';
 
 async function handleEntity(
     loader: AbstractTypeLoader,
@@ -15,7 +15,7 @@ async function handleEntity(
 
 export async function createEntity(
     campaignId: KankaApiId,
-    type: KankaApiEntityType,
+    type: KankaApiModuleType,
     id: KankaApiId,
     entityLookup?: KankaApiEntity[],
 ): Promise<void> {
@@ -28,11 +28,11 @@ export async function createEntity(
 
 export async function createEntities(
     campaignId: KankaApiId,
-    type: KankaApiEntityType,
+    type: KankaApiModuleType,
     ids: KankaApiId[],
     entityLookup?: KankaApiEntity[],
 ): Promise<void> {
-    const numberOfEntities = entityLookup?.filter((entity) => entity.type === type).length ?? 0;
+    const numberOfEntities = entityLookup?.filter((entity) => entity.module.code === type).length ?? 0;
     const expectedNumberRequests = Math.ceil(numberOfEntities / 45);
 
     // Check whether fetching all entities of the type would be more efficient than fetching them individually

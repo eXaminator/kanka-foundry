@@ -1,10 +1,10 @@
 import api from '..';
-import type { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiLocation } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiModuleType, KankaApiId, KankaApiLocation } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
 export default class LocationTypeLoader extends AbstractTypeLoader<KankaApiLocation> {
-    public getType(): KankaApiEntityType {
+    public getType(): KankaApiModuleType {
         return 'location';
     }
 

@@ -1,7 +1,7 @@
 export type KankaApiId = number | { __type: 'KankaApiId' };
 export type KankaApiEntityId = number | { __type: 'KankaApiEntityId' };
 export type KankaApiAnyId = KankaApiId | KankaApiEntityId;
-export type KankaApiEntityType =
+export type KankaApiModuleType =
     | 'character'
     | 'creature'
     | 'location'
@@ -65,9 +65,9 @@ export interface KankaApiBlamable {
 
 export interface KankaApiChildEntity
     extends KankaApiRelated,
-        KankaApiSimpleConstrainable,
-        KankaApiBlamable,
-        KankaApiEntityImageData {
+    KankaApiSimpleConstrainable,
+    KankaApiBlamable,
+    KankaApiEntityImageData {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     name: string;
@@ -157,7 +157,6 @@ export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, Ka
     is_recurring: boolean;
     recurring_periodicity: string | null;
     recurring_until: number | null;
-    type_id: number | null;
 }
 
 export interface KankaApiAbilityLink extends KankaApiVisibilityConstrainable {
@@ -176,8 +175,8 @@ export enum KankaApiAssetType {
 
 interface KankaApiEntityBaseAsset
     extends KankaApiBlamable,
-        KankaApiVisibilityConstrainable,
-        KankaApiSimpleConstrainable {
+    KankaApiVisibilityConstrainable,
+    KankaApiSimpleConstrainable {
     entity_id: KankaApiEntityId;
     id: KankaApiId;
     name: string;
@@ -257,7 +256,7 @@ export interface KankaApiChildEntityWithChildren extends KankaApiChildEntity {
 export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBlamable {
     id: KankaApiEntityId;
     name: string;
-    type: KankaApiEntityType;
+    type: string;
     child_id: KankaApiId;
     campaign_id: KankaApiId;
     child: KankaApiEntityImageData;
@@ -266,6 +265,7 @@ export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBla
         view: string;
         api: string;
     };
+    module: KankaEntityModule;
 }
 
 export interface KankaApiCharacterTrait {
@@ -397,4 +397,11 @@ export interface KankaApiEvent extends KankaApiChildEntity {
     date: string | null;
     location_id: KankaApiId | null;
     event_id: KankaApiId | null;
+}
+
+interface KankaEntityModule {
+    id: number;
+    code: KankaApiModuleType;
+    singular: string;
+    plural: string;
 }

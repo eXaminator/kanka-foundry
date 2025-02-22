@@ -126,7 +126,7 @@ export default class KankaBrowserApplication extends Application {
             };
         }
 
-        const groupedEntities = groupBy(this.#entities ?? [], 'type');
+        const groupedEntities = groupBy(this.#entities ?? [], 'module.code');
         const groupedEntitiesWithMetaData: Record<string, TypeMetaData> = {};
 
         const sortedGroups = Array.from(groupedEntities.entries()).sort(([a], [b]) => a[0].localeCompare(b[0]))
@@ -236,7 +236,7 @@ export default class KankaBrowserApplication extends Application {
                         } else {
                             const entity = this.#entities?.find((e) => e.id === id);
                             if (entity) {
-                                await createEntity(this.#campaign.id, entity?.type, entity?.child_id, this.#entities);
+                                await createEntity(this.#campaign.id, entity?.module.code, entity?.child_id, this.#entities);
                             }
                         }
                         this.render();
@@ -247,7 +247,7 @@ export default class KankaBrowserApplication extends Application {
                         if (!type) return;
                         const unlinkedEntities =
                             this.#entities?.filter((entity) => {
-                                if (entity.type !== type) return false;
+                                if (entity.module.code !== type) return false;
                                 return !findEntryByEntityId(entity.id);
                             }) ?? [];
 
@@ -267,7 +267,7 @@ export default class KankaBrowserApplication extends Application {
                             this.#entities?.filter((entity) => !findEntryByEntityId(entity.id)) ?? [];
 
                         this.setLoadingState(event.currentTarget);
-                        const entityMap = groupBy(unlinkedEntities, 'type');
+                        const entityMap = groupBy(unlinkedEntities, 'module.code');
 
                         for (const [syncType, entities] of entityMap) {
                             try {
@@ -294,7 +294,7 @@ export default class KankaBrowserApplication extends Application {
                                         return false;
                                     }
 
-                                    return !type || entity.type === type;
+                                    return !type || entity.module.code === type;
                                 })
                                 .map((entity) => findEntryByEntityId(entity.id))
                                 .filter((entry): entry is JournalEntry => !!entry) ?? [];

@@ -1,6 +1,6 @@
 import moduleConfig from '../../public/module.json';
 import type Reference from '../types/Reference';
-import type { KankaApiEntityType } from '../types/kanka';
+import type { KankaApiModuleType } from '../types/kanka';
 import getGame from './getGame';
 import getMessage from './getMessage';
 import { getSetting } from './settings';
@@ -66,13 +66,13 @@ export async function ensureFolderByFlags(
     return createFolder(name, parent, flags);
 }
 
-export async function ensureTypeFolder(type: KankaApiEntityType): Promise<Folder | undefined> {
+export async function ensureTypeFolder(type: KankaApiModuleType): Promise<Folder | undefined> {
     return ensureFolderByFlags(`[KANKA] ${getMessage('entityType', type)}`, undefined, {
         type,
     });
 }
 
-export async function ensureFolderPath(type: KankaApiEntityType, path: Reference[]): Promise<Folder | undefined> {
+export async function ensureFolderPath(type: KankaApiModuleType, path: Reference[]): Promise<Folder | undefined> {
     let parent = await ensureTypeFolder(type);
 
     if (!getSetting('keepTreeStructure')) return parent;

@@ -1,5 +1,5 @@
 import type ReferenceCollection from '../api/ReferenceCollection';
-import type { KankaApiId, KankaApiEntityType, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiAnyId } from "../types/kanka";
+import type { KankaApiId, KankaApiModuleType, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiAnyId } from "../types/kanka";
 import type Reference from '../types/Reference';
 import moduleConfig from '../../public/module.json';
 import { hasChildren, isCharacter, isFamily, isOrganisation, isQuest } from '../util/kankaTypeGuards';
@@ -9,7 +9,7 @@ import unzip from '../util/unzip';
 import { getSetting } from './settings';
 
 type PageModel = {
-    type: KankaApiEntityType;
+    type: KankaApiModuleType;
     campaignId: KankaApiId;
     kankaId: KankaApiId;
     kankaEntityId: KankaApiEntityId;
@@ -37,7 +37,7 @@ export default class PageFactory {
 
     constructor(
         campaignId: KankaApiId,
-        private readonly type: KankaApiEntityType,
+        private readonly type: KankaApiModuleType,
         private readonly entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
         private readonly references: ReferenceCollection,
         private readonly journal?: JournalEntry,
@@ -55,7 +55,7 @@ export default class PageFactory {
         };
     }
 
-    private getCounts<T>(list: T[], refProp?: KeysOfValue<T, KankaApiAnyId>, type?: KankaApiEntityType) {
+    private getCounts<T>(list: T[], refProp?: KeysOfValue<T, KankaApiAnyId>, type?: KankaApiModuleType) {
         return {
             publicCount: list
                 .map(item => {

@@ -224,7 +224,7 @@ export default class KankaApi {
 
     public async getAllEntities(
         campaignId: KankaApiId,
-        types: KankaApiEntity['type'][] = [],
+        types: KankaApiEntity['module']['code'][] = [],
     ): Promise<KankaApiEntity[]> {
         return this.fetchFullList<KankaApiEntity>(
             `campaigns/${Number(campaignId)}/entities?image=1&types=${types.join(',')}`,

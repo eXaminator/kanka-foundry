@@ -1,10 +1,10 @@
 import api from '..';
-import type { KankaApiEntity, KankaApiEntityType, KankaApiEvent, KankaApiId } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiModuleType, KankaApiEvent, KankaApiId } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
 export default class EventTypeLoader extends AbstractTypeLoader<KankaApiEvent> {
-    public getType(): KankaApiEntityType {
+    public getType(): KankaApiModuleType {
         return 'event';
     }
 

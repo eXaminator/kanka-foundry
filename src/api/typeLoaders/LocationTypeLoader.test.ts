@@ -4,7 +4,7 @@ import type {
     KankaApiAbilityLink,
     KankaApiEntity,
     KankaApiEntityId,
-    KankaApiEntityType,
+    KankaApiModuleType,
     KankaApiId,
     KankaApiInventory,
     KankaApiLocation,
@@ -26,9 +26,15 @@ function createLocation(data: Partial<KankaApiLocation> = {}): KankaApiLocation 
     } as KankaApiLocation;
 }
 
-function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiEntityType): KankaApiEntity {
+function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiModuleType): KankaApiEntity {
     return {
-        type,
+        module: {
+            code: type,
+            id: 1,
+            singular: type,
+            plural: type,
+        },
+        type: 'Some type',
         id: entityId,
         child_id: childId,
         name: 'Foobar',

@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import kankaGroupBy from './kankaGroupBy';
+import type { HelperDelegate } from 'handlebars';
 
 function compile(template: string, context = {}): string {
     return Handlebars.compile(template)(context);
@@ -7,7 +8,7 @@ function compile(template: string, context = {}): string {
 
 describe('kankaGroupBy()', () => {
     beforeAll(() => {
-        Handlebars.registerHelper('kankaGroupBy', kankaGroupBy);
+        Handlebars.registerHelper('kankaGroupBy', kankaGroupBy as unknown as HelperDelegate);
     });
 
     afterAll(() => {

@@ -4,7 +4,7 @@ import type {
     KankaApiAbilityLink,
     KankaApiEntity,
     KankaApiEntityId,
-    KankaApiEntityType,
+    KankaApiModuleType,
     KankaApiEvent,
     KankaApiId,
     KankaApiInventory,
@@ -24,9 +24,15 @@ function createEvent(data: Partial<KankaApiEvent> = {}): KankaApiEvent {
     } as KankaApiEvent;
 }
 
-function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiEntityType): KankaApiEntity {
+function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiModuleType): KankaApiEntity {
     return {
-        type,
+        module: {
+            code: type,
+            id: 1,
+            singular: type,
+            plural: type,
+        },
+        type: 'Some type',
         id: entityId,
         child_id: childId,
         name: 'Foobar',
