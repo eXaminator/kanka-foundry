@@ -328,6 +328,7 @@ export interface KankaApiItem extends KankaApiChildEntityWithChildren {
     type: string | null;
     price: string | null;
     size: string | null;
+    weight: string | null;
 }
 
 export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
