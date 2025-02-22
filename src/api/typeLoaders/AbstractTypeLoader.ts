@@ -2,7 +2,7 @@ import type {
     KankaApiChildEntity,
     KankaApiChildEntityWithChildren,
     KankaApiEntity,
-    KankaApiEntityType,
+    KankaApiModuleType,
     KankaApiId,
 } from '../../types/kanka';
 import ReferenceCollection from '../ReferenceCollection';
@@ -28,7 +28,7 @@ export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity =
         return collection;
     }
 
-    public abstract getType(): KankaApiEntityType;
+    public abstract getType(): KankaApiModuleType;
     public abstract load(campaignId: KankaApiId, id: KankaApiId): Promise<T>;
     public abstract loadAll(campaignId: KankaApiId): Promise<T[]>;
 }

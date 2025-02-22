@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 import type KankaApi from '../KankaApi';
 
-export default vi.fn<[], Omit<KankaApi, 'limiter'>>(() => ({
+export default vi.fn(() => ({
     isReady: true,
     reset: vi.fn(),
     switchUser: vi.fn(),

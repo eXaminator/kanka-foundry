@@ -1,9 +1,9 @@
-import type { KankaApiEntityType } from '../../types/kanka';
+import type { KankaApiModuleType } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
 
 export default function kankaFilterReferences(
-    ...args: [any[]?, string?, KankaApiEntityType?, Handlebars.HelperOptions?]
+    ...args: [any[]?, string?, KankaApiModuleType?, Handlebars.HelperOptions?]
 ): unknown[] {
     const options = args.pop() as Handlebars.HelperOptions;
     const [array, idProperty, type] = args;

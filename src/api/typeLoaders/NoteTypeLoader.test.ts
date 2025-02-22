@@ -4,7 +4,7 @@ import type {
     KankaApiAbilityLink,
     KankaApiEntity,
     KankaApiEntityId,
-    KankaApiEntityType,
+    KankaApiModuleType,
     KankaApiId,
     KankaApiInventory,
     KankaApiNote,
@@ -26,9 +26,15 @@ function createNote(data: Partial<KankaApiNote> = {}): KankaApiNote {
     } as KankaApiNote;
 }
 
-function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiEntityType): KankaApiEntity {
+function createEntity(entityId: KankaApiEntityId, childId: KankaApiId, type: KankaApiModuleType): KankaApiEntity {
     return {
-        type,
+        module: {
+            code: type,
+            id: 1,
+            singular: type,
+            plural: type,
+        },
+        type: 'Some type',
         id: entityId,
         child_id: childId,
         name: 'Foobar',

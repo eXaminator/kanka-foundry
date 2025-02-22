@@ -1,10 +1,10 @@
-import type { KankaApiEntityId, KankaApiEntityType, KankaApiId } from './kanka';
+import type { KankaApiEntityId, KankaApiModuleType, KankaApiId } from './kanka';
 
 export default interface Reference {
     name: string;
     entityId: KankaApiEntityId;
     id: KankaApiId;
-    type: KankaApiEntityType;
+    type: KankaApiModuleType;
     image: string | undefined;
     thumb: string | undefined;
     isPrivate: boolean;

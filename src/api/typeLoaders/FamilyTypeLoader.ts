@@ -1,10 +1,10 @@
 import api from '..';
-import type { KankaApiEntity, KankaApiEntityType, KankaApiFamily, KankaApiId } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiModuleType, KankaApiFamily, KankaApiId } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
 export default class FamilyTypeLoader extends AbstractTypeLoader<KankaApiFamily> {
-    public getType(): KankaApiEntityType {
+    public getType(): KankaApiModuleType {
         return 'family';
     }
 

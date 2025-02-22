@@ -1,6 +1,6 @@
 import api from '.';
 import type Reference from '../types/Reference';
-import type { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../types/kanka';
+import type { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiModuleType, KankaApiId } from '../types/kanka';
 
 export default class ReferenceCollection {
     #campaignId: KankaApiId;
@@ -21,7 +21,7 @@ export default class ReferenceCollection {
         return collection;
     }
 
-    public async addById(id?: KankaApiId | null, type?: KankaApiEntityType | null): Promise<void> {
+    public async addById(id?: KankaApiId | null, type?: KankaApiModuleType | null): Promise<void> {
         if (!id || !type) return;
 
         const entity = await this.findEntity(id, type);
@@ -39,7 +39,7 @@ export default class ReferenceCollection {
         return this.#record[Number(id)];
     }
 
-    public findByIdAndType(id: KankaApiId, type: KankaApiEntityType): Reference | undefined {
+    public findByIdAndType(id: KankaApiId, type: KankaApiModuleType): Reference | undefined {
         return Object.values(this.#record).find((ref) => ref.id === id && ref.type === type);
     }
 
@@ -54,7 +54,7 @@ export default class ReferenceCollection {
             name: entity.name,
             id: entity.child_id,
             entityId: entity.id,
-            type: entity.type,
+            type: entity.module.code,
             image: entity.child.has_custom_image ? entity.child.image_full : undefined,
             thumb: entity.child.has_custom_image ? entity.child.image_thumb : undefined,
             isPrivate: entity.is_private,
@@ -64,7 +64,7 @@ export default class ReferenceCollection {
 
     private async findEntity(
         id?: KankaApiAnyId | null,
-        type?: KankaApiEntityType | null,
+        type?: KankaApiModuleType | null,
     ): Promise<KankaApiEntity | undefined> {
         const entity = this.findEntityInCollection(id, type);
 
@@ -89,10 +89,10 @@ export default class ReferenceCollection {
 
     protected findEntityInCollection(
         id?: KankaApiAnyId | null,
-        type?: KankaApiEntityType | null,
+        type?: KankaApiModuleType | null,
     ): KankaApiEntity | undefined {
         return this.#entities.find(
-            (entity) => (!type && entity.id === id) || (entity.type === type && entity.child_id === id),
+            (entity) => (!type && entity.id === id) || (entity.module.code === type && entity.child_id === id),
         );
     }
 }

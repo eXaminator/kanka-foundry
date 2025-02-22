@@ -7,7 +7,7 @@ import type {
     KankaApiChildEntityWithChildren,
     KankaApiEntity,
     KankaApiEntityId,
-    KankaApiEntityType,
+    KankaApiModuleType,
     KankaApiId,
 } from '../types/kanka';
 import isSecret from '../util/isSecret';
@@ -22,7 +22,7 @@ type FlagTypes = {
     id: KankaApiEntityId;
     campaign: KankaApiId;
     snapshot: KankaApiChildEntity;
-    type: KankaApiEntityType;
+    type: KankaApiModuleType;
     version: string;
     references: Record<number, Reference>;
     [key: string]: unknown;
@@ -100,14 +100,14 @@ export function findEntryByEntityId(id: KankaApiEntityId): JournalEntry | undefi
     return getJournal().find((e) => getEntryFlag(e, 'id') === id) ?? undefined;
 }
 
-export function findEntryByTypeAndChildId(type: KankaApiEntityType, id: KankaApiId): JournalEntry | undefined {
+export function findEntryByTypeAndChildId(type: KankaApiModuleType, id: KankaApiId): JournalEntry | undefined {
     return (
         getJournal().find((e) => getEntryFlag(e, 'type') === type && getEntryFlag(e, 'snapshot')?.id === id) ??
         undefined
     );
 }
 
-export function findEntriesByType(type: KankaApiEntityType): JournalEntry[] {
+export function findEntriesByType(type: KankaApiModuleType): JournalEntry[] {
     return getJournal().filter((e) => getEntryFlag(e, 'type') === type);
 }
 
@@ -124,7 +124,7 @@ export function hasOutdatedEntryByEntity(entity: KankaApiEntity): boolean {
 
 function createAllPages(
     campaignId: KankaApiId,
-    type: KankaApiEntityType,
+    type: KankaApiModuleType,
     entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
     journal?: JournalEntry,
@@ -159,7 +159,7 @@ function createAllPages(
 
 export async function createJournalEntry(
     campaignId: KankaApiId,
-    type: KankaApiEntityType,
+    type: KankaApiModuleType,
     entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
 ): Promise<JournalEntry> {

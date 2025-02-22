@@ -1,12 +1,12 @@
 import api from '..';
-import type { KankaApiEntityType } from '../../types/kanka';
+import type { KankaApiModuleType } from '../../types/kanka';
 import type AbstractTypeLoader from './AbstractTypeLoader';
 
 const loaderModules = import.meta.glob<true, '', { default: ConstructorOf<AbstractTypeLoader> }>('./*TypeLoader.ts', {
     eager: true,
 });
 
-type Result = Map<KankaApiEntityType, AbstractTypeLoader<any>>;
+type Result = Map<KankaApiModuleType, AbstractTypeLoader<any>>;
 
 function createTypeLoaders(): Result {
     const loaders: Result = new Map();

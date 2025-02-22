@@ -1,10 +1,10 @@
 import api from '..';
-import type { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiQuest } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiModuleType, KankaApiId, KankaApiQuest } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
 export default class QuestTypeLoader extends AbstractTypeLoader<KankaApiQuest> {
-    public getType(): KankaApiEntityType {
+    public getType(): KankaApiModuleType {
         return 'quest';
     }
 

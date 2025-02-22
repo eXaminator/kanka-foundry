@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { getEntryFlag } from '../../foundry/journalEntries';
 import type Reference from '../../types/Reference';
-import type { KankaApiEntityId, KankaApiEntityType, KankaApiId } from '../../types/kanka';
+import type { KankaApiEntityId, KankaApiModuleType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
 
@@ -15,7 +15,7 @@ function compile(template: string, context = {}): string {
 function createReference(
     id: KankaApiId,
     entityId: KankaApiEntityId,
-    type: KankaApiEntityType = 'character',
+    type: KankaApiModuleType = 'character',
 ): Reference {
     return {
         id,

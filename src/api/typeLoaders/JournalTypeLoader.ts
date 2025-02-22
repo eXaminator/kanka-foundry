@@ -1,10 +1,10 @@
 import api from '..';
-import type { KankaApiEntity, KankaApiEntityType, KankaApiId, KankaApiJournal } from '../../types/kanka';
+import type { KankaApiEntity, KankaApiModuleType, KankaApiId, KankaApiJournal } from '../../types/kanka';
 import type ReferenceCollection from '../ReferenceCollection';
 import AbstractTypeLoader from './AbstractTypeLoader';
 
 export default class JournalTypeLoader extends AbstractTypeLoader<KankaApiJournal> {
-    public getType(): KankaApiEntityType {
+    public getType(): KankaApiModuleType {
         return 'journal';
     }
 
