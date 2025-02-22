@@ -5,5 +5,7 @@
 {{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
 {{/with}}
 {{~>../shared/detailRowArray references=data.system.snapshot.parents type='location' label='shared.labels.parent' }}
+{{~>../shared/detailRow value=data.system.snapshot.is_destroyed label='location.labels.isDestroyed'
+localizeValue='shared.value'}}
 {{~/inline}}
 {{/../shared/overviewLayout}}

@@ -306,6 +306,7 @@ export interface KankaApiCreature extends KankaApiChildEntityWithChildren {
     creature_id: KankaApiId | null;
     locations: KankaApiId[];
     type: string | null;
+    is_extinct: boolean;
 }
 
 export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
@@ -319,6 +320,7 @@ export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
     family_id: KankaApiId | null;
     type: string | null;
     members: KankaApiId[];
+    is_extinct: boolean;
 }
 
 export interface KankaApiItem extends KankaApiChildEntityWithChildren {
@@ -350,6 +352,7 @@ export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
     parent_location_id: KankaApiId | null;
     location_id: KankaApiId | null;
     type: string | null;
+    is_destroyed: boolean;
 }
 
 export interface KankaApiNote extends KankaApiChildEntityWithChildren {
@@ -392,6 +395,7 @@ export interface KankaApiRace extends KankaApiChildEntityWithChildren {
     locations: KankaApiId[];
     race_id: KankaApiId | null;
     type: string | null;
+    is_extinct: boolean;
 }
 
 export interface KankaApiEvent extends KankaApiChildEntity {

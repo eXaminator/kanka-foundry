@@ -131,6 +131,14 @@ KANKA:
                 members: Mitglieder
             labels:
                 member_name: Mitglied
+                isExtinct: Ausgestorben
+        race:
+            labels:
+                isExtinct: Ausgestorben
+
+        creature:
+            labels:
+                isExtinct: Ausgestorben
         journal:
             labels:
                 date: Datum
@@ -168,6 +176,7 @@ KANKA:
         location:
             labels:
                 founded: Gegründet
+                isDestroyed: Zerstört
 
     settings:
         baseUrl:

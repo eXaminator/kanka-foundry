@@ -1,7 +1,10 @@
 {{#>../shared/overviewLayout}}
-    {{#*inline 'attributes'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='creature' label='shared.labels.parent' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=" " }}
-    {{~/inline}}
+{{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type='creature' label='shared.labels.parent' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location'
+delimiter=" " }}
+{{~>../shared/detailRow value=data.system.snapshot.is_extinct label='creature.labels.isExtinct'
+localizeValue='shared.value'}}
+{{~/inline}}
 {{/../shared/overviewLayout}}

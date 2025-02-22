@@ -130,6 +130,15 @@ KANKA:
                 members: Members
             labels:
                 member_name: Member
+                isExtinct: Is extinct
+
+        race:
+            labels:
+                isExtinct: Is extinct
+
+        creature:
+            labels:
+                isExtinct: Is extinct
 
         journal:
             labels:
@@ -172,6 +181,7 @@ KANKA:
         location:
             labels:
                 founded: Founded
+                isDestroyed: Is destroyed
                 
     settings:
         baseUrl:
