@@ -1,9 +1,13 @@
 {{#>../shared/overviewLayout}}
-    {{#*inline 'attributes'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type'~}}
-        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='quest' label='shared.labels.parent' }}
-        {{~>../shared/detailRow value=data.system.snapshot.character_id type='quest' label='quest.labels.instigator' reference=true~}}
-        {{~>../shared/detailRow value=data.system.snapshot.date label='quest.labels.date'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.is_completed label='quest.labels.completed' localizeValue='shared.value'~}}
-    {{~/inline}}
+{{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type'~}}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type='quest' label='shared.labels.parent' }}
+{{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location'
+reference=true }}
+{{~>../shared/detailRow value=data.system.snapshot.instigator_id label='quest.labels.instigator'
+reference=true~}}
+{{~>../shared/detailRow value=data.system.snapshot.date label='quest.labels.date'~}}
+{{~>../shared/detailRow value=data.system.snapshot.is_completed label='quest.labels.completed'
+localizeValue='shared.value'~}}
+{{~/inline}}
 {{/../shared/overviewLayout}}
