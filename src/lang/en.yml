@@ -11,7 +11,7 @@ KANKA:
         character: Characters
         creature: Creatures
         family: Families
-        item: Items
+        item: Objects
         event: Events
         location: Locations
         note: Notes
@@ -83,7 +83,7 @@ KANKA:
                 asset_size: Size
                 child_name: Child
                 child_type: Type
-                item_name: Item
+                item_name: Object
                 item_description: Description
                 item_equipped: Equipped
                 relation_name: Object
