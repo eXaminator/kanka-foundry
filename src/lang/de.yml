@@ -137,6 +137,11 @@ KANKA:
         event:
             labels:
                 date: Datum
+        item:
+            labels:
+                price: Preis
+                size: Größe
+                weight: Gewicht
         organisation:
             pages:
                 members: Mitglieder

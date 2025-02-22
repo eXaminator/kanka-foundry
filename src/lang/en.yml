@@ -139,6 +139,12 @@ KANKA:
             labels:
                 date: Date
 
+        item:
+            labels:
+                price: Price
+                size: Size
+                weight: Weight
+
         organisation:
             pages:
                 members: Members

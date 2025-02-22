@@ -1,8 +1,13 @@
 {{#>../shared/overviewLayout}}
-    {{#*inline 'attributes'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='item' label='shared.labels.parent' }}
-        {{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
-        {{~>../shared/detailRow value=data.system.snapshot.character_id type='character' label='shared.labels.character' reference=true}}
-    {{~/inline}}
+{{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type='item' label='shared.labels.parent' }}
+{{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location'
+reference=true }}
+{{~>../shared/detailRow value=data.system.snapshot.character_id type='character' label='shared.labels.character'
+reference=true}}
+{{~>../shared/detailRow value=data.system.snapshot.price label='item.labels.price' }}
+{{~>../shared/detailRow value=data.system.snapshot.size label='item.labels.size' }}
+{{~>../shared/detailRow value=data.system.snapshot.weight label='item.labels.weight' }}
+{{~/inline}}
 {{/../shared/overviewLayout}}
