@@ -231,9 +231,32 @@ describe('QuestTypeLoader', () => {
             });
         });
 
-        it('includes character from the lookup array', async () => {
+        it('includes location from the lookup array', async () => {
             const expectedResult = createQuest({
-                character_id: 2002,
+                location_id: 2001,
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'character'),
+                createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new QuestTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1001: {
+                    id: 2001,
+                    entityId: 1001,
+                    type: 'location',
+                },
+            });
+        });
+
+        it('includes insticator from the lookup array', async () => {
+            const expectedResult = createQuest({
+                instigator_id: 1002,
             });
 
             const entities = [

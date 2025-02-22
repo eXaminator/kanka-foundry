@@ -375,7 +375,8 @@ export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
 
 export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
     quest_id: KankaApiId | null;
-    character_id: KankaApiId | null;
+    instigator_id: KankaApiEntityId | null;
+    location_id: KankaApiId | null;
     type: string | null;
     date: string | null;
     is_completed: boolean;

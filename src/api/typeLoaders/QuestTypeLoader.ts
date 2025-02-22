@@ -17,7 +17,8 @@ export default class QuestTypeLoader extends AbstractTypeLoader<KankaApiQuest> {
 
         await Promise.all([
             collection.addById(entity.quest_id, 'quest'),
-            collection.addById(entity.character_id, 'character'),
+            collection.addByEntityId(entity.instigator_id),
+            collection.addById(entity.location_id, 'location'),
             ...entity.elements.map((element) => collection.addByEntityId(element.entity_id)),
         ]);
 
