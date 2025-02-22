@@ -1,6 +1,8 @@
 {{#>../shared/overviewLayout}}
-    {{#*inline 'attributes'~}}
-        {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-        {{~>../shared/detailRowArray references=data.system.snapshot.parents type='family' label='shared.labels.parent' }}
-    {{~/inline}}
+{{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type='family' label='shared.labels.parent' }}
+{{~>../shared/detailRow value=data.system.snapshot.is_extinct label='family.labels.isExtinct'
+localizeValue='shared.value'}}
+{{~/inline}}
 {{/../shared/overviewLayout}}
