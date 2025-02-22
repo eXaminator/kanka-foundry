@@ -1,3 +1,18 @@
+# [4.2.0](https://github.com/eXaminator/kanka-foundry/compare/4.1.5...4.2.0) (2025-02-22)
+
+
+### Bug Fixes
+
+* make changes to comply with some upcoming Kanka API changes ([250d331](https://github.com/eXaminator/kanka-foundry/commit/250d331bb7b6aca56eff4efa8d2bf56537e8aaf3)), closes [#146](https://github.com/eXaminator/kanka-foundry/issues/146)
+* rename "items" to "objects" to be in line with Kankas UI ([af33bfc](https://github.com/eXaminator/kanka-foundry/commit/af33bfcdfabe47dcbdbe81d18292e49d5b9d6a32))
+
+
+### Features
+
+* add location to quests and add support for all instigator types ([803a3f0](https://github.com/eXaminator/kanka-foundry/commit/803a3f0295b0b991805d58416748a0620220a4e0))
+* add price, size and weight properties to objects ([25c1b75](https://github.com/eXaminator/kanka-foundry/commit/25c1b7596b365d341b77b3c070635c6157b98e66))
+* Display if Creatures, Families, Races or Locations ar dead, extinct or destroyed respectively. ([5f0aba3](https://github.com/eXaminator/kanka-foundry/commit/5f0aba37d53b94f6e18f8de3af48ce9498993c55))
+
 ## [4.1.5](https://github.com/eXaminator/kanka-foundry/compare/4.1.4...4.1.5) (2024-11-17)
 
 
