@@ -3,14 +3,14 @@ export default function sortBy<T extends Record<string, unknown>>(...fields: str
         fields
             .map((field) => {
                 // TODO: Change to foundry.utils.getProperty() once V11 is no longer supported
-                const propA = globalThis.getProperty(a, field);
-                const propB = globalThis.getProperty(b, field);
+                const propA = foundry.utils.getProperty(a, field);
+                const propB = foundry.utils.getProperty(b, field);
 
                 if (typeof propA === 'number' && typeof propB === 'number') {
                     return propA - propB;
                 }
 
-                return String(globalThis.getProperty(a, field)).localeCompare(String(globalThis.getProperty(b, field)));
+                return String(foundry.utils.getProperty(a, field)).localeCompare(String(foundry.utils.getProperty(b, field)));
             })
             .find((result) => result !== 0) ?? 0;
 }

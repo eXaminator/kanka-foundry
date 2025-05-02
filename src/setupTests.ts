@@ -1,7 +1,10 @@
 import * as Handlebars from 'handlebars';
 import { vi } from 'vitest';
 
-globalThis.getProperty = function getProperty(object, key) {
+// @ts-expect-error This doesn't satisfy the types, but it's enough for Tests.
+globalThis.foundry = { utils: {} };
+
+foundry.utils.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
     let target = object;
     for (const p of key.split('.')) {
