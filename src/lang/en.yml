@@ -233,7 +233,7 @@ KANKA:
         error:
             ErrorInvalidAccessToken: The given Kanka access token is invalid.
             ErrorTokenExpired: Your Kanka access token is expired. Please provide a new one.
-            WarningTokenExpiration: Your Kanka access token is going to expire withing the next week. Please provide a new one.
+            WarningTokenExpiration: Your Kanka access token is going to expire within the next week. Please provide a new one.
     migration:
         dialog:
             header: Kanka-Foundry migration
