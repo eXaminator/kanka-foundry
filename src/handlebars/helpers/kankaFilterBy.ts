@@ -6,11 +6,11 @@ function getFilterFn<T extends Record<string, unknown>>(property: string, expect
 
         if (isRegex) {
             const regex = new RegExp(value);
-            return (a: T) => regex.test(String(globalThis.getProperty(a, property)));
+            return (a: T) => regex.test(String(foundry.utils.getProperty(a, property)));
         }
     }
 
-    return (a: T) => globalThis.getProperty(a, property) === expected;
+    return (a: T) => foundry.utils.getProperty(a, property) === expected;
 }
 
 export default function kankaFilterBy<T extends Record<string, unknown>>(
