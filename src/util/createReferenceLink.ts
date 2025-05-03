@@ -1,6 +1,5 @@
 import getMessage from '../foundry/getMessage';
 import { findEntryByEntityId } from '../foundry/journalEntries';
-import { getSetting } from '../foundry/settings';
 import type Reference from '../types/Reference';
 
 export default async function createReferenceLink(reference: Reference): Promise<string> {
@@ -11,7 +10,7 @@ export default async function createReferenceLink(reference: Reference): Promise
         return TextEditor.enrichHTML(journalEntry.link);
     }
 
-    if (getSetting('disableExternalMentionLinks') || !reference?.urls?.view) return label;
+    if (game.settings?.get('kanka-foundry', 'disableExternalMentionLinks') || !reference?.urls?.view) return label;
 
     return `<a href="${reference.urls.view}" target="_blank">${label}</a>`;
 }

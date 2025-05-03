@@ -1,5 +1,4 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { getEntryFlag } from '../../foundry/journalEntries';
 import type Reference from '../../types/Reference';
 import type { KankaApiEntityId, KankaApiModuleType, KankaApiId } from '../../types/kanka';
 import kankaFindReference from './kankaFindReference';
@@ -35,7 +34,6 @@ function createReference(
 describe('kankaFindReference()', () => {
     beforeAll(() => {
         vi.mocked(kankaIsAccessible).mockReturnValue(true);
-        vi.mocked(getEntryFlag).mockImplementation((journal: any, flag) => journal?.flags?.[flag]);
 
         Handlebars.registerHelper('kankaFindReference', kankaFindReference);
     });

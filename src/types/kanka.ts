@@ -19,6 +19,22 @@ export type KankaApiModuleType =
     | 'journal'
     | 'tag';
 
+export type KankaApiEntityType =
+    'ability' |
+    'campaign' |
+    'creature' |
+    'character' |
+    'event' |
+    'family' |
+    'item' |
+    'journal' |
+    'location' |
+    'note' |
+    'organisation' |
+    'quest' |
+    'race';
+
+
 export enum KankaVisibility {
     all = 1,
     admin = 2,

@@ -1,5 +1,4 @@
 import { findEntryByEntityId } from '../foundry/journalEntries';
-import { getSetting } from '../foundry/settings';
 
 type EnrichOptions = Parameters<typeof TextEditor.enrichHTML>[1];
 
@@ -17,7 +16,7 @@ function replaceMentions(text: string): string {
             return;
         }
 
-        if (getSetting('disableExternalMentionLinks')) {
+        if (game.settings?.get('kanka-foundry', 'disableExternalMentionLinks')) {
             $link.replaceWith(label);
         }
     });

@@ -1,5 +1,5 @@
 import './foundry/registerHooks';
-import './index.scss';
+import './styles.css';
 import localization from './state/localization';
 
 import.meta.glob('./lang/*.yml', { eager: true });
@@ -9,7 +9,7 @@ if (import.meta.hot) {
         if ((en && localization.lang === 'en') || (de && localization.lang === 'de')) {
             await localization.initialize();
 
-            for (const app of Object.values(window.ui.windows as Record<number, Application>)) {
+            for (const app of Object.values(ui.windows as Record<number, Application>)) {
                 app.render();
             }
         }

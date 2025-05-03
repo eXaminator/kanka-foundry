@@ -12,7 +12,8 @@ export default function hmrWrapHook<T extends CallbackFn>(
         getCb()(...args);
     }
 
-    Hooks[type](hook, eventHandler);
+    if (type === 'once') Hooks.once(hook, eventHandler);
+    else if (type === 'on') Hooks.on(hook, eventHandler);
 
     return () => {
         const args = cachedArguments.get(hook) ?? [];

@@ -4,13 +4,11 @@ import AccessToken from '../../api/AccessToken';
 import DefaultPageSheet from '../../apps/KankaJournal/DefaultPageSheet';
 import KankaJournalApplication from '../../apps/KankaJournal/KankaJournalApplication';
 import PostPageSheet from '../../apps/KankaJournal/PostPageSheet';
-import KankaPageModel from '../../apps/KankaJournal/models/KankaPageModel';
+import { KankaPageModel } from '../../apps/KankaJournal/models/KankaPageModel';
 import registerHandlebarsHelpers from '../../handlebars/registerHandlebarsHelper';
-import localization from '../../state/localization';
 import { logError } from '../../util/logger';
-import getGame from '../getGame';
 import { showError, showWarning } from '../notifications';
-import { getSetting, registerSettings } from '../settings';
+import { registerSettings } from '../settings';
 
 function setToken(token: string): void {
     if (!token) {
@@ -40,7 +38,7 @@ function setToken(token: string): void {
 }
 
 function renderDebugElement(): void {
-    const debugElement = $('<span class="kanka-limit-debug">0 / 0 (0)</span>');
+    const debugElement = $('<span class="knk:limit-debug">0 / 0 (0)</span>');
     $('body').append(debugElement);
     api.limiter.onChange((event) => {
         debugElement.text(`${event.usedSlots} / ${event.maxSlots} (${event.queue})`);
@@ -53,6 +51,7 @@ export default function init(): void {
             (type) => `${moduleConfig.id}.${type}`,
         );
         const dataModelTypes = pageTypes.filter((type) => ![`${moduleConfig.id}.post`].includes(type));
+        console.log("FOO", CONFIG.JournalEntryPage.dataModels);
 
         Object.assign(
             CONFIG.JournalEntryPage.dataModels,
@@ -62,62 +61,32 @@ export default function init(): void {
             ),
         );
 
-        // @ts-expect-error
         DocumentSheetConfig.registerSheet(JournalEntry, moduleConfig.name, KankaJournalApplication, {
             makeDefault: false,
         });
 
-        // @ts-expect-error
         DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, PostPageSheet, {
             types: [`${moduleConfig.id}.post`],
             makeDefault: false,
         });
 
-        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, DefaultPageSheet as any, {
+        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, DefaultPageSheet as unknown as typeof DocumentSheet, {
             types: pageTypes.filter((type) => ![`${moduleConfig.id}.post`].includes(type)),
             makeDefault: false,
         });
 
         registerHandlebarsHelpers();
-
-        registerSettings({
-            baseUrl: (value) => api.switchBaseUrl(value ?? ''),
-            accessToken: (value) => setToken(value ?? ''),
-            importLanguage: async (value) => {
-                await localization.setLanguage(value ?? getGame().i18n.lang);
-                for (const app of Object.values(window.ui.windows)) {
-                    if (!(app instanceof KankaJournalApplication)) continue;
-                    app.render();
-                }
-            },
-        });
+        registerSettings();
 
         // Debug output to show current rate limiting
         if (import.meta.env.DEV) {
             renderDebugElement();
         }
 
-        api.switchBaseUrl(getSetting('baseUrl'));
-        setToken(getSetting('accessToken'));
+        api.switchBaseUrl(game.settings?.get('kanka-foundry', 'baseUrl') ?? '');
+        setToken(game.settings?.get('kanka-foundry', 'accessToken') ?? '');
     } catch (error) {
         logError(error);
         showError('general.initializationError');
     }
-}
-
-if (import.meta.hot) {
-    import.meta.hot.dispose(async () => {
-        $('.kanka-limit-debug').remove();
-    });
-
-    import.meta.hot.accept((newModule) => {
-        if ((game as Game).ready) {
-            newModule?.default();
-            for (const app of Object.values(ui.windows)) {
-                if ((app as any).constructor?.name === 'KankaJournalApplication') {
-                    (app as any).object._onSheetChange({ sheetOpen: true });
-                }
-            }
-        }
-    });
 }

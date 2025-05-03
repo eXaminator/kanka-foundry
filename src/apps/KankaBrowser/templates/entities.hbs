@@ -1,0 +1,24 @@
+<details class="{{ifThen (or isLoading (eq entities.length 0)) 'knk:hidden' ''}} knk:mb-6 knk:border-l-4 knk:pl-2"
+    style="border-color: var(--color-level-info-border);" {{ifThen isOpen 'open' ''}}>
+    <summary data-action="toggleDetail"
+        class="knk:flex knk:items-center knk:gap-1 knk:py-1 knk:px-1 knk:cursor-pointer">
+        <h3 class="knk:text-xl knk:flex-1 knk:m-0 knk:flex knk:gap-2 divider">
+            <i class="fas {{ icon }}"></i>
+            <span class="knk:flex-1">
+                {{ kankaLocalize 'entityType' type }}
+            </span>
+            <span class="knk:rounded knk:py-0.5 knk:px-1 knk:text-sm"
+                style="color: var(--color-level-info); background-color: var(--color-level-info-bg)">
+                {{countLinked}} / {{count}}
+            </span>
+        </h3>
+        <button class="knk:flex-none knk:aspect-square icon fas fa-solid fa-up-right-from-square" type="button" data-action="openInKanka" data-tooltip="{{ kankaLocalize 'browser' 'action' 'openInKanka' }}" />
+        <button class="knk:flex-none knk:aspect-square icon fas fa-link fa-fw" type="button" data-action="linkAll" {{ifThen (eq countLinked count) 'disabled' ''}} data-tooltip="{{ kankaLocalize 'browser' 'action' 'linkAll' }}" />
+        <button class="knk:flex-none knk:aspect-square icon fas fa-sync fa-fw" type="button" data-action="updateOutdated" {{ifThen (eq countLinked count) 'disabled' ''}} data-tooltip="{{ kankaLocalize 'browser' 'action' 'updateOutdated' }}" />
+    </summary>
+    {{#if (eq view 'grid')}}
+    {{> (lookup . 'gridPartial') .}}
+    {{else}}
+    {{> (lookup . 'listPartial') .}}
+    {{/if}}
+</details>

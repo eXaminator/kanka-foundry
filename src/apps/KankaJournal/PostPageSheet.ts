@@ -8,8 +8,8 @@ export default class PostPageSheet extends JournalTextPageSheet {
         });
     }
 
-    async getData(options = {}): Promise<unknown> {
-        const data = await super.getData(options);
+    async getData(options = {}) {
+        const data = await super.getData(options) as any;
 
         data.editor.content = await replaceRecursiveMentions(data.data.text.content, {
             relativeTo: this.object,

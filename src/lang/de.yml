@@ -34,7 +34,9 @@ KANKA:
             updateOutdated: Geänderte aktualisieren
             viewGrid: Kacheln
             viewList: Liste
+            reload: Neu laden
             linkAll: Alle verknüpfen
+            openInKanka: In Kanka öffnen
             openJournal: Öffnen
             updateSingle: Aktualisieren
             linkSingle: Verknüpfen
@@ -292,7 +294,7 @@ KANKA:
             success: Alle importierten Kanka-Einträge wurden auf das neue Format aktualisiert.
         started: Kanka-Foundry führt einige Migrationen aus. Bitte warte bis sie erledigt sind.
         finished: Alle Kanka-Foundry Migrationen wurden erfolgreich ausgeführt.
-        failed: "Beim Ausführen der Kanka-Foundry Migrationen sind Fehler aufgetreten: {error}"
+        failed: 'Beim Ausführen der Kanka-Foundry Migrationen sind Fehler aufgetreten: {error}'
 
 TYPES:
     JournalEntryPage:

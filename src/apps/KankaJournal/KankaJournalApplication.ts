@@ -1,26 +1,15 @@
 import api from '../../api';
-import getGame from '../../foundry/getGame';
 import getMessage from '../../foundry/getMessage';
-import { getEntryFlag } from '../../foundry/journalEntries';
 import { showError } from '../../foundry/notifications';
-import { getSetting } from '../../foundry/settings';
 import localization from '../../state/localization';
 import { updateEntity } from '../../syncEntities';
 import { logError } from '../../util/logger';
 import './KankaJournalApplication.scss';
 
-type JournalSheetData = ReturnType<JournalSheet['getData']>;
-type SheetOptions = JournalSheetOptions & Record<string, unknown>;
-
-interface Data extends JournalSheetData {
-    pages: JournalEntryPage[];
-    toc: JournalEntryPage[];
-}
-
 export default class KankaJournalApplication extends JournalSheet {
     #forceMode: number | undefined;
 
-    static get defaultOptions(): SheetOptions {
+    static get defaultOptions() {
         return {
             ...super.defaultOptions,
             editable: false,
@@ -33,7 +22,7 @@ export default class KankaJournalApplication extends JournalSheet {
     }
 
     private isPageInOverviewArea(index: number): boolean {
-        if (!getSetting('mergeOverviewPages')) return false;
+        if (!game.settings?.get('kanka-foundry', 'mergeOverviewPages')) return false;
 
         const page = this._pages[index];
         if (!page) return false;
@@ -56,8 +45,8 @@ export default class KankaJournalApplication extends JournalSheet {
         }));
     }
 
-    public getData(options?: Partial<SheetOptions>): Data | JournalSheetData {
-        const data = super.getData(options);
+    public getData(options) {
+        const data = super.getData(options) as any;
 
         let { pages } = data;
 
@@ -75,7 +64,7 @@ export default class KankaJournalApplication extends JournalSheet {
             toc: data.toc.map((page) => {
                 const actualPage = this.object.pages.get(page._id);
 
-                const count = actualPage.isOwner ? page.system.totalCount : page.system.publicCount;
+                const count = actualPage?.isOwner ? page.system.totalCount : page.system.publicCount;
                 const tocCls = [page.tocClass];
                 if (count > 99) tocCls.push('kanka-count kanka-count-limit');
                 else if (count !== undefined && count !== null) tocCls.push(`kanka-count kanka-count-${count}`);
@@ -86,9 +75,9 @@ export default class KankaJournalApplication extends JournalSheet {
         };
     }
 
-    public _getHeaderButtons(): unknown[] {
+    public _getHeaderButtons() {
         const accessToken = api.getToken();
-        const allowSync = getGame().user?.isGM && api.isReady && accessToken && !accessToken.isExpired();
+        const allowSync = game.user?.isGM && api.isReady && accessToken && !accessToken.isExpired();
         const buttons = super._getHeaderButtons();
 
         buttons.unshift({
@@ -96,7 +85,7 @@ export default class KankaJournalApplication extends JournalSheet {
             icon: 'fas fa-up-right-from-square',
             class: 'kanka-open',
             onclick: () => {
-                const snapshot = getEntryFlag(this.object, 'snapshot');
+                const snapshot = this.object.getFlag('kanka-foundry', 'snapshot');
                 if (snapshot?.urls.view) {
                     window.open(snapshot.urls.view, '_blank');
                 } else {
@@ -111,11 +100,11 @@ export default class KankaJournalApplication extends JournalSheet {
                 icon: 'fas fa-rotate',
                 class: 'kanka-sync',
                 onclick: async (event) => {
-                    event.target.classList.add('-loading');
+                    event.target.classList.add('knk:loading-indicator');
                     try {
-                        const type = getEntryFlag(this.object, 'type');
-                        const campaign = getEntryFlag(this.object, 'campaign');
-                        const snapshot = getEntryFlag(this.object, 'snapshot');
+                        const type = this.object.getFlag('kanka-foundry', 'type');
+                        const campaign = this.object.getFlag('kanka-foundry', 'campaign');
+                        const snapshot = this.object.getFlag('kanka-foundry', 'snapshot');
 
                         if (!type || !campaign || !snapshot) throw new Error('Missing flags on journal entry');
 
@@ -125,7 +114,7 @@ export default class KankaJournalApplication extends JournalSheet {
                         logError(error);
                     } finally {
                         this.render();
-                        event.target.classList.remove('-loading');
+                        event.target.classList.remove('knk:loading-indicator');
                     }
                 },
             });
@@ -163,7 +152,8 @@ export default class KankaJournalApplication extends JournalSheet {
         return;
     }
 
-    get mode(): number {
+    // @ts-expect-error The typings for mode seem to be off
+    get mode() {
         return this.#forceMode ?? super.mode;
     }
 }

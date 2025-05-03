@@ -1,29 +1,23 @@
 {
     "compilerOptions": {
-        "target": "es2020",
-        "module": "es2020",
-        "lib": ["dom", "dom.iterable", "ES2021"],
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "lib": ["dom", "dom.iterable", "ES2023"],
         "strictNullChecks": true,
         "strict": true,
         "resolveJsonModule": true,
-        "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": false,
-        "isolatedModules": true,
+        "useUnknownInCatchVariables": true,
+        "esModuleInterop": true,
         "skipLibCheck": true,
         "allowJs": true,
-        "noEmit": true
+        "noEmit": true,
+        "types": ["fvtt-types"]
     },
     "include": [
         "src/**/*",
         "build/**/*",
-        "foundry-code/common/**/*",
-        "foundry-code/client/**/*",
-        "foundry-code/client-esm/**/*"
     ],
-    "exclude": [
-        "foundry-code/client/pixi/placeables/token.js",
-        "foundry-code/client/pixi/core/interaction/mouse-handler.js",
-        "foundry-code/client/pixi/extensions/graphics.js"
-    ]
 }

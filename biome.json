@@ -14,10 +14,21 @@
             "complexity": {
                 "noThisInStatic": "off"
             }
-        }
+        },
+        "ignore": [
+            "node_modules",
+            "dist",
+            "build",
+            "coverage",
+            "**/*.test.ts",
+            "**/*.test.js",
+            "**/*.spec.ts",
+            "**/*.spec.js",
+            "src/styles.css"
+        ]
     },
     "formatter": {
-        "enabled": true,
+        "enabled": false,
         "indentWidth": 4,
         "indentStyle": "space",
         "lineWidth": 120

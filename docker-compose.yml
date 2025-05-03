@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
     foundry:
-        image: 'felddy/foundryvtt:12'
+        image: 'felddy/foundryvtt:13'
         environment:
-            TIMEZONE: Europe/Berlin
+            TZ: Europe/Berlin
             FOUNDRY_WORLD: 'test'
             FOUNDRY_HOT_RELOAD: true
         secrets:

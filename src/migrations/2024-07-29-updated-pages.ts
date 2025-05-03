@@ -1,15 +1,17 @@
-import getGame from "../foundry/getGame";
-import { showInfo } from "../foundry/notifications";
+function isOutdatedPage(page: JournalEntryPage): boolean {
+    if (page.type !== 'kanka-foundry.children' && page.type !== 'kanka-foundry.family-members') return false;
+
+    return (page.system as any).snapshot.list?.every(e => typeof e === 'object');
+}
 
 // Migrate from old journal entry format to new page based format
 export default async function migrate(): Promise<void> {
-    const game = getGame();
-    const journals = Array.from(game.journal.values()).filter((e: any) => e.getFlag('kanka-foundry', 'id')) as any[];
+    const journals = Array.from(game.journal?.values() ?? []).filter(e => e.getFlag('kanka-foundry', 'id'));
 
     for (const entry of journals) {
         const pages = Array
             .from(entry.pages.values())
-            .filter((page: any) => ['kanka-foundry.children', 'kanka-foundry.family-members'].includes(page.type) && page.system.snapshot?.list?.every(e => typeof e === 'object'));
+            .filter(isOutdatedPage);
 
         await entry.updateEmbeddedDocuments('JournalEntryPage', pages.map((page: any) => {
             return {

@@ -1,45 +1,21 @@
 import api from '../../api';
-import getMessage from '../../foundry/getMessage';
-import {
-    findAllKankaEntries,
-    findEntryByEntityId,
-    getEntryFlag,
-    hasOutdatedEntryByEntity,
-} from '../../foundry/journalEntries';
-import { showError } from '../../foundry/notifications';
-import { type KankaSettings, getSetting, setSetting } from '../../foundry/settings';
-import { createEntities, createEntity, updateEntity } from '../../syncEntities';
+import { findEntryByEntityId, hasOutdatedEntryByEntity } from '../../foundry/journalEntries';
+import type { KankaSettings } from '../../foundry/settings';
 import EntityType from '../../types/EntityType';
-import type { KankaApiCampaign, KankaApiChildEntity, KankaApiEntity } from '../../types/kanka';
-import type { ProgressFn } from '../../types/progress';
+import type { KankaApiCampaign, KankaApiEntity } from '../../types/kanka';
+import loadingTemplate from './templates/loading.hbs';
+import searchTemplate from './templates/search.hbs';
+import campaignTemplate from './templates/campaign.hbs';
+import entitiesTemplate from './templates/entities.hbs';
+import entityListPartial from './templates/partials/entity-list.hbs';
+import entityGridPartial from './templates/partials/entity-grid.hbs';
+import { logError } from '../../util/logger';
+import { createEntities, createEntity, updateEntity } from '../../syncEntities';
+import { showError } from '../../foundry/notifications';
 import groupBy from '../../util/groupBy';
-import { logError, logInfo } from '../../util/logger';
-import template from './KankaBrowserApplication.hbs';
-import './KankaBrowserApplication.scss';
-
-interface EntityTypeConfig {
-    icon: string;
-    isOpen: boolean;
-}
-
-interface TemplateData {
-    campaigns?: Record<string, string>[];
-    campaign?: KankaApiCampaign;
-    data?: KankaApiEntity[];
-    typeConfig: Record<string, EntityTypeConfig>;
-    currentFilter: string;
-    deletedEntries: KankaApiChildEntity[];
-    settings: {
-        showPrivate: boolean;
-        view: KankaSettings['browserView'];
-    };
-}
-
-type TypeMetaData = {
-    count: number;
-    countLinked: number;
-    entities: KankaApiEntity[];
-};
+import ApplicationV2 = foundry.applications.api.ApplicationV2;
+import HandlebarsApplicationMixin = foundry.applications.api.HandlebarsApplicationMixin;
+import type { DeepPartial } from 'fvtt-types/utils';
 
 const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
     [EntityType.ability]: {
@@ -80,305 +56,261 @@ const entityTypes: Partial<Record<EntityType, { icon: string }>> = {
     },
 };
 
-export default class KankaBrowserApplication extends Application {
-    #currentFilter = '';
-    #campaign: KankaApiCampaign | undefined;
-    #campaigns: KankaApiCampaign[] | undefined;
-    #entities: KankaApiEntity[] | undefined;
-    #isLoadingEntities = false;
-    #isLoadingCampaigns = false;
+type RenderContext = ApplicationV2.RenderContext & Partial<{
+    isLoading: boolean,
+    allCampaigns: Record<string, string>,
+    campaign: KankaApiCampaign | null,
+    entities: KankaApiEntity[] | null,
+    showPrivate: KankaSettings['importPrivateEntities'],
+    view: KankaSettings['browserView'],
+    listPartial: string,
+    gridPartial: string,
+    type: string,
+    icon: string,
+    isOpen: boolean,
+    count: number,
+    countLinked: number,
+}>;
 
-    static get defaultOptions(): ApplicationOptions {
-        return {
-            ...super.defaultOptions,
-            id: 'kanka-browser',
-            classes: ['kanka', 'kanka-browser'],
-            template,
-            width: 720,
-            height: 'auto',
-            title: getMessage('browser.title'),
-            tabs: [{ navSelector: '.tabs', contentSelector: '.tab-container', initial: 'import' }],
+export default class KankaBrowserApplication extends HandlebarsApplicationMixin(ApplicationV2<RenderContext>) {
+    #search = '';
+    #entities: KankaApiEntity[] | null = null;
+    #allCampaigns: KankaApiCampaign[] | null = null;
+    #campaign: KankaApiCampaign | null = null;
+    #hooks: Record<string, number> = {};
+    #isLoading = false;
+
+    static DEFAULT_OPTIONS: DeepPartial<ApplicationV2.Configuration> = {
+        id: 'kanka-browser',
+        classes: ['kanka-browser'],
+        window: {
+            title: 'KANKA.browser.title',
             resizable: true,
-        };
-    }
+            contentClasses: ['knk:overflow-auto', 'knk:m-0'],
+            controls: [
+                {
+                    icon: 'fa-solid fa-list',
+                    label: 'KANKA.browser.action.viewList',
+                    action: 'viewList',
+                },
+                {
+                    icon: 'fa-solid fa-th-large',
+                    label: 'KANKA.browser.action.viewGrid',
+                    action: 'viewGrid',
+                },
+                {
+                    icon: 'fa-solid fa-rotate-right',
+                    label: 'KANKA.browser.action.reload',
+                    action: 'reload',
+                },
+            ],
+        },
+        position: {
+            height: 'auto',
+            width: 720,
+        },
+        actions: {
+            reload: KankaBrowserApplication.reload,
+            viewGrid: KankaBrowserApplication.viewGrid,
+            viewList: KankaBrowserApplication.viewList,
+            openInKanka: KankaBrowserApplication.openInKanka,
+            openInFoundry: KankaBrowserApplication.openInFoundry,
+            updateSingle: KankaBrowserApplication.updateSingle,
+            linkAll: KankaBrowserApplication.linkAll,
+            updateOutdated: KankaBrowserApplication.updateOutdated,
+        },
+    };
 
-    protected get deletedSnapshots(): KankaApiChildEntity[] {
-        return findAllKankaEntries().flatMap((entry) => {
-            const campaignId = getEntryFlag(entry, 'campaign');
-            const snapshot = getEntryFlag(entry, 'snapshot');
-
-            if (!snapshot) return [];
-            if (!this.#entities) return [];
-            if (campaignId !== this.#campaign?.id) return [];
-            if (this.#entities.some((e) => e.id === snapshot.entity_id)) return [];
-
-            return [snapshot];
-        });
-    }
-
-    public getData(): TemplateData {
-        const typeConfig: Record<string, { icon: string, isOpen: boolean }> = {};
-
-        for (const [type, cfg] of Object.entries(entityTypes)) {
-            typeConfig[type] = {
-                ...cfg,
-                isOpen: true,
+    static PARTS: Record<string, HandlebarsApplicationMixin.HandlebarsTemplatePart> = {
+        loading: {
+            template: loadingTemplate,
+        },
+        campaign: {
+            template: campaignTemplate,
+        },
+        search: {
+            template: searchTemplate,
+        },
+        ...Object.keys(entityTypes).reduce((acc, type) => {
+            acc[type] = {
+                template: entitiesTemplate,
+                templates: [entitiesTemplate, entityListPartial, entityGridPartial],
             };
-        }
+            return acc;
+        }, {}),
+    };
 
-        const groupedEntities = groupBy(this.#entities ?? [], 'module.code');
-        const groupedEntitiesWithMetaData: Record<string, TypeMetaData> = {};
-
-        const sortedGroups = Array.from(groupedEntities.entries()).sort(([a], [b]) => a[0].localeCompare(b[0]))
-        for (const [type, entities] of sortedGroups) {
-            groupedEntitiesWithMetaData[type] = {
-                entities,
-                count: entities.length,
-                countLinked: entities.filter((e) => !!findEntryByEntityId(e.id)).length,
-            };
-        }
-
-        return {
-            ...super.getData(),
-            campaign: this.#campaign ?? { id: 0 },
-            campaigns: (this.#campaigns ?? []).reduce((choices, { id, name }) => { choices[String(id)] = name; return choices; }, {
-                0: '-- Please choose --',
-            }),
-            currentFilter: this.#currentFilter,
-            typeConfig,
-            entities: groupedEntitiesWithMetaData,
-            data: this.#entities,
-            deletedEntries: this.deletedSnapshots,
-            settings: {
-                showPrivate: getSetting('importPrivateEntities'),
-                view: getSetting('browserView'),
-            },
-        };
+    static async reload(this: KankaBrowserApplication) {
+        this.setupData();
+        this.render();
     }
 
-    public async activateListeners(html: JQuery): Promise<void> {
-        super.activateListeners(html);
-        this.filterList(this.#currentFilter);
+    static async viewGrid(this: KankaBrowserApplication) {
+        await game.settings?.set('kanka-foundry', 'browserView', 'grid');
+        this.render({ parts: Object.keys(entityTypes) });
+    }
 
-        html.on('input', '[name="filter"]', (event) => {
-            const filter = event?.target?.value ?? '';
+    static async viewList(this: KankaBrowserApplication) {
+        await game.settings?.set('kanka-foundry', 'browserView', 'list');
+        this.render({ parts: Object.keys(entityTypes) });
+    }
 
-            if (!filter.trim().length) {
-                this.resetFilter();
-                return;
-            }
-
-            this.filterList(filter);
-        });
-
-        html.on('input', '[name="campaigns"]', async (event) => {
-            const campaignId = event.target.value === '0' ? '' : event.target.value;
-            await setSetting('campaign', campaignId);
-            this.#campaign = undefined;
-            this.#entities = undefined;
-            this.render();
-        });
-
-        html.on('click', 'button[data-action]', async (event) => {
+    static async openInKanka(this: KankaBrowserApplication, event: PointerEvent, target: HTMLElement) {
+        try {
             if (!this.#campaign) return;
 
-            const { action, id: idString, type } = event.currentTarget?.dataset ?? {};
-            const id = Number.parseInt(idString, 10);
+            const type = target.closest<HTMLElement>('[data-application-part]')?.dataset.applicationPart;
+            const rawId = target.closest<HTMLElement>('[data-entity-id]')?.dataset.entityId;
+            const id = rawId ? Number.parseInt(rawId, 10) : null;
+            let url = this.#campaign.urls.view;
 
-            logInfo('click', { action, id, type }, this.#campaign);
-
-            try {
-                switch (action) {
-                    case 'view-grid': {
-                        await setSetting('browserView', 'grid');
-                        this.render();
-                        break;
-                    }
-
-                    case 'view-list': {
-                        await setSetting('browserView', 'list');
-                        this.render();
-                        break;
-                    }
-
-                    case 'open': {
-                        const sheet = findEntryByEntityId(id)?.sheet;
-                        sheet?.render(true);
-                        sheet?.maximize();
-                        break;
-                    }
-
-                    case 'open-in-kanka': {
-                        if (!this.#campaign) return;
-
-                        let url = this.#campaign.urls.view;
-                        if (id) {
-                            const entity = this.#entities?.find((e) => e.id === id);
-                            url = entity?.urls.view ?? '';
-                        } else if (type) {
-                            url = `${url}/${type.replace(/y$/, 'ie')}s`;
-                        }
-
-                        if (url) {
-                            window.open(url, '_blank');
-                        } else {
-                            logError('Could not find a matching Kanka URL', { type, url });
-                        }
-
-                        break;
-                    }
-
-                    case 'update-single': {
-                        const entry = findEntryByEntityId(id);
-                        this.setLoadingState(event.currentTarget);
-                        if (entry) {
-                            await updateEntity(entry, this.#entities);
-                        } else {
-                            const entity = this.#entities?.find((e) => e.id === id);
-                            if (entity) {
-                                await createEntity(this.#campaign.id, entity?.module.code, entity?.child_id, this.#entities);
-                            }
-                        }
-                        this.render();
-                        break;
-                    }
-
-                    case 'link-type': {
-                        if (!type) return;
-                        const unlinkedEntities =
-                            this.#entities?.filter((entity) => {
-                                if (entity.module.code !== type) return false;
-                                return !findEntryByEntityId(entity.id);
-                            }) ?? [];
-
-                        this.setLoadingState(event.currentTarget);
-                        await createEntities(
-                            this.#campaign.id,
-                            type,
-                            unlinkedEntities.map((e) => e.child_id),
-                            this.#entities,
-                        );
-                        this.render();
-                        break;
-                    }
-
-                    case 'link-all': {
-                        const unlinkedEntities =
-                            this.#entities?.filter((entity) => !findEntryByEntityId(entity.id)) ?? [];
-
-                        this.setLoadingState(event.currentTarget);
-                        const entityMap = groupBy(unlinkedEntities, 'module.code');
-
-                        for (const [syncType, entities] of entityMap) {
-                            try {
-                                await createEntities(
-                                    this.#campaign.id,
-                                    syncType,
-                                    entities.map((e) => e.child_id),
-                                    this.#entities,
-                                );
-                            } catch (error) {
-                                console.warn(`Failed to sync entities of type ${syncType}: `, error);
-                            }
-                        }
-
-                        this.render();
-                        break;
-                    }
-
-                    case 'update-outdated': {
-                        const outdatedEntries =
-                            this.#entities
-                                ?.filter((entity) => {
-                                    if (!hasOutdatedEntryByEntity(entity)) {
-                                        return false;
-                                    }
-
-                                    return !type || entity.module.code === type;
-                                })
-                                .map((entity) => findEntryByEntityId(entity.id))
-                                .filter((entry): entry is JournalEntry => !!entry) ?? [];
-
-                        this.setLoadingState(event.currentTarget);
-
-                        await Promise.all(outdatedEntries.map((entry) => updateEntity(entry, this.#entities)));
-
-                        this.render();
-                        break;
-                    }
-
-                    case 'delete': {
-                        const entry = findEntryByEntityId(id);
-                        await entry?.delete({});
-                        break;
-                    }
-
-                    case 'delete-all': {
-                        await Promise.all(
-                            this.deletedSnapshots.map(async (snapshot) => {
-                                const entry = findEntryByEntityId(snapshot.entity_id);
-                                await entry?.delete({});
-                            }),
-                        );
-                        break;
-                    }
-
-                    default:
-                        break;
-                }
-            } catch (error) {
-                logError(error);
-                showError('browser.error.actionError');
-                this.render(); // Ensure loaders are removed etc.
+            if (id) {
+                const entity = this.#entities?.find(e => e.type === type && e.id === id);
+                url = entity?.urls.view ?? url;
+            } else if (type && type in entityTypes) {
+                url = `${url}/${type.replace(/y$/, 'ie')}s`;
             }
-        });
 
-        html.find<HTMLDetailsElement>('details[data-type]').on('toggle', (event) => {
-            const type = event.currentTarget.dataset?.type as EntityType;
-            if (!type) return;
-            this.setPosition({ ...this.position, height: 'auto' });
-            if (this.#currentFilter) return; // Don't save toggle if filter is active
-            setSetting(`collapseType_${type}`, event.currentTarget.open);
-        });
-    }
-
-    protected resetFilter(): void {
-        const element = $(this.element);
-        this.#currentFilter = '';
-        element.find('[data-filter-text]').show();
-
-        element.find<HTMLDetailsElement>('details[data-type]').each((_, el) => {
-            if (el.dataset?.type) {
-                el.open = getSetting(`collapseType_${el.dataset?.type as EntityType}`);
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                logError('Could not find a matching Kanka URL', { type, url });
             }
-        });
-
-        this.setPosition({ ...this.position, height: 'auto' });
-    }
-
-    protected filterList(filter: string): void {
-        if (!filter) {
-            this.resetFilter();
-            return;
+        } catch (error) {
+            logError(error);
+            showError('browser.error.actionError');
+        } finally {
+            this.render();
         }
-
-        const element = $(this.element);
-
-        this.#currentFilter = filter.toLowerCase().replace(/\[/g, '\\[').replace(/]/g, '||]').replace(/"/g, '\\"');
-
-        element.find<HTMLDetailsElement>('details[data-type]').each((_, el) => {
-            el.open = true;
-        });
-
-        element.find('[data-filter-text]').hide();
-        element.find(`[data-filter-text*="${this.#currentFilter}"]`).show();
-        this.setPosition({ ...this.position, height: 'auto' });
     }
 
-    protected async loadEntities(): Promise<void> {
-        if (!this.#campaign) return;
+    static async openInFoundry(this: KankaBrowserApplication, event, target) {
+        try {
+            const rawId = target.closest('[data-entity-id]').dataset.entityId;
+            const id = rawId ? Number.parseInt(rawId, 10) : null;
 
-        const entities = await api.getAllEntities(this.#campaign.id, [
+            if (!id) return;
+
+            const sheet = findEntryByEntityId(id)?.sheet;
+            sheet?.render(true);
+            sheet?.maximize();
+        } catch (error) {
+            logError(error);
+            showError('browser.error.actionError');
+        } finally {
+            this.render();
+        }
+    }
+
+    static async updateSingle(this: KankaBrowserApplication, event, target) {
+        try {
+            if (!this.#campaign || !this.#entities) return;
+
+            const rawId = target.closest('[data-entity-id]').dataset.entityId;
+            const id = rawId ? Number.parseInt(rawId, 10) : null;
+
+            if (!id) return;
+
+            this.setLoadingState(target);
+
+            const entry = findEntryByEntityId(id);
+            if (entry) {
+                await updateEntity(entry, this.#entities);
+            } else {
+                const entity = this.#entities?.find((e) => e.id === id);
+                if (entity) {
+                    await createEntity(this.#campaign.id, entity.module.code, entity.child_id, this.#entities);
+                }
+            }
+        } catch (error) {
+            logError(error);
+            showError('browser.error.actionError');
+        } finally {
+            this.render();
+        }
+    }
+
+    static async linkAll(this: KankaBrowserApplication, event, target) {
+        try {
+            if (!this.#campaign || !this.#entities) return;
+
+            let type = target.closest('[data-application-part]').dataset.applicationPart;
+            if (!(type in entityTypes)) type = undefined;
+
+            const unlinkedEntities = this.getEntities(type).filter((entity) => !findEntryByEntityId(entity.id));
+            const grouped = groupBy(unlinkedEntities, 'module.code');
+
+            this.setLoadingState(target);
+
+            for (const [syncType, entities] of grouped) {
+                try {
+                    await createEntities(
+                        this.#campaign.id,
+                        syncType,
+                        entities.map((e) => e.child_id),
+                        this.#entities,
+                    );
+                } catch (error) {
+                    console.warn(`Failed to sync entities of type ${syncType}: `, error);
+                }
+            }
+        } catch (error) {
+            logError(error);
+            showError('browser.error.actionError');
+        } finally {
+            this.render();
+        }
+    }
+
+    static async updateOutdated(this: KankaBrowserApplication, event, target) {
+        try {
+            if (!this.#campaign || !this.#entities) return;
+
+            let type = target.closest('[data-application-part]').dataset.applicationPart;
+            if (!(type in entityTypes)) type = undefined;
+
+            const outdatedEntries = this.getEntities(type)
+                .filter((entity) => hasOutdatedEntryByEntity(entity))
+                .map((entity) => findEntryByEntityId(entity.id))
+                .filter((entry): entry is JournalEntry => !!entry);
+
+            this.setLoadingState(target);
+            await Promise.all(outdatedEntries.map((entry) => updateEntity(entry, this.#entities ?? [])));
+        } catch (error) {
+            logError(error);
+            showError('browser.error.actionError');
+        } finally {
+            this.render();
+        }
+    }
+
+    protected getEntities(type?: EntityType) {
+        if (!this.#entities) return [];
+
+        return this.#entities
+            .filter(e => e.name.toLowerCase().includes(this.#search.toLowerCase()) && (!type || e.module.code === type))
+            .map(entity => {
+                const isOutdated = hasOutdatedEntryByEntity(entity);
+                return {
+                    ...entity,
+                    state: {
+                        isOutdated,
+                        isPrivate: entity.is_private && !isOutdated,
+                        isLinked: Boolean(findEntryByEntityId(entity.id))
+                    },
+                };
+            }).toSorted((a, b) => a.name.localeCompare(b.name));
+    }
+
+    protected setLoadingState(button: HTMLButtonElement): void {
+        button.classList.add('-knk:loading-indicator');
+        for (const el of this.element.querySelectorAll('[data-action]')) {
+            el.setAttribute('disabled', 'true');
+        }
+    }
+
+    protected async loadEntities(campaignId: number): Promise<KankaApiEntity[]> {
+        const entities = await api.getAllEntities(campaignId, [
             'ability',
             'calendar',
             'character',
@@ -394,107 +326,150 @@ export default class KankaBrowserApplication extends Application {
             'event',
         ]);
 
-        this.#entities = entities?.filter((entity) => {
-            if (!getSetting('importTemplateEntities') && entity.is_template) {
+        return entities?.filter(entity => {
+            if (!game.settings?.get('kanka-foundry', 'importTemplateEntities') && entity.is_template) {
                 return false;
             }
 
-            if (!getSetting('importPrivateEntities') && entity.is_private) {
+            if (!game.settings?.get('kanka-foundry', 'importPrivateEntities') && entity.is_private) {
                 return false;
             }
 
             return true;
         });
-
-        this.render();
     }
 
-    protected async _render(force?: boolean, options?: any): Promise<void> {
-        if (!this.#campaign && getSetting('campaign')) {
-            try {
-                const campaignId = Number.parseInt(getSetting('campaign'), 10);
-                this.#campaign = await api.getCampaign(campaignId);
-            } catch (error) {
-                showError('browser.error.loadEntity');
-                logError(error);
+    protected async loadDataForCampaign(campaignId?: number) {
+        if (!campaignId) return { campaign: null, entities: null };
+
+        const [campaign, entities] = await Promise.all([
+            api.getCampaign(campaignId),
+            this.loadEntities(campaignId),
+        ]);
+
+        return { campaign, entities };
+    }
+
+    protected setupData(this: KankaBrowserApplication): void {
+        if (this.#isLoading) return;
+
+        const rawId = game.settings?.get('kanka-foundry', 'campaign');
+        const campaignId = rawId ? Number.parseInt(rawId, 10) : undefined;
+
+        this.#allCampaigns = null;
+        this.#campaign = null;
+        this.#entities = null;
+        this.#isLoading = true;
+
+        Promise.all([api.getAllCampaigns(), this.loadDataForCampaign(campaignId)]).then(([allCampaigns, { campaign, entities }]) => {
+            this.#allCampaigns = allCampaigns;
+            this.#campaign = campaign;
+            this.#entities = entities;
+            this.#isLoading = false;
+            this.render({ force: true });
+        }).catch(error => {
+            logError(error);
+            showError('browser.error.loadEntity');
+            this.close();
+        });
+    }
+
+    async _preFirstRender(this: KankaBrowserApplication, context, options): Promise<void> {
+        this.#hooks.deleteJournalEntry = Hooks.on('deleteJournalEntry', (entry: JournalEntry) => this.render());
+        await super._preFirstRender(context, options);
+        this.setupData();
+    }
+
+    async _preClose() {
+        for (const [hook, id] of Object.entries(this.#hooks)) {
+            Hooks.off(hook, id);
+        }
+    }
+
+    async _prepareContext() {
+        return {
+            isLoading: this.#isLoading,
+            allCampaigns: (this.#allCampaigns ?? []).reduce((choices, { id, name }) => { choices[String(id)] = name; return choices; }, {
+                0: '-- Please choose --',
+            }),
+            campaign: this.#campaign,
+            entities: [],
+            showPrivate: game.settings?.get('kanka-foundry', 'importPrivateEntities'),
+            view: game.settings?.get('kanka-foundry', 'browserView'),
+            listPartial: entityListPartial,
+            gridPartial: entityGridPartial,
+        };
+    }
+
+    async _preparePartContext(partId, context) {
+        if (partId in entityTypes) {
+            const entities = this.getEntities(partId as EntityType);
+
+            return {
+                ...context,
+                type: partId,
+                icon: entityTypes[partId]?.icon,
+                isOpen: !!this.#search || game.settings?.get('kanka-foundry', `collapseType_${partId as EntityType}`),
+                entities: entities,
+                count: entities.length,
+                countLinked: entities.filter(e => !!findEntryByEntityId(e.id)).length,
             }
         }
 
-        if (!this.#campaigns && !this.#isLoadingCampaigns) {
-            this.#campaigns = undefined;
-            this.#isLoadingCampaigns = true;
-            requestAnimationFrame(async () => {
-                try {
-                    this.#campaigns = await api.getAllCampaigns();
-                    this.render();
-                } catch (error) {
-                    showError('browser.error.loadEntity');
-                    logError(error);
-                    await this.close();
-                } finally {
-                    this.#isLoadingCampaigns = false;
-                }
-            });
-        }
-
-        if (!this.#entities && !this.#isLoadingEntities) {
-            this.#entities = undefined;
-            this.#isLoadingEntities = true;
-            requestAnimationFrame(async () => {
-                try {
-                    await this.loadEntities();
-                } catch (error) {
-                    showError('browser.error.loadEntity');
-                    logError(error);
-                    await this.close();
-                } finally {
-                    this.#isLoadingEntities = false;
-                }
-            });
-        }
-
-        await super._render(force, options);
+        return context;
     }
 
-    public async close(options?: unknown) {
-        await super.close(options);
-        this.#entities = undefined;
-        this.#campaigns = undefined;
-    }
+    async _onRender() {
+        this.element.querySelector('#knk-entity-search')?.addEventListener(
+            'input',
+            foundry.utils.debounce((event: Event) => {
+                const target = event.currentTarget as HTMLInputElement | null;
+                if (!target) return;
 
-    protected setLoadingState(button: HTMLButtonElement, determined = false): ProgressFn {
-        const $button = $(button);
-        $button.addClass('-loading');
-        $(this.element).find('[data-action]').prop('disabled', true);
+                this.#search = target.value;
+                this.render({ parts: Object.keys(entityTypes) });
+            }, 300),
+        );
 
-        if (determined) $button.addClass('-determined');
-        else $button.addClass('-undetermined');
+        this.element.querySelector<HTMLSelectElement>('#knk-campaign-select')?.addEventListener(
+            'change',
+            async (event) => {
+                const target = event.currentTarget as HTMLSelectElement | null;
+                if (!target) return;
 
-        return (current, max) => {
-            $button.addClass('-determined');
-            button.style.setProperty('--progress', `${Math.round((current / max) * 100)}%`);
-        };
+                const campaignId = target.value === '0' ? '' : target.value;
+                await game.settings?.set('kanka-foundry', 'campaign', campaignId);
+                this.setupData();
+                this.render();
+            },
+        );
+
+        for (const details of this.element.querySelectorAll<HTMLDetailsElement>('details[data-application-part]')) {
+            details.addEventListener('toggle', async event => {
+                const target = event.currentTarget as HTMLDetailsElement | null;
+                if (!target) return;
+
+                const type = target.dataset.applicationPart as EntityType;
+                if (!(type in entityTypes) || this.#search) return;
+                await game.settings?.set('kanka-foundry', `collapseType_${type}`, target.open);
+            });
+        }
     }
 }
 
 if (import.meta.hot) {
-    import.meta.hot.accept((newModule) => {
+    import.meta.hot.accept(newModule => {
         if (newModule) {
             const KankaBrowserApplication = newModule.default;
             const browserApplication = new KankaBrowserApplication();
-            browserApplication.render(true);
-            browserApplication.setPosition(import.meta.hot?.data.position);
+            browserApplication.render({ force: true });
         }
     });
 
     import.meta.hot.dispose(() => {
-        const app = Object.values(ui.windows).find(
-            (a: any): a is KankaBrowserApplication => a.constructor === KankaBrowserApplication,
-        );
-
-        if (app) {
-            if (import.meta.hot) import.meta.hot.data.position = app.position;
-            app.close();
+        if ((ui as any).activeWindow instanceof KankaBrowserApplication) {
+            if (import.meta.hot) import.meta.hot.data.position = (ui as any).activeWindow.position;
+            (ui as any).activeWindow.close();
         }
     });
 }
