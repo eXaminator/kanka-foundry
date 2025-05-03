@@ -1,0 +1,63 @@
+<ul class="knk:mx-0 knk:my-1 knk:p-0 knk:gap-2 knk:list-none knk:grid knk:grid-cols-3">
+    {{#each entities}}
+        <li
+            class="knk:bg-white/20 knk:border knk:rounded knk:flex knk:items-center knk:gap-1 knk:m-0 knk:p-1"
+            style="border-color: var(--color-border); {{ifThen
+                this.state.isOutdated
+                'background-color: var(--color-level-info-bg) !important;'
+                ''
+            }}"
+            data-entity-id="{{this.id}}"
+        >
+            <div
+                class="knk:w-10 knk:h-10 knk:bg-gray-500/30 knk:rounded-full knk:bg-cover knk:flex knk:justify-center knk:items-center knk:text-lg knk:text-shadow-[-1px_-1px_0_var(--knk-icon-outline-color),1px_-1px_0_var(--knk-icon-outline-color),-1px_1px_0_var(--knk-icon-outline-color),1px_1px_0_var(--knk-icon-outline-color)] fas
+                    {{ifThen this.state.isOutdated 'fa-cloud-download-alt' ''}}
+                    {{ifThen this.state.isPrivate 'fa-lock' ''}}"
+                style="{{ifThen
+                    this.state.isOutdated
+                    '--knk-icon-outline-color: var(--color-border-light-1); color: var(--color-level-info);'
+                    ''
+                }} {{ifThen
+                    this.state.isPrivate
+                    '--knk-icon-outline-color: var(--color-border-light-1); color: var(--color-level-error);'
+                    ''
+                }} {{ifThen this.child.image_thumb (concat 'background-image: url(' this.child.image_thumb ');') ''}}"
+            >
+            </div>
+            {{#if this.is_template}}<i
+                    class="far fa-copy"
+                    data-tooltip="{{kankaLocalize 'browser' 'label' 'template'}}"
+                ></i>{{/if}}
+            <span class="knk:flex-1 ellipsis" data-tooltip="{{this.name}}">{{this.name}}</span>
+            {{#if this.state.isLinked}}
+                <button
+                    class="knk:flex-none knk:aspect-square icon fas fa-book-open"
+                    type="button"
+                    data-action="openInFoundry"
+                    data-tooltip="{{kankaLocalize 'browser' 'action' 'openJournal'}}"
+                />
+            {{/if}}
+            <button
+                class="knk:flex-none knk:aspect-square icon fas fa-solid fa-up-right-from-square"
+                type="button"
+                data-action="openInKanka"
+                data-tooltip="{{kankaLocalize 'browser' 'action' 'openInKanka'}}"
+            />
+            {{#if this.state.isLinked}}
+                <button
+                    class="knk:flex-none knk:aspect-square icon fas fa-sync"
+                    type="button"
+                    data-action="updateSingle"
+                    data-tooltip="{{kankaLocalize 'browser' 'action' 'updateSingle'}}"
+                />
+            {{else}}
+                <button
+                    class="knk:flex-none knk:aspect-square icon fas fa-link"
+                    type="button"
+                    data-action="updateSingle"
+                    data-tooltip="{{kankaLocalize 'browser' 'action' 'linkSingle'}}"
+                />
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>

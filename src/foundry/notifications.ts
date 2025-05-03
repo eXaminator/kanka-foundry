@@ -3,7 +3,7 @@ import getMessage from './getMessage';
 // Wait for everything to be ready before showing a notification
 function notifyWhenAvailable(
     type: 'info' | 'warn' | 'error',
-    options: NotifyOptions,
+    options: foundry.applications.ui.Notifications.NotifyOptions,
     ...args: Parameters<typeof getMessage>
 ): void {
     if (!ui?.notifications) {

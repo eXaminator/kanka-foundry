@@ -1,0 +1,86 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme) important prefix(knk);
+@import 'tailwindcss/utilities.css' layer(utilities) important prefix(knk);
+
+:root {
+    --kanka-quest-complete-color: #56d956;
+    --kanka-quest-open-color: #eab553;
+}
+
+.knk\:limit-debug {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0.5em 1em;
+    z-index: 9999;
+}
+
+button#kanka {
+    flex: 0 0 32px;
+
+    > img {
+        position: relative;
+        border: none;
+        height: 22px;
+        vertical-align: middle;
+    }
+}
+
+@keyframes knk-loader {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.knk\:loading-indicator .icon {
+    &::before {
+        animation: knk-loader 1s steps(8, end) infinite;
+        content: '\f110' !important;
+    }
+}
+
+.knk\:loading-indicator i:first-of-type {
+    animation: knk-loader 1s steps(8, end) infinite;
+    &::before {
+        content: '\f110' !important;
+    }
+}
+
+.knk\:quest-status {
+    &.-complete {
+        color: var(--kanka-quest-complete-color);
+    }
+
+    &.-open {
+        color: var(--kanka-quest-open-color);
+    }
+}
+
+.kanka-browser details > summary {
+    list-style: none;
+}
+
+.kanka-browser summary::-webkit-details-marker {
+    display: none;
+}
+
+.kanka-browser summary::before {
+    content: ' ►';
+}
+.kanka-browser details[open] summary:before {
+    content: ' ▼';
+}
+
+/**
+    This is just for backward compatibility to Foundry v12.
+*/
+.kanka-browser button {
+    height: var(--button-size, 2em);
+    width: var(--button-size, 2em);
+}

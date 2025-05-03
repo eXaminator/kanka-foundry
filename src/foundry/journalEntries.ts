@@ -11,45 +11,10 @@ import type {
     KankaApiId,
 } from '../types/kanka';
 import isSecret from '../util/isSecret';
-import getGame from './getGame';
 import { ensureFolderPath } from './journalFolders';
 import PageFactory from './PageFactory';
-import { getSetting } from './settings';
 
 const CURRENT_JOURNAL_VERSION = '000002';
-
-type FlagTypes = {
-    id: KankaApiEntityId;
-    campaign: KankaApiId;
-    snapshot: KankaApiChildEntity;
-    type: KankaApiModuleType;
-    version: string;
-    references: Record<number, Reference>;
-    [key: string]: unknown;
-};
-
-type OwnershipKeys = keyof typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS;
-type Ownership = (typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS)[OwnershipKeys];
-
-type NullableFlagTypes = {
-    [Key in keyof FlagTypes]: FlagTypes[Key] | null;
-};
-
-type FlagDataObject = {
-    [Key in keyof NullableFlagTypes as Key extends string
-    ? `flags.${typeof moduleConfig.name}.${Key}`
-    : never]: NullableFlagTypes[Key];
-};
-
-function getJournal(): Journal {
-    const { journal } = getGame();
-
-    if (!journal) {
-        throw new Error('Journal has not been initialized yet.');
-    }
-
-    return journal;
-}
 
 function buildVersionString(entity: { updated_at: string }): string {
     return `${CURRENT_JOURNAL_VERSION}-${entity.updated_at}`;
@@ -57,9 +22,9 @@ function buildVersionString(entity: { updated_at: string }): string {
 
 function getOwnership(
     entities: AnyConstrainable[],
-    currentOwnership?: Record<string, Ownership>,
-): Record<string, Ownership> | undefined {
-    const setting = getSetting('automaticPermissions');
+    currentOwnership?: Record<string, CONST.DOCUMENT_OWNERSHIP_LEVELS>,
+): Record<string, CONST.DOCUMENT_OWNERSHIP_LEVELS> | undefined {
+    const setting = game.settings?.get('kanka-foundry', 'automaticPermissions');
 
     if (setting === 'never' && currentOwnership)
         return currentOwnership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
@@ -75,40 +40,23 @@ function getOwnership(
     return { ...(currentOwnership ?? {}), default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER };
 }
 
-function buildKankaFlags(flags: Partial<NullableFlagTypes>): Partial<FlagDataObject> {
-    const flagData: Partial<FlagDataObject> = {};
-
-    for (const [key, value] of Object.entries(flags)) {
-        flagData[`flags.${moduleConfig.name}.${key}`] = value;
-    }
-
-    return flagData;
-}
-
-export function getEntryFlag<FlagName extends keyof FlagTypes>(
-    entry: JournalEntry,
-    name: FlagName,
-): FlagTypes[FlagName] | undefined {
-    return entry.getFlag(moduleConfig.name, name as never) as FlagTypes[typeof name];
-}
-
 export function findAllKankaEntries(): JournalEntry[] {
-    return getJournal().filter((e) => !!getEntryFlag(e, 'id')) ?? undefined;
+    return game.journal?.filter((e) => !!e.getFlag('kanka-foundry', 'id')) ?? [];
 }
 
 export function findEntryByEntityId(id: KankaApiEntityId): JournalEntry | undefined {
-    return getJournal().find((e) => getEntryFlag(e, 'id') === id) ?? undefined;
+    return game.journal?.find((e) => e.getFlag('kanka-foundry', 'id') === id) ?? undefined;
 }
 
 export function findEntryByTypeAndChildId(type: KankaApiModuleType, id: KankaApiId): JournalEntry | undefined {
     return (
-        getJournal().find((e) => getEntryFlag(e, 'type') === type && getEntryFlag(e, 'snapshot')?.id === id) ??
+        game.journal?.find((e) => e.getFlag('kanka-foundry', 'type') === type && e.getFlag('kanka-foundry', 'snapshot')?.id === id) ??
         undefined
     );
 }
 
 export function findEntriesByType(type: KankaApiModuleType): JournalEntry[] {
-    return getJournal().filter((e) => getEntryFlag(e, 'type') === type);
+    return game.journal?.filter((e) => e.getFlag('kanka-foundry', 'type') === type) ?? [];
 }
 
 export function hasOutdatedEntryByEntity(entity: KankaApiEntity): boolean {
@@ -116,8 +64,9 @@ export function hasOutdatedEntryByEntity(entity: KankaApiEntity): boolean {
 
     if (!entry) return false; // No entry means it cannot be outdated
 
-    const currentVersion = getEntryFlag(entry, 'version');
+    const currentVersion = entry.getFlag('kanka-foundry', 'version');
     if (!currentVersion) return true; // Should be updated!
+
 
     return buildVersionString(entity) > currentVersion;
 }
@@ -128,7 +77,7 @@ function createAllPages(
     entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
     journal?: JournalEntry,
-) {
+): JournalEntry.CreateData['pages'] {
     const pageFactory = new PageFactory(
         campaignId,
         type,
@@ -163,20 +112,6 @@ export async function createJournalEntry(
     entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
 ): Promise<JournalEntry> {
-    const journalData = {
-        name: entity.name,
-        pages: createAllPages(campaignId, type, entity, references),
-        'flags.core.sheetClass': `${moduleConfig.name}.KankaJournalApplication`,
-        ...buildKankaFlags({
-            campaign: campaignId,
-            type,
-            id: entity.entity_id,
-            version: buildVersionString(entity),
-            snapshot: entity,
-            references: references.getRecord(),
-        }),
-    };
-
     const path =
         [...((entity as KankaApiChildEntityWithChildren)?.parents ?? [])]
             .reverse()
@@ -187,7 +122,21 @@ export async function createJournalEntry(
 
 
     return (await JournalEntry.create({
-        ...journalData,
+        name: entity.name,
+        pages: createAllPages(campaignId, type, entity, references),
+        flags: {
+            core: {
+                sheetClass: `${moduleConfig.name}.KankaJournalApplication`,
+            },
+            'kanka-foundry': {
+                campaign: campaignId,
+                type,
+                id: entity.entity_id,
+                version: buildVersionString(entity),
+                snapshot: entity,
+                references: references.getRecord(),
+            },
+        },
         ownership: getOwnership([entity], undefined),
         folder: folder?.id,
     })) as JournalEntry;
@@ -198,26 +147,26 @@ export async function updateJournalEntry(
     entity: KankaApiChildEntity | KankaApiChildEntityWithChildren,
     references: ReferenceCollection,
 ): Promise<JournalEntry> {
-    const campaignId = getEntryFlag(entry, 'campaign');
-    const type = getEntryFlag(entry, 'type');
-    const oldName = getEntryFlag(entry, 'snapshot')?.name;
+    const campaignId = entry.getFlag('kanka-foundry', 'campaign');
+    const type = entry.getFlag('kanka-foundry', 'type');
+    const oldName = entry.getFlag('kanka-foundry', 'snapshot')?.name;
 
     if (!campaignId || !type) throw new Error('Missing flags on journal entry');
 
-    const journalData = {
-        name: entry.name === oldName ? entity.name : oldName, // Keep existing journal name if it was renamed by user
-        pages: createAllPages(campaignId, type, entity, references, entry),
-        'flags.core.sheetClass': `${moduleConfig.name}.KankaJournalApplication`,
-        ...buildKankaFlags({
-            version: buildVersionString(entity),
-            snapshot: entity,
-            references: references.getRecord(),
-        }),
-    };
-
     await entry.deleteEmbeddedDocuments('JournalEntryPage', [], { deleteAll: true });
     await entry.update({
-        ...journalData,
+        name: entry.name === oldName ? entity.name : oldName, // Keep existing journal name if it was renamed by user
+        pages: createAllPages(campaignId, type, entity, references, entry),
+        flags: {
+            core: {
+                sheetClass: `${moduleConfig.name}.KankaJournalApplication`,
+            },
+            'kanka-foundry': {
+                version: buildVersionString(entity),
+                snapshot: entity,
+                references: references.getRecord(),
+            },
+        },
         ownership: getOwnership([entity], entry.ownership),
     });
 

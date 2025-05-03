@@ -20,7 +20,7 @@
         "index.js"
     ],
     "styles": [
-        "style.css"
+        "kanka-foundry.css"
     ],
     "languages": [
         {
@@ -45,8 +45,8 @@
         }
     ],
     "compatibility": {
-        "minimum": "11",
-        "verified": "12"
+        "minimum": "12",
+        "verified": "13"
     },
     "manifestPlusVersion": "1.2.0",
     "media": [

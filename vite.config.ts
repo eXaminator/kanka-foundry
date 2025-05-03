@@ -2,6 +2,7 @@ import { defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
 import hbsPlugin from './build/hbsPlugin';
 import translationPlugin from './build/translationPlugin';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     root: resolve(__dirname, 'src'),
@@ -37,6 +38,7 @@ export default defineConfig({
     plugins: [
         hbsPlugin(),
         translationPlugin(),
+        tailwindcss(),
     ],
     test: {
         clearMocks: true,

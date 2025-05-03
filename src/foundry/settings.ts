@@ -1,64 +1,56 @@
 import moduleConfig from '../../public/module.json';
-import { getLatestMigrationVersion } from '../executeMigrations';
+import api from '../api';
+import AccessToken from '../api/AccessToken';
+import KankaJournalApplication from '../apps/KankaJournal/KankaJournalApplication';
+import localization from '../state/localization';
 import EntityType from '../types/EntityType';
-import getGame from './getGame';
+import { logError } from '../util/logger';
 import getMessage from './getMessage';
+import { showError, showWarning } from './notifications';
 
-export type KankaSettings = {
-    baseUrl: string;
-    accessToken: string;
-    campaign: string;
-    importLanguage: string;
-    disableExternalMentionLinks: boolean;
-    importPrivateEntities: boolean;
-    mergeOverviewPages: boolean;
-    keepTreeStructure: boolean;
-    browserView: 'grid' | 'list';
-    automaticPermissions: 'never' | 'initial' | 'always';
-    importTemplateEntities: boolean;
-    questQuestStatusIcon: boolean;
-    migrationVersion: string,
-} & Record<`collapseType_${keyof typeof EntityType}`, boolean>;
+export type KankaSettings = StripPrefix<PickWithPrefix<SettingConfig, 'kanka-foundry.'>, 'kanka-foundry.'>;
+type SettingKeys = keyof KankaSettings;
 
-export function getSetting<T extends keyof KankaSettings>(setting: T): KankaSettings[T] {
-    return getGame().settings.get(moduleConfig.name, setting) as KankaSettings[T];
+function setToken(token: string): void {
+    if (!token) {
+        api.reset();
+        return;
+    }
+
+    try {
+        const accessToken = new AccessToken(token);
+
+        if (accessToken.isExpired()) {
+            api.reset();
+            showError('settings.error.ErrorTokenExpired');
+            return;
+        }
+
+        // Token is less than a week from expiration
+        if (accessToken.isExpiredWithin(7 * 24 * 60 * 60)) {
+            showWarning('settings.error.WarningTokenExpiration');
+        }
+
+        api.switchUser(accessToken);
+    } catch (error) {
+        logError('Error setting a token', error);
+        showError('settings.error.ErrorInvalidAccessToken');
+    }
 }
 
-export async function setSetting<T extends keyof KankaSettings>(setting: T, value: KankaSettings[T]): Promise<void> {
-    await getGame().settings.set(moduleConfig.name, setting, value);
-}
-
-type OnChangeMap<K extends keyof KankaSettings = keyof KankaSettings> = {
-    [P in K]?: (value?: KankaSettings[P]) => unknown | Promise<unknown>;
-};
-
-async function register<T extends keyof KankaSettings>(
-    setting: T,
-    data: { type: typeof String | typeof Number | typeof Boolean } & Record<string, unknown>,
-    onChangeMap: OnChangeMap,
-): Promise<void> {
-    getGame().settings.register(moduleConfig.name, setting, {
-        ...data,
-        onChange: (value) => {
-            onChangeMap[setting]?.((data.type?.(value) as KankaSettings[T]) ?? undefined);
-        },
-    });
-}
-
-export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> {
+export function registerSettings(): void {
     const languages = moduleConfig.languages.reduce((map, { lang, name }) => { map[lang] = name; return map; }, {}) ?? {};
 
-    register(
+    game.settings?.register('kanka-foundry',
         'migrationVersion',
         {
             config: false,
             type: String,
             default: '',
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'baseUrl',
         {
             name: getMessage('settings.baseUrl.label'),
@@ -67,11 +59,11 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             config: true,
             type: String,
             default: 'https://api.kanka.io',
+            onChange: (value) => api.switchBaseUrl(value ?? ''),
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'accessToken',
         {
             name: getMessage('settings.token.label'),
@@ -80,11 +72,11 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             config: true,
             type: String,
             default: '',
+            onChange: (value) => setToken(value),
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'campaign',
         {
             name: getMessage('settings.campaign.label'),
@@ -94,10 +86,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: String,
             default: '',
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'importLanguage',
         {
             name: getMessage('settings.locale.label'),
@@ -109,11 +100,17 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             choices: {
                 ...languages,
             },
+            onChange: async (value) => {
+                await localization.setLanguage(value ?? game.i18n?.lang ?? 'en');
+                for (const app of Object.values(ui.windows)) {
+                    if (!(app instanceof KankaJournalApplication)) continue;
+                    app.render();
+                }
+            }
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'keepTreeStructure',
         {
             name: getMessage('settings.treeStructure.label'),
@@ -123,10 +120,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: true,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'mergeOverviewPages',
         {
             name: getMessage('settings.mergeOverviewPages.label'),
@@ -136,10 +132,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: true,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'importPrivateEntities',
         {
             name: getMessage('settings.importPrivate.label'),
@@ -149,10 +144,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: true,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'importTemplateEntities',
         {
             name: getMessage('settings.importTemplate.label'),
@@ -162,10 +156,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: false,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'disableExternalMentionLinks',
         {
             name: getMessage('settings.disableExternalLinks.label'),
@@ -175,10 +168,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: false,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'questQuestStatusIcon',
         {
             name: getMessage('settings.questStatusIcon.label'),
@@ -188,10 +180,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: Boolean,
             default: false,
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'automaticPermissions',
         {
             name: getMessage('settings.automaticPermissions.label'),
@@ -206,10 +197,9 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
                 always: getMessage('settings.automaticPermissions.values.always'),
             },
         },
-        onChangeMap,
     );
 
-    register(
+    game.settings?.register('kanka-foundry',
         'browserView',
         {
             scope: 'client',
@@ -217,7 +207,6 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             type: String,
             default: 'list',
         },
-        onChangeMap,
     );
 
     for (const type of Object.values(EntityType)) {
@@ -225,7 +214,7 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
             continue;
         }
 
-        register(
+        game.settings?.register('kanka-foundry',
             `collapseType_${type}`,
             {
                 scope: 'client',
@@ -233,26 +222,18 @@ export function registerSettings(onChangeMap: OnChangeMap): () => Promise<void> 
                 type: Boolean,
                 default: false,
             },
-            onChangeMap,
+
         );
     }
-
-    return async () => {
-        const promises = Object.entries(onChangeMap).map(([setting, onChange]) =>
-            onChange(getSetting(setting as keyof KankaSettings) as unknown as undefined),
-        );
-
-        await Promise.all(promises);
-    };
 }
 
 if (import.meta.hot) {
     import.meta.hot.dispose(() => {
-        for (const key of getGame().settings.settings.keys()) {
-            if (!key.startsWith(moduleConfig.name)) {
+        for (const key of game.settings?.settings.keys() ?? []) {
+            if (!key.startsWith('kanka-foundry')) {
                 continue;
             }
-            getGame().settings.settings.delete(key);
+            game.settings?.settings.delete(key);
         }
     });
 }

@@ -31,7 +31,7 @@ fi
 
 if [ -z "$ERROR" ]; then
     echo "Copy foundry code..."
-    docker cp ${CONTAINER_NAME}:/home/foundry/resources/app ${DIRECTORY}
+    docker cp ${CONTAINER_NAME}:/home/node/resources/app ${DIRECTORY}
 fi
 
 if [ -z "$RUNNING_CONTAINER" ]; then

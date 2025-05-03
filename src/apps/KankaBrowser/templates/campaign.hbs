@@ -1,0 +1,40 @@
+<section class="{{ifThen isLoading 'knk:hidden' ''}}">
+    <h2 class="knk:flex knk:items-center knk:pb-1 knk:gap-1 knk:text-base">
+        <span class="knk:flex-1">
+            <select id="knk-campaign-select">
+                {{selectOptions allCampaigns selected=campaign.id}}
+            </select>
+        </span>
+        <button
+            class="knk:flex-none knk:aspect-square icon fas fa-solid fa-up-right-from-square"
+            type="button"
+            data-action="openInKanka"
+            data-tooltip="{{kankaLocalize 'browser' 'action' 'openInKanka'}}"
+        />
+        <button
+            class="knk:flex-none knk:aspect-square icon fas fa-link fa-fw"
+            type="button"
+            data-action="linkAll"
+            data-tooltip="{{kankaLocalize 'browser' 'action' 'linkAll'}}"
+        />
+        <button
+            class="knk:flex-none knk:aspect-square icon fas fa-sync fa-fw"
+            type="button"
+            data-action="updateOutdated"
+            data-tooltip="{{kankaLocalize 'browser' 'action' 'updateOutdated'}}"
+        />
+    </h2>
+    {{#if campaign.entry}}
+        <div>
+            {{#if campaign.image}}
+                <img
+                    src="{{campaign.image_full}}"
+                    alt="{{campaign.name}}"
+                    fetchpriority="high"
+                    class="knk:float-left knk:w-1/3 knk:mr-2 knk:mb-2 knk:rounded-lg"
+                />
+            {{/if}}
+            {{{campaign.entry}}}
+        </div>
+    {{/if}}
+</section>

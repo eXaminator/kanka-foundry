@@ -1,24 +1,11 @@
 import type ReferenceCollection from '../api/ReferenceCollection';
 import type { KankaApiId, KankaApiModuleType, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiAnyId } from "../types/kanka";
 import type Reference from '../types/Reference';
-import moduleConfig from '../../public/module.json';
 import { hasChildren, isCharacter, isFamily, isOrganisation, isQuest } from '../util/kankaTypeGuards';
 import isSecret from '../util/isSecret';
 import groupBy from '../util/groupBy';
 import unzip from '../util/unzip';
-import { getSetting } from './settings';
-
-type PageModel = {
-    type: KankaApiModuleType;
-    campaignId: KankaApiId;
-    kankaId: KankaApiId;
-    kankaEntityId: KankaApiEntityId;
-    name: string;
-    img?: string;
-    version: string;
-    references: Record<number, Reference>;
-    snapshot: Record<string, unknown>;
-};
+import type { KankaPageModel } from '../apps/KankaJournal/models/KankaPageModel';
 
 type KeysOfValue<T, TCondition> = {
     [K in keyof T]: T[K] extends TCondition
@@ -26,14 +13,11 @@ type KeysOfValue<T, TCondition> = {
     : never;
 }[keyof T];
 
-type OwnershipKeys = keyof typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS;
-type Ownership = (typeof foundry.CONST.DOCUMENT_OWNERSHIP_LEVELS)[OwnershipKeys];
-
 export default class PageFactory {
     static readonly CURRENT_PAGE_FACTORY_VERSION = '000001';
 
-    private readonly model: PageModel;
-    private readonly permissionSetting = getSetting('automaticPermissions');
+    private readonly model: foundry.data.fields.SchemaField.CreateData<KankaPageModel.Schema>;
+    private readonly permissionSetting = game.settings?.get('kanka-foundry', 'automaticPermissions');
 
     constructor(
         campaignId: KankaApiId,
@@ -44,9 +28,9 @@ export default class PageFactory {
     ) {
         this.model = {
             type: type,
-            campaignId: campaignId,
-            kankaId: entity.id,
-            kankaEntityId: entity.entity_id,
+            campaignId: Number(campaignId),
+            kankaId: Number(entity.id),
+            kankaEntityId: Number(entity.entity_id),
             name: entity.name,
             img: entity.has_custom_image ? entity.image_full : undefined,
             version: `${PageFactory.CURRENT_PAGE_FACTORY_VERSION}-${entity.updated_at}`,
@@ -76,7 +60,7 @@ export default class PageFactory {
         };
     }
 
-    private getOwnership(name: string, publicCount: number | undefined): Record<string, Ownership> {
+    private getOwnership(name: string, publicCount: number | undefined): Record<string, CONST.DOCUMENT_OWNERSHIP_LEVELS> {
         const currentOwnership = this.journal?.pages.getName(name)?.ownership;
 
         if (this.permissionSetting === 'initial' && currentOwnership) {
@@ -91,20 +75,21 @@ export default class PageFactory {
     }
 
     private createPage(
-        pageType: string,
+        pageType: keyof DataModelConfig['JournalEntryPage'] extends `kanka-foundry.${infer U}` ? U : never,
         name: string,
-        snapshot: any,
+        snapshot: unknown,
         { publicCount, totalCount }: { publicCount?: number, totalCount?: number } = {},
         { show = true, level = 1 } = {},
         other: Record<string, unknown> = {},
         sheet: string | null = 'kanka-foundry.DefaultPageSheet',
-    ) {
-        if (Array.isArray(snapshot?.list) && snapshot?.list.length === 0) {
+    ): JournalEntryPage.CreateData | null {
+        const list = (snapshot as { list?: unknown })?.list;
+        if (Array.isArray(list) && list.length === 0) {
             return null;
         }
 
         return {
-            type: `${moduleConfig.name}.${pageType}`,
+            type: `kanka-foundry.${pageType}`,
             name,
             title: { show, level },
             system: { ...this.model, snapshot, publicCount, totalCount },
@@ -114,7 +99,7 @@ export default class PageFactory {
         };
     }
 
-    createEntityImagePage() {
+    createEntityImagePage(): JournalEntryPage.CreateData | null {
         if (!this.entity.has_custom_image) {
             return null;
         }
@@ -129,7 +114,7 @@ export default class PageFactory {
         };
     }
 
-    createCharacterProfilePage() {
+    createCharacterProfilePage(): JournalEntryPage.CreateData | null {
         if (!isCharacter(this.entity, this.type)) {
             return null;
         }
@@ -161,7 +146,7 @@ export default class PageFactory {
         );
     }
 
-    createOverviewPage() {
+    createOverviewPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'overview',
             'KANKA.journal.shared.pages.story',
@@ -187,7 +172,7 @@ export default class PageFactory {
         );
     }
 
-    createPostPages() {
+    createPostPages(): Array<JournalEntryPage.CreateData | null> {
         const [prePosts, postPosts] = unzip(
             this.entity.posts.sort((a, b) => (a.position ?? 0) - (b.position ?? 0)),
             (post, index) => (post.position ?? index) < 0,
@@ -204,7 +189,7 @@ export default class PageFactory {
         ];
     }
 
-    createRelationsPage() {
+    createRelationsPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'relations',
             'KANKA.journal.shared.pages.relations',
@@ -213,7 +198,7 @@ export default class PageFactory {
         );
     }
 
-    createCharacterOrganisationsPage() {
+    createCharacterOrganisationsPage(): JournalEntryPage.CreateData | null {
         if (!isCharacter(this.entity, this.type)) {
             return null;
         }
@@ -226,7 +211,7 @@ export default class PageFactory {
         );
     }
 
-    createFamilyMembersPage() {
+    createFamilyMembersPage(): JournalEntryPage.CreateData | null {
         if (!isFamily(this.entity, this.type)) {
             return null;
         }
@@ -239,7 +224,7 @@ export default class PageFactory {
         );
     }
 
-    createOrganisationMembersPage() {
+    createOrganisationMembersPage(): JournalEntryPage.CreateData | null {
         if (!isOrganisation(this.entity, this.type)) {
             return null;
         }
@@ -252,7 +237,7 @@ export default class PageFactory {
         );
     }
 
-    createQuestElementsPage() {
+    createQuestElementsPage(): JournalEntryPage.CreateData | null {
         if (!isQuest(this.entity, this.type)) {
             return null;
         }
@@ -265,7 +250,7 @@ export default class PageFactory {
         );
     }
 
-    createAssetsPage() {
+    createAssetsPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'assets',
             'KANKA.journal.shared.pages.assets',
@@ -274,7 +259,7 @@ export default class PageFactory {
         );
     }
 
-    createAssetFilePages() {
+    createAssetFilePages(): Array<JournalEntryPage.CreateData | null> {
         if (!this.entity.entity_assets) {
             return [];
         }
@@ -318,7 +303,7 @@ export default class PageFactory {
             });
     }
 
-    createAttributesPage() {
+    createAttributesPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'attributes',
             'KANKA.journal.shared.pages.attributes',
@@ -327,7 +312,7 @@ export default class PageFactory {
         );
     }
 
-    createAbilitiesPage() {
+    createAbilitiesPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'abilities',
             'KANKA.journal.shared.pages.abilities',
@@ -336,7 +321,7 @@ export default class PageFactory {
         );
     }
 
-    createInventoryPage() {
+    createInventoryPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'inventory',
             'KANKA.journal.shared.pages.inventory',
@@ -345,7 +330,7 @@ export default class PageFactory {
         );
     }
 
-    createEventsPage() {
+    createEventsPage(): JournalEntryPage.CreateData | null {
         return this.createPage(
             'events',
             'KANKA.journal.shared.pages.events',
@@ -354,7 +339,7 @@ export default class PageFactory {
         );
     }
 
-    createChildrenPage() {
+    createChildrenPage(): JournalEntryPage.CreateData | null {
         if (!hasChildren(this.entity, this.type)) {
             return null;
         }

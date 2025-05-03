@@ -3,32 +3,30 @@ import KankaBrowserApplication from '../../apps/KankaBrowser/KankaBrowserApplica
 import logo from '../../assets/kanka.png';
 import type { KankaApiQuest } from '../../types/kanka';
 import { logInfo } from '../../util/logger';
-import getGame from '../getGame';
 import getMessage from '../getMessage';
-import { findEntriesByType, getEntryFlag } from '../journalEntries';
+import { findEntriesByType } from '../journalEntries';
 import { showError, showWarning } from '../notifications';
-import { getSetting } from '../settings';
 
 const questStatus = {
-    complete: '<i class="fas fa-check-circle kanka-quest-status -complete"></i>',
-    open: '<i class="fas fa-circle kanka-quest-status -open"></i>',
+    complete: '<i class="fas fa-check-circle knk:quest-status -complete"></i>',
+    open: '<i class="fas fa-circle knk:quest-status -open"></i>',
 };
 
 function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
-    if (!getSetting('questQuestStatusIcon')) return;
+    if (!game.settings?.get('kanka-foundry', 'questQuestStatusIcon')) return;
 
     const questEntries = findEntriesByType('quest');
     for (const entry of questEntries) {
-        const li = html.find(`[data-document-id="${entry.id as string}"]`);
+        const li = $(html).find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
-        const snapshot = getEntryFlag(entry, 'snapshot') as KankaApiQuest;
+        const snapshot = entry.getFlag('kanka-foundry', 'snapshot') as KankaApiQuest;
 
         link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
     }
 }
 
 function renderKankaButton(html: JQuery<HTMLDivElement>): void {
-    const isGm = !!getGame().user?.isGM;
+    const isGm = !!game.user?.isGM;
     if (!isGm) return;
 
     const browserApplication = new KankaBrowserApplication();
@@ -63,11 +61,11 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
             showWarning('settings.error.WarningTokenExpiration');
         }
 
-        browserApplication.render(true, { focus: true });
+        browserApplication.render({ force: true });
     });
 
-    html.find('.directory-footer').find('#kanka').remove();
-    html.find('.directory-footer').append(button);
+    $(html).find('.directory-footer').find('#kanka').remove();
+    $(html).find('.directory-footer').append(button);
 }
 
 export default async function renderJournalDirectory(

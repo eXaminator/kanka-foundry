@@ -1,5 +1,4 @@
 import ReferenceCollection from '../api/ReferenceCollection';
-import getGame from '../foundry/getGame';
 import getMessage from '../foundry/getMessage';
 import { updateJournalEntry } from '../foundry/journalEntries';
 import { showInfo } from '../foundry/notifications';
@@ -22,9 +21,7 @@ async function migrateEntry(entry: JournalEntry) {
 
 // Migrate from old journal entry format to new page based format
 export default async function migrate(): Promise<void> {
-    const game = getGame();
-
-    const entries = game.journal.filter((e) => e.getFlag('kanka-foundry', 'version')?.startsWith('000001'));
+    const entries = game.journal?.filter((e) => e.getFlag('kanka-foundry', 'version')?.startsWith('000001')) ?? [];
 
     if (entries.length > 0) {
         SceneNavigation.displayProgressBar({ label: getMessage('migration.journalPages.progress'), pct: 0 });
