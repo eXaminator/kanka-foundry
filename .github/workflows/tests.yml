@@ -15,14 +15,8 @@ jobs:
               with:
                   node-version: 22
 
-            - name: Get foundry code
-              env:
-                  FOUNDRY_USERNAME: ${{ secrets.FVTT_USERNAME }}
-                  FOUNDRY_PASSWORD: ${{ secrets.FVTT_PASSWORD }}
-              run: ./sync-foundry-code.sh
-
             - name: npm install
-              run: npm i
+              run: npm ci
 
             - name: Checks
               run: npm run check
