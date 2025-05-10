@@ -1,3 +1,24 @@
+# [5.0.0](https://github.com/eXaminator/kanka-foundry/compare/4.2.0...5.0.0) (2025-05-10)
+
+
+### Bug Fixes
+
+* Fix a typo in english translations ([cc05aac](https://github.com/eXaminator/kanka-foundry/commit/cc05aac4e48092de45c3c0d5561ad2aebae2ce33))
+* Replace deprecated globalThis.getProperty method by supported foundry.utils.getProperty ([87bc2d7](https://github.com/eXaminator/kanka-foundry/commit/87bc2d730caf0173b29561b4e4dbe045d28b168e))
+
+
+* feat!: Update entity browser to use ApplicationV2 framework from Foundry ([ab53daf](https://github.com/eXaminator/kanka-foundry/commit/ab53dafd519f7a3b13a1806234feb1658bacb29b)), closes [#149](https://github.com/eXaminator/kanka-foundry/issues/149)
+
+
+### BREAKING CHANGES
+
+* This raises the minimum foundry version from v11 to v12. The whole entity browser
+was basically recreated to work with the new ApplicationV2 framework. This changes
+the styles and tries to keep close to base foundry styles. It should work with
+light and dark themes - and hopefully others too.
+One feature thatw as removed is the overview of linked but since in Kanka deleted
+journal entries. You'll have too keep track of those yourselfes from now on.
+
 # [4.2.0](https://github.com/eXaminator/kanka-foundry/compare/4.1.5...4.2.0) (2025-02-22)
 
 
