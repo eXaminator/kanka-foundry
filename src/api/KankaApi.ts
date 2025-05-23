@@ -59,9 +59,7 @@ export default class KankaApi {
     }
 
     public async getAllCampaigns(): Promise<KankaApiCampaign[]> {
-        type Result = KankaApiListResult<KankaApiCampaign>;
-        const result = await this.#fetcher.fetch<Result>('campaigns');
-        return result.data;
+        return this.fetchFullList<KankaApiCampaign>('campaigns');
     }
 
     public async getCampaign(id: number): Promise<KankaApiCampaign> {
