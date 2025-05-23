@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/eXaminator/kanka-foundry/compare/5.0.0...5.0.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* handle pagination in API when fetching all campaigns ([004a00c](https://github.com/eXaminator/kanka-foundry/commit/004a00c666a91c7bbf3773052bc3155c568c9fae)), closes [#153](https://github.com/eXaminator/kanka-foundry/issues/153)
+
 # [5.0.0](https://github.com/eXaminator/kanka-foundry/compare/4.2.0...5.0.0) (2025-05-10)
 
 
