@@ -7,7 +7,7 @@ globalThis.foundry = { utils: {} };
 foundry.utils.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
     let target = object;
-    for (const p of key.split('.')) {
+    for (const p of String(key).split('.')) {
         target = target || {};
         if (p in target) target = target[p];
         else return undefined;
@@ -17,7 +17,7 @@ foundry.utils.getProperty = function getProperty(object, key) {
 
 globalThis.Handlebars = Handlebars;
 
-// @ts-ignore
+// @ts-expect-error
 // biome-ignore lint/complexity/noStaticOnlyClass: This is just for testing and can't really be done differently
 globalThis.TextEditor = class TextEditor {
     static enrichHTML(text): string {

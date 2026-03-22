@@ -78,7 +78,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
     #entities: KankaApiEntity[] | null = null;
     #allCampaigns: KankaApiCampaign[] | null = null;
     #campaign: KankaApiCampaign | null = null;
-    #hooks: Record<string, number> = {};
+    #hooks: Partial<Record<Hooks.HookName, number>> = {};
     #isLoading = false;
 
     static DEFAULT_OPTIONS: DeepPartial<ApplicationV2.Configuration> = {
@@ -156,7 +156,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         this.render({ parts: Object.keys(entityTypes) });
     }
 
-    static async openInKanka(this: KankaBrowserApplication, event: PointerEvent, target: HTMLElement) {
+    static async openInKanka(this: KankaBrowserApplication, _event: PointerEvent, target: HTMLElement) {
         try {
             if (!this.#campaign) return;
 
@@ -185,7 +185,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         }
     }
 
-    static async openInFoundry(this: KankaBrowserApplication, event, target) {
+    static async openInFoundry(this: KankaBrowserApplication, _event, target) {
         try {
             const rawId = target.closest('[data-entity-id]').dataset.entityId;
             const id = rawId ? Number.parseInt(rawId, 10) : null;
@@ -203,7 +203,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         }
     }
 
-    static async updateSingle(this: KankaBrowserApplication, event, target) {
+    static async updateSingle(this: KankaBrowserApplication, _event, target) {
         try {
             if (!this.#campaign || !this.#entities) return;
 
@@ -231,7 +231,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         }
     }
 
-    static async linkAll(this: KankaBrowserApplication, event, target) {
+    static async linkAll(this: KankaBrowserApplication, _event, target) {
         try {
             if (!this.#campaign || !this.#entities) return;
 
@@ -263,7 +263,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         }
     }
 
-    static async updateOutdated(this: KankaBrowserApplication, event, target) {
+    static async updateOutdated(this: KankaBrowserApplication, _event, target) {
         try {
             if (!this.#campaign || !this.#entities) return;
 
@@ -381,13 +381,13 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
     }
 
     async _preFirstRender(this: KankaBrowserApplication, context, options): Promise<void> {
-        this.#hooks.deleteJournalEntry = Hooks.on('deleteJournalEntry', (entry: JournalEntry) => this.render());
+        this.#hooks.deleteJournalEntry = Hooks.on('deleteJournalEntry', (_entry: JournalEntry) => this.render());
         await super._preFirstRender(context, options);
         this.setupData();
     }
 
     async _preClose() {
-        for (const [hook, id] of Object.entries(this.#hooks)) {
+        for (const [hook, id] of Object.entries(this.#hooks) as [Hooks.HookName, number][]) {
             Hooks.off(hook, id);
         }
     }

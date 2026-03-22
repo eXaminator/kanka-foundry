@@ -10,12 +10,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
 
             - name: Setup Node.js
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v4
               with:
                   node-version: 22
 
@@ -33,7 +33,7 @@ jobs:
 
             - name: Release
               id: semantic_release
-              uses: codfish/semantic-release-action@v2
+              uses: codfish/semantic-release-action@v3
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -43,38 +43,18 @@ jobs:
 
             - name: Create Github Release
               if: steps.semantic_release.outputs.new-release-published == 'true'
-              id: create_release
-              uses: actions/create-release@v1
+              uses: softprops/action-gh-release@v2
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
                   tag_name: ${{ steps.semantic_release.outputs.release-version }}
-                  release_name: ${{ steps.semantic_release.outputs.release-version }}
+                  name: ${{ steps.semantic_release.outputs.release-version }}
                   body: ${{ steps.semantic_release.outputs.release-notes }}
                   draft: false
                   prerelease: ${{ contains(steps.semantic_release.outputs.release-version, '-rc.') }}
-
-            - name: Upload module.json
-              if: steps.semantic_release.outputs.new-release-published == 'true'
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: dist/module.json
-                  asset_name: module.json
-                  asset_content_type: application/json
-
-            - name: Upload module.zip
-              if: steps.semantic_release.outputs.new-release-published == 'true'
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: module.zip
-                  asset_name: module.zip
-                  asset_content_type: application/zip
+                  files: |
+                      dist/module.json
+                      module.zip
 
             - name: Read module.json
               id: module

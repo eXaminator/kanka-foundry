@@ -1,4 +1,4 @@
-import type { KankaApiModuleType } from '../../types/kanka';
+import type { KankaApiAnyId, KankaApiModuleType } from '../../types/kanka';
 import type Reference from '../../types/Reference';
 import kankaFindReference from './kankaFindReference';
 import kankaIsAccessible from './kankaIsAccessible';
@@ -14,7 +14,7 @@ export default function kankaFilterReferences(
             if (!kankaIsAccessible(entity, options)) return false;
             if (!idProperty) return true;
 
-            const id = idProperty === 'this' ? entity : foundry.utils.getProperty(entity, idProperty);
+            const id = (idProperty === 'this' ? entity : foundry.utils.getProperty(entity, idProperty)) as KankaApiAnyId | undefined;
             if (options.hash?.optionalReference && !id) return true;
 
             const reference = kankaFindReference(id, type, options);

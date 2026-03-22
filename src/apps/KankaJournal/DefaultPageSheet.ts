@@ -1,6 +1,5 @@
-import type { GetDataReturnType } from 'fvtt-types/utils';
+
 import localization from '../../state/localization';
-import type Reference from '../../types/Reference';
 import getImprovedReference from '../../util/getImprovedReference';
 import replaceRecursiveMentions from '../../util/replaceMentions';
 import type { KankaPageModel } from './models/KankaPageModel';

@@ -52,7 +52,7 @@ export default class KankaJournalApplication extends JournalSheet {
 
         if (this.mode === JournalSheet.VIEW_MODES.SINGLE) {
             if (this.isPageInOverviewArea(this.pageIndex)) {
-                pages = data.toc.filter((page, index) => this.isPageInOverviewArea(index));
+                pages = data.toc.filter((_, index) => this.isPageInOverviewArea(index));
             } else {
                 pages = [data.toc[this.pageIndex]];
             }

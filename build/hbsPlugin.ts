@@ -1,6 +1,5 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
-import type { PluginContext } from 'rollup';
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite';
 
 function getPartialPath(parent, partial) {
@@ -12,7 +11,7 @@ export default function hbsPlugin(): Plugin {
     let config: ResolvedConfig;
     let server: ViteDevServer;
 
-    function load(this: PluginContext | null, id: string) {
+    function load(this: any, id: string) {
         const lib = config.build.lib || null;
 
         if (!id.endsWith('.hbs') || typeof lib?.entry !== 'string') {

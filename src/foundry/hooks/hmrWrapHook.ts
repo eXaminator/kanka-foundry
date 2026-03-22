@@ -1,22 +1,20 @@
 const cachedArguments = new Map<string, never[]>();
 
-type CallbackFn = (...args: never[]) => void;
-
-export default function hmrWrapHook<T extends CallbackFn>(
-    hook: string,
-    getCb: () => T,
+export default function hmrWrapHook<K extends Hooks.HookName>(
+    hook: K,
+    getCb: () => Hooks.Function<K>,
     type: 'on' | 'once' = 'on',
 ): () => void {
-    function eventHandler(...args: Parameters<T>): void {
+    const eventHandler = ((...args: never[]): void => {
         cachedArguments.set(hook, args);
-        getCb()(...args);
-    }
+        (getCb() as (...a: never[]) => void)(...args);
+    }) as Hooks.Function<K>;
 
     if (type === 'once') Hooks.once(hook, eventHandler);
     else if (type === 'on') Hooks.on(hook, eventHandler);
 
     return () => {
         const args = cachedArguments.get(hook) ?? [];
-        getCb()(...args);
+        (getCb() as (...a: never[]) => void)(...args);
     };
 }

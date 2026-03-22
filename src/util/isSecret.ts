@@ -1,6 +1,5 @@
 import type Reference from '../types/Reference';
 import {
-    type AnyConstrainable,
     type KankaApiSimpleConstrainable,
     type KankaApiVisibilityConstrainable,
     KankaVisibility,

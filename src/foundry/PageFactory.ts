@@ -1,11 +1,11 @@
 import type ReferenceCollection from '../api/ReferenceCollection';
-import type { KankaApiId, KankaApiModuleType, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiAnyId } from "../types/kanka";
-import type Reference from '../types/Reference';
-import { hasChildren, isCharacter, isFamily, isOrganisation, isQuest } from '../util/kankaTypeGuards';
-import isSecret from '../util/isSecret';
-import groupBy from '../util/groupBy';
-import unzip from '../util/unzip';
 import type { KankaPageModel } from '../apps/KankaJournal/models/KankaPageModel';
+import type { KankaApiAnyId, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiId, KankaApiModuleType } from "../types/kanka";
+import type Reference from '../types/Reference';
+import groupBy from '../util/groupBy';
+import isSecret from '../util/isSecret';
+import { hasChildren, isCharacter, isFamily, isOrganisation, isQuest } from '../util/kankaTypeGuards';
+import unzip from '../util/unzip';
 
 type KeysOfValue<T, TCondition> = {
     [K in keyof T]: T[K] extends TCondition
@@ -43,7 +43,7 @@ export default class PageFactory {
         return {
             publicCount: list
                 .map(item => {
-                    let ref: Reference | undefined = undefined;
+                    let ref: Reference | undefined ;
 
                     if (refProp) {
                         ref = type ? this.references.findByIdAndType(item[refProp] as KankaApiId, type) : this.references.findByEntityId(item[refProp] as KankaApiEntityId)
@@ -96,7 +96,7 @@ export default class PageFactory {
             ownership: this.getOwnership(name, publicCount),
             flags: sheet ? { core: { sheetClass: sheet } } : {},
             ...other,
-        };
+        } as JournalEntryPage.CreateData;
     }
 
     createEntityImagePage(): JournalEntryPage.CreateData | null {
@@ -340,7 +340,7 @@ export default class PageFactory {
     }
 
     createChildrenPage(): JournalEntryPage.CreateData | null {
-        if (!hasChildren(this.entity, this.type)) {
+        if (!hasChildren(this.entity)) {
             return null;
         }
 

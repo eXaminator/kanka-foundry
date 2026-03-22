@@ -9,7 +9,6 @@ import getMessage from './getMessage';
 import { showError, showWarning } from './notifications';
 
 export type KankaSettings = StripPrefix<PickWithPrefix<SettingConfig, 'kanka-foundry.'>, 'kanka-foundry.'>;
-type SettingKeys = keyof KankaSettings;
 
 function setToken(token: string): void {
     if (!token) {

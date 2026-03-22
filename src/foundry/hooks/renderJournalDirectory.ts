@@ -12,7 +12,7 @@ const questStatus = {
     open: '<i class="fas fa-circle knk:quest-status -open"></i>',
 };
 
-function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
+function renderQuestStatusIcons(html: HTMLElement): void {
     if (!game.settings?.get('kanka-foundry', 'questQuestStatusIcon')) return;
 
     const questEntries = findEntriesByType('quest');
@@ -25,7 +25,7 @@ function renderQuestStatusIcons(html: JQuery<HTMLDivElement>): void {
     }
 }
 
-function renderKankaButton(html: JQuery<HTMLDivElement>): void {
+function renderKankaButton(html: HTMLElement): void {
     const isGm = !!game.user?.isGM;
     if (!isGm) return;
 
@@ -69,8 +69,8 @@ function renderKankaButton(html: JQuery<HTMLDivElement>): void {
 }
 
 export default async function renderJournalDirectory(
-    app: JournalDirectory,
-    html: JQuery<HTMLDivElement>,
+    _app: JournalDirectory,
+    html: HTMLElement,
 ): Promise<void> {
     logInfo('renderJournalDirectory');
     renderQuestStatusIcons(html);

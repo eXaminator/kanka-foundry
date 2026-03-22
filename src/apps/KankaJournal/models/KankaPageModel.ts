@@ -1,7 +1,6 @@
 import type Reference from "../../../types/Reference";
 import DataSchema = foundry.data.fields.DataSchema;
 import TypeDataModel = foundry.abstract.TypeDataModel;
-import type { KankaApiChildEntity } from "../../../types/kanka";
 
 declare namespace KankaPageModel {
     interface Schema extends DataSchema, ReturnType<typeof KankaPageModel['defineSchema']> { }

@@ -1,6 +1,6 @@
-import api from '.';
+import type { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiId, KankaApiModuleType } from '../types/kanka';
 import type Reference from '../types/Reference';
-import type { KankaApiAnyId, KankaApiEntity, KankaApiEntityId, KankaApiModuleType, KankaApiId } from '../types/kanka';
+import api from '.';
 
 export default class ReferenceCollection {
     #campaignId: KankaApiId;
@@ -82,7 +82,7 @@ export default class ReferenceCollection {
             this.#entities.push(...list);
 
             return this.findEntityInCollection(id, type);
-        } catch (e) {
+        } catch {
             return undefined;
         }
     }

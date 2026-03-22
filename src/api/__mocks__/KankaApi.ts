@@ -1,39 +1,38 @@
 import { vi } from 'vitest';
-import type KankaApi from '../KankaApi';
 
-export default vi.fn(() => ({
-    isReady: true,
-    reset: vi.fn(),
-    switchUser: vi.fn(),
-    getToken: vi.fn(),
-    switchBaseUrl: vi.fn(),
-    getAllCampaigns: vi.fn(),
-    getCampaign: vi.fn(),
-    getCharacter: vi.fn(),
-    getAllCharacters: vi.fn(),
-    getCreature: vi.fn(),
-    getAllCreatures: vi.fn(),
-    getAbility: vi.fn(),
-    getAllAbilities: vi.fn(),
-    getFamily: vi.fn(),
-    getAllFamilies: vi.fn(),
-    getItem: vi.fn(),
-    getAllItems: vi.fn(),
-    getJournal: vi.fn(),
-    getAllJournals: vi.fn(),
-    getLocation: vi.fn(),
-    getAllLocations: vi.fn(),
-    getNote: vi.fn(),
-    getAllNotes: vi.fn(),
-    getOrganisation: vi.fn(),
-    getAllOrganisations: vi.fn(),
-    getQuest: vi.fn(),
-    getAllQuests: vi.fn(),
-    getRace: vi.fn(),
-    getAllRaces: vi.fn(),
-    getEvent: vi.fn(),
-    getAllEvents: vi.fn(),
-    getEntity: vi.fn(),
-    getAllEntities: vi.fn(),
-    baseUrl: 'https://api.kanka.io/1.0',
-}));
+export default vi.fn(function(this: any) {
+    this.isReady = true;
+    this.reset = vi.fn();
+    this.switchUser = vi.fn();
+    this.getToken = vi.fn();
+    this.switchBaseUrl = vi.fn();
+    this.getAllCampaigns = vi.fn();
+    this.getCampaign = vi.fn();
+    this.getCharacter = vi.fn();
+    this.getAllCharacters = vi.fn();
+    this.getCreature = vi.fn();
+    this.getAllCreatures = vi.fn();
+    this.getAbility = vi.fn();
+    this.getAllAbilities = vi.fn();
+    this.getFamily = vi.fn();
+    this.getAllFamilies = vi.fn();
+    this.getItem = vi.fn();
+    this.getAllItems = vi.fn();
+    this.getJournal = vi.fn();
+    this.getAllJournals = vi.fn();
+    this.getLocation = vi.fn();
+    this.getAllLocations = vi.fn();
+    this.getNote = vi.fn();
+    this.getAllNotes = vi.fn();
+    this.getOrganisation = vi.fn();
+    this.getAllOrganisations = vi.fn();
+    this.getQuest = vi.fn();
+    this.getAllQuests = vi.fn();
+    this.getRace = vi.fn();
+    this.getAllRaces = vi.fn();
+    this.getEvent = vi.fn();
+    this.getAllEvents = vi.fn();
+    this.getEntity = vi.fn();
+    this.getAllEntities = vi.fn();
+    this.baseUrl = 'https://api.kanka.io/1.0';
+});

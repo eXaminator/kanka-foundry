@@ -21,9 +21,6 @@ export default defineConfig({
             },
         },
     },
-    esbuild: {
-        keepNames: true,
-    },
     build: {
         outDir: resolve(__dirname, 'dist'),
         emptyOutDir: true,
@@ -35,6 +32,7 @@ export default defineConfig({
             fileName: () => 'index.js',
         },
     },
+    cacheDir: resolve(__dirname, 'node_modules/.vite'),
     plugins: [
         hbsPlugin(),
         translationPlugin(),
@@ -46,7 +44,6 @@ export default defineConfig({
         root: resolve(__dirname, 'src'),
         globals: true,
         coverage: {
-            all: true,
             exclude: [
                 'types/**',
                 'index.ts',
