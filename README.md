@@ -117,6 +117,15 @@ changed in Kanka. There are 2 ways to handle this:
 2. You can link (or update) the referenced entity itself. If Kanka-Foundry finds a Journal Entry for a referenced entity
    it will always take the information from that instead of its own snapshot for that reference.
 
+## AI-Assisted Development
+
+This project uses [Claude Code](https://docs.anthropic.com/en/docs/claude-code) as a development tool. All AI-generated
+or AI-assisted code changes are reviewed and verified by the maintainer before being merged. AI is used as an assistant,
+not as an autonomous contributor — the maintainer takes full responsibility for every change committed to this repository.
+Claude is used only for code, not any other content. Translations are still provided via community support (see below).
+
+This project adheres to the [FoundryVTT AI Content Policy](https://foundryvtt.com/article/ai-policy/).
+
 ## Software License and Contribution Policy
 
 This software is licensed under the MIT License. See the LICENSE file in this repository for details.

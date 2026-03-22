@@ -4,3 +4,4 @@
 /secrets.json
 /data
 /src/coverage
+.claude/settings.local.json
