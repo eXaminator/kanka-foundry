@@ -93,6 +93,7 @@ KANKA:
                 item_equipped: Ausgerüstet
                 relation_name: Objekt
                 relation_type: Beziehung
+                calendarReminderLength: Erinnerungslänge
             value:
                 yes: Ja
                 no: Nein
@@ -141,14 +142,25 @@ KANKA:
         creature:
             labels:
                 isExtinct: Ausgestorben
+                isDead: Tot
         journal:
             labels:
+                author: Autor
                 date: Datum
+                calendar: Kalender
+                calendarYear: Jahr
+                calendarMonth: Monat
+                calendarDay: Tag
         event:
             labels:
                 date: Datum
+                calendar: Kalender
+                calendarYear: Jahr
+                calendarMonth: Monat
+                calendarDay: Tag
         item:
             labels:
+                creator: Ersteller
                 price: Preis
                 size: Größe
                 weight: Gewicht
@@ -156,6 +168,7 @@ KANKA:
             pages:
                 members: Mitglieder
             labels:
+                isDefunct: Aufgelöst
                 member: Mitglied
                 member_name: Mitglied
                 member_role: Rolle
@@ -172,6 +185,10 @@ KANKA:
                 instigator: Auslöser
                 date: Datum
                 completed: Abgeschlossen
+                calendar: Kalender
+                calendarYear: Jahr
+                calendarMonth: Monat
+                calendarDay: Tag
                 element_name: Element
                 element_role: Rolle
                 element_description: Beschreibung

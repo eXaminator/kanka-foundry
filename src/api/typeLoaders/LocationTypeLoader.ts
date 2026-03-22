@@ -13,11 +13,7 @@ export default class LocationTypeLoader extends AbstractTypeLoader<KankaApiLocat
         entity: KankaApiLocation,
         lookup: KankaApiEntity[] = [],
     ): Promise<ReferenceCollection> {
-        const collection = await super.createReferenceCollection(campaignId, entity, lookup);
-
-        await Promise.all([collection.addById(entity.location_id ?? entity.parent_location_id, 'location')]);
-
-        return collection;
+        return super.createReferenceCollection(campaignId, entity, lookup);
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiLocation> {

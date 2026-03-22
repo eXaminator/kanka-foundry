@@ -22,7 +22,7 @@ function createFamily(data: Partial<KankaApiFamily> = {}): KankaApiFamily {
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         ...data,
     } as KankaApiFamily;
 }
@@ -161,14 +161,14 @@ describe('FamilyTypeLoader', () => {
             });
         });
 
-        it('includes parent from the lookup array', async () => {
+        it('includes location from the lookup array', async () => {
             const expectedResult = createFamily({
-                family_id: 2002,
+                location_id: 2002,
             });
 
             const entities = [
                 createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'family'),
+                createEntity(1002, 2002, 'location'),
                 createEntity(1003, 2003, 'quest'),
             ];
 
@@ -179,7 +179,7 @@ describe('FamilyTypeLoader', () => {
                 1002: {
                     id: 2002,
                     entityId: 1002,
-                    type: 'family',
+                    type: 'location',
                 },
             });
         });

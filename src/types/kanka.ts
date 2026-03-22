@@ -159,9 +159,9 @@ export interface KankaApiEntityPost extends KankaApiVisibilityConstrainable {
     settings: { collapsed: '0' | '1' } | null;
 }
 
-export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, KankaApiBlamable {
+export interface KankaApiReminder extends KankaApiVisibilityConstrainable, KankaApiBlamable {
     id: KankaApiId;
-    entity_id: KankaApiEntityId;
+    remindable_id: KankaApiEntityId;
     calendar_id: KankaApiId;
     colour: string | null;
     comment: string;
@@ -170,6 +170,7 @@ export interface KankaApiEntityEvent extends KankaApiVisibilityConstrainable, Ka
     month: number;
     year: number;
     length: number;
+    type_id: number | null;
     is_recurring: boolean;
     recurring_periodicity: string | null;
     recurring_until: number | null;
@@ -260,7 +261,7 @@ export interface KankaApiRelated {
     inventory: KankaApiInventory[];
     posts: KankaApiEntityPost[];
     entity_abilities: KankaApiAbilityLink[];
-    entity_events: KankaApiEntityEvent[];
+    reminders: KankaApiReminder[];
     entity_assets: KankaApiEntityAsset[];
 }
 
@@ -302,14 +303,20 @@ export interface KankaApiCharacterOrganisationLink extends KankaApiSimpleConstra
 }
 
 export interface KankaApiCharacter extends KankaApiChildEntity {
-    location_id: KankaApiId | null;
+    /** @deprecated Use locations instead */
+    location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     title: string | null;
-    age: number | null;
+    age: number | string | null;
     sex: string | null;
     pronouns: string | null;
-    race_id: KankaApiId | null;
+    /** @deprecated Use races instead */
+    race_id?: KankaApiId | null;
+    races?: KankaApiId[];
     type: string | null;
-    family_id: KankaApiId | null;
+    /** @deprecated Use families instead */
+    family_id?: KankaApiId | null;
+    families?: KankaApiId[];
     is_dead: boolean;
     traits: KankaApiCharacterTrait[];
     is_personality_visible: boolean;
@@ -319,30 +326,38 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
 }
 
 export interface KankaApiCreature extends KankaApiChildEntityWithChildren {
-    creature_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    creature_id?: KankaApiId | null;
     locations: KankaApiId[];
     type: string | null;
     is_extinct: boolean;
+    is_dead: boolean;
 }
 
 export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
-    ability_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    ability_id?: KankaApiId | null;
     type: string | null;
     charges: string | null;
     abilities: KankaApiId[];
 }
 
 export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
-    family_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    family_id?: KankaApiId | null;
+    location_id?: KankaApiId | null;
     type: string | null;
     members: KankaApiId[];
     is_extinct: boolean;
 }
 
 export interface KankaApiItem extends KankaApiChildEntityWithChildren {
-    item_id: KankaApiId | null;
-    location_id: KankaApiId | null;
-    character_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    item_id?: KankaApiId | null;
+    location_id?: KankaApiId | null;
+    /** @deprecated Use creator_id instead */
+    character_id?: KankaApiId | null;
+    creator_id?: KankaApiId | null;
     type: string | null;
     price: string | null;
     size: string | null;
@@ -350,37 +365,45 @@ export interface KankaApiItem extends KankaApiChildEntityWithChildren {
 }
 
 export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
-    journal_id: KankaApiId | null;
-    location_id: KankaApiId | null;
-    character_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    journal_id?: KankaApiId | null;
+    location_id?: KankaApiId | null;
+    /** @deprecated Use author_id instead */
+    character_id?: KankaApiId | null;
+    author_id?: KankaApiId | null;
     type: string | null;
     date: string | null;
     calendar_id: KankaApiId | null;
     calendar_year: number | null;
     calendar_month: number | null;
     calendar_day: number | null;
+    calendar_reminder_length: number | null;
 }
 
 export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
-    /**
-     * @deprecated Use location_id instead
-     */
-    parent_location_id: KankaApiId | null;
-    location_id: KankaApiId | null;
+    /** @deprecated Use location_id instead */
+    parent_location_id?: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    location_id?: KankaApiId | null;
     type: string | null;
     is_destroyed: boolean;
 }
 
 export interface KankaApiNote extends KankaApiChildEntityWithChildren {
-    note_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    note_id?: KankaApiId | null;
     type: string | null;
 }
 
 export interface KankaApiOrganisation extends KankaApiChildEntityWithChildren {
-    organisation_id: KankaApiId | null;
-    location_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    organisation_id?: KankaApiId | null;
+    /** @deprecated Use locations instead */
+    location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     type: string | null;
     members: KankaApiCharacterOrganisationLink[];
+    is_defunct?: boolean;
 }
 
 export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
@@ -393,8 +416,11 @@ export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
 }
 
 export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
-    quest_id: KankaApiId | null;
-    instigator_id: KankaApiEntityId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    quest_id?: KankaApiId | null;
+    /** @deprecated Use instigator_id instead */
+    character_id?: KankaApiId | null;
+    instigator_id?: KankaApiEntityId | null;
     location_id: KankaApiId | null;
     type: string | null;
     date: string | null;
@@ -405,20 +431,28 @@ export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
     calendar_year: number | null;
     calendar_month: number | null;
     calendar_day: number | null;
+    calendar_reminder_length: number | null;
 }
 
 export interface KankaApiRace extends KankaApiChildEntityWithChildren {
     locations: KankaApiId[];
-    race_id: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    race_id?: KankaApiId | null;
     type: string | null;
     is_extinct: boolean;
 }
 
-export interface KankaApiEvent extends KankaApiChildEntity {
+export interface KankaApiEvent extends KankaApiChildEntityWithChildren {
     type: string | null;
     date: string | null;
-    location_id: KankaApiId | null;
-    event_id: KankaApiId | null;
+    location_id?: KankaApiId | null;
+    /** @deprecated Will be removed; use parents[] instead */
+    event_id?: KankaApiId | null;
+    calendar_id: KankaApiId | null;
+    calendar_year: number | null;
+    calendar_month: number | null;
+    calendar_day: number | null;
+    calendar_reminder_length: number | null;
 }
 
 interface KankaEntityModule {

@@ -13,11 +13,7 @@ export default class AbilityTypeLoader extends AbstractTypeLoader<KankaApiAbilit
         entity: KankaApiAbility,
         lookup: KankaApiEntity[] = [],
     ): Promise<ReferenceCollection> {
-        const collection = await super.createReferenceCollection(campaignId, entity, lookup);
-
-        await Promise.all([collection.addById(entity.ability_id, 'ability')]);
-
-        return collection;
+        return super.createReferenceCollection(campaignId, entity, lookup);
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiAbility> {

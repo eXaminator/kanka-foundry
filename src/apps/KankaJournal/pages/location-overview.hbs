@@ -1,7 +1,7 @@
 {{#>../shared/overviewLayout}}
 {{#*inline 'attributes'~}}
 {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
-{{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.entity_events) 'type_id' 5) 0) }}
+{{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.reminders) 'type_id' 5) 0) }}
 {{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
 {{/with}}
 {{~>../shared/detailRowArray references=data.system.snapshot.parents type='location' label='shared.labels.parent' }}

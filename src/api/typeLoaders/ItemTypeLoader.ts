@@ -17,17 +17,24 @@ export default class ItemTypeLoader extends AbstractTypeLoader<KankaApiItem> {
 
         await Promise.all([
             collection.addById(entity.location_id, 'location'),
-            collection.addById(entity.character_id, 'character'),
+            collection.addById(entity.creator_id, 'character'),
         ]);
 
         return collection;
     }
 
+    private normalize(entity: KankaApiItem): KankaApiItem {
+        return {
+            ...entity,
+            creator_id: entity.creator_id ?? entity.character_id ?? null,
+        };
+    }
+
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiItem> {
-        return api.getItem(campaignId, id);
+        return this.normalize(await api.getItem(campaignId, id));
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiItem[]> {
-        return api.getAllItems(campaignId);
+        return (await api.getAllItems(campaignId)).map((e) => this.normalize(e));
     }
 }

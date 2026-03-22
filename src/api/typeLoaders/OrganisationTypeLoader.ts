@@ -16,19 +16,25 @@ export default class OrganisationTypeLoader extends AbstractTypeLoader<KankaApiO
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.organisation_id, 'organisation'),
-            collection.addById(entity.location_id, 'location'),
+            ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
             ...entity.members.map((member) => collection.addById(member.character_id, 'character')),
         ]);
 
         return collection;
     }
 
+    private normalize(entity: KankaApiOrganisation): KankaApiOrganisation {
+        return {
+            ...entity,
+            locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
+        };
+    }
+
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiOrganisation> {
-        return api.getOrganisation(campaignId, id);
+        return this.normalize(await api.getOrganisation(campaignId, id));
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiOrganisation[]> {
-        return api.getAllOrganisations(campaignId);
+        return (await api.getAllOrganisations(campaignId)).map((e) => this.normalize(e));
     }
 }

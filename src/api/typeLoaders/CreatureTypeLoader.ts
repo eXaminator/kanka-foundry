@@ -16,7 +16,6 @@ export default class CreatureTypeLoader extends AbstractTypeLoader<KankaApiCreat
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.creature_id, 'creature'),
             ...entity.locations.map((location) => collection.addById(location, 'location')),
         ]);
 

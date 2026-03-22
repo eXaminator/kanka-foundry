@@ -19,7 +19,7 @@ function createCreature(data: Partial<KankaApiCreature> = {}): KankaApiCreature 
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         parents: [],
         children: [],
         locations: [],
@@ -187,29 +187,6 @@ describe('CreatureTypeLoader', () => {
         it('includes children from the lookup array', async () => {
             const expectedResult = createCreature({
                 children: [2002],
-            });
-
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'creature'),
-                createEntity(1003, 2003, 'quest'),
-            ];
-
-            const loader = new CreatureTypeLoader();
-            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
-
-            expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
-                    type: 'creature',
-                },
-            });
-        });
-
-        it('includes parent from the lookup array', async () => {
-            const expectedResult = createCreature({
-                creature_id: 2002,
             });
 
             const entities = [

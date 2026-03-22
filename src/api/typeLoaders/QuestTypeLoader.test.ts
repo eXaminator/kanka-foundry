@@ -20,7 +20,7 @@ function createQuest(data: Partial<KankaApiQuest> = {}): KankaApiQuest {
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         parents: [],
         children: [],
         elements: [],
@@ -188,29 +188,6 @@ describe('QuestTypeLoader', () => {
         it('includes children from the lookup array', async () => {
             const expectedResult = createQuest({
                 children: [2002],
-            });
-
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'quest'),
-                createEntity(1003, 2003, 'quest'),
-            ];
-
-            const loader = new QuestTypeLoader();
-            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
-
-            expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
-                    type: 'quest',
-                },
-            });
-        });
-
-        it('includes parent from the lookup array', async () => {
-            const expectedResult = createQuest({
-                quest_id: 2002,
             });
 
             const entities = [

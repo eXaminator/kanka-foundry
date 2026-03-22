@@ -23,7 +23,7 @@ function createOrganisation(data: Partial<KankaApiOrganisation> = {}): KankaApiO
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         ...data,
     } as KankaApiOrganisation;
 }
@@ -75,7 +75,17 @@ describe('OrganisationTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getOrganisation).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes location_id to locations array', async () => {
+            const expectedResult = createOrganisation({ location_id: 42 });
+            const loader = new OrganisationTypeLoader();
+            vi.mocked(api).getOrganisation.mockResolvedValue(expectedResult);
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([42]);
         });
     });
 
@@ -88,7 +98,18 @@ describe('OrganisationTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllOrganisations).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes location_id to locations array for all organisations', async () => {
+            const expectedResult = [createOrganisation({ location_id: 42 }), createOrganisation({ location_id: 99 })];
+            const loader = new OrganisationTypeLoader();
+            vi.mocked(api).getAllOrganisations.mockResolvedValue(expectedResult);
+
+            const result = await loader.loadAll(4711);
+
+            expect(result[0].locations).toEqual([42]);
+            expect(result[1].locations).toEqual([99]);
         });
     });
 
@@ -162,29 +183,6 @@ describe('OrganisationTypeLoader', () => {
             });
         });
 
-        it('includes parent from the lookup array', async () => {
-            const expectedResult = createOrganisation({
-                organisation_id: 2002,
-            });
-
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'organisation'),
-                createEntity(1003, 2003, 'quest'),
-            ];
-
-            const loader = new OrganisationTypeLoader();
-            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
-
-            expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
-                    type: 'organisation',
-                },
-            });
-        });
-
         it('includes parents from the lookup array', async () => {
             const expectedResult = createOrganisation({
                 parents: [2002],
@@ -254,24 +252,30 @@ describe('OrganisationTypeLoader', () => {
             });
         });
 
-        it('includes location from the lookup array', async () => {
+        it('includes locations from the lookup array', async () => {
             const expectedResult = createOrganisation({
-                location_id: 2002,
+                locations: [2001, 2004],
             });
 
             const entities = [
                 createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'location'),
+                createEntity(1002, 2002, 'organisation'),
                 createEntity(1003, 2003, 'quest'),
+                createEntity(1004, 2004, 'location'),
             ];
 
             const loader = new OrganisationTypeLoader();
             const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
 
             expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
+                1001: {
+                    id: 2001,
+                    entityId: 1001,
+                    type: 'location',
+                },
+                1004: {
+                    id: 2004,
+                    entityId: 1004,
                     type: 'location',
                 },
             });

@@ -16,7 +16,6 @@ export default class RaceTypeLoader extends AbstractTypeLoader<KankaApiRace> {
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.race_id, 'race'),
             ...entity.locations.map((location) => collection.addById(location, 'location')),
         ]);
 

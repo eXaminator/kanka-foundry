@@ -6,5 +6,7 @@
 delimiter=" " }}
 {{~>../shared/detailRow value=data.system.snapshot.is_extinct label='creature.labels.isExtinct'
 localizeValue='shared.value'}}
+{{~>../shared/detailRow value=data.system.snapshot.is_dead label='creature.labels.isDead'
+localizeValue='shared.value'}}
 {{~/inline}}
 {{/../shared/overviewLayout}}

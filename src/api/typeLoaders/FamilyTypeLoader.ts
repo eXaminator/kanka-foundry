@@ -16,7 +16,7 @@ export default class FamilyTypeLoader extends AbstractTypeLoader<KankaApiFamily>
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.family_id, 'family'),
+            collection.addById(entity.location_id, 'location'),
             ...entity.members.map((member) => collection.addById(member, 'character')),
         ]);
 

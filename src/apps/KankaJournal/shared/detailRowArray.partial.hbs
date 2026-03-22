@@ -10,7 +10,7 @@
         <td>
             {{~#each references as | referenceId |~}}
                {{~#with (kankaFindReference referenceId ../type) as | ref |~}}
-                    {{~ref.name~}}
+                    {{{ref.link}}}
                     {{~#unless @last~}}
                         <span class="delimiter">{{#if ../delimiter}}{{../delimiter}}{{else}}»{{/if}}</span>
                     {{~/unless~}}

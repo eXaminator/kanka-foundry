@@ -334,8 +334,8 @@ export default class PageFactory {
         return this.createPage(
             'events',
             'KANKA.journal.shared.pages.events',
-            { list: this.entity.entity_events },
-            this.getCounts(this.entity.entity_events, 'calendar_id', 'calendar'),
+            { list: this.entity.reminders },
+            this.getCounts(this.entity.reminders, 'calendar_id', 'calendar'),
         );
     }
 

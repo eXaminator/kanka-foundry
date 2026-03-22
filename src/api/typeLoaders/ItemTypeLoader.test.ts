@@ -19,7 +19,7 @@ function createItem(data: Partial<KankaApiItem> = {}): KankaApiItem {
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         parents: [],
         children: [],
         ...data,
@@ -73,7 +73,17 @@ describe('ItemTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getItem).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes character_id to creator_id', async () => {
+            const expectedResult = createItem({ character_id: 42 });
+            const loader = new ItemTypeLoader();
+            vi.mocked(api).getItem.mockResolvedValue(expectedResult);
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.creator_id).toBe(42);
         });
     });
 
@@ -86,7 +96,18 @@ describe('ItemTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllItems).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes character_id to creator_id for all items', async () => {
+            const expectedResult = [createItem({ character_id: 42 }), createItem({ character_id: 99 })];
+            const loader = new ItemTypeLoader();
+            vi.mocked(api).getAllItems.mockResolvedValue(expectedResult);
+
+            const result = await loader.loadAll(4711);
+
+            expect(result[0].creator_id).toBe(42);
+            expect(result[1].creator_id).toBe(99);
         });
     });
 
@@ -183,9 +204,9 @@ describe('ItemTypeLoader', () => {
             });
         });
 
-        it('includes character from the lookup array', async () => {
+        it('includes creator from the lookup array', async () => {
             const expectedResult = createItem({
-                character_id: 2002,
+                creator_id: 2002,
             });
 
             const entities = [

@@ -22,7 +22,7 @@ function createAbility(data: Partial<KankaApiAbility> = {}): KankaApiAbility {
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         ...data,
     } as KankaApiAbility;
 }
@@ -141,29 +141,6 @@ describe('AbilityTypeLoader', () => {
         it('includes entity_abilities from the lookup array', async () => {
             const expectedResult = createAbility({
                 entity_abilities: [{ ability_id: 2002 } as KankaApiAbilityLink],
-            });
-
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'ability'),
-                createEntity(1003, 2003, 'quest'),
-            ];
-
-            const loader = new AbilityTypeLoader();
-            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
-
-            expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
-                    type: 'ability',
-                },
-            });
-        });
-
-        it('includes parent from the lookup array', async () => {
-            const expectedResult = createAbility({
-                ability_id: 2002,
             });
 
             const entities = [

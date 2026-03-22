@@ -13,11 +13,7 @@ export default class NoteTypeLoader extends AbstractTypeLoader<KankaApiNote> {
         entity: KankaApiNote,
         lookup: KankaApiEntity[] = [],
     ): Promise<ReferenceCollection> {
-        const collection = await super.createReferenceCollection(campaignId, entity, lookup);
-
-        await Promise.all([collection.addById(entity.note_id, 'note')]);
-
-        return collection;
+        return super.createReferenceCollection(campaignId, entity, lookup);
     }
 
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiNote> {

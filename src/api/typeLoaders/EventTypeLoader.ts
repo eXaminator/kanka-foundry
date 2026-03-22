@@ -17,7 +17,6 @@ export default class EventTypeLoader extends AbstractTypeLoader<KankaApiEvent> {
 
         await Promise.all([
             collection.addById(entity.location_id, 'location'),
-            collection.addById(entity.event_id, 'event'),
         ]);
 
         return collection;

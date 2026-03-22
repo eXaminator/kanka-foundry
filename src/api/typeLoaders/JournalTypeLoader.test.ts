@@ -19,7 +19,7 @@ function createJournal(data: Partial<KankaApiJournal> = {}): KankaApiJournal {
         relations: [],
         inventory: [],
         entity_abilities: [],
-        entity_events: [],
+        reminders: [],
         parents: [],
         children: [],
         ...data,
@@ -73,7 +73,17 @@ describe('JournalTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getJournal).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes character_id to author_id', async () => {
+            const expectedResult = createJournal({ character_id: 42 });
+            const loader = new JournalTypeLoader();
+            vi.mocked(api).getJournal.mockResolvedValue(expectedResult);
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.author_id).toBe(42);
         });
     });
 
@@ -86,7 +96,18 @@ describe('JournalTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllJournals).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+
+        it('normalizes character_id to author_id for all journals', async () => {
+            const expectedResult = [createJournal({ character_id: 42 }), createJournal({ character_id: 99 })];
+            const loader = new JournalTypeLoader();
+            vi.mocked(api).getAllJournals.mockResolvedValue(expectedResult);
+
+            const result = await loader.loadAll(4711);
+
+            expect(result[0].author_id).toBe(42);
+            expect(result[1].author_id).toBe(99);
         });
     });
 
@@ -206,29 +227,6 @@ describe('JournalTypeLoader', () => {
             });
         });
 
-        it('includes parent from the lookup array', async () => {
-            const expectedResult = createJournal({
-                journal_id: 2002,
-            });
-
-            const entities = [
-                createEntity(1001, 2001, 'location'),
-                createEntity(1002, 2002, 'journal'),
-                createEntity(1003, 2003, 'quest'),
-            ];
-
-            const loader = new JournalTypeLoader();
-            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
-
-            expect(collection.getRecord()).toMatchObject({
-                1002: {
-                    id: 2002,
-                    entityId: 1002,
-                    type: 'journal',
-                },
-            });
-        });
-
         it('includes location from the lookup array', async () => {
             const expectedResult = createJournal({
                 location_id: 2002,
@@ -252,9 +250,9 @@ describe('JournalTypeLoader', () => {
             });
         });
 
-        it('includes character from the lookup array', async () => {
+        it('includes author from the lookup array', async () => {
             const expectedResult = createJournal({
-                character_id: 2002,
+                author_id: 2002,
             });
 
             const entities = [

@@ -16,20 +16,29 @@ export default class CharacterTypeLoader extends AbstractTypeLoader<KankaApiChar
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.location_id, 'location'),
-            collection.addById(entity.race_id, 'race'),
-            collection.addById(entity.family_id, 'family'),
+            ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
+            ...(entity.races ?? []).map((id) => collection.addById(id, 'race')),
+            ...(entity.families ?? []).map((id) => collection.addById(id, 'family')),
             ...entity.organisations.data.map((org) => collection.addById(org.organisation_id, 'organisation')),
         ]);
 
         return collection;
     }
 
+    private normalize(entity: KankaApiCharacter): KankaApiCharacter {
+        return {
+            ...entity,
+            races: entity.races ?? (entity.race_id ? [entity.race_id] : []),
+            families: entity.families ?? (entity.family_id ? [entity.family_id] : []),
+            locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
+        };
+    }
+
     public async load(campaignId: KankaApiId, id: KankaApiId): Promise<KankaApiCharacter> {
-        return api.getCharacter(campaignId, id);
+        return this.normalize(await api.getCharacter(campaignId, id));
     }
 
     public async loadAll(campaignId: KankaApiId): Promise<KankaApiCharacter[]> {
-        return api.getAllCharacters(campaignId);
+        return (await api.getAllCharacters(campaignId)).map((e) => this.normalize(e));
     }
 }

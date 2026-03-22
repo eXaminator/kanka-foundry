@@ -14,7 +14,7 @@ import isSecret from '../util/isSecret';
 import { ensureFolderPath } from './journalFolders';
 import PageFactory from './PageFactory';
 
-const CURRENT_JOURNAL_VERSION = '000002';
+const CURRENT_JOURNAL_VERSION = '000003';
 
 function buildVersionString(entity: { updated_at: string }): string {
     return `${CURRENT_JOURNAL_VERSION}-${entity.updated_at}`;
