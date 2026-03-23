@@ -305,7 +305,7 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
 
     protected setLoadingState(button: HTMLButtonElement): void {
         button.classList.add('-knk:loading-indicator');
-        for (const el of this.element.querySelectorAll('[data-action]')) {
+        for (const el of this.element.querySelectorAll('.window-content [data-action]')) {
             el.setAttribute('disabled', 'true');
         }
     }
