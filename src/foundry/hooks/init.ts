@@ -51,7 +51,6 @@ export default function init(): void {
             (type) => `${moduleConfig.id}.${type}`,
         );
         const dataModelTypes = pageTypes.filter((type) => ![`${moduleConfig.id}.post`].includes(type));
-        console.log("FOO", CONFIG.JournalEntryPage.dataModels);
 
         Object.assign(
             CONFIG.JournalEntryPage.dataModels,
@@ -61,19 +60,26 @@ export default function init(): void {
             ),
         );
 
-        DocumentSheetConfig.registerSheet(JournalEntry, moduleConfig.name, KankaJournalApplication, {
-            makeDefault: false,
-        });
+        DocumentSheetConfig.registerSheet(
+            JournalEntry,
+            moduleConfig.name,
+            KankaJournalApplication as unknown as foundry.applications.api.DocumentSheetV2.AnyConstructor,
+            { makeDefault: false },
+        );
 
-        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, PostPageSheet, {
-            types: [`${moduleConfig.id}.post`],
-            makeDefault: false,
-        });
+        DocumentSheetConfig.registerSheet(
+            JournalEntryPage,
+            moduleConfig.name,
+            PostPageSheet as unknown as foundry.applications.api.DocumentSheetV2.AnyConstructor,
+            { types: [`${moduleConfig.id}.post`], makeDefault: false },
+        );
 
-        DocumentSheetConfig.registerSheet(JournalEntryPage, moduleConfig.name, DefaultPageSheet as unknown as typeof DocumentSheet, {
-            types: pageTypes.filter((type) => ![`${moduleConfig.id}.post`].includes(type)),
-            makeDefault: false,
-        });
+        DocumentSheetConfig.registerSheet(
+            JournalEntryPage,
+            moduleConfig.name,
+            DefaultPageSheet as unknown as foundry.applications.api.DocumentSheetV2.AnyConstructor,
+            { types: pageTypes.filter((type) => ![`${moduleConfig.id}.post`].includes(type)), makeDefault: false },
+        );
 
         registerHandlebarsHelpers();
         registerSettings();

@@ -1,8 +1,7 @@
 :root {
-    --kanka-secret-color: #fc758920;
-    --kanka-secret-border-color: #5f1c266e;
-    --kanka-secret-icon-inversion: 100%;
-    --kanka-avatar-color: rgba(0, 0, 0, 0.1);
+    --kanka-secret-color: var(--color-secret-bg, rgba(53, 0, 121, 0.05));
+    --kanka-secret-border-color: var(--color-secret-border, #5f1c266e);
+    --kanka-avatar-color: var(--table-row-color-even);
 }
 
 %secret-icon-base {
@@ -51,8 +50,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background: var(--color-ownership-none);
-        opacity: 0.05;
+        background: var(--kanka-secret-color);
         pointer-events: none;
     }
 }
@@ -153,7 +151,7 @@
         }
     }
 
-    .journal-entry-pages .scrollable {
+    .journal-entry-pages.scrollable {
         display: flex;
         flex-direction: row;
         align-items: flex-start;
@@ -192,20 +190,25 @@
         margin: 0 0.5em;
     }
 
+    table + table {
+        margin-top: 0.5rem;
+    }
+
     table {
         > *:not(thead) th {
-            background: rgba(0, 0, 0, 0.5);
-            color: var(--color-text-light-highlight);
-            text-shadow: 1px 1px var(--color-shadow-dark);
-            border-bottom: 1px solid var(--color-border-dark);
+            background: var(--table-header-bg-color);
+            color: var(--table-header-text-color);
+            border-bottom: 1px solid var(--table-header-border-color);
         }
 
-        thead td {
-            font-weight: bold;
-        }
+        thead {
+            background: var(--table-header-bg-color);
+            border: 1px solid var(--table-header-border-color);
+            color: var(--table-header-text-color);
 
-        tbody td {
-            padding-right: 1em;
+            td {
+                font-weight: bold;
+            }
         }
 
         td:first-child {
@@ -290,10 +293,9 @@
                 pointer-events: none;
 
                 color: var(--color-text-light-highlight, #fff);
-                text-shadow: 1px 1px var(--color-shadow-dark);
                 font-size: 1.2em;
 
-                background: RGBA(0, 0, 0, 0.5);
+                background: var(--color-header-background, rgba(0, 0, 0, 0.5));
             }
 
             &.-rounded {
