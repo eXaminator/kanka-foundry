@@ -252,7 +252,8 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
                         this.#entities,
                     );
                 } catch (error) {
-                    console.warn(`Failed to sync entities of type ${syncType}: `, error);
+                    logError(`Failed to sync entities of type ${syncType}`, error);
+                    showError('browser.error.actionError');
                 }
             }
         } catch (error) {
@@ -425,32 +426,35 @@ export default class KankaBrowserApplication extends HandlebarsApplicationMixin(
         return context;
     }
 
-    async _onRender() {
-        this.element.querySelector('#knk-entity-search')?.addEventListener(
-            'input',
-            foundry.utils.debounce((event: Event) => {
-                const target = event.currentTarget as HTMLInputElement | null;
-                if (!target) return;
+    protected _attachPartListeners(partId: string, htmlElement: HTMLElement) {
+        if (partId === 'search') {
+            const searchInput = htmlElement.querySelector<HTMLInputElement>('#knk-entity-search');
+            searchInput?.addEventListener(
+                'input',
+                foundry.utils.debounce(() => {
+                    this.#search = searchInput.value;
+                    this.render({ parts: Object.keys(entityTypes) });
+                }, 300),
+            );
+        }
 
-                this.#search = target.value;
-                this.render({ parts: Object.keys(entityTypes) });
-            }, 300),
-        );
+        if (partId === 'campaign') {
+            htmlElement.querySelector<HTMLSelectElement>('#knk-campaign-select')?.addEventListener(
+                'change',
+                async (event) => {
+                    const target = event.currentTarget as HTMLSelectElement | null;
+                    if (!target) return;
 
-        this.element.querySelector<HTMLSelectElement>('#knk-campaign-select')?.addEventListener(
-            'change',
-            async (event) => {
-                const target = event.currentTarget as HTMLSelectElement | null;
-                if (!target) return;
+                    const campaignId = target.value === '0' ? '' : target.value;
+                    await game.settings?.set('kanka-foundry', 'campaign', campaignId);
+                    this.setupData();
+                    this.render();
+                },
+            );
+        }
 
-                const campaignId = target.value === '0' ? '' : target.value;
-                await game.settings?.set('kanka-foundry', 'campaign', campaignId);
-                this.setupData();
-                this.render();
-            },
-        );
-
-        for (const details of this.element.querySelectorAll<HTMLDetailsElement>('details[data-application-part]')) {
+        if (partId in entityTypes) {
+            const details = htmlElement as HTMLDetailsElement;
             details.addEventListener('toggle', async event => {
                 const target = event.currentTarget as HTMLDetailsElement | null;
                 if (!target) return;
