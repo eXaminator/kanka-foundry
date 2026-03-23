@@ -26,7 +26,7 @@ function getOwnership(
 ): Record<string, CONST.DOCUMENT_OWNERSHIP_LEVELS> | undefined {
     const setting = game.settings?.get('kanka-foundry', 'automaticPermissions');
 
-    if (setting === 'never' && currentOwnership)
+    if (setting === 'never')
         return currentOwnership ?? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE };
     if (setting === 'initial' && currentOwnership) return currentOwnership;
 
