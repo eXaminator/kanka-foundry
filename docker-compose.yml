@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     foundry:
-        image: 'felddy/foundryvtt:13'
+        image: 'ghcr.io/felddy/foundryvtt:prerelease-14.357.0'
         environment:
             TZ: Europe/Berlin
             FOUNDRY_WORLD: 'test'
