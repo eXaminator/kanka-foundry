@@ -7,7 +7,7 @@ export default async function createReferenceLink(reference: Reference): Promise
     const journalEntry = findEntryByEntityId(reference.entityId);
 
     if (journalEntry?.visible) {
-        return TextEditor.enrichHTML(journalEntry.link);
+        return foundry.applications.ux.TextEditor.implementation.enrichHTML(journalEntry.link);
     }
 
     if (game.settings?.get('kanka-foundry', 'disableExternalMentionLinks') || !reference?.urls?.view) return label;

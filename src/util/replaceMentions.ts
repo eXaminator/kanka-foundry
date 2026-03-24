@@ -1,6 +1,6 @@
 import { findEntryByEntityId } from '../foundry/journalEntries';
 
-type EnrichOptions = Parameters<typeof TextEditor.enrichHTML>[1];
+type EnrichOptions = Parameters<typeof foundry.applications.ux.TextEditor.implementation.enrichHTML>[1];
 
 function replaceMentions(text: string): string {
     const el = $(`<div>${text}</div>`);
@@ -30,7 +30,7 @@ function isObject(obj: unknown): obj is Record<string, unknown> {
 
 export default async function replaceRecursiveMentions<T>(input: T, enrichOptions: EnrichOptions = {}): Promise<T> {
     if (typeof input === 'string') {
-        return (await TextEditor.enrichHTML(replaceMentions(input), {
+        return (await foundry.applications.ux.TextEditor.implementation.enrichHTML(replaceMentions(input), {
             ...enrichOptions,
             links: false,
         })) as unknown as Promise<T>;

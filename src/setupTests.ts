@@ -2,7 +2,7 @@ import * as Handlebars from 'handlebars';
 import { vi } from 'vitest';
 
 // @ts-expect-error This doesn't satisfy the types, but it's enough for Tests.
-globalThis.foundry = { utils: {} };
+globalThis.foundry = { utils: {}, applications: { ux: { TextEditor: {} } } };
 
 foundry.utils.getProperty = function getProperty(object, key) {
     if (!key) return undefined;
@@ -19,7 +19,7 @@ globalThis.Handlebars = Handlebars;
 
 // @ts-expect-error
 // biome-ignore lint/complexity/noStaticOnlyClass: This is just for testing and can't really be done differently
-globalThis.TextEditor = class TextEditor {
+foundry.applications.ux.TextEditor.implementation = class TextEditor {
     static enrichHTML(text): string {
         return text;
     }
