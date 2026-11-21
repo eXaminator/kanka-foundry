@@ -1,3 +1,10 @@
+## [6.0.3](https://github.com/eXaminator/kanka-foundry/compare/6.0.2...6.0.3) (2026-11-21)
+
+
+### Bug Fixes
+
+* remove manifestPlusVersion from the module manifest ([c2ceda6](https://github.com/eXaminator/kanka-foundry/commit/c2ceda69d17ffaff424f94dd0bc0f0f872271a66))
+
 ## [6.0.2](https://github.com/eXaminator/kanka-foundry/compare/6.0.1...6.0.2) (2026-03-28)
 
 
