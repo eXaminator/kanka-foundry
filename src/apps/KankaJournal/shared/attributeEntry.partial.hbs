@@ -5,11 +5,11 @@
     <td>{{ attribute.name }}</td>
     {{#if (or (eq attribute.type_id 3) (kankaIsOneOf attribute.type 'checkbox'))}}
     <td>
-        {{#if (kankaToInt attribute.value)}}
+        {{~#if (kankaToInt attribute.value)~}}
         {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}
-        {{else}}
+        {{~else~}}
         {{ kankaLocalize 'journal' 'shared' 'value' 'no' }}
-        {{/if}}
+        {{~/if~}}
     </td>
     {{else}}
     <td>{{{ attribute.parsed }}}</td>
