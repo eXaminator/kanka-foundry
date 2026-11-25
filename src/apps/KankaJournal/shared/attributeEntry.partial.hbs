@@ -1,9 +1,9 @@
 <tr {{#if (kankaIsSecret attribute) }}class="-secret" {{/if}}>
-    {{#if (kankaIsOneOf attribute.type 'section' )}}
+    {{#if (or (eq attribute.type_id 4) (kankaIsOneOf attribute.type 'section'))}}
     <th colspan="2">{{ attribute.name }}</th>
     {{else}}
     <td>{{ attribute.name }}</td>
-    {{#if (kankaIsOneOf attribute.type 'checkbox')}}
+    {{#if (or (eq attribute.type_id 3) (kankaIsOneOf attribute.type 'checkbox'))}}
     <td>
         {{#if (kankaToInt attribute.value)}}
         {{ kankaLocalize 'journal' 'shared' 'value' 'yes' }}

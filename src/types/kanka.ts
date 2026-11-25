@@ -118,11 +118,23 @@ export interface KankaApiListResult<T> extends KankaApiResult<T[]> {
     sync: string;
 }
 
+export enum KankaApiAttributeType {
+    standard = 1,
+    multiline = 2,
+    checkbox = 3,
+    section = 4,
+    random = 5,
+    number = 6,
+    list = 7,
+}
+
 export interface KankaApiAttribute extends KankaApiSimpleConstrainable {
     id: KankaApiId;
-    type: null | 'checkbox' | 'section' | 'text' | 'number';
+    type_id: KankaApiAttributeType;
+    /** @deprecated No longer returned by the API, use type_id instead */
+    type?: null | 'checkbox' | 'section' | 'text' | 'number';
     name: string;
-    value: string | null;
+    value: string | boolean | null;
     parsed: string | null;
     is_star: boolean;
     default_order: number;
