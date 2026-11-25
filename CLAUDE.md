@@ -25,6 +25,19 @@ Kanka-Foundry is a Foundry VTT module that integrates with [Kanka.io](https://ka
 3. `docker compose up` (runs Foundry VTT)
 4. `npm start` (Vite dev server at http://localhost:3000)
 
+### Paseo Dev Workflow
+
+`paseo.json` defines the worktree setup (`npm ci`) and two scripts:
+
+- `dev` (service): Vite dev server behind the Paseo proxy, proxying the Foundry instance at `FOUNDRY_URL`
+- `install-foundry`: `npm run build`, then copy `dist/` into `$FOUNDRY_MODULES_DIR/kanka-foundry` to test the production build
+
+`FOUNDRY_URL` and `FOUNDRY_MODULES_DIR` are read from the environment or from the git ignored `.env.local` in the project root
+(see `.env.local.dist`). Worktree setup copies `.env.local` from the source checkout. Never commit the actual values.
+
+In dev mode templates (`build/hbsPlugin.ts`) and translations (`build/translationPlugin.ts`) are served from source by Vite
+middlewares; changes are pushed to Foundry's own hot reload handler via `src/dev/hotReload.ts`. Nothing is written to `dist/`.
+
 ## Architecture Overview
 
 ```

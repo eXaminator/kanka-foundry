@@ -14,7 +14,8 @@
         "release": "semantic-release",
         "test": "vitest run",
         "test:watch": "vitest watch",
-        "test:coverage": "vitest run --coverage"
+        "test:coverage": "vitest run --coverage",
+        "install:foundry": "sh build/install-foundry.sh"
     },
     "author": "Steven Weingärtner",
     "license": "MIT",

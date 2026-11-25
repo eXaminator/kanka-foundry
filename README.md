@@ -180,3 +180,11 @@ This will give you automatic browser reloads on changes (and even HMR for certai
 
 You can now go to `http://localhost:3000` and should see Foundry. Install other modules and rule systems as you see fit and create
 a world for your tests. Changes in the code should be reflected immediately or after a browser refresh (which should be made automatically).
+
+The dev-server serves everything below `/modules/kanka-foundry/` (code, styles, templates and translations) directly from
+the sources and proxies everything else to Foundry. Foundry only needs an installed copy of the module (any version) so
+that it knows the `module.json`. To use a different Foundry instance set `FOUNDRY_URL`, e.g.
+`FOUNDRY_URL=https://foundry.example.com npm start`.
+
+To install the production build into the modules folder of a Foundry instance run
+`FOUNDRY_MODULES_DIR=/path/to/Data/modules npm run install:foundry`.

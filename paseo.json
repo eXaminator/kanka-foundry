@@ -1,0 +1,19 @@
+{
+    "worktree": {
+        "setup": [
+            "if [ -f \"$PASEO_SOURCE_CHECKOUT_PATH/.claude/settings.local.json\" ]; then mkdir -p .claude && cp \"$PASEO_SOURCE_CHECKOUT_PATH/.claude/settings.local.json\" .claude/settings.local.json && chmod 600 .claude/settings.local.json; else echo 'paseo setup: no .claude/settings.local.json in source checkout, skipping'; fi",
+            "if [ -f \"$PASEO_SOURCE_CHECKOUT_PATH/.env.local\" ]; then cp \"$PASEO_SOURCE_CHECKOUT_PATH/.env.local\" .env.local && chmod 600 .env.local; else echo 'paseo setup: no .env.local in source checkout, skipping'; fi",
+            "if [ -f \"$PASEO_SOURCE_CHECKOUT_PATH/secrets.json\" ]; then cp \"$PASEO_SOURCE_CHECKOUT_PATH/secrets.json\" secrets.json && chmod 600 secrets.json; fi",
+            "npm ci"
+        ]
+    },
+    "scripts": {
+        "dev": {
+            "type": "service",
+            "command": "npm start -- --host \"$HOST\" --port \"$PASEO_PORT\" --strictPort"
+        },
+        "install-foundry": {
+            "command": "sh build/install-foundry.sh"
+        }
+    }
+}
