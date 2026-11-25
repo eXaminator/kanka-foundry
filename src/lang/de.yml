@@ -78,6 +78,7 @@ KANKA:
                 events: Erinnerungen
             labels:
                 type: Typ
+                status: Status
                 location: Ort
                 character: Charakter
                 parent: Gehört zu
@@ -98,6 +99,14 @@ KANKA:
                 yes: Ja
                 no: Nein
                 days: '{value} Tage'
+            status:
+                alive: Lebendig
+                dead: Tot
+                extinct: Ausgestorben
+                destroyed: Zerstört
+                defunct: Aufgelöst
+                not_started: Nicht begonnen
+                completed: Abgeschlossen
 
         character:
             pages:
@@ -110,7 +119,6 @@ KANKA:
                 age: Alter
                 birthday: Geburtstag
                 deathday: Todestag
-                isDead: Verstorben
                 race: Rasse
                 family: Familie
                 member: Mitglied
@@ -134,15 +142,6 @@ KANKA:
                 members: Mitglieder
             labels:
                 member_name: Mitglied
-                isExtinct: Ausgestorben
-        race:
-            labels:
-                isExtinct: Ausgestorben
-
-        creature:
-            labels:
-                isExtinct: Ausgestorben
-                isDead: Tot
         journal:
             labels:
                 author: Autor
@@ -168,7 +167,6 @@ KANKA:
             pages:
                 members: Mitglieder
             labels:
-                isDefunct: Aufgelöst
                 member: Mitglied
                 member_name: Mitglied
                 member_role: Rolle
@@ -184,7 +182,6 @@ KANKA:
             labels:
                 instigator: Auslöser
                 date: Datum
-                completed: Abgeschlossen
                 calendar: Kalender
                 calendarYear: Jahr
                 calendarMonth: Monat
@@ -195,7 +192,6 @@ KANKA:
         location:
             labels:
                 founded: Gegründet
-                isDestroyed: Zerstört
 
     settings:
         baseUrl:

@@ -76,7 +76,6 @@ KANKA:
                 title: Título
                 sex: Sexo
                 age: Idade
-                isDead: Está morto
                 race: Raça
                 family: Família
                 member: Membro
@@ -103,7 +102,6 @@ KANKA:
         quest:
             labels:
                 date: Data
-                completed: Está completo
                 instigator: Instigador
             pages:
                 elements: Elementos

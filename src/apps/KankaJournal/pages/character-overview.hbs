@@ -13,8 +13,6 @@
 {{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.reminders) 'type_id' 3) 0) }}
 {{~>../shared/detailRow value=date label='character.labels.deathday' isSecret=(kankaIsSecret this) }}
 {{/with}}
-{{~>../shared/detailRow value=data.system.snapshot.is_dead label='character.labels.isDead'
-localizeValue='shared.value'}}
 {{~>../shared/detailRowArray references=data.system.snapshot.families type='family' label='character.labels.family' delimiter=", " }}
 
 {{!-- Pinned Organisations --}}

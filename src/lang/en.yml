@@ -75,6 +75,7 @@ KANKA:
                 events: Reminders
             labels:
                 type: Type
+                status: Status
                 location: Location
                 character: Character
                 parent: Belongs to
@@ -95,6 +96,14 @@ KANKA:
                 yes: Yes
                 no: No
                 days: '{value} days'
+            status:
+                alive: Alive
+                dead: Dead
+                extinct: Extinct
+                destroyed: Destroyed
+                defunct: Defunct
+                not_started: Not started
+                completed: Completed
 
         character:
             pages:
@@ -107,7 +116,6 @@ KANKA:
                 age: Age
                 birthday: Birthday
                 deathday: Day of death
-                isDead: Is dead
                 race: Race
                 family: Family
                 member: Member
@@ -133,16 +141,6 @@ KANKA:
                 members: Members
             labels:
                 member_name: Member
-                isExtinct: Is extinct
-
-        race:
-            labels:
-                isExtinct: Is extinct
-
-        creature:
-            labels:
-                isExtinct: Is extinct
-                isDead: Is dead
 
         journal:
             labels:
@@ -172,7 +170,6 @@ KANKA:
             pages:
                 members: Members
             labels:
-                isDefunct: Defunct
                 member_name: Member
                 member_role: Role
                 member_status: Membership status
@@ -188,7 +185,6 @@ KANKA:
             labels:
                 instigator: Instigator
                 date: Date
-                completed: Is completed
                 calendar: Calendar
                 calendarYear: Year
                 calendarMonth: Month
@@ -200,7 +196,6 @@ KANKA:
         location:
             labels:
                 founded: Founded
-                isDestroyed: Is destroyed
 
     settings:
         baseUrl:

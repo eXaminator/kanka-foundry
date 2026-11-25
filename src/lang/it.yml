@@ -82,7 +82,6 @@ KANKA:
                 sex: Sesso
                 pronouns: Pronomi
                 age: Età
-                isDead: È morto
                 race: Razza
                 family: Famiglia
                 member: Membro
@@ -120,7 +119,6 @@ KANKA:
             labels:
                 instigator: Mandante
                 date: Data
-                completed: Completata
     settings:
         baseUrl:
             label: Kanka URL
