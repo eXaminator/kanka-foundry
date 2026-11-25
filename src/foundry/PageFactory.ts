@@ -2,6 +2,7 @@ import type ReferenceCollection from '../api/ReferenceCollection';
 import type { KankaPageModel } from '../apps/KankaJournal/models/KankaPageModel';
 import type { KankaApiAnyId, KankaApiChildEntity, KankaApiChildEntityWithChildren, KankaApiEntityId, KankaApiId, KankaApiModuleType } from "../types/kanka";
 import type Reference from '../types/Reference';
+import getEntityEvents from '../util/getEntityEvents';
 import groupBy from '../util/groupBy';
 import isSecret from '../util/isSecret';
 import { hasChildren, isCharacter, isFamily, isOrganisation, isQuest } from '../util/kankaTypeGuards';
@@ -334,8 +335,8 @@ export default class PageFactory {
         return this.createPage(
             'events',
             'KANKA.journal.shared.pages.events',
-            { list: this.entity.reminders },
-            this.getCounts(this.entity.reminders, 'calendar_id', 'calendar'),
+            { list: getEntityEvents(this.entity) },
+            this.getCounts(getEntityEvents(this.entity), 'calendar_id', 'calendar'),
         );
     }
 
