@@ -404,7 +404,8 @@ export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
     locations?: KankaApiId[];
     /** @deprecated Use author_id instead */
     character_id?: KankaApiId | null;
-    author_id?: KankaApiId | null;
+    /** Entity ID of the author, which is not necessarily a character */
+    author_id?: KankaApiEntityId | null;
     type: string | null;
     date: string | null;
     calendar_id: KankaApiId | null;

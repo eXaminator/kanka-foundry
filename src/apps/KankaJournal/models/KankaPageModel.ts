@@ -51,9 +51,6 @@ class KankaPageModel extends TypeDataModel<KankaPageModel.Schema, JournalEntryPa
         if (!snapshot.reminders && snapshot.entity_events) {
             snapshot.reminders = snapshot.entity_events;
         }
-        if (this.type === 'journal' && !snapshot.author_id && snapshot.character_id) {
-            snapshot.author_id = snapshot.character_id;
-        }
         if (this.type === 'item' && !snapshot.creator_id && snapshot.character_id) {
             snapshot.creator_id = snapshot.character_id;
         }
