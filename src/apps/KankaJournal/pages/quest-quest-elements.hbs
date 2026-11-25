@@ -23,7 +23,7 @@
         <td>{{{ ref.link }}}</td>
         <td>
             {{#if rel.role}}<strong>{{ rel.role }}</strong><br />{{/if}}
-            {{{ rel.description_parsed }}}
+            {{#if rel.entry_parsed}}{{{ rel.entry_parsed }}}{{else}}{{{ rel.description_parsed }}}{{/if}}
         </td>
     </tr>
     {{/with}}
@@ -34,7 +34,7 @@
         <td>{{ rel.name }}</td>
         <td>
             {{#if rel.role}}{{ rel.role }}<br />{{/if}}
-            {{{ rel.description_parsed }}}
+            {{#if rel.entry_parsed}}{{{ rel.entry_parsed }}}{{else}}{{{ rel.description_parsed }}}{{/if}}
         </td>
     </tr>
     {{/if}}
