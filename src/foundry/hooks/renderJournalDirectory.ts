@@ -18,8 +18,9 @@ function renderQuestStatusIcons(html: HTMLElement): void {
 
     const questEntries = findEntriesByType('quest');
     for (const entry of questEntries) {
-        const li = $(html).find(`[data-document-id="${entry.id as string}"]`);
-        const link = li.find('.document-name a');
+        // Foundry v13+ renders data-entry-id/.entry-name, older versions data-document-id/.document-name
+        const li = $(html).find(`[data-entry-id="${entry.id as string}"], [data-document-id="${entry.id as string}"]`);
+        const link = li.find('.entry-name, .document-name a');
         const snapshot = entry.getFlag('kanka-foundry', 'snapshot') as KankaApiQuest;
         const isCompleted = getEntityStatus(snapshot as unknown as Record<string, unknown>)?.key === 'completed';
 
