@@ -1,3 +1,24 @@
+## [6.0.4](https://github.com/eXaminator/kanka-foundry/compare/6.0.3...6.0.4) (2026-11-25)
+
+
+### Bug Fixes
+
+* align values of checkbox attributes ([7809ada](https://github.com/eXaminator/kanka-foundry/commit/7809ada24f84e70f73001bb04c166c9577660023))
+* only import the selected entities when importing several at once ([6329124](https://github.com/eXaminator/kanka-foundry/commit/63291246a07bac071e89a76888b1a357f6a9430e))
+* read reminders from entity_events ([cb8397f](https://github.com/eXaminator/kanka-foundry/commit/cb8397f9e9a14c03839673a927c6ce0a9eb5976b))
+* render attribute sections and checkboxes based on type_id ([fb3fee7](https://github.com/eXaminator/kanka-foundry/commit/fb3fee7272e480abc3c467f8ea81ec4b3b66c596))
+* resolve journal authors by entity id ([e9c6f3f](https://github.com/eXaminator/kanka-foundry/commit/e9c6f3fc95d70aacc6cc1cfe42ff7cfd246bde01))
+* resolve parent entities by entity id ([38beda2](https://github.com/eXaminator/kanka-foundry/commit/38beda2965a917aaeeed3b5486c22b7044ac7a87))
+* show all creators of objects ([fcab461](https://github.com/eXaminator/kanka-foundry/commit/fcab4616dca6d4990fd08f61946a392b0bddfc89))
+* show descriptions of quest elements ([3f22208](https://github.com/eXaminator/kanka-foundry/commit/3f22208beb57d99b325934798c2cb35a74e75b06))
+* show entity status instead of removed boolean flags ([07813df](https://github.com/eXaminator/kanka-foundry/commit/07813df81add720794a70ba3ad5e24a913d76485))
+* show private races and families of characters as secrets ([2117f09](https://github.com/eXaminator/kanka-foundry/commit/2117f09150b733e12eee6bae35b680ab5ab57dff))
+* show quest status icons in the journal directory on Foundry v13+ ([4cd886a](https://github.com/eXaminator/kanka-foundry/commit/4cd886ab70dd3e6970ae9734177b06cc94052af0))
+* show secret icons on Foundry v14 ([bd87285](https://github.com/eXaminator/kanka-foundry/commit/bd87285bffa3a1c456dbc3f7106b8dfd8a83322e))
+* show the title of locations ([e954f71](https://github.com/eXaminator/kanka-foundry/commit/e954f71134c6917d8d6ae681041dc76f7c8f53f4))
+* support multiple locations for families, objects, journals, quests and events ([0561e02](https://github.com/eXaminator/kanka-foundry/commit/0561e02bf9bf9c6667c7149ca5bad2327ac9395f))
+* use is_pinned for pinned relations and attributes ([c6100d5](https://github.com/eXaminator/kanka-foundry/commit/c6100d5432cb9bc998a7d6f56a2a59c2639b72a2))
+
 ## [6.0.3](https://github.com/eXaminator/kanka-foundry/compare/6.0.2...6.0.3) (2026-11-21)
 
 
