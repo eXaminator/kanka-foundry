@@ -11,7 +11,7 @@
     transform: translateY(-50%);
     vertical-align: middle;
 
-    font-family: 'Font Awesome 6 Pro';
+    font-family: 'Font Awesome 7 Pro', 'Font Awesome 6 Pro';
     content: '\f070';
     font-weight: 900;
     color: var(--color-ownership-none);
@@ -143,7 +143,7 @@
                     content: '#{$glyph}';
                     font-size: var(--font-size-12);
                     font-weight: 900;
-                    font-family: 'Font Awesome 6 Pro';
+                    font-family: 'Font Awesome 7 Pro', 'Font Awesome 6 Pro';
                     vertical-align: middle;
                     color: var(--color-text-light-7);
                 }
