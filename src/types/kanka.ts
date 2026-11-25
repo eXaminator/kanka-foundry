@@ -146,7 +146,9 @@ export interface KankaApiAttribute extends KankaApiSimpleConstrainable {
     name: string;
     value: string | boolean | null;
     parsed: string | null;
-    is_star: boolean;
+    is_pinned: boolean;
+    /** @deprecated Use is_pinned instead */
+    is_star?: boolean;
     default_order: number;
 }
 
@@ -157,7 +159,9 @@ export interface KankaApiRelation extends KankaApiVisibilityConstrainable {
     relation?: string;
     attitude?: number;
     colour?: string;
-    is_star: boolean;
+    is_pinned: boolean;
+    /** @deprecated Use is_pinned instead */
+    is_star?: boolean;
 }
 
 export interface KankaApiInventory extends KankaApiVisibilityConstrainable {

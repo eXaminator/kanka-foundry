@@ -15,14 +15,14 @@
                 {{~>./statusRow status=data.system.snapshot.status }}
 
                 {{!-- Starred Relations --}}
-                {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.relations) 'is_star' true) as | starred |~}}
+                {{~#with (kankaFilterPinned (kankaFilterReferences data.system.snapshot.relations)) as | starred |~}}
                     {{~#each starred ~}}
                         {{~>./detailRow value=target_id rawLabel=relation reference=true isSecret=(kankaIsSecret this) }}
                     {{~/each~}}
                 {{~/with~}}
 
                 {{!-- Starred Attributes --}}
-                {{~#with (kankaSortBy (kankaFilterBy (kankaFilterAccessible data.system.snapshot.attributes) 'is_star' true) 'default_order') as | starred |~}}
+                {{~#with (kankaSortBy (kankaFilterPinned (kankaFilterAccessible data.system.snapshot.attributes)) 'default_order') as | starred |~}}
                     {{~#each starred ~}}
                         {{~>./attributeEntry attribute=this~}}
                     {{~/each~}}
