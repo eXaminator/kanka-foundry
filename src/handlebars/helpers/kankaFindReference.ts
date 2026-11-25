@@ -13,8 +13,11 @@ export default function kankaFindReference(
     let type: KankaApiModuleType | undefined = typeParam as KankaApiModuleType;
     let options = optionsParam as Handlebars.HelperOptions;
 
-    if (typeof typeParam === 'object') {
+    if (typeParam && typeof typeParam === 'object') {
         options = typeParam;
+        type = undefined;
+    } else if (!typeParam) {
+        // Allows templates to explicitly look up by entity id (e.g. `type=null` in partials)
         type = undefined;
     }
 

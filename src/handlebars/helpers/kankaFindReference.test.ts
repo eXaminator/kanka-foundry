@@ -50,6 +50,14 @@ describe('kankaFindReference()', () => {
         expect(compile(template, { data: { system: { references } } })).toEqual('1');
     });
 
+    it('returns reference based on entity id if type is explicitly null', () => {
+        const references: Reference[] = [createReference(1, 4711, 'location'), createReference(4711, 1, 'location')];
+
+        const template = '{{#with (kankaFindReference 4711 null)}}{{ id }}{{/with}}';
+
+        expect(compile(template, { data: { system: { references } } })).toEqual('1');
+    });
+
     it('returns reference based on id and type from root context "kankaReferences"', () => {
         const references: Reference[] = [createReference(1, 4711, 'character')];
 

@@ -266,8 +266,10 @@ export interface KankaApiRelated {
 }
 
 export interface KankaApiChildEntityWithChildren extends KankaApiChildEntity {
+    /** Type specific IDs of the direct children */
     children: KankaApiId[];
-    parents: KankaApiId[];
+    /** Entity IDs of all ancestors, starting with the direct parent */
+    parents: KankaApiEntityId[];
 }
 
 export interface KankaApiEntity extends KankaApiSimpleConstrainable, KankaApiBlamable {
