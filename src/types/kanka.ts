@@ -447,8 +447,13 @@ export interface KankaApiQuestElement extends KankaApiVisibilityConstrainable {
     id: KankaApiId;
     entity_id: KankaApiEntityId;
     colour: string | null;
-    description: string;
-    description_parsed: string | null;
+    name: string | null;
+    entry: string | null;
+    entry_parsed: string | null;
+    /** @deprecated Use entry instead, only present in old snapshots */
+    description?: string;
+    /** @deprecated Use entry_parsed instead, only present in old snapshots */
+    description_parsed?: string | null;
     role: string | null;
 }
 
