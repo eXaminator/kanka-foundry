@@ -45,6 +45,9 @@ class KankaPageModel extends TypeDataModel<KankaPageModel.Schema, JournalEntryPa
         if (snapshot.status === undefined && snapshot.entity_id !== undefined) {
             snapshot.status = getEntityStatus(snapshot);
         }
+        if (snapshot.entity_id !== undefined && !snapshot.locations && snapshot.location_id) {
+            snapshot.locations = [snapshot.location_id];
+        }
         if (!snapshot.reminders && snapshot.entity_events) {
             snapshot.reminders = snapshot.entity_events;
         }

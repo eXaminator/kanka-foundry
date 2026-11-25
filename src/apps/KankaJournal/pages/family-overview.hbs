@@ -2,6 +2,6 @@
 {{#*inline 'attributes'~}}
 {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.parents type=null label='shared.labels.parent' }}
-{{~>../shared/detailRow value=data.system.snapshot.location_id type='location' label='shared.labels.location' reference=true }}
+{{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=", " }}
 {{~/inline}}
 {{/../shared/overviewLayout}}

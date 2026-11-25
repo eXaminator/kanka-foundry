@@ -16,7 +16,7 @@ export default class ItemTypeLoader extends AbstractTypeLoader<KankaApiItem> {
         const collection = await super.createReferenceCollection(campaignId, entity, lookup);
 
         await Promise.all([
-            collection.addById(entity.location_id, 'location'),
+            ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
             collection.addById(entity.creator_id, 'character'),
         ]);
 
@@ -27,6 +27,7 @@ export default class ItemTypeLoader extends AbstractTypeLoader<KankaApiItem> {
         return {
             ...entity,
             creator_id: entity.creator_id ?? entity.character_id ?? null,
+            locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
         };
     }
 

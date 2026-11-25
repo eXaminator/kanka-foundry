@@ -75,7 +75,27 @@ describe('QuestTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getQuest).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+    });
+
+    describe('normalize()', () => {
+        it('converts a legacy location_id to locations', async () => {
+            const loader = new QuestTypeLoader();
+            vi.mocked(api).getQuest.mockResolvedValue(createQuest({ location_id: 42 }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([42]);
+        });
+
+        it('keeps locations if present', async () => {
+            const loader = new QuestTypeLoader();
+            vi.mocked(api).getQuest.mockResolvedValue(createQuest({ locations: [1, 2] }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([1, 2]);
         });
     });
 
@@ -88,7 +108,7 @@ describe('QuestTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllQuests).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
         });
     });
 
@@ -210,7 +230,7 @@ describe('QuestTypeLoader', () => {
 
         it('includes location from the lookup array', async () => {
             const expectedResult = createQuest({
-                location_id: 2001,
+                locations: [2001],
             });
 
             const entities = [
