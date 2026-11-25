@@ -1,4 +1,5 @@
 import type Reference from "../../../types/Reference";
+import getEntityStatus from "../../../util/getEntityStatus";
 import DataSchema = foundry.data.fields.DataSchema;
 import TypeDataModel = foundry.abstract.TypeDataModel;
 
@@ -41,6 +42,9 @@ class KankaPageModel extends TypeDataModel<KankaPageModel.Schema, JournalEntryPa
 
     prepareDerivedData(): void {
         const snapshot = this.snapshot as Record<string, unknown>;
+        if (snapshot.status === undefined && snapshot.entity_id !== undefined) {
+            snapshot.status = getEntityStatus(snapshot);
+        }
         if (!snapshot.reminders && snapshot.entity_events) {
             snapshot.reminders = snapshot.entity_events;
         }

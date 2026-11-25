@@ -1,0 +1,9 @@
+{{~#if status ~}}
+    <tr>
+        <td>{{~ kankaLocalize 'journal' 'shared.labels.status' ~}}</td>
+        <td>
+            {{~#if status.icon}}<i class="{{ status.icon }}"></i> {{/if~}}
+            {{~ kankaStatusName status ~}}
+        </td>
+    </tr>
+{{~/if~}}

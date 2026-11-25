@@ -11,6 +11,9 @@
                 {{!-- Type specific Attributes --}}
                 {{~#>attributes~}}{{~/attributes~}}
 
+                {{!-- Status (alive, dead, destroyed, completed, ...) --}}
+                {{~>./statusRow status=data.system.snapshot.status }}
+
                 {{!-- Starred Relations --}}
                 {{~#with (kankaFilterBy (kankaFilterReferences data.system.snapshot.relations) 'is_star' true) as | starred |~}}
                     {{~#each starred ~}}

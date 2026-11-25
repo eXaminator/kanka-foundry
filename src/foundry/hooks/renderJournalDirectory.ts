@@ -2,6 +2,7 @@ import api from '../../api';
 import KankaBrowserApplication from '../../apps/KankaBrowser/KankaBrowserApplication';
 import logo from '../../assets/kanka.png';
 import type { KankaApiQuest } from '../../types/kanka';
+import getEntityStatus from '../../util/getEntityStatus';
 import { logInfo } from '../../util/logger';
 import getMessage from '../getMessage';
 import { findEntriesByType } from '../journalEntries';
@@ -20,8 +21,9 @@ function renderQuestStatusIcons(html: HTMLElement): void {
         const li = $(html).find(`[data-document-id="${entry.id as string}"]`);
         const link = li.find('.document-name a');
         const snapshot = entry.getFlag('kanka-foundry', 'snapshot') as KankaApiQuest;
+        const isCompleted = getEntityStatus(snapshot as unknown as Record<string, unknown>)?.key === 'completed';
 
-        link.html(`${snapshot.is_completed ? questStatus.complete : questStatus.open} ${snapshot.name}`);
+        link.html(`${isCompleted ? questStatus.complete : questStatus.open} ${snapshot.name}`);
     }
 }
 

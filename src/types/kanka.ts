@@ -79,6 +79,14 @@ export interface KankaApiBlamable {
     updated_by: number;
 }
 
+export interface KankaApiEntityStatus {
+    id: number | null;
+    key: string;
+    name: string | null;
+    icon: string | null;
+    is_custom: boolean;
+}
+
 export interface KankaApiChildEntity
     extends KankaApiRelated,
     KankaApiSimpleConstrainable,
@@ -89,6 +97,8 @@ export interface KankaApiChildEntity
     name: string;
     entry: string;
     entry_parsed: string;
+    status_id?: number | null;
+    status?: KankaApiEntityStatus | null;
     urls: {
         view: string;
         api: string;
@@ -331,7 +341,8 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
     /** @deprecated Use families instead */
     family_id?: KankaApiId | null;
     families?: KankaApiId[];
-    is_dead: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_dead?: boolean;
     traits: KankaApiCharacterTrait[];
     is_personality_visible: boolean;
     is_personality_pinned: boolean;
@@ -344,8 +355,10 @@ export interface KankaApiCreature extends KankaApiChildEntityWithChildren {
     creature_id?: KankaApiId | null;
     locations: KankaApiId[];
     type: string | null;
-    is_extinct: boolean;
-    is_dead: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_extinct?: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_dead?: boolean;
 }
 
 export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
@@ -362,7 +375,8 @@ export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
     location_id?: KankaApiId | null;
     type: string | null;
     members: KankaApiId[];
-    is_extinct: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_extinct?: boolean;
 }
 
 export interface KankaApiItem extends KankaApiChildEntityWithChildren {
@@ -400,7 +414,8 @@ export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
     /** @deprecated Will be removed; use parents[] instead */
     location_id?: KankaApiId | null;
     type: string | null;
-    is_destroyed: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_destroyed?: boolean;
 }
 
 export interface KankaApiNote extends KankaApiChildEntityWithChildren {
@@ -417,6 +432,7 @@ export interface KankaApiOrganisation extends KankaApiChildEntityWithChildren {
     locations?: KankaApiId[];
     type: string | null;
     members: KankaApiCharacterOrganisationLink[];
+    /** @deprecated Replaced by status, only present in old snapshots */
     is_defunct?: boolean;
 }
 
@@ -438,7 +454,8 @@ export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
     location_id: KankaApiId | null;
     type: string | null;
     date: string | null;
-    is_completed: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_completed?: boolean;
     elements_count: number;
     elements: KankaApiQuestElement[];
     calendar_id: KankaApiId | null;
@@ -453,7 +470,8 @@ export interface KankaApiRace extends KankaApiChildEntityWithChildren {
     /** @deprecated Will be removed; use parents[] instead */
     race_id?: KankaApiId | null;
     type: string | null;
-    is_extinct: boolean;
+    /** @deprecated Replaced by status, only present in old snapshots */
+    is_extinct?: boolean;
 }
 
 export interface KankaApiEvent extends KankaApiChildEntityWithChildren {

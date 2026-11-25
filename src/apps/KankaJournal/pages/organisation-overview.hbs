@@ -3,7 +3,6 @@
 {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.parents type=null label='shared.labels.parent' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=", " }}
-{{~>../shared/detailRow value=data.system.snapshot.is_defunct label='organisation.labels.isDefunct' localizeValue='shared.value'}}
 
 {{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.reminders) 'type_id' 5) 0) }}
 {{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
