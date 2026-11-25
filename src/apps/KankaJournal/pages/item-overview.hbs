@@ -3,8 +3,14 @@
 {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.parents type=null label='shared.labels.parent' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=", " }}
-{{~>../shared/detailRow value=data.system.snapshot.creator_id type='character' label='item.labels.creator'
-reference=true}}
+{{!-- creators are entity ids; character_id and creator_id are character ids of older snapshots --}}
+{{~#if data.system.snapshot.creators.length ~}}
+{{~>../shared/detailRowArray references=data.system.snapshot.creators type=null label='item.labels.creator' delimiter=", " }}
+{{~else if data.system.snapshot.character_id ~}}
+{{~>../shared/detailRow value=data.system.snapshot.character_id type='character' label='item.labels.creator' reference=true}}
+{{~else~}}
+{{~>../shared/detailRow value=data.system.snapshot.creator_id type='character' label='item.labels.creator' reference=true}}
+{{~/if~}}
 {{~>../shared/detailRow value=data.system.snapshot.price label='item.labels.price' }}
 {{~>../shared/detailRow value=data.system.snapshot.size label='item.labels.size' }}
 {{~>../shared/detailRow value=data.system.snapshot.weight label='item.labels.weight' }}
