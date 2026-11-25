@@ -17,7 +17,7 @@ export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity =
         const { parents = [], children = [] } = entity as unknown as KankaApiChildEntityWithChildren;
 
         await Promise.all([
-            ...parents.map((parent) => collection.addById(parent, this.getType())),
+            ...parents.map((parent) => collection.addByEntityId(parent)),
             ...children.map((child) => collection.addById(child, this.getType())),
             ...entity.relations.map((relation) => collection.addByEntityId(relation.target_id)),
             ...entity.inventory.map((item) => collection.addById(item.item_id, 'item')),

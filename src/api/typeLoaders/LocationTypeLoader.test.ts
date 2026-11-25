@@ -160,9 +160,9 @@ describe('LocationTypeLoader', () => {
             });
         });
 
-        it('includes parents from the lookup array', async () => {
+        it('includes parents by entity id from the lookup array', async () => {
             const expectedResult = createLocation({
-                parents: [2002],
+                parents: [1002],
             });
 
             const entities = [

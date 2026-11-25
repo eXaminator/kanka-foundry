@@ -14,7 +14,7 @@ import isSecret from '../util/isSecret';
 import { ensureFolderPath } from './journalFolders';
 import PageFactory from './PageFactory';
 
-const CURRENT_JOURNAL_VERSION = '000003';
+const CURRENT_JOURNAL_VERSION = '000004';
 
 function buildVersionString(entity: { updated_at: string }): string {
     return `${CURRENT_JOURNAL_VERSION}-${entity.updated_at}`;
@@ -115,7 +115,7 @@ export async function createJournalEntry(
     const path =
         [...((entity as KankaApiChildEntityWithChildren)?.parents ?? [])]
             .reverse()
-            .map((id) => references.findByIdAndType(id, type))
+            .map((id) => references.findByEntityId(id))
             .filter((ref): ref is Reference => !!ref) ?? [];
 
     const folder = await ensureFolderPath(type, path);

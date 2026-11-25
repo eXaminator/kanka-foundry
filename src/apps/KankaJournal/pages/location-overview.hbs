@@ -4,7 +4,7 @@
 {{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.reminders) 'type_id' 5) 0) }}
 {{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
 {{/with}}
-{{~>../shared/detailRowArray references=data.system.snapshot.parents type='location' label='shared.labels.parent' }}
+{{~>../shared/detailRowArray references=data.system.snapshot.parents type=null label='shared.labels.parent' }}
 {{~>../shared/detailRow value=data.system.snapshot.is_destroyed label='location.labels.isDestroyed'
 localizeValue='shared.value'}}
 {{~/inline}}
