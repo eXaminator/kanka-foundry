@@ -5,6 +5,7 @@ import type {
     KankaApiModuleType,
     KankaApiId,
 } from '../../types/kanka';
+import getEntityEvents from '../../util/getEntityEvents';
 import ReferenceCollection from '../ReferenceCollection';
 
 export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity = KankaApiChildEntity> {
@@ -22,7 +23,7 @@ export default abstract class AbstractTypeLoader<T extends KankaApiChildEntity =
             ...entity.relations.map((relation) => collection.addByEntityId(relation.target_id)),
             ...entity.inventory.map((item) => collection.addById(item.item_id, 'item')),
             ...entity.entity_abilities.map((ability) => collection.addById(ability.ability_id, 'ability')),
-            ...entity.reminders.map((reminder) => collection.addById(reminder.calendar_id, 'calendar')),
+            ...getEntityEvents(entity).map((reminder) => collection.addById(reminder.calendar_id, 'calendar')),
         ]);
 
         return collection;

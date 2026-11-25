@@ -287,7 +287,9 @@ export interface KankaApiRelated {
     inventory: KankaApiInventory[];
     posts: KankaApiEntityPost[];
     entity_abilities: KankaApiAbilityLink[];
-    reminders: KankaApiReminder[];
+    entity_events?: KankaApiReminder[];
+    /** @deprecated Use entity_events instead */
+    reminders?: KankaApiReminder[];
     entity_assets: KankaApiEntityAsset[];
 }
 
