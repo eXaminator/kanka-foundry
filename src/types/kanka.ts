@@ -433,6 +433,7 @@ export interface KankaApiLocation extends KankaApiChildEntityWithChildren {
     parent_location_id?: KankaApiId | null;
     /** @deprecated Will be removed; use parents[] instead */
     location_id?: KankaApiId | null;
+    title?: string | null;
     type: string | null;
     /** @deprecated Replaced by status, only present in old snapshots */
     is_destroyed?: boolean;

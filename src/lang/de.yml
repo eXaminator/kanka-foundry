@@ -191,6 +191,7 @@ KANKA:
                 element_description: Beschreibung
         location:
             labels:
+                title: Titel
                 founded: Gegründet
 
     settings:

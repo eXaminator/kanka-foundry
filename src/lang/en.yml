@@ -195,6 +195,7 @@ KANKA:
 
         location:
             labels:
+                title: Title
                 founded: Founded
 
     settings:
