@@ -387,9 +387,12 @@ export interface KankaApiItem extends KankaApiChildEntityWithChildren {
     /** @deprecated Use locations instead */
     location_id?: KankaApiId | null;
     locations?: KankaApiId[];
-    /** @deprecated Use creator_id instead */
+    /** @deprecated Use creators instead */
     character_id?: KankaApiId | null;
+    /** @deprecated No longer returned by the API, use creators instead */
     creator_id?: KankaApiId | null;
+    /** Entity IDs of the creators, which are not necessarily characters */
+    creators?: KankaApiEntityId[];
     type: string | null;
     price: string | null;
     size: string | null;

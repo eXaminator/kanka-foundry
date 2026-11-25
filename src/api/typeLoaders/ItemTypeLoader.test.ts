@@ -76,14 +76,14 @@ describe('ItemTypeLoader', () => {
             expect(result).toMatchObject(expectedResult);
         });
 
-        it('normalizes character_id to creator_id', async () => {
+        it('does not mix the character_id into the creator_id', async () => {
             const expectedResult = createItem({ character_id: 42 });
             const loader = new ItemTypeLoader();
             vi.mocked(api).getItem.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
-            expect(result.creator_id).toBe(42);
+            expect(result.creator_id).toBeUndefined();
         });
     });
 
@@ -119,15 +119,15 @@ describe('ItemTypeLoader', () => {
             expect(result).toMatchObject(expectedResult);
         });
 
-        it('normalizes character_id to creator_id for all items', async () => {
+        it('does not mix the character_id into the creator_id for all items', async () => {
             const expectedResult = [createItem({ character_id: 42 }), createItem({ character_id: 99 })];
             const loader = new ItemTypeLoader();
             vi.mocked(api).getAllItems.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
-            expect(result[0].creator_id).toBe(42);
-            expect(result[1].creator_id).toBe(99);
+            expect(result[0].creator_id).toBeUndefined();
+            expect(result[1].creator_id).toBeUndefined();
         });
     });
 
@@ -224,7 +224,45 @@ describe('ItemTypeLoader', () => {
             });
         });
 
-        it('includes creator from the lookup array', async () => {
+        it('includes creators by entity id from the lookup array', async () => {
+            const expectedResult = createItem({
+                creators: [1002, 1003],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'character'),
+                createEntity(1003, 2003, 'organisation'),
+            ];
+
+            const loader = new ItemTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: { id: 2002, entityId: 1002, type: 'character' },
+                1003: { id: 2003, entityId: 1003, type: 'organisation' },
+            });
+        });
+
+        it('includes the legacy character_id creator from the lookup array', async () => {
+            const expectedResult = createItem({
+                character_id: 2002,
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'character'),
+            ];
+
+            const loader = new ItemTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: { id: 2002, entityId: 1002, type: 'character' },
+            });
+        });
+
+        it('includes the legacy creator_id from the lookup array', async () => {
             const expectedResult = createItem({
                 creator_id: 2002,
             });

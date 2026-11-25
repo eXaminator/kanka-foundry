@@ -17,6 +17,8 @@ export default class ItemTypeLoader extends AbstractTypeLoader<KankaApiItem> {
 
         await Promise.all([
             ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
+            ...(entity.creators ?? []).map((id) => collection.addByEntityId(id)),
+            collection.addById(entity.character_id, 'character'),
             collection.addById(entity.creator_id, 'character'),
         ]);
 
@@ -26,7 +28,6 @@ export default class ItemTypeLoader extends AbstractTypeLoader<KankaApiItem> {
     private normalize(entity: KankaApiItem): KankaApiItem {
         return {
             ...entity,
-            creator_id: entity.creator_id ?? entity.character_id ?? null,
             locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
         };
     }
