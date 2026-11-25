@@ -1,5 +1,6 @@
 {{#>../shared/overviewLayout}}
 {{#*inline 'attributes'~}}
+{{~>../shared/detailRow value=data.system.snapshot.title label='location.labels.title' }}
 {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
 {{#with (lookup (kankaFilterBy (kankaFilterAccessible data.system.snapshot.reminders) 'type_id' 5) 0) }}
 {{~>../shared/detailRow value=date label='location.labels.founded' isSecret=(kankaIsSecret this) }}
