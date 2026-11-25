@@ -337,10 +337,14 @@ export interface KankaApiCharacter extends KankaApiChildEntity {
     /** @deprecated Use races instead */
     race_id?: KankaApiId | null;
     races?: KankaApiId[];
+    /** Races only visible to admins */
+    private_races?: KankaApiId[];
     type: string | null;
     /** @deprecated Use families instead */
     family_id?: KankaApiId | null;
     families?: KankaApiId[];
+    /** Families only visible to admins */
+    private_families?: KankaApiId[];
     /** @deprecated Replaced by status, only present in old snapshots */
     is_dead?: boolean;
     traits: KankaApiCharacterTrait[];
