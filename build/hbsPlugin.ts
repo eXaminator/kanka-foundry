@@ -18,9 +18,10 @@ interface ProcessedTemplate {
 }
 
 /**
- * Templates are loaded by Foundry via `getTemplate()`, which fetches them from the module URL. During the build they are
- * emitted as assets. On the dev server they are served from source by a middleware (so nothing needs to be written into
- * the Foundry module directory) and template changes are pushed to Foundry's own hot reload handling.
+ * Templates are loaded by Foundry via `getTemplate()`, which requests them through its websocket from the module
+ * directory on the Foundry server. During the build they are emitted as assets. On the dev server they are registered
+ * from source when the module is loaded (so nothing needs to be written into the Foundry module directory), are
+ * additionally served by a middleware and template changes are pushed to Foundry's own hot reload handling.
  */
 export default function hbsPlugin(): Plugin {
     let config: ResolvedConfig;
@@ -97,6 +98,19 @@ export default function hbsPlugin(): Plugin {
                 .join('\n');
 
             const fullTemplateUrl = JSON.stringify(url);
+
+            if (config.command === 'serve') {
+                // Foundry fetches templates through its websocket from the module directory on the Foundry server, which
+                // would bypass the dev server. Registering the template from source up front makes getTemplate() use it.
+                return `
+                ${partialImports};
+                Hooks.once('init', () => {
+                    Handlebars.registerPartial(${fullTemplateUrl}, Handlebars.compile(${JSON.stringify(content)}, { preventIndent: true }));
+                    (Handlebars.templateIds[${fullTemplateUrl}] ??= new Set()).add(${fullTemplateUrl});
+                });
+                export default ${fullTemplateUrl};
+                `;
+            }
 
             return `
             ${partialImports};
