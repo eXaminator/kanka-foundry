@@ -40,8 +40,7 @@ export async function createEntities(
         const loader = loaders.get(type);
         if (!loader) throw new Error(`Missing loader for type ${String(type)}`);
 
-        const entities = await loader.loadAll(campaignId);
-        entities.filter((entity) => ids.includes(entity.id));
+        const entities = (await loader.loadAll(campaignId)).filter((entity) => ids.includes(entity.id));
 
         for (const entity of entities) {
             // Make sure to handle them in sequence to avoid duplicate folders being created
