@@ -74,7 +74,27 @@ describe('FamilyTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getFamily).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+    });
+
+    describe('normalize()', () => {
+        it('converts a legacy location_id to locations', async () => {
+            const loader = new FamilyTypeLoader();
+            vi.mocked(api).getFamily.mockResolvedValue(createFamily({ location_id: 42 }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([42]);
+        });
+
+        it('keeps locations if present', async () => {
+            const loader = new FamilyTypeLoader();
+            vi.mocked(api).getFamily.mockResolvedValue(createFamily({ locations: [1, 2] }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([1, 2]);
         });
     });
 
@@ -87,7 +107,7 @@ describe('FamilyTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllFamilies).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
         });
     });
 
@@ -163,7 +183,7 @@ describe('FamilyTypeLoader', () => {
 
         it('includes location from the lookup array', async () => {
             const expectedResult = createFamily({
-                location_id: 2002,
+                locations: [2002],
             });
 
             const entities = [

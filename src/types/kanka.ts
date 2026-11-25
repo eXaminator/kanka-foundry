@@ -372,7 +372,9 @@ export interface KankaApiAbility extends KankaApiChildEntityWithChildren {
 export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
     /** @deprecated Will be removed; use parents[] instead */
     family_id?: KankaApiId | null;
+    /** @deprecated Use locations instead */
     location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     type: string | null;
     members: KankaApiId[];
     /** @deprecated Replaced by status, only present in old snapshots */
@@ -382,7 +384,9 @@ export interface KankaApiFamily extends KankaApiChildEntityWithChildren {
 export interface KankaApiItem extends KankaApiChildEntityWithChildren {
     /** @deprecated Will be removed; use parents[] instead */
     item_id?: KankaApiId | null;
+    /** @deprecated Use locations instead */
     location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     /** @deprecated Use creator_id instead */
     character_id?: KankaApiId | null;
     creator_id?: KankaApiId | null;
@@ -395,7 +399,9 @@ export interface KankaApiItem extends KankaApiChildEntityWithChildren {
 export interface KankaApiJournal extends KankaApiChildEntityWithChildren {
     /** @deprecated Will be removed; use parents[] instead */
     journal_id?: KankaApiId | null;
+    /** @deprecated Use locations instead */
     location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     /** @deprecated Use author_id instead */
     character_id?: KankaApiId | null;
     author_id?: KankaApiId | null;
@@ -451,7 +457,9 @@ export interface KankaApiQuest extends KankaApiChildEntityWithChildren {
     /** @deprecated Use instigator_id instead */
     character_id?: KankaApiId | null;
     instigator_id?: KankaApiEntityId | null;
-    location_id: KankaApiId | null;
+    /** @deprecated Use locations instead */
+    location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     type: string | null;
     date: string | null;
     /** @deprecated Replaced by status, only present in old snapshots */
@@ -477,7 +485,9 @@ export interface KankaApiRace extends KankaApiChildEntityWithChildren {
 export interface KankaApiEvent extends KankaApiChildEntityWithChildren {
     type: string | null;
     date: string | null;
+    /** @deprecated Use locations instead */
     location_id?: KankaApiId | null;
+    locations?: KankaApiId[];
     /** @deprecated Will be removed; use parents[] instead */
     event_id?: KankaApiId | null;
     calendar_id: KankaApiId | null;

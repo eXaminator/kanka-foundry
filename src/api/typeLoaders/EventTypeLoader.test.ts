@@ -73,7 +73,27 @@ describe('EventTypeLoader', () => {
             const result = await loader.load(4711, 12);
 
             expect(api.getEvent).toHaveBeenCalledWith(4711, 12);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
+        });
+    });
+
+    describe('normalize()', () => {
+        it('converts a legacy location_id to locations', async () => {
+            const loader = new EventTypeLoader();
+            vi.mocked(api).getEvent.mockResolvedValue(createEvent({ location_id: 42 }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([42]);
+        });
+
+        it('keeps locations if present', async () => {
+            const loader = new EventTypeLoader();
+            vi.mocked(api).getEvent.mockResolvedValue(createEvent({ locations: [1, 2] }));
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.locations).toEqual([1, 2]);
         });
     });
 
@@ -86,7 +106,7 @@ describe('EventTypeLoader', () => {
             const result = await loader.loadAll(4711);
 
             expect(api.getAllEvents).toHaveBeenCalledWith(4711);
-            expect(result).toBe(expectedResult);
+            expect(result).toMatchObject(expectedResult);
         });
     });
 
@@ -208,7 +228,7 @@ describe('EventTypeLoader', () => {
 
         it('includes location from the lookup array', async () => {
             const expectedResult = createEvent({
-                location_id: 2002,
+                locations: [2002],
             });
 
             const entities = [
