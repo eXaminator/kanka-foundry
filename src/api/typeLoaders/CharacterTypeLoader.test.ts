@@ -76,6 +76,24 @@ describe('CharacterTypeLoader', () => {
             expect(result).toMatchObject(expectedResult);
         });
 
+        it('separates private races and families from public ones', async () => {
+            const expectedResult = createCharacter({
+                races: [1, 2],
+                private_races: [2, 3],
+                families: [4, 5],
+                private_families: [5],
+            });
+            const loader = new CharacterTypeLoader();
+            vi.mocked(api).getCharacter.mockResolvedValue(expectedResult);
+
+            const result = await loader.load(4711, 12);
+
+            expect(result.races).toEqual([1]);
+            expect(result.private_races).toEqual([2, 3]);
+            expect(result.families).toEqual([4]);
+            expect(result.private_families).toEqual([5]);
+        });
+
         it('normalizes race_id to races array', async () => {
             const expectedResult = createCharacter({ race_id: 42 });
             const loader = new CharacterTypeLoader();
@@ -276,6 +294,27 @@ describe('CharacterTypeLoader', () => {
                     entityId: 1002,
                     type: 'race',
                 },
+            });
+        });
+
+        it('includes private races and families from the lookup array', async () => {
+            const expectedResult = createCharacter({
+                private_races: [2002],
+                private_families: [2003],
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'race'),
+                createEntity(1003, 2003, 'family'),
+            ];
+
+            const loader = new CharacterTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: { id: 2002, entityId: 1002, type: 'race' },
+                1003: { id: 2003, entityId: 1003, type: 'family' },
             });
         });
 

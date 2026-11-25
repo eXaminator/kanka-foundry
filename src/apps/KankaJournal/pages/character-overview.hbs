@@ -3,6 +3,7 @@
 {{~>../shared/detailRow value=data.system.snapshot.title label='character.labels.title' }}
 {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=", " }}
 {{~>../shared/detailRowArray references=data.system.snapshot.races type='race' label='character.labels.race' delimiter=", " }}
+{{~#if @root.owner}}{{~>../shared/detailRowArray references=data.system.snapshot.private_races type='race' label='character.labels.race' delimiter=", " isSecret=true }}{{/if~}}
 {{~>../shared/detailRow value=data.system.snapshot.age label='character.labels.age' }}
 {{~>../shared/detailRow value=data.system.snapshot.sex label='character.labels.sex' }}
 {{~>../shared/detailRow value=data.system.snapshot.pronouns label='character.labels.pronouns' }}
@@ -14,6 +15,7 @@
 {{~>../shared/detailRow value=date label='character.labels.deathday' isSecret=(kankaIsSecret this) }}
 {{/with}}
 {{~>../shared/detailRowArray references=data.system.snapshot.families type='family' label='character.labels.family' delimiter=", " }}
+{{~#if @root.owner}}{{~>../shared/detailRowArray references=data.system.snapshot.private_families type='family' label='character.labels.family' delimiter=", " isSecret=true }}{{/if~}}
 
 {{!-- Pinned Organisations --}}
 {{~#each (kankaFilterBy (kankaFilterReferences data.system.snapshot.organisations.data) 'pin_id' 'regex:^(1|3)$') as |

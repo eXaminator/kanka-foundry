@@ -18,7 +18,9 @@ export default class CharacterTypeLoader extends AbstractTypeLoader<KankaApiChar
         await Promise.all([
             ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
             ...(entity.races ?? []).map((id) => collection.addById(id, 'race')),
+            ...(entity.private_races ?? []).map((id) => collection.addById(id, 'race')),
             ...(entity.families ?? []).map((id) => collection.addById(id, 'family')),
+            ...(entity.private_families ?? []).map((id) => collection.addById(id, 'family')),
             ...entity.organisations.data.map((org) => collection.addById(org.organisation_id, 'organisation')),
         ]);
 
@@ -26,10 +28,18 @@ export default class CharacterTypeLoader extends AbstractTypeLoader<KankaApiChar
     }
 
     private normalize(entity: KankaApiCharacter): KankaApiCharacter {
+        const races = entity.races ?? (entity.race_id ? [entity.race_id] : []);
+        const families = entity.families ?? (entity.family_id ? [entity.family_id] : []);
+        const privateRaces = entity.private_races ?? [];
+        const privateFamilies = entity.private_families ?? [];
+
+        // Keep public and private links separate, so private ones can be rendered as secrets
         return {
             ...entity,
-            races: entity.races ?? (entity.race_id ? [entity.race_id] : []),
-            families: entity.families ?? (entity.family_id ? [entity.family_id] : []),
+            races: races.filter((id) => !privateRaces.includes(id)),
+            private_races: privateRaces,
+            families: families.filter((id) => !privateFamilies.includes(id)),
+            private_families: privateFamilies,
             locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
         };
     }
