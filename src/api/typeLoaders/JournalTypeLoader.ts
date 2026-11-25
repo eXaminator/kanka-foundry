@@ -17,7 +17,8 @@ export default class JournalTypeLoader extends AbstractTypeLoader<KankaApiJourna
 
         await Promise.all([
             ...(entity.locations ?? []).map((id) => collection.addById(id, 'location')),
-            collection.addById(entity.author_id, 'character'),
+            collection.addByEntityId(entity.author_id),
+            collection.addById(entity.character_id, 'character'),
         ]);
 
         return collection;
@@ -26,7 +27,6 @@ export default class JournalTypeLoader extends AbstractTypeLoader<KankaApiJourna
     private normalize(entity: KankaApiJournal): KankaApiJournal {
         return {
             ...entity,
-            author_id: entity.author_id ?? entity.character_id ?? null,
             locations: entity.locations ?? (entity.location_id ? [entity.location_id] : []),
         };
     }

@@ -76,14 +76,14 @@ describe('JournalTypeLoader', () => {
             expect(result).toMatchObject(expectedResult);
         });
 
-        it('normalizes character_id to author_id', async () => {
+        it('does not mix the character_id into the author_id', async () => {
             const expectedResult = createJournal({ character_id: 42 });
             const loader = new JournalTypeLoader();
             vi.mocked(api).getJournal.mockResolvedValue(expectedResult);
 
             const result = await loader.load(4711, 12);
 
-            expect(result.author_id).toBe(42);
+            expect(result.author_id).toBeUndefined();
         });
     });
 
@@ -119,15 +119,15 @@ describe('JournalTypeLoader', () => {
             expect(result).toMatchObject(expectedResult);
         });
 
-        it('normalizes character_id to author_id for all journals', async () => {
+        it('does not mix the character_id into the author_id for all journals', async () => {
             const expectedResult = [createJournal({ character_id: 42 }), createJournal({ character_id: 99 })];
             const loader = new JournalTypeLoader();
             vi.mocked(api).getAllJournals.mockResolvedValue(expectedResult);
 
             const result = await loader.loadAll(4711);
 
-            expect(result[0].author_id).toBe(42);
-            expect(result[1].author_id).toBe(99);
+            expect(result[0].author_id).toBeUndefined();
+            expect(result[1].author_id).toBeUndefined();
         });
     });
 
@@ -270,15 +270,60 @@ describe('JournalTypeLoader', () => {
             });
         });
 
-        it('includes author from the lookup array', async () => {
+        it('includes author by entity id from the lookup array', async () => {
             const expectedResult = createJournal({
-                author_id: 2002,
+                author_id: 1002,
             });
 
             const entities = [
                 createEntity(1001, 2001, 'location'),
                 createEntity(1002, 2002, 'character'),
                 createEntity(1003, 2003, 'quest'),
+            ];
+
+            const loader = new JournalTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1002: {
+                    id: 2002,
+                    entityId: 1002,
+                    type: 'character',
+                },
+            });
+        });
+
+        it('includes a non-character author by entity id from the lookup array', async () => {
+            const expectedResult = createJournal({
+                author_id: 1003,
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'character'),
+                createEntity(1003, 2003, 'organisation'),
+            ];
+
+            const loader = new JournalTypeLoader();
+            const collection = await loader.createReferenceCollection(4711, expectedResult, entities);
+
+            expect(collection.getRecord()).toMatchObject({
+                1003: {
+                    id: 2003,
+                    entityId: 1003,
+                    type: 'organisation',
+                },
+            });
+        });
+
+        it('includes the legacy character_id author from the lookup array', async () => {
+            const expectedResult = createJournal({
+                character_id: 2002,
+            });
+
+            const entities = [
+                createEntity(1001, 2001, 'location'),
+                createEntity(1002, 2002, 'character'),
             ];
 
             const loader = new JournalTypeLoader();

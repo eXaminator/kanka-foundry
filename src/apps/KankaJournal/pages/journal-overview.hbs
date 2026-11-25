@@ -3,7 +3,12 @@
         {{~>../shared/detailRow value=data.system.snapshot.type label='shared.labels.type' }}
         {{~>../shared/detailRowArray references=data.system.snapshot.parents type=null label='shared.labels.parent' }}
         {{~>../shared/detailRowArray references=data.system.snapshot.locations type='location' label='shared.labels.location' delimiter=", " }}
-        {{~>../shared/detailRow value=data.system.snapshot.author_id type='character' label='journal.labels.author' reference=true}}
+        {{!-- character_id is a character id, author_id an entity id. Prefer character_id as older snapshots stored a character id in author_id --}}
+        {{~#if data.system.snapshot.character_id ~}}
+            {{~>../shared/detailRow value=data.system.snapshot.character_id type='character' label='journal.labels.author' reference=true}}
+        {{~else~}}
+            {{~>../shared/detailRow value=data.system.snapshot.author_id type=null label='journal.labels.author' reference=true}}
+        {{~/if~}}
         {{~>../shared/detailRow value=data.system.snapshot.date label='journal.labels.date' }}
     {{~/inline}}
 {{/../shared/overviewLayout}}
